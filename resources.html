@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supernova Guide | Resources</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. SETARI GENERALE & ANIMATII --- */
+        :root {
+            --bg-color: #030305;
+            --surface-color: rgba(20, 25, 35, 0.6);
+            --surface-hover: rgba(30, 35, 50, 0.8);
+            --accent-blue: #00c6ff;
+            --accent-purple: #bc13fe;
+            --accent-orange: #ff512f;
+            --accent-pink: #dd2476;
+            --text-main: #d1d5db;
+        }
+
+        /* FIX PENTRU CENTRARE */
+        html { overflow-y: scroll; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* --- 2. FUNDAL COSMIC --- */
+        .universe-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background-image: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2048&auto=format&fit=crop'); background-size: cover; opacity: 0.35; }
+        .nebula-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: radial-gradient(circle at 15% 50%, rgba(221, 36, 118, 0.1), transparent 50%), linear-gradient(to bottom, rgba(3, 3, 5, 0.3), #030305); }
+
+        /* --- 3. NAVBAR --- */
+        nav { 
+            position: fixed; top: 0; width: 100%; 
+            background: rgba(3, 3, 5, 0.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 40px; z-index: 1000; box-sizing: border-box;
+        }
+
+        /* Logo Stanga */
+        .nav-logo {
+            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem;
+            color: white; text-decoration: none; display: flex; align-items: center; gap: 10px;
+            letter-spacing: 1px;
+        }
+        .nav-logo i { color: var(--accent-blue); }
+
+        /* Linkuri Centru */
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a { 
+            color: #ffffff; text-decoration: none; margin: 0 15px; 
+            font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1.5px;
+            transition: all 0.3s; opacity: 0.8; font-family: 'Outfit', sans-serif;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-blue); opacity: 1; text-shadow: 0 0 10px rgba(0, 198, 255, 0.5); }
+        .nav-links a.active { border-bottom: 2px solid var(--accent-blue); }
+        
+        #profileLink { color: var(--accent-orange) !important; opacity: 1; position: relative; }
+        #profileLink::after { content:''; position: absolute; bottom: -5px; left: 0; width: 0%; height: 2px; background: var(--accent-orange); transition: width 0.3s; }
+        #profileLink:hover::after { width: 100%; }
+
+        /* Auth Dreapta */
+        .nav-auth-container { display: flex; align-items: center; }
+        .btn-auth { 
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--accent-blue); 
+            color: var(--accent-blue); padding: 8px 20px; border-radius: 30px; 
+            cursor: pointer; font-weight: 700; margin-left: 10px; transition: 0.3s; 
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-auth:hover { background: var(--accent-blue); color: #000; box-shadow: 0 0 20px rgba(0, 198, 255, 0.4); }
+
+        /* --- 4. HEADER PAGINA --- */
+        header { padding: 160px 20px 60px; text-align: center; max-width: 800px; margin: 0 auto; }
+        
+        .page-title { 
+            font-family: 'Outfit', sans-serif; font-size: 3.5rem; font-weight: 800; margin-bottom: 15px; color: white;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%); 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 30px rgba(165, 180, 252, 0.2));
+        }
+        .page-desc { font-size: 1.1rem; color: #9ca3af; line-height: 1.6; max-width: 700px; margin: 0 auto; font-weight: 300; }
+
+        /* --- 5. SECTIUNI CONTENT --- */
+        .content-container { max-width: 1100px; margin: 0 auto 100px; padding: 0 20px; }
+        
+        .section-header { 
+            display: flex; align-items: center; gap: 15px; margin-bottom: 30px; margin-top: 60px;
+            border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;
+        }
+        .section-header h2 { font-family: 'Outfit', sans-serif; font-size: 1.8rem; margin: 0; color: white; }
+        .section-header i { font-size: 1.5rem; color: var(--accent-blue); }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+
+        /* CARD DESIGN */
+        .resource-card {
+            background: var(--surface-color); padding: 30px; border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease;
+            position: relative; backdrop-filter: blur(10px); display: flex; flex-direction: column;
+        }
+        .resource-card:hover { transform: translateY(-5px); border-color: rgba(255, 255, 255, 0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: var(--surface-hover); }
+        
+        /* Iconita Sus */
+        .card-icon { 
+            width: 45px; height: 45px; background: rgba(255,255,255,0.05); 
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 20px;
+        }
+        
+        .card-title { font-family: 'Outfit', sans-serif; font-size: 1.2rem; margin: 0 0 10px 0; color: white; }
+        .card-desc { font-size: 0.9rem; color: #a0aab5; line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
+
+        .resource-list { list-style: none; padding: 0; margin: 0; }
+        .resource-list li { margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; color: #ccc; }
+        .resource-list li i { color: var(--accent-blue); margin-top: 4px; font-size: 0.8rem; }
+        .resource-link { color: var(--text-main); text-decoration: none; transition: 0.2s; border-bottom: 1px solid transparent; }
+        .resource-link:hover { color: white; border-color: var(--accent-blue); }
+        .author-tag { font-size: 0.8rem; color: #666; margin-left: 5px; }
+
+        /* Styles per category */
+        .style-pink .card-icon { color: var(--accent-pink); }
+        .style-pink .section-header i { color: var(--accent-pink); }
+        .style-pink .resource-list li i { color: var(--accent-pink); }
+        .style-pink .resource-link:hover { border-color: var(--accent-pink); }
+
+        .style-purple .card-icon { color: var(--accent-purple); }
+        .style-purple .section-header i { color: var(--accent-purple); }
+        .style-purple .resource-list li i { color: var(--accent-purple); }
+        .style-purple .resource-link:hover { border-color: var(--accent-purple); }
+
+        /* Stilul Portocaliu pentru Prezentari */
+        .style-orange .card-icon { color: var(--accent-orange); }
+        .style-orange .section-header i { color: var(--accent-orange); }
+        .style-orange .resource-list li i { color: var(--accent-orange); }
+        .style-orange .resource-link:hover { border-color: var(--accent-orange); }
+
+        /* --- 6. MODALA LOGIN --- */
+        .auth-modal { 
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; 
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); 
+            align-items: center; justify-content: center; backdrop-filter: blur(8px); 
+        }
+        .auth-content { 
+            background: #0f1219; padding: 40px; border-radius: 20px; width: 340px; 
+            text-align: center; border: 1px solid rgba(255,255,255,0.1); 
+            position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .close-btn { position: absolute; right: 20px; top: 20px; color: #666; cursor: pointer; font-size: 1.5rem; transition: 0.2s; }
+        .close-btn:hover { color: white; }
+        .auth-input { 
+            width: 100%; padding: 12px 15px; margin: 8px 0; background: rgba(0,0,0,0.3); 
+            border: 1px solid #333; color: white; border-radius: 8px; outline: none; transition: 0.3s;
+        }
+        .auth-input:focus { border-color: var(--accent-blue); background: rgba(0,0,0,0.5); }
+        .submit-btn { 
+            width: 100%; padding: 12px; background: var(--accent-blue); border: none; color: #000; 
+            font-weight: 700; border-radius: 8px; cursor: pointer; margin-top: 15px; transition: 0.3s;
+        }
+        .submit-btn:hover { background: white; transform: scale(1.02); }
+        .toggle-text { font-size: 0.85rem; margin-top: 20px; color: #888; }
+        .toggle-text span { color: var(--accent-blue); cursor: pointer; }
+        .error-msg { color: #ff512f; font-size: 0.8rem; margin-top: 10px; }
+
+        @media(max-width: 900px) {
+            nav { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="universe-bg"></div>
+    <div class="nebula-overlay"></div>
+
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <i class="fas fa-meteor"></i> SUPERNOVA
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="handouts.html">Handouts</a>
+            <a href="problems.html">Practice</a>
+            <a href="resources.html" class="active">Resources</a>
+            <a href="community.html">Community</a>
+            <a href="profile.html" id="profileLink" style="display: none;">My Profile</a>
+        </div>
+
+        <div class="nav-auth-container">
+            <button id="loginBtn" onclick="openAuthModal()" class="btn-auth">Login</button>
+            <button id="logoutBtn" class="btn-auth" style="display: none;">Logout</button>
+        </div>
+    </nav>
+
+    <header>
+        <h1 class="page-title">External Resources</h1>
+        <p class="page-desc">A curated collection of the best books, databases, and software for Astronomy Olympiad preparation.</p>
+    </header>
+
+    <div class="content-container">
+        
+        <div class="section-header">
+            <i class="fas fa-book"></i>
+            <h2>Textbooks & Guides</h2>
+        </div>
+        <div class="grid">
+            <div class="resource-card">
+                <div class="card-icon"><i class="fas fa-atlas"></i></div>
+                <h3 class="card-title">Theory & Fundamentals</h3>
+                <ul class="resource-list">
+                    <li>
+                        <i class="fas fa-chevron-right"></i>
+                        <div>
+                            <strong>An Introduction to Modern Astrophysics</strong><span class="author-tag">(Carroll & Ostlie)</span><br>
+                            <span style="font-size: 0.8rem; color:#888;">The "Big Orange Book" (BOB). The gold standard for IOAA.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-chevron-right"></i>
+                        <div>
+                            <strong>Fundamental Astronomy</strong><span class="author-tag">(Karttunen et al.)</span><br>
+                            <span style="font-size: 0.8rem; color:#888;">Best for spherical astronomy and celestial mechanics basics.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="resource-card">
+                <div class="card-icon"><i class="fas fa-pencil-alt"></i></div>
+                <h3 class="card-title">Problem Solving</h3>
+                <ul class="resource-list">
+                    <li>
+                        <i class="fas fa-chevron-right"></i>
+                        <div>
+                            <strong>Schaum's Outlines - Astronomy</strong><br>
+                            <span style="font-size: 0.8rem; color:#888;">Quick, practical problems for reinforcing concepts.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-chevron-right"></i>
+                        <div>
+                            <strong>A Problem Book in Astronomy & Astrophysics</strong><span class="author-tag">(Aniket Sule)</span><br>
+                            <span style="font-size: 0.8rem; color:#888;">Official IOAA-style problems compilation.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-header style-pink">
+            <i class="fas fa-laptop-code"></i>
+            <h2>Databases & Software</h2>
+        </div>
+        <div class="grid style-pink">
+            <div class="resource-card">
+                <div class="card-icon"><i class="fas fa-database"></i></div>
+                <h3 class="card-title">Data Archives</h3>
+                <ul class="resource-list">
+                    <li><i class="fas fa-external-link-alt"></i> <a href="https://simbad.cds.unistra.fr/simbad/" target="_blank" class="resource-link">SIMBAD Astronomical Database</a></li>
+                    <li><i class="fas fa-external-link-alt"></i> <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" class="resource-link">NASA Exoplanet Archive</a></li>
+                    <li><i class="fas fa-external-link-alt"></i> <a href="https://ned.ipac.caltech.edu/" target="_blank" class="resource-link">NASA Extragalactic Database (NED)</a></li>
+                </ul>
+            </div>
+
+            <div class="resource-card">
+                <div class="card-icon"><i class="fas fa-star"></i></div>
+                <h3 class="card-title">Observation & Sky Charts</h3>
+                <ul class="resource-list">
+                    <li><i class="fas fa-external-link-alt"></i> <a href="https://stellarium.org/" target="_blank" class="resource-link">Stellarium (Desktop & Web)</a></li>
+                    <li><i class="fas fa-external-link-alt"></i> <a href="https://aladin.u-strasbg.fr/" target="_blank" class="resource-link">Aladin Sky Atlas</a></li>
+                    <li><i class="fas fa-external-link-alt"></i> <a href="https://www.cleardarksky.com/" target="_blank" class="resource-link">Clear Dark Sky Charts</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-header style-orange">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <h2>Presentations & Slides</h2>
+        </div>
+        <div class="grid style-orange">
+            <div class="resource-card">
+                <div class="card-icon"><i class="fas fa-file-powerpoint"></i></div>
+                <h3 class="card-title">Supernova Originals</h3>
+                <ul class="resource-list">
+                    <li>
+                        <i class="fas fa-star"></i>
+                        <div>
+                            <strong>The Milky Way Galaxy</strong><span class="author-tag">(by Matei Butnaru)</span><br>
+                            <span style="font-size: 0.8rem; color:#888;">Learn about counting stars, galactic morphology, kinematics, and the Galactic Center.</span><br>
+                            
+                            <a href="https://docs.google.com/presentation/d/1mfhvZIdFAWgnM3DNMrjuIKPTvMjPXQ2l/edit?usp=sharing&ouid=100339198335506729107&rtpof=true&sd=true" target="_blank" class="resource-link" style="display: inline-block; margin-top: 8px; font-size: 0.85rem; font-weight: bold;">
+                                <i class="fas fa-download"></i> Download PPTX
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </div>
+
+    <div id="authModal" class="auth-modal">
+        <div class="auth-content">
+            <span onclick="closeModal()" class="close-btn">&times;</span>
+            <h2 id="modalTitle" style="color: white; margin-bottom: 25px; font-family:'Outfit', sans-serif;">Login</h2>
+            
+            <form id="authForm">
+                <input type="text" id="usernameInput" class="auth-input" placeholder="Choose a Username" style="display:none;">
+                <input type="email" id="emailInput" class="auth-input" placeholder="Email Address" required>
+                <input type="password" id="passwordInput" class="auth-input" placeholder="Password" required>
+                <button type="submit" id="submitAuthBtn" class="submit-btn">LOGIN</button>
+                <p id="authError" class="error-msg"></p>
+            </form>
+
+            <p class="toggle-text" id="toggleText">
+                New to Supernova? <span onclick="toggleMode()">Create an account</span>
+            </p>
+        </div>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+
+</body>
+</html>
