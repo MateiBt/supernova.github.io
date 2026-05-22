@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supernova Guide | Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. SETARI GENERALE & ANIMATII --- */
+        :root {
+            --bg-color: #030305;
+            --accent-blue: #00c6ff;
+            --accent-purple: #bc13fe;
+            --accent-orange: #ff512f;
+            --discord-color: #5865F2;
+            --text-main: #d1d5db;
+        }
+
+        /* --- FIX SUPREM PENTRU "JUMPING" --- */
+        html {
+            overflow-y: scroll; 
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); } 50% { box-shadow: 0 0 25px rgba(88, 101, 242, 0.6); } 100% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); } }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* --- 2. FUNDAL COSMIC --- */
+        .universe-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background-image: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2048&auto=format&fit=crop'); background-size: cover; opacity: 0.35; }
+        .nebula-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: radial-gradient(circle at 50% 40%, rgba(76, 29, 149, 0.15), transparent 70%), linear-gradient(to bottom, rgba(3, 3, 5, 0.2), #030305); }
+
+        /* --- 3. NAVBAR --- */
+        nav { 
+            position: fixed; top: 0; width: 100%; 
+            background: rgba(3, 3, 5, 0.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 40px; z-index: 1000; box-sizing: border-box;
+        }
+
+        .nav-logo {
+            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem;
+            color: white; text-decoration: none; display: flex; align-items: center; gap: 10px;
+            letter-spacing: 1px;
+        }
+        .nav-logo i { color: var(--accent-blue); }
+
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a { 
+            color: #ffffff; text-decoration: none; margin: 0 15px; 
+            font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1.5px;
+            transition: all 0.3s; opacity: 0.8; font-family: 'Outfit', sans-serif;
+        }
+        .nav-links a:hover { color: var(--accent-blue); opacity: 1; text-shadow: 0 0 10px rgba(0, 198, 255, 0.5); }
+        .nav-links a.active { color: var(--accent-blue); opacity: 1; border-bottom: 2px solid var(--accent-blue); } 
+        
+        #profileLink { color: var(--accent-orange) !important; opacity: 1; position: relative; }
+        #profileLink::after { content:''; position: absolute; bottom: -5px; left: 0; width: 0%; height: 2px; background: var(--accent-orange); transition: width 0.3s; }
+        #profileLink:hover::after { width: 100%; }
+
+        .nav-auth-container { display: flex; align-items: center; }
+        .btn-auth { 
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--accent-blue); 
+            color: var(--accent-blue); padding: 8px 20px; border-radius: 30px; 
+            cursor: pointer; font-weight: 700; margin-left: 10px; transition: 0.3s; 
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-auth:hover { background: var(--accent-blue); color: #000; box-shadow: 0 0 20px rgba(0, 198, 255, 0.4); }
+
+        /* --- 4. HERO SECTION --- */
+        .hero-section {
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 100px 20px 50px; position: relative; z-index: 1;
+        }
+        
+        .hero-badge {
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);
+            padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; color: var(--accent-blue);
+            font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 25px;
+            backdrop-filter: blur(5px); animation: float 6s ease-in-out infinite;
+        }
+
+        .main-title {
+            font-family: 'Outfit', sans-serif; font-size: 4.5rem; font-weight: 800; 
+            line-height: 1.1; margin: 0 0 20px 0; color: white;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%); 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 30px rgba(165, 180, 252, 0.2));
+        }
+
+        .subtitle { 
+            font-size: 1.2rem; color: #9ca3af; max-width: 650px; margin: 0 auto 40px; 
+            line-height: 1.6; font-weight: 300;
+        }
+
+        .cta-container { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-bottom: 50px; }
+        
+        .cta-btn {
+            padding: 14px 35px; border-radius: 12px; font-weight: 700; text-decoration: none; font-size: 1rem;
+            transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px;
+        }
+        
+        .btn-primary { 
+            background: var(--accent-blue); color: #050507; 
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 30px rgba(0, 198, 255, 0.6); background: white; }
+
+        .btn-discord {
+            background: rgba(88, 101, 242, 0.15); border: 1px solid rgba(88, 101, 242, 0.4); color: white;
+            animation: pulseGlow 3s infinite;
+        }
+        .btn-discord:hover { 
+            background: var(--discord-color); border-color: var(--discord-color); 
+            transform: translateY(-3px);
+        }
+
+        .stats-strip {
+            display: flex; gap: 40px; margin-top: 20px; padding: 20px 40px;
+            background: rgba(255,255,255,0.03); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(5px);
+        }
+        .stat-item { text-align: center; }
+        .stat-num { display: block; font-size: 1.5rem; font-weight: 800; color: white; font-family: 'Outfit', sans-serif; }
+        .stat-label { font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- 4.5. SECTIUNEA PLANETARIU --- */
+        .planetarium-section {
+            padding: 60px 20px 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1; /* Pentru a sta deasupra fundalului cosmic */
+        }
+
+        /* --- 5. FOOTER & MODALA --- */
+        footer { 
+            margin-top: auto; padding: 30px; color: #444; font-size: 0.85rem; 
+            border-top: 1px solid rgba(255,255,255,0.03); width: 100%; text-align: center;
+            position: relative; z-index: 1;
+        }
+
+        .auth-modal { 
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; 
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); 
+            align-items: center; justify-content: center; backdrop-filter: blur(8px); 
+        }
+        .auth-content { 
+            background: #0f1219; padding: 40px; border-radius: 20px; width: 340px; 
+            text-align: center; border: 1px solid rgba(255,255,255,0.1); 
+            position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .close-btn { position: absolute; right: 20px; top: 20px; color: #666; cursor: pointer; font-size: 1.5rem; transition: 0.2s; }
+        .close-btn:hover { color: white; }
+        .auth-input { 
+            width: 100%; padding: 12px 15px; margin: 8px 0; background: rgba(0,0,0,0.3); 
+            border: 1px solid #333; color: white; border-radius: 8px; outline: none; transition: 0.3s; box-sizing: border-box;
+        }
+        .auth-input:focus { border-color: var(--accent-blue); background: rgba(0,0,0,0.5); }
+        .submit-btn { 
+            width: 100%; padding: 12px; background: var(--accent-blue); border: none; color: #000; 
+            font-weight: 700; border-radius: 8px; cursor: pointer; margin-top: 15px; transition: 0.3s;
+        }
+        .submit-btn:hover { background: white; transform: scale(1.02); }
+        .toggle-text { font-size: 0.85rem; margin-top: 20px; color: #888; }
+        .toggle-text span { color: var(--accent-blue); cursor: pointer; }
+
+        @media(max-width: 900px) {
+            nav { flex-direction: column; gap: 15px; }
+            .main-title { font-size: 3rem; }
+            .stats-strip { flex-direction: column; gap: 20px; width: 80%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="universe-bg"></div>
+    <div class="nebula-overlay"></div>
+
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <i class="fas fa-meteor"></i> SUPERNOVA
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="handouts.html">Handouts</a>
+            <a href="problems.html">Practice</a>
+            <a href="resources.html">Resources</a>
+            <a href="community.html">Community</a>
+            <a href="profile.html" id="profileLink" style="display: none;">My Profile</a>
+        </div>
+
+        <div class="nav-auth-container">
+            <button id="loginBtn" onclick="openAuthModal()" class="btn-auth">Login</button>
+            <button id="logoutBtn" class="btn-auth" style="display: none;">Logout</button>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+        <div class="hero-badge"><i class="fas fa-star" style="margin-right:5px;"></i> The #1 Astronomy Resource</div>
+        
+        <h1 class="main-title">Explore the<br>Cosmos Within.</h1>
+        
+        <p class="subtitle">
+            Your open-source command center for Astronomy & Astrophysics Olympiad preparation. 
+            Master celestial mechanics, astrophysics, and data analysis with curated tools.
+        </p>
+        
+        <div class="cta-container">
+            <a href="#planetarium-module" class="cta-btn btn-primary">
+                Start Practice <i class="fas fa-arrow-down"></i>
+            </a>
+            <a href="https://discord.gg/exemplu" target="_blank" class="cta-btn btn-discord">
+                <i class="fab fa-discord"></i> Join Community
+            </a>
+        </div>
+
+        <div class="stats-strip">
+            <div class="stat-item">
+                <span class="stat-num">300+</span>
+                <span class="stat-label">Problems</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num" style="color: var(--accent-purple);">100%</span>
+                <span class="stat-label">Free & Open</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num" style="color: var(--accent-orange);">24/7</span>
+                <span class="stat-label">Practice</span>
+            </div>
+        </div>
+    </div>
+
+    <section id="planetarium-module" class="planetarium-section">
+        
+        <div class="hero-badge" style="animation: none; margin-bottom: 15px; border-color: var(--accent-purple); color: var(--accent-purple);">
+            <i class="fas fa-satellite-dish" style="margin-right:5px;"></i> Interactive Module
+        </div>
+        
+        <h2 style="font-family: 'Outfit', sans-serif; font-size: 2.5rem; color: white; margin-top: 0; margin-bottom: 15px; text-align: center;">
+            3D Observational Practice
+        </h2>
+        
+        <p style="color: #9ca3af; max-width: 700px; margin-bottom: 40px; line-height: 1.6; text-align: center;">
+            Put your observational skills to the test in our virtual sky. Locate the target star, identify its traditional name, and determine its astronomical type. Your scores are saved locally!
+        </p>
+
+        <a href="./planetariu/index.html" target="_blank" class="cta-btn btn-primary" style="font-size: 1.2rem; padding: 15px 50px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: white; border: none; box-shadow: 0 0 25px rgba(188, 19, 254, 0.4);">
+            <i class="fas fa-rocket"></i> Launch Planetarium
+        </a>
+
+    </section>
+    <footer>
+        &copy; 2026 Supernova Guide. Explore the Universe.
+    </footer>
+
+    <div id="authModal" class="auth-modal">
+        <div class="auth-content">
+            <span onclick="closeModal()" class="close-btn">&times;</span>
+            <h2 id="modalTitle" style="color: white; margin-bottom: 25px; font-family:'Outfit', sans-serif;">Login</h2>
+            
+            <form id="authForm">
+                <input type="text" id="usernameInput" class="auth-input" placeholder="Choose a Username" style="display:none;">
+                <input type="email" id="emailInput" class="auth-input" placeholder="Email Address" required>
+                <input type="password" id="passwordInput" class="auth-input" placeholder="Password" required>
+                <button type="submit" id="submitAuthBtn" class="submit-btn">LOGIN</button>
+                <p id="authError" class="error-msg" style="color: #ff512f; font-size: 0.8rem; margin-top: 10px;"></p>
+            </form>
+
+            <p class="toggle-text" id="toggleText">
+                New to Supernova? <span onclick="toggleMode()">Create an account</span>
+            </p>
+        </div>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+
+</body>
+</html>
