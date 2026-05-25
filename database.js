@@ -13,8 +13,9 @@ function getStarColor(ci) {
 async function initDatabase() {
     try {
         console.log("Începem citirea bazei de date...");
-        const response = await fetch('hyg_v42.csv');
-        if (!response.ok) throw new Error("Nu am putut găsi hyg_v42.csv.");
+        // AICI AM CORECTAT NUMELE FIȘIERULUI
+        const response = await fetch('hyg_optimizat.csv');
+        if (!response.ok) throw new Error("Nu am putut găsi hyg_optimizat.csv.");
         
         const text = await response.text();
         const rows = text.split(/\r?\n/); 
