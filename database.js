@@ -13,7 +13,8 @@ function getStarColor(ci) {
 async function initDatabase() {
     try {
         console.log("Începem citirea bazei de date...");
-        // AICI AM CORECTAT NUMELE FIȘIERULUI
+        
+        // BUG REPARAT 1: Acum căutăm fișierul nou, cel mic și optimizat
         const response = await fetch('hyg_optimizat.csv');
         if (!response.ok) throw new Error("Nu am putut găsi hyg_optimizat.csv.");
         
@@ -70,11 +71,16 @@ async function initDatabase() {
                 bayerName = `${greekFull} ${con}`;
             }
             
+            // BUG REPARAT 2: Logica pentru tipul stelei.
+            // În HYG, stelele simple și primare au comp = 1. Componentele secundare au 2, 3, etc.
             let tip = "simpla";
-            if (cols.length > iComp && cols[iComp] && cols[iComp].trim() !== "") {
-                tip = "dubla";
-            } else if (cols.length > iVar && cols[iVar] && cols[iVar].trim() !== "") {
-                tip = "pulsatila"; 
+            const compVal = (cols.length > iComp && cols[iComp]) ? cols[iComp].trim() : "";
+            const varVal = (cols.length > iVar && cols[iVar]) ? cols[iVar].trim() : "";
+            
+            if (compVal !== "" && parseInt(compVal) > 1) {
+                tip = "dubla"; // Dacă componenta e > 1, sigur face parte dintr-un sistem multiplu
+            } else if (varVal !== "") {
+                tip = "pulsatila"; // Dacă are nume în catalogul de variabile
             }
             
             astronomyDatabase.push({
