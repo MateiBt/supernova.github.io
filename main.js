@@ -370,25 +370,30 @@ const constellationPairs = [
     // 3. Apus
     ["Alpha Aps","Gamma Aps"], ["Gamma Aps","Beta Aps"],
 
-    // 4. Aquarius (CORECTAT AICI - adăugate virgulele lipsă)
+    // 4. Aquarius
     ["Epsilon Aqr","Mu Aqr"], ["Mu Aqr","Beta Aqr"], ["Beta Aqr","Alpha Aqr"], ["Alpha Aqr","Theta Aqr"], ["Theta Aqr","Iota Aqr"],
     ["Theta Aqr","Sigma Aqr"], ["Sigma Aqr","Tau Aqr"], ["Tau Aqr","Delta Aqr"], ["Epsilon Aqr","Mu Aqr"], ["Delta Aqr","c2 Aqr"],
     ["Alpha Aqr","Gamma Aqr"], ["Gamma Aqr","Zeta Aqr"], ["Zeta Aqr","Eta Aqr"], ["Eta Aqr","Lambda Aqr"], ["Lambda Aqr","Psi Aqr"],
-    ["Psi Aqr","b1 Aqr"],
+    ["Psi Aqr","b1 Aqr"], 
 
-    ["Eta UMa", "Zeta UMa"], ["Zeta UMa", "Epsilon UMa"], ["Epsilon UMa", "Delta UMa"], // Oiștea
-    ["Delta UMa", "Gamma UMa"], ["Gamma UMa", "Beta UMa"], ["Beta UMa", "Alpha UMa"], ["Alpha UMa", "Delta UMa"], // Cutia Carului
+    // Ursa Mare (Aici apărea eroarea ta)
+    ["Eta UMa", "Zeta UMa"], ["Zeta UMa", "Epsilon UMa"], ["Epsilon UMa", "Delta UMa"], 
+    ["Delta UMa", "Gamma UMa"], ["Gamma UMa", "Beta UMa"], ["Beta UMa", "Alpha UMa"], ["Alpha UMa", "Delta UMa"], 
 
-    ["Alpha UMi", "Delta UMi"], ["Delta UMi", "Epsilon UMi"], ["Epsilon UMi", "Zeta UMi"], // Oiștea (Polaris e Alpha)
-    ["Zeta UMi", "Beta UMi"], ["Beta UMi", "Gamma UMi"], ["Gamma UMi", "Eta UMi"], ["Eta UMi", "Zeta UMi"], // Cutia
+    // Ursa Mică
+    ["Alpha UMi", "Delta UMi"], ["Delta UMi", "Epsilon UMi"], ["Epsilon UMi", "Zeta UMi"], 
+    ["Zeta UMi", "Beta UMi"], ["Beta UMi", "Gamma UMi"], ["Gamma UMi", "Eta UMi"], ["Eta UMi", "Zeta UMi"], 
 
+    // Bootes
     ["Alpha Boo", "Epsilon Boo"], ["Epsilon Boo", "Delta Boo"], ["Delta Boo", "Beta Boo"], 
-    ["Beta Boo", "Gamma Boo"], ["Gamma Boo", "Rho Boo"], // Bucla de sus a zmeului
-    ["Alpha Boo", "Eta Boo"], // Piciorul 
+    ["Beta Boo", "Gamma Boo"], ["Gamma Boo", "Rho Boo"], 
+    ["Alpha Boo", "Eta Boo"],  
     ["Rho Boo", "Alpha Boo"], ["Alpha Boo", "Zeta Boo"],
 
+    // Cassiopeia
     ["Epsilon Cas", "Delta Cas"], ["Delta Cas", "Gamma Cas"], ["Gamma Cas", "Alpha Cas"], ["Alpha Cas", "Beta Cas"],
 
+    // Leo
     ["Epsilon Leo", "Mu Leo"], ["Mu Leo", "Zeta Leo"], ["Zeta Leo", "Gamma Leo"], ["Gamma Leo", "Eta Leo"], ["Eta Leo", "Alpha Leo"],
     ["Gamma Leo", "Delta Leo"], ["Delta Leo", "Beta Leo"], ["Beta Leo", "Theta Leo"], ["Theta Leo", "Alpha Leo"], ["Delta Leo", "Theta Leo"]
 ];
