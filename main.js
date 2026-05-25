@@ -357,15 +357,9 @@ document.getElementById('btn-save-score').addEventListener('click', () => {
 });
 
 // ==========================================
-// 6. START-UP PROCES
-// ==========================================
-
-// ==========================================
 // 6. DESENAREA CONSTELAȚIILOR
 // ==========================================
 // Definim ce stele se leagă între ele (Denumirile Bayer exacte din baza de date)
-
-
 const constellationPairs = [
     // 1. Andromeda
     ["Alpha And","Delta And"], ["Delta And","Beta And"], ["Beta And","Gamma And"], ["Beta And","Mu And"], ["Mu And","Nu And"],
@@ -376,11 +370,11 @@ const constellationPairs = [
     // 3. Apus
     ["Alpha Aps","Gamma Aps"], ["Gamma Aps","Beta Aps"],
 
-    // 4. Aquarius
-    ["Epsilon Aqr","Mu Aqr"], ["Mu Aqr","Beta Aqr"], ["Beta Aqr","Alpha Aqr"], ["Alpha Aqr","Theta Aqr"], ["Theta Aqr","Iota Aqr"]
-    ["Theta Aqr","Sigma Aqr"], ["Sigma Aqr","Tau Aqr"], ["Tau Aqr","Delta Aqr"], ["Epsilon Aqr","Mu Aqr"], ["Delta Aqr","c2 Aqr"]
-    ["Alpha Aqr","Gamma Aqr"], ["Gamma Aqr","Zeta Aqr"], ["Zeta Aqr","Eta Aqr"], ["Eta Aqr","Lambda Aqr"], ["Lambda Aqr","Psi Aqr"]
-    ["Psi Aqr","b1 Aqr"]
+    // 4. Aquarius (CORECTAT AICI - adăugate virgulele lipsă)
+    ["Epsilon Aqr","Mu Aqr"], ["Mu Aqr","Beta Aqr"], ["Beta Aqr","Alpha Aqr"], ["Alpha Aqr","Theta Aqr"], ["Theta Aqr","Iota Aqr"],
+    ["Theta Aqr","Sigma Aqr"], ["Sigma Aqr","Tau Aqr"], ["Tau Aqr","Delta Aqr"], ["Epsilon Aqr","Mu Aqr"], ["Delta Aqr","c2 Aqr"],
+    ["Alpha Aqr","Gamma Aqr"], ["Gamma Aqr","Zeta Aqr"], ["Zeta Aqr","Eta Aqr"], ["Eta Aqr","Lambda Aqr"], ["Lambda Aqr","Psi Aqr"],
+    ["Psi Aqr","b1 Aqr"],
 
     ["Eta UMa", "Zeta UMa"], ["Zeta UMa", "Epsilon UMa"], ["Epsilon UMa", "Delta UMa"], // Oiștea
     ["Delta UMa", "Gamma UMa"], ["Gamma UMa", "Beta UMa"], ["Beta UMa", "Alpha UMa"], ["Alpha UMa", "Delta UMa"], // Cutia Carului
@@ -445,24 +439,15 @@ function drawConstellations() {
 }
 
 // ==========================================
-// 7. START-UP PROCES
+// 7. START-UP PROCES (CORECTAT - eliminat duplicatul)
 // ==========================================
 if (typeof initDatabase === "function") {
     initDatabase().then(() => {
         targetObjects = astronomyDatabase; 
         buildStarfield(); 
-        drawConstellations(); // AICI DESENĂM CONSTELAȚIILE
+        drawConstellations(); 
         startNewRound(); 
         startGlobalTimer(); 
         displayLeaderboard(); 
-    });
-}
-if (typeof initDatabase === "function") {
-    initDatabase().then(() => {
-        targetObjects = astronomyDatabase; 
-        buildStarfield(); 
-        startNewRound(); 
-        startGlobalTimer(); // Pornim cronometrul imediat ce baza de date e încărcată
-        displayLeaderboard(); // Încărcăm clasamentul salvat anterior
     });
 }
