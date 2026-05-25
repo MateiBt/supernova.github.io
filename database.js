@@ -1,4 +1,4 @@
-let astronomyDatabase = []; skibidi
+let astronomyDatabase = [];
 
 function getStarColor(ci) {
     if (isNaN(ci)) return 0xffffff; 
