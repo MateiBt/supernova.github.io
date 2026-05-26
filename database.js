@@ -14,8 +14,8 @@ async function initDatabase() {
     try {
         console.log("Începem citirea bazei de date...");
         
-        // BUG REPARAT 1: Acum căutăm fișierul nou, cel mic și optimizat
-        const response = await fetch('hyg_optimizat.csv');
+        // Calea actualizată pentru a citi CSV-ul din noul folder 'data/'
+        const response = await fetch('data/hyg_optimizat.csv');
         if (!response.ok) throw new Error("Nu am putut găsi hyg_optimizat.csv.");
         
         const text = await response.text();
@@ -54,7 +54,8 @@ async function initDatabase() {
             
             if (isNaN(mag) || mag > 6.5) continue;
             
-            const properName = cols[iProper] ? cols[iProper].trim() : "";
+            // Definit ca "let" pentru a putea suprascrie eventualele lipsuri/erori din catalog
+            let properName = cols[iProper] ? cols[iProper].trim() : "";
             
             // Extragem abrevierea
             let bayerAbbr = (cols.length > iBayer && cols[iBayer]) ? cols[iBayer].trim() : "";
@@ -69,6 +70,14 @@ async function initDatabase() {
             if (bayerAbbr && con) {
                 const greekFull = greekMap[bayerAbbr] || bayerAbbr;
                 bayerName = `${greekFull} ${con}`;
+            }
+
+            // Corecturi manuale (Overrides) pentru a ocoli inexactitățile catalogului HYG
+            if (bayerName === "Alpha Gru") {
+                properName = "Alnair";
+            }
+            if (properName.toLowerCase() === "itonda") {
+                bayerName = bayerName.replace("Sgr", "Gru");
             }
             
             // BUG REPARAT 2: Logica pentru tipul stelei.
