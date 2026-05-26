@@ -376,26 +376,44 @@ const constellationPairs = [
     ["Alpha Aqr","Gamma Aqr"], ["Gamma Aqr","Zeta Aqr"], ["Zeta Aqr","Eta Aqr"], ["Eta Aqr","Lambda Aqr"], ["Lambda Aqr","Psi Aqr"],
     ["Psi Aqr","b1 Aqr"], 
 
-    // Ursa Mare (Aici apărea eroarea ta)
-    ["Eta UMa", "Zeta UMa"], ["Zeta UMa", "Epsilon UMa"], ["Epsilon UMa", "Delta UMa"], 
-    ["Delta UMa", "Gamma UMa"], ["Gamma UMa", "Beta UMa"], ["Beta UMa", "Alpha UMa"], ["Alpha UMa", "Delta UMa"], 
+    // 5. Aquila
+    ["Alpha Aql","Beta Aql"], ["Alpha Aql","Gamma Aql"], ["Alpha Aql","Delta Aql"], ["Delta Aql","Zeta Aql"], ["Zeta Aql","Epsilon Aql"],
+    ["Delta Aql","Eta Aql"], ["Eta Aql","Theta Aql"], ["Alpha Aql","Beta Aql"], ["Delta Aql","Lambda Aql"],
 
-    // Ursa Mică
-    ["Alpha UMi", "Delta UMi"], ["Delta UMi", "Epsilon UMi"], ["Epsilon UMi", "Zeta UMi"], 
-    ["Zeta UMi", "Beta UMi"], ["Beta UMi", "Gamma UMi"], ["Gamma UMi", "Eta UMi"], ["Eta UMi", "Zeta UMi"], 
+    // 6. Ara
+    ["Alpha Ara","Zeta Ara"], ["Zeta Ara","Eta Ara"], ["Eta","Delta Ara"], ["Delta Ara","Gamma Ara"], ["Gamma Ara","Beta Ara"],
+    ["Beta Ara","Theta Ara"], ["Theta Ara","Alpha Ara"],
 
-    // Bootes
-    ["Alpha Boo", "Epsilon Boo"], ["Epsilon Boo", "Delta Boo"], ["Delta Boo", "Beta Boo"], 
-    ["Beta Boo", "Gamma Boo"], ["Gamma Boo", "Rho Boo"], 
-    ["Alpha Boo", "Eta Boo"],  
-    ["Rho Boo", "Alpha Boo"], ["Alpha Boo", "Zeta Boo"],
+    // 7. Aries
+    ["c Ari","Alpha Ari"], ["Alpha Ari","Beta Ari"], ["Beta Ari","Gamma Ari"],
 
-    // Cassiopeia
+    // 8. Auriga
+    ["Alpha Aur","Beta Aur"], ["Beta Aur","Theta Aur"], ["Theta Aur","Gamma Aur"], ["Gamma Aur","Iota Aur"], ["Iota Aur","Zeta Aur"],
+    ["Zeta Aur","Epsilon Aur"], ["Epsilon Aur","Alpha Aur"],
+
+    // 9. Bootes
+    ["Rho Boo", "Alpha Boo"], ["Alpha Boo", "Zeta Boo"],["Alpha Boo", "Eta Boo"], ["Alpha Boo", "Epsilon Boo"], ["Epsilon Boo", "Delta Boo"],
+    ["Delta Boo", "Beta Boo"], ["Beta Boo", "Gamma Boo"], ["Gamma Boo", "Rho Boo"], ["Gamma Boo", "Lambda Boo"], ["Lambda Boo", "Theta Boo"],
+
+    // 10. Caelum
+    ["Beta Cae", "Alpha Cae"], ["Alpha Cae", "Delta Cae"],
+
+    // 18. Cassiopeia
     ["Epsilon Cas", "Delta Cas"], ["Delta Cas", "Gamma Cas"], ["Gamma Cas", "Alpha Cas"], ["Alpha Cas", "Beta Cas"],
 
-    // Leo
+    // 46. Leo
     ["Epsilon Leo", "Mu Leo"], ["Mu Leo", "Zeta Leo"], ["Zeta Leo", "Gamma Leo"], ["Gamma Leo", "Eta Leo"], ["Eta Leo", "Alpha Leo"],
-    ["Gamma Leo", "Delta Leo"], ["Delta Leo", "Beta Leo"], ["Beta Leo", "Theta Leo"], ["Theta Leo", "Alpha Leo"], ["Delta Leo", "Theta Leo"]
+    ["Gamma Leo", "Delta Leo"], ["Delta Leo", "Beta Leo"], ["Beta Leo", "Theta Leo"], ["Theta Leo", "Alpha Leo"], ["Delta Leo", "Theta Leo"],
+
+    // 83. Ursa Major
+    ["Eta UMa", "Zeta UMa"], ["Zeta UMa", "Epsilon UMa"], ["Epsilon UMa", "Delta UMa"], ["Delta UMa", "Gamma UMa"], ["Gamma UMa", "Beta UMa"],
+    ["Beta UMa", "Alpha UMa"], ["Alpha UMa", "Delta UMa"], ["Alpha UMa", "h UMa"], ["h UMa", "Omicron UMa"], ["Omicron UMa", "Upsilon UMa"],
+    ["Upsilon UMa", "Phi UMa"], ["Beta UMa", "Phi UMa"], ["Phi UMa", "Theta UMa"], ["Theta UMa", "Iota UMa"], ["Iota UMa", "Kappa UMa"],
+    ["Gamma UMa", "Chi UMa"], ["Chi UMa", "Psi UMa"], ["Psi UMa", "Mu UMa"], ["Psi UMa", "Lambda UMa"],
+
+    // 84. Ursa Minor
+    ["Alpha UMi", "Delta UMi"], ["Delta UMi", "Epsilon UMi"], ["Epsilon UMi", "Zeta UMi"], 
+    ["Zeta UMi", "Beta UMi"], ["Beta UMi", "Gamma UMi"], ["Gamma UMi", "Eta UMi"], ["Eta UMi", "Zeta UMi"], 
 ];
 
 function drawConstellations() {
