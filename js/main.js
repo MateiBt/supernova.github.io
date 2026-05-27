@@ -103,7 +103,7 @@ function buildStarfield() {
 }
 
 // ==========================================
-// 4. ANIMAȚIA (Fără cod experimental, 100% Stabilă)
+// 4. ANIMAȚIA
 // ==========================================
 function animate() {
     requestAnimationFrame(animate);
@@ -127,14 +127,12 @@ const mouse = new THREE.Vector2();
 let currentSelectedId = null;
 let currentTarget = null; 
 
-// Structura de scoruri detaliate
 let scoreboard = {
     locatie: { corect: 0, gresit: 0 },
     nume: { corect: 0, gresit: 0 },
     tip: { corect: 0, gresit: 0 }
 };
 
-// Logica de Cronometru
 let gameStartTime = Date.now();
 let totalSecondsElapsed = 0;
 let timerInterval = null;
@@ -148,7 +146,6 @@ const feedbackDiv = document.getElementById('feedback');
 const selectDifficulty = document.getElementById('select-difficulty');
 const timerDisplay = document.getElementById('timer-display');
 
-// Inel de selecție simplu, fix și robust (Fără animații ce pot genera erori)
 const highlightGeometry = new THREE.RingGeometry(2.0, 2.3, 32); 
 const highlightMaterial = new THREE.MeshBasicMaterial({ 
     color: 0xffeb3b, side: THREE.DoubleSide, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false 
@@ -174,7 +171,6 @@ function updateHighlightRing(starObj) {
     highlightRing.visible = true;
 }
 
-// Pornirea cronometrului global
 function startGlobalTimer() {
     if (timerInterval) clearInterval(timerInterval);
     gameStartTime = Date.now();
@@ -186,7 +182,6 @@ function startGlobalTimer() {
     }, 1000);
 }
 
-// Actualizarea vizuală a tabelei de scor HTML
 function updateScoreUI() {
     document.getElementById('score-loc-c').innerText = scoreboard.locatie.corect;
     document.getElementById('score-loc-g').innerText = scoreboard.locatie.gresit;
@@ -196,7 +191,6 @@ function updateScoreUI() {
     document.getElementById('score-type-g').innerText = scoreboard.tip.gresit;
 }
 
-// Selectarea unei stele noi în funcție de dificultate
 function startNewRound() {
     const diff = selectDifficulty.value;
     let maxMag = 4.0; 
@@ -205,7 +199,6 @@ function startNewRound() {
     else if (diff === 'hard') maxMag = 5.0;
     else if (diff === 'extreme') maxMag = 6.5;
 
-    // Filtrare pe bază de Nume Bayer valid ȘI Magnitudine conform opțiunii alese
     const playableStars = targetObjects.filter(star => star.bayerName && star.bayerName !== "Necunoscut" && star.mag <= maxMag);
     
     if (playableStars.length === 0) {
@@ -229,12 +222,10 @@ function startNewRound() {
     highlightRing.material.color.setHex(0xffeb3b); 
 }
 
-// Schimbarea dificultății resetează jocul și runda
 selectDifficulty.addEventListener('change', () => {
     startNewRound();
 });
 
-// Click pe ecran pentru identificare
 window.addEventListener('click', (event) => {
     if (event.target.closest('#ui-container')) return;
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -255,7 +246,6 @@ window.addEventListener('click', (event) => {
     }
 });
 
-// Verificarea răspunsurilor pe componente
 btnCheck.addEventListener('click', () => {
     if (!currentTarget) return;
     if (!currentSelectedId) {
@@ -268,7 +258,6 @@ btnCheck.addEventListener('click', () => {
     const userTypeInput = selectType.value;
     let errors = [];
 
-    // 1. Verificare Locație
     if (currentSelectedId === currentTarget.id) {
         scoreboard.locatie.corect++;
     } else {
@@ -276,7 +265,6 @@ btnCheck.addEventListener('click', () => {
         errors.push("Locație incorectă pe hartă.");
     }
 
-    // 2. Verificare Nume
     if (currentTarget.correctName) {
         if (userNameInput === currentTarget.correctName) {
             scoreboard.nume.corect++;
@@ -293,7 +281,6 @@ btnCheck.addEventListener('click', () => {
         }
     }
 
-    // 3. Verificare Tip
     if (userTypeInput === currentTarget.correctType) {
         scoreboard.tip.corect++;
     } else {
@@ -314,24 +301,19 @@ btnCheck.addEventListener('click', () => {
         feedbackDiv.className = "incorect";
         highlightRing.material.color.setHex(0xdc3545); 
         btnCheck.style.display = "none";
-        btnNext.style.display = "block"; // Permitem trecerea mai departe chiar dacă a greșit
+        btnNext.style.display = "block"; 
     }
 });
 
 btnNext.addEventListener('click', startNewRound);
 
-// ==========================================
-// LOGICA DE CLASAMENT (LEADERBOARD)
-// ==========================================
 function displayLeaderboard() {
     const listElement = document.getElementById('leaderboard-list');
     listElement.innerHTML = "";
     let scores = JSON.parse(localStorage.getItem('planetariu_scores')) || [];
     
-    // Sortăm după numărul total de corecte (descrescător), apoi după timp (crescător)
     scores.sort((a, b) => (b.correct - a.correct) || (a.time - b.time));
     
-    // Afișăm doar primele 5
     scores.slice(0, 5).forEach(sc => {
         const li = document.createElement('li');
         const mins = String(Math.floor(sc.time / 60)).padStart(2, '0');
@@ -359,7 +341,6 @@ document.getElementById('btn-save-score').addEventListener('click', () => {
 // ==========================================
 // 6. DESENAREA CONSTELAȚIILOR
 // ==========================================
-// Definim ce stele se leagă între ele (Denumirile Bayer exacte din baza de date)
 const constellationPairs = [
     // 1. Andromeda
     ["Alpha And","Delta And"], ["Delta And","Beta And"], ["Beta And","Gamma And"], ["Beta And","Mu And"], ["Mu And","Nu And"],
@@ -381,7 +362,7 @@ const constellationPairs = [
     ["Delta Aql","Eta Aql"], ["Eta Aql","Theta Aql"], ["Alpha Aql","Beta Aql"], ["Delta Aql","Lambda Aql"],
 
     // 6. Ara
-    ["Alpha Ara","Zeta Ara"], ["Zeta Ara","Eta Ara"], ["Eta","Delta Ara"], ["Delta Ara","Gamma Ara"], ["Gamma Ara","Beta Ara"],
+    ["Alpha Ara","Zeta Ara"], ["Zeta Ara","Eta Ara"], ["Eta Ara","Delta Ara"], ["Delta Ara","Gamma Ara"], ["Gamma Ara","Beta Ara"],
     ["Beta Ara","Theta Ara"], ["Theta Ara","Alpha Ara"],
 
     // 7. Aries
@@ -413,11 +394,10 @@ const constellationPairs = [
 
     // 84. Ursa Minor
     ["Alpha UMi", "Delta UMi"], ["Delta UMi", "Epsilon UMi"], ["Epsilon UMi", "Zeta UMi"], 
-    ["Zeta UMi", "Beta UMi"], ["Beta UMi", "Gamma UMi"], ["Gamma UMi", "Eta UMi"], ["Eta UMi", "Zeta UMi"], 
+    ["Zeta UMi", "Beta UMi"], ["Beta UMi", "Gamma UMi"], ["Gamma UMi", "Eta UMi"], ["Eta UMi", "Zeta UMi"]
 ];
 
 function drawConstellations() {
-    // Material pentru linii: o culoare albăstruie, semi-transparentă
     const lineMaterial = new THREE.LineBasicMaterial({ 
         color: 0x4aa3ff, 
         transparent: true, 
@@ -427,15 +407,13 @@ function drawConstellations() {
     
     const points = [];
 
-    // Căutăm coordonatele pentru fiecare pereche
     constellationPairs.forEach(pair => {
         const star1 = targetObjects.find(s => s.bayerName === pair[0]);
         const star2 = targetObjects.find(s => s.bayerName === pair[1]);
 
         if (star1 && star2) {
-            const r = 100; // Raza sferei noastre
+            const r = 100;
 
-            // Poziția 3D a primei stele
             const raRad1 = star1.ra * RA_TO_RAD;
             const decRad1 = star1.dec * DEG_TO_RAD;
             points.push(new THREE.Vector3(
@@ -444,7 +422,6 @@ function drawConstellations() {
                 r * Math.cos(decRad1) * Math.cos(raRad1)
             ));
 
-            // Poziția 3D a celei de-a doua stele
             const raRad2 = star2.ra * RA_TO_RAD;
             const decRad2 = star2.dec * DEG_TO_RAD;
             points.push(new THREE.Vector3(
@@ -455,14 +432,13 @@ function drawConstellations() {
         }
     });
 
-    // Creăm geometria liniilor și le adăugăm în scenă
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
     const constLinesMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
     scene.add(constLinesMesh);
 }
 
 // ==========================================
-// 7. START-UP PROCES (CORECTAT - eliminat duplicatul)
+// 7. START-UP PROCES
 // ==========================================
 if (typeof initDatabase === "function") {
     initDatabase().then(() => {
