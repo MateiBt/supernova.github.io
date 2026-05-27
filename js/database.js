@@ -14,9 +14,8 @@ async function initDatabase() {
     try {
         console.log("Începem citirea bazei de date...");
         
-        // 👉 PASUL TĂU: Modifică aici dacă ai pus fișierul într-un folder!
-        // Exemplu: 'nume_folder/hyg_optimizat.csv'
-        const fisierCSV = 'hyg_optimizat.csv'; 
+        // AICI AM MODIFICAT: am adăugat folderul "data/" în fața numelui fișierului
+        const fisierCSV = 'data/hyg_optimizat.csv'; 
         
         const response = await fetch(fisierCSV);
         if (!response.ok) throw new Error("Nu am putut găsi fișierul " + fisierCSV);
