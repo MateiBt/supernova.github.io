@@ -14,11 +14,28 @@ async function initDatabase() {
     try {
         console.log("Începem citirea bazei de date...");
         
-        // Calea actualizată pentru a citi CSV-ul din noul folder 'data/'
-        const response = await fetch('data/hyg_optimizat.csv');
-        if (!response.ok) throw new Error("Nu am putut găsi hyg_optimizat.csv.");
+        // 👉 PASUL TĂU: Modifică aici dacă ai pus fișierul într-un folder!
+        // Exemplu: 'nume_folder/hyg_optimizat.csv'
+        const fisierCSV = 'hyg_optimizat.csv'; 
+        
+        const response = await fetch(fisierCSV);
+        if (!response.ok) throw new Error("Nu am putut găsi fișierul " + fisierCSV);
         
         const text = await response.text();
+        
+        // --- 1. VERIFICARE DACA CALEA E GRESITA (Dacă descarcă HTML din greșeală) ---
+        if (text.trim().toLowerCase().startsWith("<!doctype") || text.trim().toLowerCase().startsWith("<html")) {
+            alert("CALE GREȘITĂ: Browserul nu a găsit CSV-ul și a încărcat pagina HTML. Verifică în ce folder ai pus hyg_optimizat.csv și corectează linia 17!");
+            return;
+        }
+
+        // --- 2. AUTO-DETECTARE REPARAȚIE EXCEL ---
+        let separator = ',';
+        if (text.indexOf(';') !== -1 && text.indexOf(';') < 100) {
+            separator = ';'; // Dacă Excel a stricat fișierul, îl reparăm din mers
+            console.log("Atenție: S-a detectat format Excel (punct și virgulă). Auto-reparare activată.");
+        }
+        
         const rows = text.split(/\r?\n/); 
         
         const iProper = 6;  
@@ -45,7 +62,7 @@ async function initDatabase() {
             if (!rows[i] || rows[i].trim() === '') continue;
             
             const cleanRow = rows[i].replace(/"/g, '');
-            const cols = cleanRow.split(',');
+            const cols = cleanRow.split(separator); // Folosește separatorul detectat automat
             
             if (cols.length <= iMag) continue;
 
@@ -54,14 +71,11 @@ async function initDatabase() {
             
             if (isNaN(mag) || mag > 6.5) continue;
             
-            // Definit ca "let" pentru a putea suprascrie eventualele lipsuri/erori din catalog
-            let properName = cols[iProper] ? cols[iProper].trim() : "";
+            const properName = cols[iProper] ? cols[iProper].trim() : "";
             
-            // Extragem abrevierea
             let bayerAbbr = (cols.length > iBayer && cols[iBayer]) ? cols[iBayer].trim() : "";
             const con = (cols.length > iCon && cols[iCon]) ? cols[iCon].trim() : "";
             
-            // REPARARE BUG: Tăiem sufixele "-1" sau "-2" pentru stelele multiple
             if (bayerAbbr.includes('-')) {
                 bayerAbbr = bayerAbbr.split('-')[0];
             }
@@ -71,25 +85,12 @@ async function initDatabase() {
                 const greekFull = greekMap[bayerAbbr] || bayerAbbr;
                 bayerName = `${greekFull} ${con}`;
             }
-
-            // Corecturi manuale (Overrides) pentru a ocoli inexactitățile catalogului HYG
-            if (bayerName === "Alpha Gru") {
-                properName = "Alnair";
-            }
-            if (properName.toLowerCase() === "itonda") {
-                bayerName = bayerName.replace("Sgr", "Gru");
-            }
             
-            // BUG REPARAT 2: Logica pentru tipul stelei.
-            // În HYG, stelele simple și primare au comp = 1. Componentele secundare au 2, 3, etc.
             let tip = "simpla";
-            const compVal = (cols.length > iComp && cols[iComp]) ? cols[iComp].trim() : "";
-            const varVal = (cols.length > iVar && cols[iVar]) ? cols[iVar].trim() : "";
-            
-            if (compVal !== "" && parseInt(compVal) > 1) {
-                tip = "dubla"; // Dacă componenta e > 1, sigur face parte dintr-un sistem multiplu
-            } else if (varVal !== "") {
-                tip = "pulsatila"; // Dacă are nume în catalogul de variabile
+            if (cols.length > iComp && cols[iComp] && cols[iComp].trim() !== "") {
+                tip = "dubla";
+            } else if (cols.length > iVar && cols[iVar] && cols[iVar].trim() !== "") {
+                tip = "pulsatila"; 
             }
             
             astronomyDatabase.push({
