@@ -70,6 +70,11 @@ onAuthStateChanged(auth, (user) => {
   } else {
     currentUser = null;
     userProgress = [];
+    
+    // Curățăm log-ul de probleme rezolvate de pe ecran
+    localStorage.removeItem('solvedProblems');
+    window.dispatchEvent(new Event('userDataLoaded'));
+
     if(loginBtn) loginBtn.style.display = 'inline-flex';
     if(logoutBtn) logoutBtn.style.display = 'none';
     if(profileLink) profileLink.style.display = 'none';
@@ -93,14 +98,27 @@ function loadUserProgress(uid) {
             return item;
         });
         localStorage.setItem(`supernova_progress_${uid}`, JSON.stringify(userProgress));
+        
+        // --- AICI INJECTĂM DATELE PENTRU PRACTICE HUB (PROGRESS PILLS) ---
+        const solvedIds = userProgress.map(p => p.id);
+        localStorage.setItem('solvedProblems', JSON.stringify(solvedIds));
+        window.dispatchEvent(new Event('userDataLoaded')); // Anunțăm fișierele HTML că am adus datele
     } else {
         userProgress = [];
+        localStorage.setItem('solvedProblems', JSON.stringify([]));
+        window.dispatchEvent(new Event('userDataLoaded'));
     }
 }
 
 function saveUserProgress() {
     if(!currentUser) return;
     localStorage.setItem(`supernova_progress_${currentUser.uid}`, JSON.stringify(userProgress));
+    
+    // --- ACTUALIZĂM ȘI ARRAY-UL SIMPLU PENTRU PROGRESS PILLS ---
+    const solvedIds = userProgress.map(p => p.id);
+    localStorage.setItem('solvedProblems', JSON.stringify(solvedIds));
+    window.dispatchEvent(new Event('userDataLoaded')); // Anunțăm că s-a salvat o problemă nouă
+
     updateProfileUI(currentUser);
     
     if(document.getElementById('activityChart')) {
@@ -263,7 +281,6 @@ function updateProfileUI(user) {
     const statsStreak = document.getElementById('statsStreak');
     const editContainer = document.getElementById('editUserContainer');
 
-    // FIX APLICAT AICI: Verificare safe pentru containerul de edit
     if (nameDisplay && (!editContainer || editContainer.style.display !== 'block')) {
         nameDisplay.innerText = user.displayName || "Explorer";
     }

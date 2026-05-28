@@ -6,99 +6,103 @@
     <title>Supernova Guide | Celestial Mechanics</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
-        /* --- 1. SETARI GENERALE & ANIMATII --- */
+        /* --- 1. SETĂRI GENERALE & TEMA BLUEISH --- */
         :root {
-            --bg-color: #030305;
-            --surface-color: rgba(20, 25, 35, 0.6);
-            --surface-hover: rgba(30, 35, 50, 0.8);
-            --accent-blue: #00c6ff;
-            --accent-purple: #bc13fe;
-            --accent-orange: #ff512f;
-            --text-main: #d1d5db;
-            --text-muted: #8892b0;
+            --bg-deep: #050b14; 
+            --bg-panel: rgba(13, 20, 33, 0.7);
+            --bg-hover: rgba(20, 30, 48, 0.9);
+            --text-main: #a1aab8;
+            --text-light: #ffffff;
+            --text-muted: #64748b;
+            --accent-blue: #3b82f6;
+            --border-subtle: rgba(255, 255, 255, 0.08);
         }
 
-        html { overflow-y: scroll; scroll-behavior: smooth; }
+        /* 1. Forțăm bara de scroll pentru a preveni "săritura" navbar-ului */
+        html { 
+            scroll-behavior: smooth; 
+            overflow-y: scroll; 
+        }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
+        /* 2. Definim animația de fade-in */
+        @keyframes fadeIn { 
+            from { opacity: 0; } 
+            to { opacity: 1; } 
+        }
+
+        /* 3. Aplicăm animația pe întregul corp al paginii */
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-deep);
             color: var(--text-main);
             margin: 0;
             font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            animation: fadeIn 0.6s ease-out;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.6s ease-out; /* Aici se întâmplă magia! */
         }
 
-        /* --- 2. FUNDAL COSMIC --- */
-        .universe-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background-image: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2048&auto=format&fit=crop'); background-size: cover; opacity: 0.35; }
-        .nebula-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: radial-gradient(circle at 85% 30%, rgba(0, 198, 255, 0.1), transparent 40%), linear-gradient(to bottom, rgba(3, 3, 5, 0.3), #030305); }
+        .universe-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=2048&auto=format&fit=crop');
+            background-size: cover; background-position: center; opacity: 0.12; 
+        }
 
-        /* --- 3. NAVBAR --- */
+        /* --- 2. NAVBAR SIMPLU --- */
         nav { 
             position: fixed; top: 0; width: 100%; 
-            background: rgba(3, 3, 5, 0.85); backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+            background: rgba(5, 11, 20, 0.95); border-bottom: 1px solid var(--border-subtle); 
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 40px; z-index: 1000; box-sizing: border-box;
+            padding: 12px 50px; z-index: 1000; box-sizing: border-box;
         }
 
-        .nav-logo {
-            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem;
-            color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; letter-spacing: 1px;
-        }
-        .nav-logo i { color: var(--accent-blue); }
+        .nav-logo { text-decoration: none; display: flex; align-items: center; gap: 12px; }
+        .nav-logo i { color: #fbbf24; font-size: 1.6rem; }
+        
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .main { font-weight: 700; font-size: 1.2rem; color: var(--text-light); letter-spacing: 1px; }
+        .logo-text .sub { font-weight: 400; font-size: 0.65rem; color: var(--accent-blue); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 2px; }
 
         .nav-links { display: flex; align-items: center; }
         .nav-links a { 
-            color: #ffffff; text-decoration: none; margin: 0 15px; 
-            font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1.5px;
-            transition: all 0.3s; opacity: 0.8; font-family: 'Outfit', sans-serif;
+            color: var(--text-main); text-decoration: none; margin: 0 20px; 
+            font-weight: 500; font-size: 0.85rem; transition: color 0.2s ease;
         }
-        .nav-links a:hover, .nav-links a.active { color: var(--accent-blue); opacity: 1; text-shadow: 0 0 10px rgba(0, 198, 255, 0.5); }
-        .nav-links a.active { border-bottom: 2px solid var(--accent-blue); } 
-        
-        #profileLink { color: var(--accent-orange) !important; opacity: 1; position: relative; }
-        #profileLink::after { content:''; position: absolute; bottom: -5px; left: 0; width: 0%; height: 2px; background: var(--accent-orange); transition: width 0.3s; }
-        #profileLink:hover::after { width: 100%; }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-light); } 
 
-        .nav-auth-container { display: flex; align-items: center; }
         .btn-auth { 
-            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--accent-blue); 
-            color: var(--accent-blue); padding: 8px 20px; border-radius: 30px; 
-            cursor: pointer; font-weight: 700; margin-left: 10px; transition: 0.3s; 
-            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;
+            background: transparent; border: 1px solid var(--border-subtle); color: var(--text-light); 
+            padding: 8px 24px; border-radius: 2px; cursor: pointer; font-weight: 500; 
+            margin-left: 20px; transition: all 0.2s ease; font-size: 0.85rem; 
         }
-        .btn-auth:hover { background: var(--accent-blue); color: #000; box-shadow: 0 0 20px rgba(0, 198, 255, 0.4); }
+        .btn-auth:hover { background: var(--text-light); color: var(--bg-deep); }
 
-        /* --- 4. HEADER PAGINA --- */
+        /* --- 3. HEADER PAGINĂ --- */
         header { padding: 140px 20px 40px; text-align: center; max-width: 1200px; margin: 0 auto; }
         
         .back-link { 
             display: inline-flex; align-items: center; gap: 8px; 
-            color: #8892b0; text-decoration: none; font-weight: 600; font-size: 0.9rem;
-            margin-bottom: 20px; transition: 0.3s; 
-            padding: 8px 16px; background: rgba(255,255,255,0.05); border-radius: 20px;
+            color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.85rem;
+            margin-bottom: 20px; transition: 0.2s; 
+            padding: 8px 16px; background: transparent; border: 1px solid var(--border-subtle); border-radius: 2px;
         }
-        .back-link:hover { color: white; background: rgba(255,255,255,0.1); transform: translateX(-5px); }
+        .back-link:hover { color: var(--text-light); background: var(--bg-panel); border-color: var(--text-light); }
 
         .page-title { 
-            font-family: 'Outfit', sans-serif; font-size: 3rem; font-weight: 800; color: white; margin: 10px 0;
+            font-size: 2.8rem; font-weight: 700; color: var(--text-light); margin: 10px 0;
             display: flex; align-items: center; justify-content: center; gap: 15px;
-            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%); 
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 30px rgba(165, 180, 252, 0.2));
+            background: linear-gradient(135deg, #ffffff 20%, #93c5fd 100%); 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px;
         }
-        .page-title i { -webkit-text-fill-color: initial; color: var(--accent-blue); }
+        .page-title i { -webkit-text-fill-color: initial; color: var(--text-light); font-size: 2.2rem;}
 
-        /* --- LAYOUT GRID (Sidebar + Probleme) --- */
+        /* --- 4. LAYOUT GRID (Sidebar + Probleme) --- */
         .layout-wrapper {
             max-width: 1200px; 
             margin: 0 auto 100px; 
@@ -106,200 +110,173 @@
             display: grid;
             grid-template-columns: 280px 1fr;
             gap: 40px;
-            align-items: start; /* Important pentru sticky */
+            align-items: start;
         }
 
-        /* --- FILTRE VERTICALE (Sidebar) --- */
+        /* --- 5. FILTRE VERTICALE (Sidebar Academic) --- */
         .filters-container {
-            background: var(--surface-color);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.08));
-            border-radius: 20px;
-            padding: 30px 25px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            border-radius: 2px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
-            gap: 25px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            gap: 20px;
             position: sticky;
-            top: 100px; /* Fixeaza sidebar-ul la scroll */
+            top: 100px;
         }
+
         .filter-header {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.2rem;
-            color: white;
+            font-size: 1.1rem;
+            color: var(--text-light);
             margin: 0;
             display: flex;
             align-items: center;
             gap: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid var(--border-subtle);
             padding-bottom: 15px;
+            font-weight: 600;
         }
         .filter-header i { color: var(--accent-blue); }
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
+
+        .filter-group { display: flex; flex-direction: column; width: 100%; }
+        
         .filter-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 1px;
+            font-size: 0.75rem; color: var(--text-main); margin-bottom: 8px;
+            text-transform: uppercase; font-weight: 600; letter-spacing: 1px;
         }
+
         .filter-input, .filter-select {
             background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 12px 15px;
-            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-light);
+            padding: 10px 12px;
+            border-radius: 2px;
             font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             outline: none;
-            transition: 0.3s;
+            transition: 0.2s;
             width: 100%;
             box-sizing: border-box;
         }
         .filter-input:focus, .filter-select:focus {
-            border-color: var(--accent-blue);
+            border-color: var(--text-main);
             background: rgba(0, 0, 0, 0.5);
-            box-shadow: 0 0 10px rgba(0, 198, 255, 0.2);
         }
-        .filter-select option {
-            background: #0f1219;
-            color: white;
-        }
+        .filter-select option { background: var(--bg-deep); color: var(--text-light); }
+
         .no-results-msg {
-            text-align: center;
-            color: #8892b0;
-            font-style: italic;
-            padding: 40px 20px;
-            display: none;
-            width: 100%;
-            background: rgba(255,255,255,0.02);
-            border-radius: 20px;
-            border: 1px dashed rgba(255,255,255,0.05);
+            text-align: center; color: var(--text-main); font-style: italic;
+            padding: 40px 20px; display: none; width: 100%;
+            background: transparent; border-radius: 2px; border: 1px dashed var(--border-subtle);
         }
 
-        /* --- LISTA PROBLEME --- */
+        /* --- 6. LISTA PROBLEME --- */
         .problem-section { display: flex; flex-direction: column; width: 100%; }
         
         .problem-card {
-            background: var(--surface-color); border-radius: 20px; margin-bottom: 30px; padding: 35px;
-            border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
-            backdrop-filter: blur(10px); position: relative; overflow: hidden;
-            transition: transform 0.3s ease, border-color 0.3s;
+            background: var(--bg-panel); 
+            border-radius: 2px; 
+            margin-bottom: 30px; 
+            padding: 35px;
+            border: 1px solid var(--border-subtle); 
+            position: relative; 
+            overflow: hidden;
+            transition: border-color 0.2s, background 0.2s;
         }
-        .problem-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
-        .problem-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, var(--accent-blue), var(--accent-purple)); }
+        .problem-card:hover { border-color: #3b4252; background: var(--bg-hover); }
         
         .card-header-badges { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
 
         .source-badge { 
-            display: inline-block; padding: 6px 12px; border-radius: 6px; 
-            font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-            background: rgba(0, 198, 255, 0.1); color: var(--accent-blue); 
-            border: 1px solid rgba(0, 198, 255, 0.2);
+            display: inline-block; padding: 4px 10px; border-radius: 2px; 
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.05); color: var(--text-light); 
+            border: 1px solid var(--border-subtle);
         }
 
         .diff-badge {
-            display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 6px;
-            font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 2px;
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
             border: 1px solid transparent;
         }
-        .diff-easy { background: rgba(0, 255, 136, 0.1); color: #00ff88; border-color: rgba(0, 255, 136, 0.2); }
-        .diff-medium { background: rgba(255, 215, 0, 0.1); color: #ffd700; border-color: rgba(255, 215, 0, 0.2); }
-        .diff-hard { background: rgba(255, 81, 47, 0.1); color: #ff512f; border-color: rgba(255, 81, 47, 0.2); }
-        .diff-theory { background: rgba(188, 19, 254, 0.1); color: #bc13fe; border-color: rgba(188, 19, 254, 0.2); }
+        /* Păstrăm culorile funcționale, dar mai potolite, cu margini drepte */
+        .diff-easy { background: rgba(16, 185, 129, 0.1); color: #10b981; border-color: rgba(16, 185, 129, 0.2); }
+        .diff-medium { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border-color: rgba(245, 158, 11, 0.2); }
+        .diff-hard { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2); }
+        .diff-theory { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; border-color: rgba(139, 92, 246, 0.2); }
 
-        .problem-text { font-size: 1.1rem; color: #e2e8f0; margin-bottom: 25px; line-height: 1.8; }
+        .problem-text { font-size: 1rem; color: var(--text-light); margin-bottom: 25px; line-height: 1.7; font-weight: 400;}
+        .problem-text strong { font-weight: 600; font-size: 1.1rem; color: var(--accent-blue); display: block; margin-bottom: 10px;}
 
+        /* Butonul de Solve */
         .solve-btn {
-            background: transparent; border: 1px solid var(--accent-blue); color: var(--accent-blue);
-            padding: 10px 24px; border-radius: 30px; cursor: pointer; font-weight: 700;
-            transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;
-            font-size: 0.9rem;
+            background: transparent; border: 1px solid var(--border-subtle); color: var(--text-main);
+            padding: 8px 20px; border-radius: 2px; cursor: pointer; font-weight: 500;
+            transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.85rem; font-family: 'Inter', sans-serif;
         }
-        .solve-btn:hover { background: rgba(0, 198, 255, 0.1); transform: translateY(-2px); box-shadow: 0 0 15px rgba(0, 198, 255, 0.2); }
-        .solve-btn.solved { background: var(--accent-blue); color: #000; box-shadow: 0 0 20px rgba(0, 198, 255, 0.4); border-color: var(--accent-blue); }
+        .solve-btn:hover { background: var(--text-light); color: var(--bg-deep); border-color: var(--text-light); }
+        .solve-btn.solved { background: #10b981; color: #000; border-color: #10b981; }
 
+        /* Detalii Soluție */
         details { margin-top: 10px; }
         details summary { 
-            cursor: pointer; font-weight: 700; color: #8892b0; outline: none; list-style: none; 
-            display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; font-size: 0.95rem;
+            cursor: pointer; font-weight: 500; color: var(--text-main); outline: none; list-style: none; 
+            display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; font-size: 0.9rem;
         }
-        details summary:hover { color: var(--accent-blue); }
-        details summary::before { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.3s; font-size: 0.8rem; }
+        details summary:hover { color: var(--text-light); }
+        details summary::before { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.2s; font-size: 0.7rem; }
         details[open] summary::before { transform: rotate(180deg); }
-        details[open] summary { margin-bottom: 15px; color: var(--accent-blue); }
+        details[open] summary { margin-bottom: 15px; color: var(--text-light); }
         
         .solution-box { 
-            margin-top: 15px; padding: 30px; background: rgba(0, 0, 0, 0.2); 
-            border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); 
-            animation: fadeIn 0.4s;
+            margin-top: 15px; padding: 25px; background: rgba(0, 0, 0, 0.3); 
+            border-radius: 2px; border: 1px solid var(--border-subtle); 
+            font-size: 0.95rem; color: var(--text-main); line-height: 1.6;
         }
+        .solution-box strong { color: var(--text-light); font-weight: 600; }
 
         .user-diagram { 
             display: block; max-width: 100%; width: 400px; height: auto; margin: 20px auto; 
-            border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
-            cursor: zoom-in; transition: transform 0.3s; background: white; padding: 5px;
+            border-radius: 2px; border: 1px solid var(--border-subtle);
+            cursor: zoom-in; transition: transform 0.2s; padding: 5px; background: rgba(255,255,255,0.05);
         }
-        .user-diagram:hover { transform: scale(1.02); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .user-diagram:hover { border-color: rgba(255,255,255,0.2); }
 
-        .modal { display: none; position: fixed; z-index: 3000; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); backdrop-filter: blur(5px); }
-        .modal-content { margin: auto; display: block; width: auto; max-width: 90%; max-height: 90vh; animation: zoom 0.3s; border-radius: 8px; }
-        @keyframes zoom { from {transform:scale(0.8); opacity: 0;} to {transform:scale(1); opacity: 1;} }
-        .close { position: absolute; top: 20px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .close:hover { color: var(--accent-blue); }
-
-        .auth-modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); align-items: center; justify-content: center; backdrop-filter: blur(8px); }
-        .auth-content { background: #0f1219; padding: 40px; border-radius: 20px; width: 340px; text-align: center; border: 1px solid rgba(255,255,255,0.1); position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .close-btn { position: absolute; right: 20px; top: 20px; color: #666; cursor: pointer; font-size: 1.5rem; transition: 0.2s; }
-        .close-btn:hover { color: white; }
-        .auth-input { width: 100%; padding: 12px 15px; margin: 8px 0; background: rgba(0,0,0,0.3); border: 1px solid #333; color: white; border-radius: 8px; outline: none; transition: 0.3s; box-sizing: border-box;}
-        .auth-input:focus { border-color: var(--accent-blue); background: rgba(0,0,0,0.5); }
-        .submit-btn { width: 100%; padding: 12px; background: var(--accent-blue); border: none; color: #000; font-weight: 700; border-radius: 8px; cursor: pointer; margin-top: 15px; transition: 0.3s; }
-        .submit-btn:hover { background: white; transform: scale(1.02); }
-        .toggle-text { font-size: 0.85rem; margin-top: 20px; color: #888; }
-        .toggle-text span { color: var(--accent-blue); cursor: pointer; }
-        .error-msg { color: #ff512f; font-size: 0.8rem; margin-top: 10px; }
-
-        /* --- PAGINARE --- */
+        /* --- 7. PAGINARE --- */
         .pagination-container {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            display: flex; justify-content: center; gap: 8px; margin-top: 40px; margin-bottom: 20px; flex-wrap: wrap;
         }
         .page-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 600;
+            background: transparent; border: 1px solid var(--border-subtle); color: var(--text-main);
+            padding: 8px 14px; border-radius: 2px; cursor: pointer; transition: 0.2s;
+            font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.85rem;
         }
-        .page-btn:hover {
-            background: rgba(0, 198, 255, 0.2);
-            border-color: var(--accent-blue);
-            color: var(--accent-blue);
-            transform: translateY(-2px);
-        }
-        .page-btn.active {
-            background: var(--accent-blue);
-            color: #000;
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 15px rgba(0, 198, 255, 0.4);
-        }
+        .page-btn:hover { background: var(--bg-hover); color: var(--text-light); border-color: var(--text-light); }
+        .page-btn.active { background: var(--text-light); color: var(--bg-deep); border-color: var(--text-light); }
+
+        /* --- 8. MODALE --- */
+        .modal { display: none; position: fixed; z-index: 3000; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); backdrop-filter: blur(5px); }
+        .modal-content { margin: auto; display: block; width: auto; max-width: 90%; max-height: 90vh; border-radius: 2px; }
+        .close { position: absolute; top: 20px; right: 35px; color: var(--text-main); font-size: 40px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .close:hover { color: var(--text-light); }
+
+        .auth-modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
+        .auth-content { background: var(--bg-deep); padding: 40px; border-radius: 2px; width: 320px; text-align: center; border: 1px solid var(--border-subtle); position: relative; }
+        .close-btn { position: absolute; right: 20px; top: 15px; color: var(--text-main); cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
+        .close-btn:hover { color: var(--text-light); }
+        .auth-input { width: 100%; padding: 12px; margin: 8px 0 16px; background: var(--bg-panel); border: 1px solid var(--border-subtle); color: var(--text-light); border-radius: 2px; outline: none; box-sizing: border-box; font-family: 'Inter', sans-serif;}
+        .auth-input:focus { border-color: var(--text-main); }
+        .submit-btn { width: 100%; padding: 12px; background: var(--text-light); border: none; color: var(--bg-deep); font-weight: 600; border-radius: 2px; cursor: pointer; transition: 0.2s; }
+        .submit-btn:hover { background: #e2e8f0; }
+        .toggle-text { font-size: 0.85rem; margin-top: 20px; color: var(--text-main); }
+        .toggle-text span { color: var(--text-light); cursor: pointer; text-decoration: underline; }
+        .error-msg { color: #ef4444; font-size: 0.8rem; margin-top: 10px; }
 
         @media(max-width: 900px) {
-            nav { flex-direction: column; gap: 15px; }
+            nav { flex-direction: column; padding: 15px; gap: 15px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 10px; }
             .layout-wrapper { grid-template-columns: 1fr; }
             .filters-container { position: relative; top: 0; }
         }
@@ -307,11 +284,14 @@
 </head>
 <body>
     <div class="universe-bg"></div>
-    <div class="nebula-overlay"></div>
 
     <nav>
         <a href="index.html" class="nav-logo">
-            <i class="fas fa-meteor"></i> SUPERNOVA
+            <i class="fa-solid fa-star"></i>
+            <div class="logo-text">
+                <span class="main">SUPERNOVA</span>
+                <span class="sub">Guide</span>
+            </div>
         </a>
 
         <div class="nav-links">
@@ -331,7 +311,7 @@
 
     <header>
         <a href="problems.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Categories</a>
-        <h1 class="page-title"><i class="fas fa-satellite"></i> Celestial Mechanics</h1>
+        <h1 class="page-title"><i class="fa-solid fa-satellite"></i> Celestial Mechanics</h1>
     </header>
 
     <div class="layout-wrapper">
@@ -368,8 +348,8 @@
         <div class="problem-section">
             
             <div id="noResultsMsg" class="no-results-msg">
-                <i class="fas fa-satellite-dish" style="font-size: 2.5rem; margin-bottom: 15px; display:block; color: rgba(255,255,255,0.2);"></i>
-                <strong style="color: white; font-family: 'Outfit', sans-serif; font-size: 1.2rem; display:block; margin-bottom:5px;">No signals detected.</strong>
+                <i class="fas fa-satellite-dish" style="font-size: 2rem; margin-bottom: 15px; display:block; color: var(--text-muted);"></i>
+                <strong style="color: var(--text-light); font-size: 1.1rem; display:block; margin-bottom:5px;">No signals detected.</strong>
                 Try adjusting your search or filters!
             </div>
 
@@ -379,7 +359,7 @@
                     <span class="diff-badge diff-easy"><i class="fas fa-bolt"></i> Diff: 1/10</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Kepler's Third Law</strong><br><br>
+                    <strong>Kepler's Third Law</strong>
                     A planet's orbit around a star has a semimajor axis of 16 AU. What is the period of the planet's orbit? (Assume the star has a mass of 1 Solar Mass).<br><br>
                     (a) 6 years <br>
                     (b) 32 years <br>
@@ -396,7 +376,7 @@
                         <img src="assets/img/Q01_USAAAO_2018.png" alt="Elliptical Orbit Diagram" class="user-diagram" onclick="openImageModal(this)">
                         <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
                         
-                        <p style="color: #aaa; font-style: italic; margin-bottom: 20px;">Concept: Use the simplified form of Kepler's Third Law for a system where distances are in Astronomical Units (AU), time is in years, and the central mass is 1 Solar Mass.</p>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Use the simplified form of Kepler's Third Law for a system where distances are in Astronomical Units (AU), time is in years, and the central mass is 1 Solar Mass.</p>
 
                         <p><strong>Step 1: Recall Kepler's Third Law</strong></p>
                         <p>The general form is:</p>
@@ -423,7 +403,7 @@
                     <span class="diff-badge diff-easy"><i class="fas fa-bolt"></i> Diff: 1/10</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Binary System Mass</strong><br><br>
+                    <strong>Binary System Mass</strong>
                     Find the total sum of the binary system of the star Capella, if semi-major axis between them is 0.85 AU, and period of 0.285 years.<br><br>
                     (a) 5.5 solar masses <br>
                     (b) 6.5 solar masses <br>
@@ -437,7 +417,7 @@
                 <details>
                     <summary>View Solution</summary>
                     <div class="solution-box">
-                        <p style="color: #aaa; font-style: italic; margin-bottom: 20px;">Concept: Use the generalized form of Kepler's Third Law. When the semi-major axis is in Astronomical Units (AU) and the period is in Earth years, the formula directly yields the total mass of the system in Solar Masses (\(M_\odot\)).</p>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Use the generalized form of Kepler's Third Law. When the semi-major axis is in Astronomical Units (AU) and the period is in Earth years, the formula directly yields the total mass of the system in Solar Masses (\(M_\odot\)).</p>
 
                         <p><strong>Step 1: The Generalized Kepler's Third Law</strong></p>
                         <p>For a binary system, Kepler's Third Law in solar system units (\(a\) in AU, \(P\) in years, \(M\) in solar masses) simplifies beautifully to:</p>
@@ -468,7 +448,7 @@
                     <span class="diff-badge diff-easy"><i class="fas fa-bolt"></i> Diff: 2/10</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Escape from Deimos</strong><br><br>
+                    <strong>Escape from Deimos</strong>
                     Imagine you are on Deimos right now and you want to escape Mars because you are bored. If Deimos is currently at 23.460 km away from the center of Mars and its speed is currently around 1.35 km/s, how much more speed do you and Deimos need to escape Mars? The mass of Mars is 6.39 × 10<sup>23</sup> kg.<br><br>
                     (a) 557 m/s <br>
                     (b) 427 m/s <br>
@@ -483,7 +463,7 @@
                     <summary>View Solution</summary>
                     <div class="solution-box">
                         <img src="assets/img/Q01_USAAAO_2025.png" alt="User Solution Diagram" class="user-diagram" onclick="openImageModal(this)">
-                        <p style="color: #aaa; font-style: italic; margin-bottom: 20px;">Note: The solution relies on calculating the difference between the required escape velocity and our current orbital velocity.</p>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Note: The solution relies on calculating the difference between the required escape velocity and our current orbital velocity.</p>
                         <p><strong>Step 1: Convert units to SI</strong></p>
                         <ul><li>Radius \( R = \) 23.460 km = 2.346 × 10<sup>7</sup> m</li><li>Current velocity \( v_{orb} = \) 1.35 km/s = 1.350 m/s</li><li>Mass of Mars \( M = \) 6.39 × 10<sup>23</sup> kg</li></ul>
                         <p><strong>Step 2: Calculate Escape Velocity (\(v_e\))</strong></p>
@@ -501,7 +481,7 @@
                     <span class="diff-badge diff-medium"><i class="fas fa-fire"></i> Diff: 5/10</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Hohmann Transfer Coefficient</strong><br><br>
+                    <strong>Hohmann Transfer Coefficient</strong>
                     Suppose a rocket around a star of mass \(M\) wishes to execute an orbital transfer from a circular orbit with radius \(R\) to a larger one with radius \(8R\). One common way to do this is known as a Hohmann transfer, which has an intermediate elliptical orbit. This process requires two burns, with total delta-v \(\Delta v = k \sqrt{\frac{GM}{R}}\) for some \(k\). Assuming instantaneous burns, compute \(k\).<br><br>
                     (a) \( 1 - \frac{1}{2\sqrt{2}} \) <br>
                     (b) \( \frac{1}{2} - \frac{1}{2\sqrt{2}} \) <br>
@@ -516,7 +496,7 @@
                     <summary>View Solution</summary>
                     <div class="solution-box">
                         <img src="assets/img/Q04_USAAAO_2025.png" alt="Hohmann Transfer Diagram" class="user-diagram" onclick="openImageModal(this)">
-                        <p style="color: #aaa; font-style: italic; margin-bottom: 20px;">Concept: A Hohmann transfer involves two burns. The first burn moves the spacecraft from the inner circular orbit onto an elliptical transfer orbit. The second burn circularizes the orbit at the destination radius.</p>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: A Hohmann transfer involves two burns. The first burn moves the spacecraft from the inner circular orbit onto an elliptical transfer orbit. The second burn circularizes the orbit at the destination radius.</p>
                         <p><strong>Step 1: Identify Orbital Parameters</strong></p>
                         <ul><li>Initial circular radius: \( r_1 = R \)</li><li>Final circular radius: \( r_2 = 8R \)</li><li>Transfer ellipse perihelion: \( r_p = R \)</li><li>Transfer ellipse aphelion: \( r_a = 8R \)</li><li>Transfer semi-major axis: \( a = \frac{R + 8R}{2} = 4.5R = \frac{9}{2}R \)</li></ul>
                         <p><strong>Step 2: Calculate Circular Velocities</strong></p>
@@ -540,7 +520,7 @@
                     <span class="diff-badge diff-easy"><i class="fas fa-bolt"></i> Diff: 2/10</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Eccentricity from Semi-latus Rectum</strong><br><br>
+                    <strong>Eccentricity from Semi-latus Rectum</strong>
                     It may be useful to know the <em>semi-latus rectum</em> of an ellipse is the distance between one of its foci and the point on the ellipse immediately above or below it. Consider a highly eccentric planet with a semi-latus rectum that is nearly a hundred times smaller than its semi-major axis. What is its eccentricity?<br><br>
                     (a) 0.99 <br>
                     (b) 0.995 <br>
@@ -572,7 +552,7 @@
                     <span class="diff-badge diff-easy"><i class="fas fa-bolt"></i> Diff: 3/10</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Log-Log Plots & Kepler's Third Law</strong><br><br>
+                    <strong>Log-Log Plots & Kepler's Third Law</strong>
                     An astronomer was studying the exoplanets orbiting a star with a mass of \(10M_\odot\). The astronomer decided to draw a \(\log T\) vs. \(\log a\) plot for the exoplanet orbits, where \(T\) corresponds to the period in years and \(a\) corresponds to the semi-major axis in AU. Note that \(\log\) represents the base 10 logarithm.<br><br>
                     
                     <strong>11.</strong> What would be the slope of the best fit line to this plot?<br>
@@ -614,7 +594,7 @@
                     <span class="diff-badge diff-easy"><i class="fas fa-bolt"></i> Diff: 4/10</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Triple System Kepler's Law</strong><br><br>
+                    <strong>Triple System Kepler's Law</strong>
                     A recently observed exosolar system consists of a star, a planet, and the planet's satellite. The satellite has a revolution period of 100 minutes around the planet, and the planet has a 90 day revolution period around the star. The satellite approaches the surface of the planet to a minimum height of 1000 km and recedes to a maximum height of 7000 km. The radius of the planet is 3000 km. If the ratio of the mass of the star to the mass of the planet is \(1 \times 10^5\), what is the semi-major axis of the planet's revolution around the star? Assume that the mass of the satellite is much smaller than the mass of the planet.<br><br>
                     (a) \( 1.86 \times 10^7 \) km <br>
                     (b) \( 2.36 \times 10^7 \) km <br>
@@ -647,7 +627,7 @@
                     <span class="diff-badge diff-theory"><i class="fas fa-brain"></i> THEORY</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Limits of Kepler's Laws</strong><br><br>
+                    <strong>Limits of Kepler's Laws</strong>
                     Which of the following statements CANNOT be inferred from Kepler's laws of motion?<br><br>
                     <ul>
                         <li><strong>I:</strong> A planet moves in an elliptical orbit around the Sun.</li>
@@ -683,7 +663,7 @@
                     <span class="diff-badge diff-medium"><i class="fas fa-fire"></i> Diff: 6/10</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Ecliptic Longitude & Orbital Inclination</strong><br><br>
+                    <strong>Ecliptic Longitude & Orbital Inclination</strong>
                     Two exoplanets, A and B, have circular orbits around the same central star. Suppose that the ascending nodes of the orbits are located at the same ecliptic longitude, defined analogously as the one for the solar system, and that both planets are at that point in the beginning. How long will it take for the planets to have an equal, common ecliptic longitude again, knowing that the inclinations of their orbits are \(i_1 = 30^\circ\) and \(i_2 = 70^\circ\), and that their periods are \(T_1 = 2 \text{ yr}\) and \(T_2 = 1 \text{ yr}\)?<br><br>
                     (a) 42 days <br>
                     (b) 44 days <br>
@@ -700,7 +680,7 @@
                         <img src="assets/img/Q26_USAAAO_2025.png" alt="Ecliptic Longitude Projection Diagram" class="user-diagram" onclick="openImageModal(this)">
                         <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
                         
-                        <p style="color: #aaa; font-style: italic; margin-bottom: 20px;">Concept: Ecliptic longitude (\(\lambda\)) is the projection of the planet's orbital angle (\(\theta\)) onto the reference plane. The relationship is governed by the orbital inclination (\(i\)).</p>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Ecliptic longitude (\(\lambda\)) is the projection of the planet's orbital angle (\(\theta\)) onto the reference plane. The relationship is governed by the orbital inclination (\(i\)).</p>
 
                         <p><strong>Step 1: The Projection Equation</strong></p>
                         <p>From spherical trigonometry, the ecliptic longitude \(\lambda\) is related to the true anomaly (angle on orbit) \(\theta\) by:</p>
@@ -742,7 +722,7 @@
                     <span class="diff-badge diff-easy"><i class="fas fa-bolt"></i> Diff: 3/10</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Circular Orbit Kinematics</strong><br><br>
+                    <strong>Circular Orbit Kinematics</strong>
                     A planet moves in a circular orbit in a fixed plane with angular velocity \(\omega\), and let \(\hat{n}\) be a unit vector perpendicular to the orbital plane. Let the planet's velocity vector as a function of time be given by
                     $$ \vec{v}(t) = v_0(\cos(\omega t)\hat{i} + \sin(\omega t)\hat{j}) $$
                     Define \(\vec{a}(t) = \frac{d\vec{v}}{dt}\). Which of the following statements is correct? (Here, \(\hat{i}\) and \(\hat{j}\) are orthogonal unit vectors in the orbital plane.)<br><br>
@@ -759,7 +739,7 @@
                     <summary>View Solution</summary>
                     <div class="solution-box">
                         <img src="assets/img/Q01_USAAAO_2026.png" alt="Circular Orbit Kinematics Diagram" class="user-diagram" onclick="openImageModal(this)">
-                        <p style="color: #aaa; font-style: italic; margin-bottom: 20px;">Concept: Using basic vector calculus, we can find the acceleration vector and then evaluate each statement individually.</p>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Using basic vector calculus, we can find the acceleration vector and then evaluate each statement individually.</p>
 
                         <p>First, let's explicitly calculate the acceleration vector \(\vec{a}(t)\) by taking the time derivative of the velocity vector \(\vec{v}(t)\):</p>
                         <p>$$ \vec{a}(t) = \frac{d\vec{v}}{dt} = v_0(-\omega\sin(\omega t)\hat{i} + \omega\cos(\omega t)\hat{j}) $$</p>
@@ -793,7 +773,7 @@
                     <span class="diff-badge diff-theory"><i class="fas fa-brain"></i> THEORY</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Orbital Mechanics Concepts</strong><br><br>
+                    <strong>Orbital Mechanics Concepts</strong>
                     A planet of mass \(m\) orbits a star of mass \(M\) in an elliptical orbit with semi-major axis \(a\) and eccentricity \(e\) where \(M \gg m\). Which of the following statements is true?<br><br>
                     (a) The orbital speed is maximized at aphelion due to conservation of energy <br>
                     (b) The planet moves in a perfect circle around the star regardless of eccentricity <br>
@@ -807,7 +787,7 @@
                 <details>
                     <summary>View Solution</summary>
                     <div class="solution-box">
-                        <p style="color: #aaa; font-style: italic; margin-bottom: 20px;">Concept: Let's evaluate each statement using the fundamental principles of celestial mechanics.</p>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Let's evaluate each statement using the fundamental principles of celestial mechanics.</p>
 
                         <p><strong>(a) Incorrect.</strong> According to Kepler's Second Law (or the conservation of angular momentum, \(L = mvr\)), the orbital speed is maximized when the radius is minimized. Therefore, speed is maximized at <em>perihelion</em> (closest approach), not aphelion.</p>
 
@@ -830,7 +810,7 @@
                     <span class="diff-badge diff-easy"><i class="fas fa-bolt"></i> Diff: 1/10</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Asteroid Orbital Period</strong><br><br>
+                    <strong>Asteroid Orbital Period</strong>
                     The asteroid Pallas orbits the Sun with a semi-major axis of 2.77 AU. What is its orbital period around the Sun in years?<br><br>
                     (a) \( (2.77)^{1/2} \)<br>
                     (b) \( (2.77)^{3/2} \)<br>
@@ -847,7 +827,7 @@
                         <img src="assets/img/Q09_USAAAO_2026.png" alt="Asteroid Pallas Orbit Diagram" class="user-diagram" onclick="openImageModal(this)">
                         <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
                         
-                        <p style="color: #aaa; font-style: italic; margin-bottom: 20px;">Concept: We use Kepler's Third Law of Planetary Motion, simplified for objects orbiting the Sun.</p>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: We use Kepler's Third Law of Planetary Motion, simplified for objects orbiting the Sun.</p>
 
                         <p><strong>Step 1: Recall Kepler's Third Law</strong></p>
                         <p>The general form of Kepler's Third Law is:</p>
@@ -875,7 +855,7 @@
                     <span class="diff-badge diff-easy"><i class="fas fa-bolt"></i> Diff: 3/10</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Geostationary Satellite Altitude</strong><br><br>
+                    <strong>Geostationary Satellite Altitude</strong>
                     A small satellite orbits the Earth so it stays directly above a fixed point on the equator. Using \(5.97 \times 10^{24}\) kg for Earth's mass and \(6.37 \times 10^6\) m for its radius, how far is the satellite from the surface of the Earth? Assume its mass is 300 kg and an orbital period of 86164 s. (Find the distance above the Earth's surface, not orbital radius.)<br><br>
                     (a) \( 3.58 \times 10^6 \) m <br>
                     (b) 1.56 m <br>
@@ -892,7 +872,7 @@
                         <img src="assets/img/Q10_USAAAO_2026.png" alt="Geostationary Satellite Orbit Diagram" class="user-diagram" onclick="openImageModal(this)">
                         <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
                         
-                        <p style="color: #aaa; font-style: italic; margin-bottom: 20px;">Concept: A satellite that stays above a fixed point on the equator is in a geostationary orbit. Its orbital period matches Earth's sidereal rotation period.</p>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: A satellite that stays above a fixed point on the equator is in a geostationary orbit. Its orbital period matches Earth's sidereal rotation period.</p>
 
                         <p><strong>Step 1: Use Kepler's Third Law to find the orbital radius (\(r\))</strong></p>
                         <p>The relationship between period \(T\) and radius \(r\) is:</p>
@@ -924,7 +904,7 @@
                     <span class="diff-badge diff-medium"><i class="fas fa-fire"></i> Diff: 5/10</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Lunar Recession</strong><br><br>
+                    <strong>Lunar Recession</strong>
                     Lunar laser ranging experiments show that, due to tidal effects, the semi-major axis of the Moon's orbit increases by around 38 mm per year. Assuming that the recession rate is constant, by approximately how much does this recession increase the Moon's sidereal orbital period each year? The mass of the Moon is \(7.3 \times 10^{22}\) kg. <em>Hint: \((1 + x)^\beta \approx 1 + \beta x\) for \(|x| \ll 1\).</em><br><br>
                     (a) \( 230 \ \mu\text{s} \) <br>
                     (b) \( 350 \ \mu\text{s} \) <br>
@@ -938,7 +918,7 @@
                 <details>
                     <summary>View Solution</summary>
                     <div class="solution-box">
-                        <p style="color: #aaa; font-style: italic; margin-bottom: 20px;">Concept: Use Kepler's Third Law and the binomial approximation to find the small change in period (\(\Delta T\)) caused by a small change in the semi-major axis (\(\Delta a\)). Note: The mass of the Moon is a distractor.</p>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Use Kepler's Third Law and the binomial approximation to find the small change in period (\(\Delta T\)) caused by a small change in the semi-major axis (\(\Delta a\)). Note: The mass of the Moon is a distractor.</p>
 
                         <p><strong>Step 1: Relate Period and Semi-major Axis</strong></p>
                         <p>From Kepler's Third Law, \(T^2 \propto a^3\), which means \(T = C \cdot a^{3/2}\) (where \(C\) is a constant).</p>
@@ -973,7 +953,7 @@
                     <span class="diff-badge diff-easy"><i class="fas fa-bolt"></i> Diff: 4/10</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Synodic Lunar Month on Exoplanet</strong><br><br>
+                    <strong>Synodic Lunar Month on Exoplanet</strong>
                     Kepler-22b is an exoplanet discovered by transiting with an orbital period of 290 days. Suppose it has a mass of \(4.84 \times 10^{25}\) kg and a moon similar to Earth's, with a prograde orbit near the ecliptic plane of the Kepler-22 system and a semi-major axis of \(7.70 \times 10^8\) m. What is the length of a synodic lunar month, i.e., the time between successive full moons, for an observer on Kepler-22b? You can neglect the mass of the moon.<br><br>
                     (a) 25.0 days <br>
                     (b) 27.3 days <br>
@@ -990,7 +970,7 @@
                         <img src="assets/img/Q16_USAAAO_2026.png" alt="Kepler-22b Moon Orbit Diagram" class="user-diagram" onclick="openImageModal(this)">
                         <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
                         
-                        <p style="color: #aaa; font-style: italic; margin-bottom: 20px;">Concept: First, find the sidereal period of the moon using Kepler's Third Law. Then, use the synodic period formula for a prograde orbit to find the time between full moons.</p>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: First, find the sidereal period of the moon using Kepler's Third Law. Then, use the synodic period formula for a prograde orbit to find the time between full moons.</p>
 
                         <p><strong>Step 1: Find the Sidereal Period of the Moon (\(T_{sid}\))</strong></p>
                         <p>$$ T_{sid} = 2\pi \sqrt{\frac{a^3}{GM}} $$</p>
@@ -1020,9 +1000,9 @@
                     <span class="diff-badge diff-easy"><i class="fas fa-bolt"></i> Diff: 1/10</span>
                 </div>
                 <div class="problem-text">
-                    <strong>Kirkwood Gaps and Orbital Resonance</strong><br><br>
+                    <strong>Kirkwood Gaps and Orbital Resonance</strong>
                     When plotting the distribution of asteroids in the asteroid belt by their semi-major axis, we can see several regions, known as "Kirkwood gaps," where asteroids' orbits are unstable due to an orbital resonance with Jupiter (\(a = 5.20\) AU). What orbital resonance is responsible for the gap marked with the arrow?<br><br>
-                    <img src="assets/img/Q27_USAAAO_2026.png" alt="Kirkwood Gaps Histogram" style="max-width: 100%; border-radius: 8px; margin: 15px 0;"><br>
+                    <img src="assets/img/Q27_USAAAO_2026.png" alt="Kirkwood Gaps Histogram" style="max-width: 100%; border-radius: 2px; margin: 15px 0;"><br>
                     (a) 8:5 <br>
                     (b) 11:6 <br>
                     (c) 9:4 <br>
@@ -1035,7 +1015,7 @@
                 <details>
                     <summary>View Solution</summary>
                     <div class="solution-box">
-                        <p style="color: #aaa; font-style: italic; margin-bottom: 20px;">Concept: Orbital resonance occurs when the ratio of two bodies' orbital periods is a simple fraction of integers. We can use Kepler's Third Law to find this ratio based on their semi-major axes.</p>
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Orbital resonance occurs when the ratio of two bodies' orbital periods is a simple fraction of integers. We can use Kepler's Third Law to find this ratio based on their semi-major axes.</p>
 
                         <p><strong>Step 1: Read the semi-major axis from the graph</strong></p>
                         <p>Looking closely at the \(x\)-axis, the red arrow points to a gap just past 2.8 AU. A safe estimate is \( a_{ast} \approx 2.82 \) AU.</p>
@@ -1063,16 +1043,16 @@
     
     <div id="authModal" class="auth-modal">
         <div class="auth-content">
-            <span onclick="closeModal()" class="close-btn">&times;</span>
-            <h2 id="modalTitle" style="color: white; margin-bottom: 25px; font-family:'Outfit', sans-serif;">Login</h2>
+            <span onclick="closeModal()" class="close-btn"><i class="fas fa-times"></i></span>
+            <h3 id="modalTitle" style="color: var(--text-light); margin: 0 0 20px 0; font-weight: 600;">Student Login</h3>
             <form id="authForm">
-                <input type="text" id="usernameInput" class="auth-input" placeholder="Choose a Username" style="display:none;">
-                <input type="email" id="emailInput" class="auth-input" placeholder="Email Address" required>
+                <input type="text" id="usernameInput" class="auth-input" placeholder="Username" style="display:none;">
+                <input type="email" id="emailInput" class="auth-input" placeholder="Academic Email" required>
                 <input type="password" id="passwordInput" class="auth-input" placeholder="Password" required>
-                <button type="submit" id="submitAuthBtn" class="submit-btn">LOGIN</button>
-                <p id="authError" class="error-msg" style="color: #ff512f; font-size: 0.8rem; margin-top: 10px;"></p>
+                <button type="submit" id="submitAuthBtn" class="submit-btn">Sign In</button>
+                <p id="authError" class="error-msg" style="color: #ef4444; font-size: 0.8rem; margin-top: 10px;"></p>
             </form>
-            <p class="toggle-text" id="toggleText">New to Supernova? <span onclick="toggleMode()">Create an account</span></p>
+            <p class="toggle-text" id="toggleText">New to the platform? <span onclick="toggleMode()">Register</span></p>
         </div>
     </div>
 
@@ -1102,7 +1082,7 @@
         // --- LOGICA DE FILTRARE SI PAGINARE ---
         let currentPage = 1;
         const itemsPerPage = 5;
-        let filteredCards = []; // Aici pastram problemele care trec de filtre
+        let filteredCards = []; 
 
         function applyFilters() {
             const searchVal = document.getElementById('searchFilter').value.toLowerCase();
@@ -1110,7 +1090,7 @@
             const statusVal = document.getElementById('statusFilter').value;
 
             const cards = document.querySelectorAll('.problem-card');
-            filteredCards = []; // Resetam lista la fiecare cautare
+            filteredCards = []; 
 
             cards.forEach(card => {
                 // 1. Cautare text
@@ -1143,7 +1123,6 @@
                     matchStatus = true;
                 }
 
-                // Daca se potriveste, adaugam in array, dar le ASCUNDEM pe toate momentan (paginarea le va afisa)
                 if (matchSearch && matchDiff && matchStatus) {
                     filteredCards.push(card);
                 }
@@ -1158,18 +1137,14 @@
                 if(paginationContainer) paginationContainer.innerHTML = '';
             } else {
                 noResultsMsg.style.display = 'none';
-                // La fiecare noua filtrare, ne intoarcem la prima pagina
                 currentPage = 1; 
                 renderPage();
             }
         }
 
-        // Functia care afiseaza DOAR 5 probleme pentru pagina curenta
         function renderPage() {
-            // Ascundem tot din array intai
             filteredCards.forEach(card => card.style.display = 'none');
 
-            // Calculam de unde pana unde afisam
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
 
@@ -1180,7 +1155,6 @@
             renderPaginationControls();
         }
 
-        // Functia care deseneaza butoanele 1, 2, 3...
         function renderPaginationControls() {
             const container = document.getElementById('paginationContainer');
             if (!container) return;
@@ -1188,7 +1162,6 @@
 
             const totalPages = Math.ceil(filteredCards.length / itemsPerPage);
 
-            // Daca avem doar o pagina, nu are sens sa afisam butoanele
             if (totalPages <= 1) return;
 
             for (let i = 1; i <= totalPages; i++) {
@@ -1198,7 +1171,6 @@
                 btn.onclick = () => {
                     currentPage = i;
                     renderPage();
-                    // Scroll lin inapoi sus cand schimbi pagina
                     window.scrollTo({
                         top: document.querySelector('.problem-section').offsetTop - 120,
                         behavior: 'smooth'
@@ -1208,16 +1180,13 @@
             }
         }
 
-        // Rulam filtrarea imediat ce se incarca pagina pt prima data
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(applyFilters, 500); 
         });
 
-        // Verificam automat la fiecare secunda daca o problema a fost marcata "Solved"
-        // si trebuie sa dispara de pe ecran in cazul in care filtrul e pe "Unsolved"
         setInterval(() => {
             if(document.getElementById('statusFilter').value !== 'all') {
-               applyFilters();
+                applyFilters();
             }
         }, 1500);
     </script>

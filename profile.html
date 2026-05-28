@@ -6,241 +6,281 @@
     <title>Supernova Guide | Mission Control</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* --- 1. SETARI GENERALE --- */
+        /* --- 1. SETĂRI GENERALE & TEMA BLUEISH --- */
         :root {
-            --bg-color: #030305;
-            --glass-bg: rgba(20, 25, 35, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --accent-blue: #00c6ff;
-            --accent-purple: #bc13fe;
-            --accent-orange: #ff512f;
-            --accent-green: #00ff88;
-            --accent-yellow: #ffd700;
-            --text-main: #d1d5db;
-            --text-muted: #94a3b8;
+            --bg-deep: #050b14; 
+            --bg-panel: rgba(13, 20, 33, 0.7);
+            --bg-hover: rgba(20, 30, 48, 0.9);
+            --text-main: #a1aab8;
+            --text-light: #ffffff;
+            --text-muted: #64748b;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-orange: #ef4444; /* Adaptat mai curat, un roșu deschis */
+            --accent-green: #10b981;
+            --accent-yellow: #f59e0b;
+            --border-subtle: rgba(255, 255, 255, 0.08);
         }
 
-        html { overflow-y: scroll; scroll-behavior: smooth; }
+        /* 1. Forțăm bara de scroll pentru a preveni "săritura" navbar-ului */
+        html { 
+            scroll-behavior: smooth; 
+            overflow-y: scroll; 
+        }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
+        /* 2. Definim animația de fade-in */
+        @keyframes fadeIn { 
+            from { opacity: 0; } 
+            to { opacity: 1; } 
+        }
+
+        /* 3. Aplicăm animația pe întregul corp al paginii */
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-deep);
             color: var(--text-main);
             margin: 0;
             font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            animation: fadeIn 0.6s ease-out;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.6s ease-out; /* Aici se întâmplă magia! */
         }
 
-        /* --- 2. FUNDAL COSMIC --- */
-        .universe-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background-image: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2048&auto=format&fit=crop'); background-size: cover; opacity: 0.35; }
-        .nebula-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: radial-gradient(circle at 20% 20%, rgba(0, 198, 255, 0.1), transparent 40%), linear-gradient(to bottom, rgba(3, 3, 5, 0.3), #030305); }
+        .universe-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=2048&auto=format&fit=crop');
+            background-size: cover; background-position: center; opacity: 0.12; 
+        }
 
-        /* --- 3. NAVBAR --- */
+        /* --- 2. NAVBAR SIMPLU --- */
         nav { 
             position: fixed; top: 0; width: 100%; 
-            background: rgba(3, 3, 5, 0.85); backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+            background: rgba(5, 11, 20, 0.95); border-bottom: 1px solid var(--border-subtle); 
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 40px; z-index: 1000; box-sizing: border-box;
+            padding: 12px 50px; z-index: 1000; box-sizing: border-box;
         }
 
-        .nav-logo { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem; color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; letter-spacing: 1px; }
-        .nav-logo i { color: var(--accent-blue); }
+        .nav-logo { text-decoration: none; display: flex; align-items: center; gap: 12px; }
+        .nav-logo i { color: #fbbf24; font-size: 1.6rem; }
+        
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .main { font-weight: 700; font-size: 1.2rem; color: var(--text-light); letter-spacing: 1px; }
+        .logo-text .sub { font-weight: 400; font-size: 0.65rem; color: var(--accent-blue); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 2px; }
 
         .nav-links { display: flex; align-items: center; }
-        .nav-links a { color: #ffffff; text-decoration: none; margin: 0 15px; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1.5px; transition: all 0.3s; opacity: 0.8; font-family: 'Outfit', sans-serif; }
-        .nav-links a:hover, .nav-links a.active { color: var(--accent-blue); opacity: 1; text-shadow: 0 0 10px rgba(0, 198, 255, 0.5); }
-        
-        #profileLink { color: var(--accent-orange) !important; opacity: 1; position: relative; }
-        #profileLink::after { content:''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 2px; background: var(--accent-orange); transition: width 0.3s; }
+        .nav-links a { 
+            color: var(--text-main); text-decoration: none; margin: 0 20px; 
+            font-weight: 500; font-size: 0.85rem; transition: color 0.2s ease;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-light); } 
 
-        .btn-auth { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 8px 20px; border-radius: 30px; cursor: pointer; font-weight: 700; transition: 0.3s; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-auth:hover { background: var(--accent-blue); color: #000; box-shadow: 0 0 20px rgba(0, 198, 255, 0.4); }
+        .nav-auth-container { display: flex; align-items: center; }
+        .btn-auth { 
+            background: transparent; border: 1px solid var(--border-subtle); color: var(--text-light); 
+            padding: 8px 24px; border-radius: 2px; cursor: pointer; font-weight: 500; 
+            margin-left: 20px; transition: all 0.2s ease; font-size: 0.85rem; 
+        }
+        .btn-auth:hover { background: var(--text-light); color: var(--bg-deep); }
 
-        /* --- 4. DASHBOARD LAYOUT --- */
+        /* --- 3. DASHBOARD LAYOUT --- */
         .dashboard-wrapper {
-            max-width: 1200px; margin: 100px auto 50px; padding: 0 20px;
-            display: grid; grid-template-columns: 350px 1fr; gap: 30px;
-            align-items: start;
+            max-width: 1200px; margin: 120px auto 60px; padding: 0 20px;
+            display: grid; grid-template-columns: 320px 1fr; gap: 40px;
+            align-items: start; width: 100%; box-sizing: border-box;
         }
 
-        /* --- 5. SIDEBAR (Sticky) --- */
+        /* --- 4. SIDEBAR PROFIL --- */
         .profile-sidebar {
-            background: var(--glass-bg); backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border); border-radius: 24px;
-            padding: 40px 25px 20px; text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: sticky; top: 100px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle); 
+            border-radius: 2px;
+            padding: 40px 25px 25px; text-align: center;
+            position: sticky; top: 100px;
         }
         
-        /* Avatar */
-        .avatar-container { position: relative; width: 120px; height: 120px; margin: 0 auto 20px; }
-        .avatar { width: 100%; height: 100%; background: #1a1f2e; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white; border: 3px solid rgba(255,255,255,0.1); z-index: 2; position: relative; }
-        .avatar-glow { position: absolute; top: -4px; left: -4px; right: -4px; bottom: -4px; border-radius: 50%; background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple)); z-index: 1; opacity: 0.8; filter: blur(8px); animation: spinGlow 6s linear infinite; }
-        @keyframes spinGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* Avatar Academic */
+        .avatar-container { position: relative; width: 110px; height: 110px; margin: 0 auto 25px; }
+        .avatar { 
+            width: 100%; height: 100%; background: var(--bg-deep); border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; font-size: 3rem; 
+            color: var(--text-main); border: 1px solid var(--border-subtle); 
+            z-index: 2; position: relative; transition: color 0.3s;
+        }
+        .profile-sidebar:hover .avatar { color: var(--text-light); border-color: var(--accent-blue); }
 
         /* User Info */
-        .username { font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 800; color: white; margin: 10px 0 5px; }
-        .email-display { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; }
-        .edit-trigger { font-size: 0.9rem; color: var(--accent-blue); cursor: pointer; margin-left: 8px; transition: 0.3s; }
-        .edit-trigger:hover { color: white; }
+        .username { font-size: 1.4rem; font-weight: 600; color: var(--text-light); margin: 0 0 5px; }
+        .email-display { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 25px; }
+        .edit-trigger { font-size: 0.85rem; color: var(--text-muted); cursor: pointer; margin-left: 8px; transition: 0.2s; }
+        .edit-trigger:hover { color: var(--text-light); }
 
         /* Current Rank Pill */
-        .current-rank-pill { background: linear-gradient(90deg, rgba(255, 81, 47, 0.1), rgba(221, 36, 118, 0.1)); border: 1px solid rgba(255, 81, 47, 0.3); color: var(--accent-orange); padding: 8px 20px; border-radius: 30px; font-weight: 700; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 30px; }
+        .current-rank-pill { 
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-subtle); 
+            color: var(--text-light); padding: 8px 20px; border-radius: 2px; 
+            font-weight: 500; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px; 
+            margin-bottom: 30px; letter-spacing: 0.5px;
+        }
+        .current-rank-pill i { color: var(--accent-blue); }
 
         /* Progress Bar */
-        .level-section { margin-bottom: 20px; }
-        .progress-container { background: rgba(255,255,255,0.05); height: 6px; border-radius: 10px; overflow: hidden; }
-        .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-orange), var(--accent-purple)); transition: width 1s ease; }
+        .level-section { margin-bottom: 30px; text-align: left;}
+        .progress-header { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-main); margin-bottom: 8px; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;}
+        .progress-header span:last-child { color: var(--text-light); }
+        .progress-container { background: rgba(0, 0, 0, 0.3); height: 6px; border-radius: 2px; overflow: hidden; border: 1px solid var(--border-subtle);}
+        .progress-bar { height: 100%; width: 0%; background: var(--text-light); transition: width 1s ease; }
 
-        /* Rank Path List (Scrollable) */
-        .progression-section { text-align: left; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
-        .progression-title { font-size: 0.75rem; text-transform: uppercase; color: #666; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px; padding-left: 5px;}
+        /* Rank Path List */
+        .progression-section { text-align: left; border-top: 1px solid var(--border-subtle); padding-top: 20px; }
+        .progression-title { font-size: 0.75rem; text-transform: uppercase; color: var(--text-main); font-weight: 600; letter-spacing: 1px; margin-bottom: 15px; }
         
-        .rank-list-container {
-            max-height: 250px; overflow-y: auto; padding-right: 5px;
-        }
-        
+        .rank-list-container { max-height: 250px; overflow-y: auto; padding-right: 5px; }
         .rank-list-container::-webkit-scrollbar { width: 4px; }
-        .rank-list-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 10px; }
-        .rank-list-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        .rank-list-container::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
+        .rank-list-container::-webkit-scrollbar-track { background: transparent; }
+        .rank-list-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+        .rank-list-container::-webkit-scrollbar-thumb:hover { background: var(--text-main); }
 
         .rank-list { list-style: none; padding: 0; margin: 0; }
-        .rank-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; margin-bottom: 6px; border-radius: 10px; background: rgba(255,255,255,0.02); color: #555; transition: 0.3s; font-size: 0.85rem; border: 1px solid transparent; }
-        .rank-req { font-size: 0.7rem; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; }
+        .rank-item { 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 10px 12px; margin-bottom: 8px; border-radius: 2px; 
+            background: transparent; color: var(--text-muted); transition: 0.2s; 
+            font-size: 0.85rem; border: 1px solid transparent; font-weight: 500;
+        }
+        .rank-req { font-size: 0.7rem; background: rgba(0,0,0,0.3); padding: 3px 8px; border-radius: 2px; border: 1px solid var(--border-subtle);}
         
-        /* --- RANK STATES (FIXED & FORCED COLORS) --- */
-        .rank-item.unlocked { 
-            background: rgba(0, 255, 136, 0.1) !important; 
-            border: 1px solid rgba(0, 255, 136, 0.4) !important; 
-            color: white !important; 
-        }
-        .rank-item.unlocked i { 
-            color: var(--accent-green) !important; 
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.6) !important; 
-        }
-        .rank-item.unlocked .rank-req { 
-            background: rgba(0, 255, 136, 0.25) !important; 
-            color: var(--accent-green) !important; 
-        }
+        /* Rank States */
+        .rank-item.unlocked { color: var(--text-light); }
+        .rank-item.unlocked i { color: var(--accent-green); }
+        .rank-item.unlocked .rank-req { border-color: var(--accent-green); color: var(--accent-green); background: transparent;}
         
         .rank-item.active { 
-            background: linear-gradient(90deg, rgba(0, 198, 255, 0.2), transparent) !important; 
-            border: 1px solid rgba(0, 198, 255, 0.5) !important; 
-            color: white !important; 
-            box-shadow: 0 0 15px rgba(0, 198, 255, 0.2) !important; 
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid var(--border-subtle); 
+            color: var(--text-light); 
         }
-        .rank-item.active i { 
-            color: var(--accent-blue) !important; 
-            text-shadow: 0 0 10px var(--accent-blue) !important; 
-        }
-        .rank-item.active .rank-req { 
-            background: rgba(0, 198, 255, 0.3) !important; 
-            color: var(--accent-blue) !important; 
-        }
+        .rank-item.active i { color: var(--accent-blue); }
+        .rank-item.active .rank-req { border-color: var(--accent-blue); color: var(--accent-blue); background: transparent;}
 
         /* Edit Inputs */
-        #editUserContainer { display: none; margin-bottom: 20px; }
-        .modern-input { background: rgba(0,0,0,0.3); border: 1px solid var(--accent-blue); color: white; padding: 8px; border-radius: 8px; width: 60%; text-align: center; }
-        .action-btn { background: var(--accent-blue); border: none; width: 30px; height: 30px; border-radius: 6px; cursor: pointer; margin-left: 5px; }
+        #editUserContainer { display: none; margin-bottom: 25px; }
+        .modern-input { background: rgba(0,0,0,0.3); border: 1px solid var(--text-main); color: white; padding: 8px 12px; border-radius: 2px; width: 60%; text-align: center; font-family: 'Inter', sans-serif; font-size: 0.85rem; outline: none;}
+        .modern-input:focus { border-color: var(--accent-blue); }
+        .action-btn { background: transparent; border: 1px solid var(--border-subtle); color: var(--text-light); width: 32px; height: 32px; border-radius: 2px; cursor: pointer; margin-left: 5px; transition: 0.2s;}
+        .action-btn:hover { background: var(--text-light); color: var(--bg-deep); }
 
-        /* --- 6. MAIN CONTENT (Right) --- */
-        .main-content { display: flex; flex-direction: column; gap: 20px; }
+        /* --- 5. MAIN CONTENT (Right) --- */
+        .main-content { display: flex; flex-direction: column; gap: 30px; }
 
         /* Top Hero Stats */
         .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .stat-card {
-            background: var(--glass-bg); backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border); border-radius: 20px;
-            padding: 25px; position: relative; overflow: hidden;
-            transition: transform 0.3s; display: flex; flex-direction: column; justify-content: center;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle); border-radius: 2px;
+            padding: 25px; display: flex; flex-direction: column; justify-content: center;
+            transition: all 0.2s; position: relative;
         }
-        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .stat-bg-icon { position: absolute; right: -10px; bottom: -20px; font-size: 5rem; opacity: 0.05; transform: rotate(-15deg); transition: 0.3s; }
-        .stat-card:hover .stat-bg-icon { opacity: 0.1; transform: rotate(0deg) scale(1.1); }
-        .stat-icon-small { font-size: 1.2rem; margin-bottom: 10px; width: fit-content; background: rgba(255,255,255,0.05); padding: 8px 10px; border-radius: 10px; }
-        .stat-value { font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; color: white; line-height: 1; }
-        .stat-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-top: 5px; letter-spacing: 1px; }
+        .stat-card:hover { border-color: #3b4252; background: var(--bg-hover); }
+        
+        .stat-icon-small { font-size: 1.1rem; margin-bottom: 12px; width: fit-content; background: rgba(0,0,0,0.3); padding: 8px 10px; border-radius: 2px; border: 1px solid var(--border-subtle);}
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--text-light); line-height: 1.2; letter-spacing: -0.5px;}
+        .stat-label { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; color: var(--text-muted); margin-top: 5px; letter-spacing: 1px; }
 
-        .card-blue .stat-icon-small { color: var(--accent-blue); border: 1px solid rgba(0, 198, 255, 0.2); }
-        .card-orange .stat-icon-small { color: var(--accent-orange); border: 1px solid rgba(255, 81, 47, 0.2); }
-        .card-purple .stat-icon-small { color: var(--accent-purple); border: 1px solid rgba(188, 19, 254, 0.2); }
+        .card-blue .stat-icon-small { color: var(--accent-blue); }
+        .card-orange .stat-icon-small { color: var(--accent-orange); }
+        .card-purple .stat-icon-small { color: var(--accent-purple); }
 
         /* --- STATISTICI DIFICULTATE --- */
-        .section-mini-title { font-family: 'Outfit', sans-serif; font-size: 1.2rem; color: white; margin: 10px 0 0 0; }
+        .section-mini-title { font-size: 1.1rem; font-weight: 600; color: var(--text-light); margin: 10px 0 0 0; }
         
-        .difficulty-breakdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .difficulty-breakdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
         
         .diff-card {
-            background: rgba(10, 15, 25, 0.5); backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border); border-radius: 16px;
-            padding: 15px; text-align: center; transition: 0.3s;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle); border-radius: 2px;
+            padding: 20px 15px; text-align: center; transition: 0.2s;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .diff-card:hover { transform: translateY(-3px); background: rgba(20, 25, 35, 0.8); }
-        .diff-val { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 800; color: white; margin: 5px 0; }
-        .diff-label { font-size: 0.7rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .diff-card:hover { background: var(--bg-hover); border-color: #3b4252;}
+        .diff-val { font-size: 1.5rem; font-weight: 600; color: var(--text-light); margin: 5px 0; }
+        .diff-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
         
-        .diff-card.easy { border-bottom: 3px solid var(--accent-green); }
-        .diff-card.medium { border-bottom: 3px solid var(--accent-yellow); }
-        .diff-card.hard { border-bottom: 3px solid var(--accent-orange); }
-        .diff-card.theory { border-bottom: 3px solid var(--accent-purple); }
-
-        .diff-card.easy .diff-label { color: var(--accent-green); }
-        .diff-card.medium .diff-label { color: var(--accent-yellow); }
-        .diff-card.hard .diff-label { color: var(--accent-orange); }
-        .diff-card.theory .diff-label { color: var(--accent-purple); }
+        /* Accente superioare pentru dificultate */
+        .diff-card.easy { border-top: 2px solid var(--accent-green); }
+        .diff-card.medium { border-top: 2px solid var(--accent-yellow); }
+        .diff-card.hard { border-top: 2px solid var(--accent-orange); }
+        .diff-card.theory { border-top: 2px solid var(--accent-purple); }
 
         /* Chart Widget */
         .chart-widget {
-            background: var(--glass-bg); backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border); border-radius: 24px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle); border-radius: 2px;
             padding: 30px; display: flex; flex-direction: column;
         }
-        .widget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .time-filters { background: rgba(0,0,0,0.3); padding: 4px; border-radius: 12px; display: flex; gap: 2px; }
-        .filter-btn { background: transparent; border: none; color: var(--text-muted); padding: 6px 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .filter-btn:hover { color: white; }
-        .filter-btn.active { background: rgba(255,255,255,0.1); color: white; }
+        .widget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .widget-title { margin: 0; color: var(--text-light); font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 10px;}
+        .widget-title i { color: var(--accent-blue); }
+
+        .time-filters { display: flex; gap: 8px; }
+        .filter-btn { 
+            background: transparent; border: 1px solid var(--border-subtle); color: var(--text-main); 
+            padding: 6px 14px; border-radius: 2px; font-size: 0.75rem; font-weight: 500; 
+            cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif;
+        }
+        .filter-btn:hover { color: var(--text-light); border-color: var(--text-muted); }
+        .filter-btn.active { background: var(--text-light); color: var(--bg-deep); border-color: var(--text-light); }
 
         /* Activity Feed */
-        .activity-section { margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
-        .activity-title { font-size: 0.85rem; color: #aaa; margin-bottom: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .activity-section { margin-top: 35px; border-top: 1px solid var(--border-subtle); padding-top: 25px; }
+        .activity-title { font-size: 0.8rem; color: var(--text-main); margin-bottom: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
         
-        /* CONTAINER CU SCROLL PENTRU ACTIVITATI */
-        #activityLogList {
-            max-height: 300px; /* ~5 elemente afisate odata */
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-        
-        /* Scrollbar custom pentru Activity Log */
+        #activityLogList { max-height: 250px; overflow-y: auto; padding-right: 5px; }
         #activityLogList::-webkit-scrollbar { width: 4px; }
-        #activityLogList::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 10px; }
-        #activityLogList::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        #activityLogList::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
+        #activityLogList::-webkit-scrollbar-track { background: transparent; }
+        #activityLogList::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+        #activityLogList::-webkit-scrollbar-thumb:hover { background: var(--text-main); }
 
-        .activity-item { display: flex; align-items: center; gap: 15px; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; }
+        .activity-item { 
+            display: flex; align-items: center; gap: 15px; padding: 12px; 
+            border-bottom: 1px solid var(--border-subtle); transition: 0.2s; 
+        }
+        .activity-item:last-child { border-bottom: none; }
         .activity-item:hover { background: rgba(255,255,255,0.02); }
-        .activity-icon { width: 32px; height: 32px; background: rgba(0, 198, 255, 0.1); color: var(--accent-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
+        
+        .activity-icon { 
+            width: 32px; height: 32px; background: rgba(0, 0, 0, 0.3); color: var(--text-main); 
+            border: 1px solid var(--border-subtle); border-radius: 2px; 
+            display: flex; align-items: center; justify-content: center; font-size: 0.8rem; 
+        }
         .activity-info { display: flex; flex-direction: column; }
-        .activity-id { color: white; font-size: 0.9rem; font-family: 'Outfit', sans-serif; }
-        .activity-date { color: #666; font-size: 0.75rem; }
+        .activity-id { color: var(--text-light); font-size: 0.9rem; font-weight: 500; }
+        .activity-date { color: var(--text-muted); font-size: 0.75rem; margin-top: 2px;}
+
+        @media(max-width: 900px) {
+            nav { flex-direction: column; gap: 15px; padding: 15px; }
+            .dashboard-wrapper { grid-template-columns: 1fr; gap: 30px; margin-top: 140px;}
+            .profile-sidebar { position: relative; top: 0; }
+            .stats-row, .difficulty-breakdown { grid-template-columns: 1fr 1fr; }
+            .widget-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+        }
     </style>
 </head>
 <body>
     <div class="universe-bg"></div>
-    <div class="nebula-overlay"></div>
 
     <nav>
-        <a href="index.html" class="nav-logo"><i class="fas fa-meteor"></i> SUPERNOVA</a>
+        <a href="index.html" class="nav-logo">
+            <i class="fa-solid fa-star"></i>
+            <div class="logo-text">
+                <span class="main">SUPERNOVA</span>
+                <span class="sub">Guide</span>
+            </div>
+        </a>
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="handouts.html">Handouts</a>
@@ -250,7 +290,7 @@
             <a href="profile.html" class="active" id="profileLink" style="display: none;">My Profile</a>
         </div>
         <div class="nav-auth-container">
-            <button id="logoutBtn" class="btn-auth" style="display: none;">LOGOUT</button>
+            <button id="logoutBtn" class="btn-auth" style="display: none;">Logout</button>
         </div>
     </nav>
 
@@ -258,31 +298,30 @@
         
         <aside class="profile-sidebar">
             <div class="avatar-container">
-                <div class="avatar-glow"></div>
-                <div class="avatar"><i class="fas fa-user-astronaut"></i></div>
+                <div class="avatar"><i class="fa-solid fa-user-astronaut"></i></div>
             </div>
             
             <div class="user-identity" id="viewMode">
                 <h1 class="username">
                     <span id="profileUsername">Explorer</span>
-                    <i class="fas fa-pencil-alt edit-trigger" onclick="enableEditUsername()"></i>
+                    <i class="fa-solid fa-pen edit-trigger" onclick="enableEditUsername()"></i>
                 </h1>
                 <p class="email-display" id="profileEmail">loading...</p>
             </div>
 
             <div id="editUserContainer">
                 <input type="text" id="newUsernameInput" class="modern-input" placeholder="New Callsign">
-                <button onclick="saveNewUsername()" class="action-btn"><i class="fas fa-check"></i></button>
-                <button onclick="cancelEditUsername()" class="action-btn" style="background:#444"><i class="fas fa-times"></i></button>
+                <button onclick="saveNewUsername()" class="action-btn"><i class="fa-solid fa-check"></i></button>
+                <button onclick="cancelEditUsername()" class="action-btn"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <div class="current-rank-pill">
-                <i class="fas fa-medal"></i> <span id="statsRank">Novice Observer</span>
+                <i class="fa-solid fa-medal"></i> <span id="statsRank">Novice Observer</span>
             </div>
 
             <div class="level-section">
-                <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:#aaa; margin-bottom:5px;">
-                    <span>Next Rank Progress</span><span id="progressPercent">0%</span>
+                <div class="progress-header">
+                    <span>Rank Progress</span><span id="progressPercent">0%</span>
                 </div>
                 <div class="progress-container">
                     <div class="progress-bar" id="levelProgress"></div>
@@ -290,22 +329,22 @@
             </div>
 
             <div class="progression-section">
-                <p class="progression-title">Rank Path</p>
+                <p class="progression-title">Advancement Path</p>
                 <div class="rank-list-container">
                     <ul class="rank-list">
-                        <li class="rank-item" id="rank-0"><div style="display:flex;align-items:center;gap:10px;"><i class="fas fa-eye"></i><span>Novice</span></div><span class="rank-req">0</span></li>
-                        <li class="rank-item" id="rank-5"><div style="display:flex;align-items:center;gap:10px;"><i class="fas fa-compass"></i><span>Cadet</span></div><span class="rank-req">5</span></li>
-                        <li class="rank-item" id="rank-10"><div style="display:flex;align-items:center;gap:10px;"><i class="fas fa-search-location"></i><span>Explorer</span></div><span class="rank-req">10</span></li>
-                        <li class="rank-item" id="rank-25"><div style="display:flex;align-items:center;gap:10px;"><i class="fas fa-microscope"></i><span>Specialist</span></div><span class="rank-req">25</span></li>
-                        <li class="rank-item" id="rank-50"><div style="display:flex;align-items:center;gap:10px;"><i class="fas fa-star"></i><span>Expert</span></div><span class="rank-req">50</span></li>
-                        <li class="rank-item" id="rank-67"><div style="display:flex;align-items:center;gap:10px;"><i class="fas fa-atom"></i><span>Stellar Anomaly</span></div><span class="rank-req">67</span></li>
-                        <li class="rank-item" id="rank-75"><div style="display:flex;align-items:center;gap:10px;"><i class="fas fa-crown"></i><span>Master</span></div><span class="rank-req">75</span></li>
-                        <li class="rank-item" id="rank-100"><div style="display:flex;align-items:center;gap:10px;"><i class="fas fa-sun"></i><span>Grandmaster</span></div><span class="rank-req">100</span></li>
-                        <li class="rank-item" id="rank-125"><div style="display:flex;align-items:center;gap:10px;"><i class="fas fa-space-shuttle"></i><span>Cosmic Voyager</span></div><span class="rank-req">125</span></li>
-                        <li class="rank-item" id="rank-150"><div style="display:flex;align-items:center;gap:10px;"><i class="fas fa-meteor"></i><span>Galaxy Weaver</span></div><span class="rank-req">150</span></li>
-                        <li class="rank-item" id="rank-175"><div style="display:flex;align-items:center;gap:10px;"><i class="fas fa-bahai"></i><span>Quasar Tamer</span></div><span class="rank-req">175</span></li>
-                        <li class="rank-item" id="rank-200"><div style="display:flex;align-items:center;gap:10px;"><i class="fas fa-infinity"></i><span>Universal Architect</span></div><span class="rank-req">200</span></li>
-                        <li class="rank-item" id="rank-250"><div style="display:flex;align-items:center;gap:10px;"><i class="fas fa-user-ninja"></i><span>Astral Deity</span></div><span class="rank-req">250</span></li>
+                        <li class="rank-item" id="rank-0"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-eye"></i><span>Novice</span></div><span class="rank-req">0</span></li>
+                        <li class="rank-item" id="rank-5"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-compass"></i><span>Cadet</span></div><span class="rank-req">5</span></li>
+                        <li class="rank-item" id="rank-10"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-search-location"></i><span>Explorer</span></div><span class="rank-req">10</span></li>
+                        <li class="rank-item" id="rank-25"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-microscope"></i><span>Specialist</span></div><span class="rank-req">25</span></li>
+                        <li class="rank-item" id="rank-50"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-star"></i><span>Expert</span></div><span class="rank-req">50</span></li>
+                        <li class="rank-item" id="rank-67"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-atom"></i><span>Stellar Anomaly</span></div><span class="rank-req">67</span></li>
+                        <li class="rank-item" id="rank-75"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-crown"></i><span>Master</span></div><span class="rank-req">75</span></li>
+                        <li class="rank-item" id="rank-100"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-sun"></i><span>Grandmaster</span></div><span class="rank-req">100</span></li>
+                        <li class="rank-item" id="rank-125"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-space-shuttle"></i><span>Cosmic Voyager</span></div><span class="rank-req">125</span></li>
+                        <li class="rank-item" id="rank-150"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-meteor"></i><span>Galaxy Weaver</span></div><span class="rank-req">150</span></li>
+                        <li class="rank-item" id="rank-175"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-bahai"></i><span>Quasar Tamer</span></div><span class="rank-req">175</span></li>
+                        <li class="rank-item" id="rank-200"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-infinity"></i><span>Universal Architect</span></div><span class="rank-req">200</span></li>
+                        <li class="rank-item" id="rank-250"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-user-ninja"></i><span>Astral Deity</span></div><span class="rank-req">250</span></li>
                     </ul>
                 </div>
             </div>
@@ -315,20 +354,17 @@
             
             <div class="stats-row">
                 <div class="stat-card card-blue">
-                    <i class="fas fa-clipboard-check stat-bg-icon"></i> 
-                    <div class="stat-icon-small"><i class="fas fa-check"></i></div>
+                    <div class="stat-icon-small"><i class="fa-solid fa-check"></i></div>
                     <span class="stat-value" id="statsCount">0</span>
                     <span class="stat-label">Total Solved</span>
                 </div>
                 <div class="stat-card card-orange">
-                    <i class="fas fa-fire stat-bg-icon"></i> 
-                    <div class="stat-icon-small"><i class="fas fa-fire-alt"></i></div>
+                    <div class="stat-icon-small"><i class="fa-solid fa-fire"></i></div>
                     <span class="stat-value" id="statsStreak">1</span>
                     <span class="stat-label">Day Streak</span>
                 </div>
                 <div class="stat-card card-purple">
-                    <i class="fas fa-globe-americas stat-bg-icon"></i> 
-                    <div class="stat-icon-small"><i class="fas fa-trophy"></i></div>
+                    <div class="stat-icon-small"><i class="fa-solid fa-trophy"></i></div>
                     <span class="stat-value">Top 10%</span>
                     <span class="stat-label">Global Standing</span>
                 </div>
@@ -356,8 +392,8 @@
 
             <div class="chart-widget">
                 <div class="widget-header">
-                    <h3 style="margin:0; color:white; font-family:'Outfit',sans-serif; font-size:1.2rem;">
-                        <i class="fas fa-chart-line" style="color:var(--accent-blue); margin-right:10px;"></i>Performance Log
+                    <h3 class="widget-title">
+                        <i class="fa-solid fa-chart-line"></i> Performance Log
                     </h3>
                     <div class="time-filters">
                         <button class="filter-btn active" id="btn-week" onclick="updateChart('week')">Week</button>
@@ -372,31 +408,12 @@
                 <div class="activity-section">
                     <p class="activity-title">Recent Activity Log</p>
                     <div id="activityLogList">
-                        <div style="color:#666; font-size:0.9rem;">Loading history...</div>
+                        <div style="color:var(--text-muted); font-size:0.85rem; padding: 10px;">Loading history...</div>
                     </div>
                 </div>
             </div>
 
         </main>
-    </div>
-
-    <div id="authModal" class="auth-modal">
-        <div class="auth-content">
-            <span onclick="closeModal()" class="close-btn">&times;</span>
-            <h2 id="modalTitle" style="color: white; margin-bottom: 25px; font-family:'Outfit', sans-serif;">Login</h2>
-            
-            <form id="authForm">
-                <input type="text" id="usernameInput" class="auth-input" placeholder="Choose a Username" style="display:none;">
-                <input type="email" id="emailInput" class="auth-input" placeholder="Email Address" required>
-                <input type="password" id="passwordInput" class="auth-input" placeholder="Password" required>
-                <button type="submit" id="submitAuthBtn" class="submit-btn">LOGIN</button>
-                <p id="authError" class="error-msg" style="color: #ff512f; font-size: 0.8rem; margin-top: 10px;"></p>
-            </form>
-
-            <p class="toggle-text" id="toggleText">
-                New to Supernova? <span onclick="toggleMode()">Create an account</span>
-            </p>
-        </div>
     </div>
 
     <script type="module" src="js/auth.js"></script>
