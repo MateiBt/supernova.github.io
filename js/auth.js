@@ -5,6 +5,7 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, on
 const firebaseConfig = {
   apiKey: "AIzaSyBZT_CK1nA24qYSzkQ2iNCwCDPiouR-uv8",
   authDomain: "supernova-auth-92414.firebaseapp.com",
+  databaseURL: "https://supernova-auth-92414-default-rtdb.europe-west1.firebasedatabase.app/",
   projectId: "supernova-auth-92414",
   storageBucket: "supernova-auth-92414.firebasestorage.app",
   messagingSenderId: "761827551286",
@@ -12,7 +13,8 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const auth = getAuth(app);
+export { app };
 
 let currentUser = null;
 let userProgress = []; 

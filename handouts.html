@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. SETĂRI GENERALE & TEMA BLUEISH --- */
+        /* --- 1. TEMA (din paste 3) --- */
         :root {
             --bg-deep: #050b14; 
             --bg-panel: rgba(13, 20, 33, 0.7);
@@ -16,23 +16,16 @@
             --text-main: #a1aab8;
             --text-light: #ffffff;
             --accent-blue: #3b82f6;
+            --accent-data: #a855f7;
+            --accent-obs: #10b981;
             --border-subtle: rgba(255, 255, 255, 0.08);
             --timeline-color: #1e293b;
         }
 
-        /* 1. Forțăm bara de scroll pentru a preveni "săritura" navbar-ului */
-        html { 
-            scroll-behavior: smooth; 
-            overflow-y: scroll; 
-        }
+        html { scroll-behavior: smooth; overflow-y: scroll; }
 
-        /* 2. Definim animația de fade-in */
-        @keyframes fadeIn { 
-            from { opacity: 0; } 
-            to { opacity: 1; } 
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* 3. Aplicăm animația pe întregul corp al paginii */
         body {
             background-color: var(--bg-deep);
             color: var(--text-main);
@@ -41,16 +34,17 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            animation: fadeIn 0.6s ease-out; /* Aici se întâmplă magia! */
+            animation: fadeIn 0.6s ease-out;
         }
 
+        /* Fundal foto (din paste 3) */
         .universe-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
             background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=2048&auto=format&fit=crop');
             background-size: cover; background-position: center; opacity: 0.12; 
         }
 
-        /* --- 2. NAVBAR SIMPLU --- */
+        /* --- 2. NAVBAR (din paste 3) --- */
         nav { 
             position: fixed; top: 0; width: 100%; 
             background: rgba(5, 11, 20, 0.95); border-bottom: 1px solid var(--border-subtle); 
@@ -70,7 +64,7 @@
             color: var(--text-main); text-decoration: none; margin: 0 20px; 
             font-weight: 500; font-size: 0.85rem; transition: color 0.2s ease;
         }
-        .nav-links a:hover, .nav-links a.active { color: var(--text-light); } 
+        .nav-links a:hover, .nav-links a.active { color: var(--text-light); }
 
         .btn-auth { 
             background: transparent; border: 1px solid var(--border-subtle); color: var(--text-light); 
@@ -79,7 +73,7 @@
         }
         .btn-auth:hover { background: var(--text-light); color: var(--bg-deep); }
 
-        /* --- 3. HEADER PAGINĂ --- */
+        /* --- 3. HEADER (din paste 3: gradient albastru pe titlu) --- */
         header { padding: 160px 20px 60px; text-align: center; max-width: 800px; margin: 0 auto; }
         
         .page-title { 
@@ -89,58 +83,78 @@
         }
         .page-desc { font-size: 1.05rem; color: var(--text-main); line-height: 1.8; max-width: 700px; margin: 0 auto; font-weight: 400; }
 
-        /* --- 4. LAYOUT PRINCIPAL (THEORY & DATA ANALYSIS) --- */
-        .handouts-layout {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 60px;
-            max-width: 1200px;
-            margin: 0 auto 60px;
+        /* --- 4. SECȚIUNI CURRICULUM --- */
+        .curriculum-section {
+            max-width: 1000px;
+            margin: 0 auto 80px;
             padding: 0 20px;
             width: 100%;
             box-sizing: border-box;
         }
 
-        .track-title {
-            font-size: 1.5rem; color: var(--text-light); margin: 0 0 30px 0;
-            display: flex; align-items: center; gap: 12px; font-weight: 600;
-            padding-bottom: 15px; border-bottom: 1px solid var(--border-subtle);
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 50px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-subtle);
         }
-        .track-title i { color: var(--accent-blue); }
+        .section-header h2 { font-size: 1.5rem; margin: 0; color: var(--text-light); font-weight: 600; }
+        .theory-header i { color: var(--accent-blue); }
+        .data-header   i { color: var(--accent-data); }
+        .obs-header    i { color: var(--accent-obs); }
 
-        /* --- 5. TIMELINE DESIGN --- */
-        .timeline {
-            border-left: 2px solid var(--timeline-color);
-            padding-left: 35px;
-            margin-left: 10px;
-        }
-
-        .timeline-item {
+        /* --- 5. TIMELINE LAYOUT ALTERNANT (din cererea anterioară) --- */
+        .timeline-container {
             position: relative;
-            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
         }
-        .timeline-item:last-child { margin-bottom: 0; }
 
-        .timeline-dot {
+        .timeline-container::before {
+            content: '';
             position: absolute;
-            left: -42px; 
-            top: 25px;
-            width: 12px;
-            height: 12px;
+            top: 0; bottom: 0; left: 50%;
+            width: 2px;
+            background: var(--timeline-color);
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+
+        .module-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .module-row.right-card { flex-direction: row-reverse; }
+
+        /* Punctul central (din paste 3: dot cu glow albastru) */
+        .center-dot {
+            position: absolute;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px; height: 12px;
             border-radius: 50%;
             background: var(--bg-deep);
             border: 2px solid var(--text-main);
             transition: all 0.3s ease;
-            z-index: 1;
+            z-index: 2;
         }
+        .theory-dot { border-color: var(--accent-blue); }
+        .data-dot   { border-color: var(--accent-data); }
+        .obs-dot    { border-color: var(--accent-obs); }
 
-        .timeline-item:hover .timeline-dot {
-            border-color: var(--accent-blue);
-            background: var(--accent-blue);
-            box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
-        }
+        .module-row:hover .theory-dot { background: var(--accent-blue); box-shadow: 0 0 12px rgba(59, 130, 246, 0.6); }
+        .module-row:hover .data-dot   { background: var(--accent-data); box-shadow: 0 0 12px rgba(168, 85, 247, 0.6); }
+        .module-row:hover .obs-dot    { background: var(--accent-obs);  box-shadow: 0 0 12px rgba(16, 185, 129, 0.6); }
 
-        /* --- 6. DESIGN CARDURI (ACADEMIC) --- */
+        .card-side, .desc-side { width: 45%; box-sizing: border-box; }
+
+        /* --- 6. CARDURI (stilizare din paste 3: border-radius 2px, hover translateX) --- */
         .handout-card {
             background: var(--bg-panel); 
             border: 1px solid var(--border-subtle);
@@ -148,13 +162,13 @@
             padding: 25px 30px; 
             transition: all 0.2s ease;
             display: flex; flex-direction: column;
-            text-decoration: none; 
+            text-decoration: none;
         }
 
         .handout-card:hover { 
             border-color: #3b4252; 
             background: var(--bg-hover); 
-            transform: translateX(5px); 
+            transform: translateY(-2px);
         }
 
         .card-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
@@ -165,53 +179,51 @@
             border-radius: 2px; display: flex; align-items: center; justify-content: center;
             font-size: 1.1rem; color: var(--text-light); flex-shrink: 0; transition: all 0.2s ease;
         }
-        .handout-card:hover .icon-box { border-color: var(--accent-blue); color: var(--accent-blue); }
+        
+        .theory-card:hover .icon-box { border-color: var(--accent-blue); color: var(--accent-blue); }
+        .data-card:hover   .icon-box { border-color: var(--accent-data); color: var(--accent-data); }
+        .obs-card:hover    .icon-box { border-color: var(--accent-obs);  color: var(--accent-obs); }
 
         .card-title { margin: 0; font-size: 1.15rem; font-weight: 600; color: var(--text-light); }
-        
-        .card-desc { font-size: 0.9rem; color: var(--text-main); margin: 0; line-height: 1.6; }
+        .card-desc  { font-size: 0.9rem; color: var(--text-main); margin: 0; line-height: 1.6; }
 
         .enter-arrow {
             margin-top: 15px; font-size: 0.8rem; font-weight: 600; color: var(--text-main);
             display: flex; align-items: center; gap: 8px; transition: color 0.2s; text-transform: uppercase; letter-spacing: 1px;
         }
-        .handout-card:hover .enter-arrow { color: var(--accent-blue); }
+        .theory-card:hover .enter-arrow { color: var(--accent-blue); }
+        .data-card:hover   .enter-arrow { color: var(--accent-data); }
+        .obs-card:hover    .enter-arrow { color: var(--accent-obs); }
 
-        /* --- 7. OBSERVATIONAL TRACK (JOS, FULL WIDTH) --- */
-        .observational-layout {
-            max-width: 1200px;
-            margin: 0 auto 100px;
-            padding: 0 20px;
-            width: 100%;
-            box-sizing: border-box;
+        /* --- 7. ZONA DE DESCRIERE LATERALĂ --- */
+        .desc-side { padding: 10px 20px; }
+        .desc-title {
+            font-size: 0.75rem; color: var(--text-light); text-transform: uppercase;
+            letter-spacing: 1.5px; margin: 0 0 10px 0; font-weight: 600; opacity: 0.6;
         }
-
-        .obs-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+        .desc-text { font-size: 0.9rem; color: var(--text-main); line-height: 1.6; margin: 0 0 15px 0; }
+        .subchapter-list { list-style: none; padding: 0; margin: 0; }
+        .subchapter-list li {
+            font-size: 0.85rem; color: var(--text-main); margin-bottom: 6px;
+            display: flex; align-items: center; gap: 8px;
         }
+        .theory-desc li::before { content: '•'; color: var(--accent-blue); font-size: 1.2rem; line-height: 1; }
+        .data-desc   li::before { content: '•'; color: var(--accent-data); font-size: 1.2rem; line-height: 1; }
+        .obs-desc    li::before { content: '•'; color: var(--accent-obs);  font-size: 1.2rem; line-height: 1; }
 
-        /* --- 8. FOOTER & MODALA --- */
+        /* --- 8. FOOTER --- */
         footer { margin-top: auto; padding: 40px 20px; color: #475569; font-size: 0.85rem; text-align: center; border-top: 1px solid var(--border-subtle); }
 
-        .auth-modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); align-items: center; justify-content: center; }
-        .auth-content { background: var(--bg-deep); padding: 40px; border-radius: 2px; width: 320px; border: 1px solid var(--border-subtle); position: relative; }
-        .close-btn { position: absolute; right: 20px; top: 15px; color: var(--text-main); cursor: pointer; font-size: 1.2rem; }
-        .close-btn:hover { color: var(--text-light); }
-        .auth-input { width: 100%; padding: 12px; margin: 8px 0 16px; background: var(--bg-panel); border: 1px solid var(--border-subtle); color: var(--text-light); border-radius: 2px; outline: none; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        .auth-input:focus { border-color: var(--text-main); }
-        .submit-btn { width: 100%; padding: 12px; background: var(--text-light); border: none; color: var(--bg-deep); font-weight: 600; border-radius: 2px; cursor: pointer; transition: 0.2s; }
-        .submit-btn:hover { background: #e2e8f0; }
-        .toggle-text { font-size: 0.85rem; margin-top: 20px; text-align: center; }
-        .toggle-text span { color: var(--text-light); cursor: pointer; text-decoration: underline;}
-
-        @media(max-width: 900px) {
-            nav { flex-direction: column; padding: 15px; gap: 15px; }
-            .nav-links { flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 10px; }
+        /* --- 9. RESPONSIVE --- */
+        @media(max-width: 768px) {
+            nav { padding: 12px 20px; }
+            .nav-links { display: none; }
             .page-title { font-size: 2.5rem; }
-            .handouts-layout { grid-template-columns: 1fr; gap: 40px; }
-            .obs-grid { grid-template-columns: 1fr; }
+            .timeline-container::before { display: none; }
+            .module-row, .module-row.right-card { flex-direction: column; gap: 15px; }
+            .center-dot { display: none; }
+            .card-side, .desc-side { width: 100%; }
+            .desc-side { padding: 0; margin-bottom: 30px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 20px; }
         }
     </style>
 </head>
@@ -219,6 +231,7 @@
 
     <div class="universe-bg"></div>
 
+    <!-- NAVBAR (din paste 3) -->
     <nav>
         <a href="index.html" class="nav-logo">
             <i class="fa-solid fa-star"></i>
@@ -227,7 +240,6 @@
                 <span class="sub">Guide</span>
             </div>
         </a>
-
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="handouts.html" class="active">Handouts</a>
@@ -236,7 +248,6 @@
             <a href="community.html">Community</a>
             <a href="profile.html" id="profileLink" style="display: none;">My Profile</a>
         </div>
-
         <div class="nav-auth-container">
             <button id="loginBtn" onclick="openAuthModal()" class="btn-auth">Login</button>
             <button id="logoutBtn" class="btn-auth" style="display: none;">Logout</button>
@@ -250,16 +261,18 @@
         </p>
     </header>
 
-    <div class="handouts-layout">
-        
-        <div class="track-column">
-            <h2 class="track-title"><i class="fa-solid fa-book-open"></i> Theory Notes</h2>
-            
-            <div class="timeline">
-                
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="handouts_math.html" class="handout-card">
+    <!-- SECȚIUNEA 1: THEORY NOTES -->
+    <div class="curriculum-section">
+        <div class="section-header theory-header">
+            <i class="fa-solid fa-book-open"></i>
+            <h2>Theory Notes</h2>
+        </div>
+        <div class="timeline-container">
+
+            <div class="module-row left-card">
+                <div class="center-dot theory-dot"></div>
+                <div class="card-side">
+                    <a href="handouts_math.html" class="handout-card theory-card">
                         <div class="card-header">
                             <div class="icon-box"><i class="fa-solid fa-square-root-variable"></i></div>
                             <h3 class="card-title">1. Physics & Math Basics</h3>
@@ -268,10 +281,22 @@
                         <span class="enter-arrow">View Notes <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                 </div>
+                <div class="desc-side theory-desc">
+                    <h4 class="desc-title">Module Overview</h4>
+                    <p class="desc-text">This module covers the foundational mathematical and physical concepts required to understand complex astronomical phenomena.</p>
+                    <ul class="subchapter-list">
+                        <li>Geometry & Conic Sections</li>
+                        <li>Vector Calculus & Taylor Series</li>
+                        <li>Thermodynamics & Kinetic Theory</li>
+                        <li>Blackbody Radiation Laws</li>
+                    </ul>
+                </div>
+            </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="handouts_positional.html" class="handout-card">
+            <div class="module-row right-card">
+                <div class="center-dot theory-dot"></div>
+                <div class="card-side">
+                    <a href="handouts_positional.html" class="handout-card theory-card">
                         <div class="card-header">
                             <div class="icon-box"><i class="fa-solid fa-compass-drafting"></i></div>
                             <h3 class="card-title">2. Positional Astronomy</h3>
@@ -280,10 +305,22 @@
                         <span class="enter-arrow">View Notes <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                 </div>
+                <div class="desc-side theory-desc">
+                    <h4 class="desc-title">Module Overview</h4>
+                    <p class="desc-text">Master the celestial sphere. Learn how to locate objects in the sky and convert between different time and coordinate systems.</p>
+                    <ul class="subchapter-list">
+                        <li>Spherical Trigonometry Basics</li>
+                        <li>Horizontal & Equatorial Systems</li>
+                        <li>Solar vs. Sidereal Time</li>
+                        <li>Precession & Nutation</li>
+                    </ul>
+                </div>
+            </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="handouts_celestial_mechanics.html" class="handout-card">
+            <div class="module-row left-card">
+                <div class="center-dot theory-dot"></div>
+                <div class="card-side">
+                    <a href="handouts_celestial_mechanics.html" class="handout-card theory-card">
                         <div class="card-header">
                             <div class="icon-box"><i class="fa-solid fa-satellite"></i></div>
                             <h3 class="card-title">3. Celestial Mechanics</h3>
@@ -292,10 +329,22 @@
                         <span class="enter-arrow">View Notes <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                 </div>
+                <div class="desc-side theory-desc">
+                    <h4 class="desc-title">Module Overview</h4>
+                    <p class="desc-text">The physics of orbits. From simple two-body Keplerian motion to complex gravitational maneuvers and resonances.</p>
+                    <ul class="subchapter-list">
+                        <li>Kepler's Laws of Planetary Motion</li>
+                        <li>Orbital Elements & Vis-Viva Equation</li>
+                        <li>Hohmann Transfer Orbits</li>
+                        <li>The Virial Theorem & N-Body Systems</li>
+                    </ul>
+                </div>
+            </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="handouts_astro.html" class="handout-card">
+            <div class="module-row right-card">
+                <div class="center-dot theory-dot"></div>
+                <div class="card-side">
+                    <a href="handouts_astro.html" class="handout-card theory-card">
                         <div class="card-header">
                             <div class="icon-box"><i class="fa-solid fa-star-half-stroke"></i></div>
                             <h3 class="card-title">4. Stellar Astrophysics</h3>
@@ -304,10 +353,22 @@
                         <span class="enter-arrow">View Notes <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                 </div>
+                <div class="desc-side theory-desc">
+                    <h4 class="desc-title">Module Overview</h4>
+                    <p class="desc-text">Dive into the physics of stars, understanding how they form, live on the main sequence, and eventually die.</p>
+                    <ul class="subchapter-list">
+                        <li>Magnitude Systems & Distance Modulus</li>
+                        <li>Stellar Spectra & Classification</li>
+                        <li>The Hertzsprung-Russell Diagram</li>
+                        <li>Stellar End States (White Dwarfs, Neutron Stars)</li>
+                    </ul>
+                </div>
+            </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="handouts_exo.html" class="handout-card">
+            <div class="module-row left-card">
+                <div class="center-dot theory-dot"></div>
+                <div class="card-side">
+                    <a href="handouts_exo.html" class="handout-card theory-card">
                         <div class="card-header">
                             <div class="icon-box"><i class="fa-solid fa-earth-americas"></i></div>
                             <h3 class="card-title">5. Exoplanets & Systems</h3>
@@ -316,10 +377,22 @@
                         <span class="enter-arrow">View Notes <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                 </div>
+                <div class="desc-side theory-desc">
+                    <h4 class="desc-title">Module Overview</h4>
+                    <p class="desc-text">Explore planetary systems beyond our own by understanding detection methods and planetary physics.</p>
+                    <ul class="subchapter-list">
+                        <li>Solar System Dynamics</li>
+                        <li>The Transit Method & Light Curves</li>
+                        <li>Radial Velocity (Doppler Spectroscopy)</li>
+                        <li>Planetary Atmospheres & Albedo</li>
+                    </ul>
+                </div>
+            </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="handouts_cosmo.html" class="handout-card">
+            <div class="module-row right-card">
+                <div class="center-dot theory-dot"></div>
+                <div class="card-side">
+                    <a href="handouts_cosmo.html" class="handout-card theory-card">
                         <div class="card-header">
                             <div class="icon-box"><i class="fa-solid fa-infinity"></i></div>
                             <h3 class="card-title">6. Cosmology & Galaxies</h3>
@@ -328,10 +401,22 @@
                         <span class="enter-arrow">View Notes <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                 </div>
+                <div class="desc-side theory-desc">
+                    <h4 class="desc-title">Module Overview</h4>
+                    <p class="desc-text">Scale up to the largest structures in the universe, studying galactic dynamics and cosmic evolution.</p>
+                    <ul class="subchapter-list">
+                        <li>Milky Way Structure & Kinematics</li>
+                        <li>Galaxy Classification & AGN</li>
+                        <li>Expansion of the Universe (Hubble's Law)</li>
+                        <li>Dark Matter & Dark Energy Concepts</li>
+                    </ul>
+                </div>
+            </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="handouts_telescopes_theory.html" class="handout-card">
+            <div class="module-row left-card">
+                <div class="center-dot theory-dot"></div>
+                <div class="card-side">
+                    <a href="handouts_telescopes_theory.html" class="handout-card theory-card">
                         <div class="card-header">
                             <div class="icon-box"><i class="fa-solid fa-microscope"></i></div>
                             <h3 class="card-title">7. Optics & Instrumentation</h3>
@@ -340,18 +425,33 @@
                         <span class="enter-arrow">View Notes <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                 </div>
-
+                <div class="desc-side theory-desc">
+                    <h4 class="desc-title">Module Overview</h4>
+                    <p class="desc-text">Understand the physics behind the tools astronomers use to collect and process light from the cosmos.</p>
+                    <ul class="subchapter-list">
+                        <li>Geometric Optics & Ray Tracing</li>
+                        <li>Magnification, Resolution & F-Ratio</li>
+                        <li>Detectors & CCD Fundamentals</li>
+                        <li>Signal-to-Noise Ratio (SNR) Calculations</li>
+                    </ul>
+                </div>
             </div>
-        </div>
 
-        <div class="track-column">
-            <h2 class="track-title"><i class="fa-solid fa-chart-line"></i> Data Analysis Guides</h2>
-            
-            <div class="timeline">
-                
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="handouts_data_basics.html" class="handout-card">
+        </div>
+    </div>
+
+    <!-- SECȚIUNEA 2: DATA ANALYSIS -->
+    <div class="curriculum-section">
+        <div class="section-header data-header">
+            <i class="fa-solid fa-chart-line"></i>
+            <h2>Data Analysis Guides</h2>
+        </div>
+        <div class="timeline-container">
+
+            <div class="module-row left-card">
+                <div class="center-dot data-dot"></div>
+                <div class="card-side">
+                    <a href="handouts_data_basics.html" class="handout-card data-card">
                         <div class="card-header">
                             <div class="icon-box"><i class="fa-solid fa-calculator"></i></div>
                             <h3 class="card-title">1. Methods & Plotting</h3>
@@ -360,52 +460,100 @@
                         <span class="enter-arrow">View Notes <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                 </div>
+                <div class="desc-side data-desc">
+                    <h4 class="desc-title">Module Overview</h4>
+                    <p class="desc-text">A practical guide to handling experimental data, managing uncertainties, and creating accurate scientific plots.</p>
+                    <ul class="subchapter-list">
+                        <li>Normal Distribution & Statistics</li>
+                        <li>Error Calculation & Propagation</li>
+                        <li>Linear Regression (Least Squares)</li>
+                        <li>Log-Log & Semi-Log Plotting</li>
+                    </ul>
+                </div>
+            </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="handouts_data_full.html" class="handout-card">
+            <div class="module-row right-card">
+                <div class="center-dot data-dot"></div>
+                <div class="card-side">
+                    <a href="handouts_data_full.html" class="handout-card data-card">
                         <div class="card-header">
-                            <div class="icon-box"><i class="fa-solid fa-table"></i></div>
+                            <div class="icon-box"><i class="fa-solid fa-table-list"></i></div>
                             <h3 class="card-title">2. Interpreting Datasets</h3>
                         </div>
                         <p class="card-desc">Guides on reading light curves, analyzing spectra, and extracting parameters.</p>
                         <span class="enter-arrow">View Notes <i class="fa-solid fa-arrow-right"></i></span>
                     </a>
                 </div>
-
+                <div class="desc-side data-desc">
+                    <h4 class="desc-title">Module Overview</h4>
+                    <p class="desc-text">Apply statistical methods to real astronomical data to deduce stellar properties, distances, and exoplanet sizes.</p>
+                    <ul class="subchapter-list">
+                        <li>Photometry & Light Curve Analysis</li>
+                        <li>Spectroscopy & Emission/Absorption Lines</li>
+                        <li>Distance Modulus from Real Data</li>
+                        <li>Extracting Orbital Parameters</li>
+                    </ul>
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
 
-    <div class="observational-layout">
-        <h2 class="track-title" style="justify-content: center; border-bottom: none; margin-bottom: 20px;">
-            <i class="fa-solid fa-eye"></i> Observational Manuals
-        </h2>
-        
-        <div class="obs-grid">
-            
-            <a href="handouts_blind_map.html" class="handout-card">
-                <div class="card-header">
-                    <div class="icon-box"><i class="fa-solid fa-map"></i></div>
-                    <h3 class="card-title">Blind Map Study Guide</h3>
-                </div>
-                <p class="card-desc">
-                    Techniques for naked-eye observation. Memorizing constellations, star alignments, and deep sky object positions.
-                </p>
-                <span class="enter-arrow">View Notes <i class="fa-solid fa-arrow-right"></i></span>
-            </a>
+    <!-- SECȚIUNEA 3: OBSERVATIONAL -->
+    <div class="curriculum-section">
+        <div class="section-header obs-header">
+            <i class="fa-solid fa-eye"></i>
+            <h2>Observational Manuals</h2>
+        </div>
+        <div class="timeline-container">
 
-            <a href="handouts_telescope_obs.html" class="handout-card">
-                <div class="card-header">
-                    <div class="icon-box"><i class="fa-solid fa-binoculars"></i></div>
-                    <h3 class="card-title">Telescope Manual</h3>
+            <div class="module-row left-card">
+                <div class="center-dot obs-dot"></div>
+                <div class="card-side">
+                    <a href="handouts_blind_map.html" class="handout-card obs-card">
+                        <div class="card-header">
+                            <div class="icon-box"><i class="fa-solid fa-map"></i></div>
+                            <h3 class="card-title">1. Blind Map Study Guide</h3>
+                        </div>
+                        <p class="card-desc">Techniques for naked-eye observation. Memorizing constellations and star alignments.</p>
+                        <span class="enter-arrow">View Notes <i class="fa-solid fa-arrow-right"></i></span>
+                    </a>
                 </div>
-                <p class="card-desc">
-                    Step-by-step guides for equatorial mount calibration, polar alignment, and practical pointing exercises.
-                </p>
-                <span class="enter-arrow">View Notes <i class="fa-solid fa-arrow-right"></i></span>
-            </a>
+                <div class="desc-side obs-desc">
+                    <h4 class="desc-title">Module Overview</h4>
+                    <p class="desc-text">Prepare for the night sky tests by learning how to navigate the celestial sphere without digital tools or coordinate grids.</p>
+                    <ul class="subchapter-list">
+                        <li>Constellation Identification & Star-Hopping</li>
+                        <li>Locating Messier Objects</li>
+                        <li>Estimating Angular Distances by Hand</li>
+                        <li>Seasonal Sky Maps</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="module-row right-card">
+                <div class="center-dot obs-dot"></div>
+                <div class="card-side">
+                    <a href="handouts_telescope_obs.html" class="handout-card obs-card">
+                        <div class="card-header">
+                            <div class="icon-box"><i class="fa-solid fa-binoculars"></i></div>
+                            <h3 class="card-title">2. Telescope Manual</h3>
+                        </div>
+                        <p class="card-desc">Step-by-step guides for equatorial mount calibration, polar alignment, and practical pointing.</p>
+                        <span class="enter-arrow">View Notes <i class="fa-solid fa-arrow-right"></i></span>
+                    </a>
+                </div>
+                <div class="desc-side obs-desc">
+                    <h4 class="desc-title">Module Overview</h4>
+                    <p class="desc-text">Master the practical hardware skills required during the observational rounds of the Olympiad.</p>
+                    <ul class="subchapter-list">
+                        <li>Equatorial Mount Setup & Balancing</li>
+                        <li>Polar Alignment Techniques</li>
+                        <li>Using Setting Circles</li>
+                        <li>Eyepiece Selection & Field of View</li>
+                    </ul>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -413,25 +561,6 @@
     <footer>
         &copy; 2026 Supernova Guide. All rights reserved.
     </footer>
-
-    <div id="authModal" class="auth-modal">
-        <div class="auth-content">
-            <span onclick="closeModal()" class="close-btn"><i class="fas fa-times"></i></span>
-            <h3 id="modalTitle" style="color: var(--text-light); margin: 0 0 20px 0; font-weight: 600;">Student Login</h3>
-            
-            <form id="authForm">
-                <input type="text" id="usernameInput" class="auth-input" placeholder="Username" style="display:none;">
-                <input type="email" id="emailInput" class="auth-input" placeholder="Academic Email" required>
-                <input type="password" id="passwordInput" class="auth-input" placeholder="Password" required>
-                <button type="submit" id="submitAuthBtn" class="submit-btn">Sign In</button>
-                <p id="authError" class="error-msg" style="color: #ef4444; font-size: 0.8rem; margin-top: 10px;"></p>
-            </form>
-
-            <p class="toggle-text" id="toggleText">
-                New to the platform? <span onclick="toggleMode()">Register</span>
-            </p>
-        </div>
-    </div>
 
     <script type="module" src="js/auth.js"></script>
 
