@@ -645,6 +645,7 @@ let onlineRoomCode = null;
 let lobbyListenerUnsubscribe = null;
 let stateListenerUnsubscribe = null;
 let actionListenerUnsubscribe = null;
+let playersListenerUnsubscribe = null;
 
 const dictTarget = { "stars": "Stars", "dso": "DSO" };
 const dictMode = { "name": "Identify Name", "type": "Classify Type", "position": "Locate Object", "mag": "Guess Magnitude", "multi": "Multiplayer Arena", "free": "Free Roam" };
@@ -1210,9 +1211,9 @@ function startCountdownAndLaunch() {
             hudContainer.style.display = 'block';
             startGlobalTimer();
 
-            if(isOnlineMatch && onlineRole === 'host') {
+            if(isOnlineMatch) {
                 initOnlineGame();
-            } else if (!isOnlineMatch) {
+            } else {
                 startNewRound();
             }
         }
@@ -1403,6 +1404,7 @@ function endGameSession() {
     if(lobbyListenerUnsubscribe) { lobbyListenerUnsubscribe(); lobbyListenerUnsubscribe = null; }
     if(stateListenerUnsubscribe) { stateListenerUnsubscribe(); stateListenerUnsubscribe = null; }
     if(actionListenerUnsubscribe) { actionListenerUnsubscribe(); actionListenerUnsubscribe = null; }
+    if(playersListenerUnsubscribe) { playersListenerUnsubscribe(); playersListenerUnsubscribe = null; }
     
     isGameRunning = false;
     isOnlineMatch = false;
@@ -1564,7 +1566,8 @@ function initOnlineGame() {
         }
     });
 
-    onValue(ref(db, `lobbies/${onlineRoomCode}/players`), (snap) => {
+    if(playersListenerUnsubscribe) playersListenerUnsubscribe();
+    playersListenerUnsubscribe = onValue(ref(db, `lobbies/${onlineRoomCode}/players`), (snap) => {
         const playersData = snap.val();
         if (playersData) {
             multiPlayers = playersData;
