@@ -3,7 +3,7 @@
 // ==========================================
 import { auth, app } from './auth.js';
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getDatabase, ref, set, get, update, onValue, onDisconnect, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getDatabase, ref, set, get, update, onValue, onDisconnect, remove, serverTimestamp, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 let currentUser = null;
 let db = getDatabase(app);
@@ -65,9 +65,7 @@ const starClassifications = {
         "Delta Cep", // Delta Cephei
         "Omicron Cet" // Mira
     ],
-    "eruptiva": [
-        
-    ],
+    "eruptiva": [],
     "rotativa": [
         "Alpha CVn"  // Cor Caroli
     ],
@@ -75,26 +73,35 @@ const starClassifications = {
         "Beta Per",  // Algol
         "Beta Lyr"   // Sheliak
     ],
-    "variabila": [
-        
-    ]
+    "variabila": []
 };
 
 function applyStarClassifications() {
     targetObjects.forEach(star => {
         if (!star.isDSO) {
-            star.correctType = "simpla"; 
+            star.correctTypes = [];
         }
     });
 
     for (const [type, starsArray] of Object.entries(starClassifications)) {
         starsArray.forEach(identifier => {
             let star = getConstellationStar(identifier);
-            if (star) {
-                star.correctType = type;
+            if (star && !star.isDSO) {
+                if (!star.correctTypes.includes(type)) {
+                    star.correctTypes.push(type);
+                }
             }
         });
     }
+
+    targetObjects.forEach(star => {
+        if (!star.isDSO) {
+            if (star.correctTypes.length === 0) {
+                star.correctTypes = ["simpla"];
+            }
+            star.correctType = star.correctTypes[0];
+        }
+    });
 }
 
 const constellationFullNames = {
@@ -123,18 +130,13 @@ const constellationFullNames = {
 // ==========================================
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x010103);
-
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 0, 0.1); 
-
+camera.position.set(0, 0, 0.1);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById('canvas-container').appendChild(renderer.domElement);
-
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.enablePan = false;
-controls.rotateSpeed = -0.15; 
-controls.enableZoom = false; 
+controls.enablePan = false; controls.rotateSpeed = -0.15; controls.enableZoom = false;
 
 window.addEventListener('wheel', (event) => {
     if (event.target.closest('#setup-modal') || event.target.closest('.modal-content') || event.target.closest('.hud-container') || event.target.closest('#free-roam-card') || event.target.closest('#practice-result-modal')) return;
@@ -178,10 +180,7 @@ function createDSOTexture() {
 // ==========================================
 const RA_TO_RAD = (Math.PI * 2) / 24;
 const DEG_TO_RAD = Math.PI / 180;
-
-let targetObjects = []; 
-let starPointsMesh;
-let dsoPointsMesh; 
+let targetObjects = []; let starPointsMesh; let dsoPointsMesh;
 
 function buildStarfield() {
     const starVertices = []; const starSizes = []; const starColors = [];
@@ -269,7 +268,6 @@ function getConstellationStar(starName) {
     return targetObjects.find(s => s.bayerName === starName && !s.isDSO);
 }
 
-// FORMATAT EXACT CUM ERA ÎN FIȘIERUL ORIGINAL!
 const constellationPairs = [
     // 1. Andromeda
     ["Alpha And","Delta And"], ["Delta And","Beta And"], ["Beta And","Gamma And"], ["Beta And","Mu And"], ["Mu And","Nu And"],
@@ -593,114 +591,53 @@ function formatTimeMs(ms) {
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}.${milli.toString().padStart(3, '0')}`;
 }
 
+function formatPoints(pts) {
+    if (Number.isInteger(pts)) return pts.toString();
+    return pts.toFixed(2).replace(/\.?0+$/, '');
+}
+
 // ==========================================
 // 5. PLANETARIUM UI & LOGICĂ
 // ==========================================
-let activeTarget = null;
-let activeMode = 'name'; 
-let activeDiff = null;
-let activeTime = null;
-let activeTimeTab = '5'; 
-let activePracticeConstellation = null; 
-
-let currentTarget = null;
-let currentSelectedId = null;
-let currentScore = 0;
-let mistakesCount = 0; 
-let totalLettersGuessed = 0; 
-let remainingTime = 0;
-let isUnlimited = false;
-let timerInterval = null;
-let isTimerPaused = false; 
+let activeTarget = null; let activeMode = 'name'; let activeDiff = null; let activeTime = null; let activeTimeTab = '5'; let activePracticeConstellation = null;
+let currentTarget = null; let currentSelectedId = null; let currentScore = 0; let mistakesCount = 0; let totalLettersGuessed = 0; let remainingTime = 0; let isUnlimited = false; let timerInterval = null; let isTimerPaused = false;
 
 // Form & Trackers (Single Player)
-let totalPlayTimeSec = 0;
-let currentStreak = 0;
-let performanceHistory = []; 
-let targetStartTime = 0;
-
+let totalPlayTimeSec = 0; let currentStreak = 0; let performanceHistory = []; let targetStartTime = 0;
 // Practice Vars
-let practiceQueue = [];
-let currentPracticeIndex = 0;
-let lastTickMs = 0;
-let totalPracticeMs = 0; 
+let practiceQueue = []; let currentPracticeIndex = 0; let lastTickMs = 0; let totalPracticeMs = 0;
 
-// Multiplayer Vars (Unified N-Players)
-let multiPlayers = {}; // { uuid: { name, score, timeMs, streak, history } }
-let multiOrder = []; // Array of uuids
-let currentTurnIndex = 0;
-let maxRounds = 25;
-let currentRound = 1;
-let duelTurnTimer = null;
-let duelTurnSeconds = 15;
-let isBotMatch = false;
-let botAccuracy = 0.60;
+// Multiplayer Vars
+let multiPlayers = {}; 
+let multiOrder = []; 
+let currentTurnIndex = 0; let maxRounds = 25; let currentRound = 1; let duelTurnTimer = null; let duelTurnSeconds = 15; let isBotMatch = false; let botAccuracy = 0.60; let multiOpponentType = 'local'; 
+let multiGameMode = 'name'; 
 
-// Online Multiplayer Vars
-let myClientId = Math.random().toString(36).substring(2, 10);
-let isOnlineMatch = false;
-let isGameRunning = false; 
-let onlineRole = null; 
-let onlineRoomCode = null;
-let lobbyListenerUnsubscribe = null;
-let stateListenerUnsubscribe = null;
-let actionListenerUnsubscribe = null;
-let playersListenerUnsubscribe = null;
+let selectedTypesStar = []; 
+let selectedTypeDSO = null; 
 
-const dictTarget = { "stars": "Stars", "dso": "DSO" };
-const dictMode = { "name": "Identify Name", "type": "Classify Type", "position": "Locate Object", "mag": "Guess Magnitude", "multi": "Multiplayer Arena", "free": "Free Roam" };
+let myClientId = Math.random().toString(36).substring(2, 10); let isOnlineMatch = false; let isGameRunning = false; let onlineRole = null; let onlineRoomCode = null; let lobbyListenerUnsubscribe = null; let stateListenerUnsubscribe = null; let actionListenerUnsubscribe = null; let playersListenerUnsubscribe = null; let onlineHostTimeoutWatcher = null; 
+let currentTurnDeadline = null; 
+let isMyTurnNow = true; 
+
+const dictTarget = { "stars": "Stars", "dso": "DSO" }; 
+const dictMode = { "name": "Identify Name", "type": "Classify Type", "position": "Locate Object", "mag": "Guess Magnitude", "multi": "Multiplayer Arena", "free": "Free Roam" }; 
 const dictDiff = { "easy": "Easy", "medium": "Medium", "hard": "Hard", "extreme": "Extreme" };
 
 const typeDict = { 
-    "simpla": "Simple Star", 
-    "dubla": "Double / Multiple Star", 
-    "variabila": "Variable Star (Generic)",
-    "pulsatila": "Pulsating Variable",
-    "eruptiva": "Eruptive Variable",
-    "rotativa": "Rotative Variable",
-    "eclipsanta": "Eclipsing Binary System",
-    "galaxy": "Galaxy", 
-    "nebula": "Nebula / SNR", 
-    "planetary_nebula": "Planetary Nebula",
-    "open_cluster": "Open Cluster", 
-    "globular_cluster": "Globular Cluster"
+    "simpla": "Simple Star", "dubla": "Double / Multiple Star", "variabila": "Variable Star (Generic)",
+    "pulsatila": "Pulsating Variable", "eruptiva": "Eruptive Variable", "rotativa": "Rotative Variable",
+    "eclipsanta": "Eclipsing Binary System", "galaxy": "Galaxy", "nebula": "Nebula / SNR", 
+    "planetary_nebula": "Planetary Nebula", "open_cluster": "Open Cluster", "globular_cluster": "Globular Cluster"
 };
 
-const setupModal = document.getElementById('setup-modal');
-const btnLaunch = document.getElementById('btn-launch');
-const targetGroup = document.getElementById('target-group');
-const diffGroup = document.getElementById('diff-group');
-const timeGroup = document.getElementById('time-group');
-const multiPlayersGroup = document.getElementById('multi-players-group');
-const hudContainer = document.getElementById('hud-container');
-const frCard = document.getElementById('free-roam-card');
-const hudInstruction = document.getElementById('hud-instruction');
-const inputGroupName = document.getElementById('input-group-name');
-const inputGroupType = document.getElementById('input-group-type');
-const inputGroupMag = document.getElementById('input-group-mag');
-const inputName = document.getElementById('input-name');
-const inputMag = document.getElementById('input-mag');
-const hudFeedback = document.getElementById('hud-feedback');
-const btnCheck = document.getElementById('btn-check');
-const btnEnd = document.getElementById('btn-end');
-const scoreDisplay = document.getElementById('score-display');
-const timerDisplay = document.getElementById('timer-display');
-const graphTitle = document.getElementById('form-graph-title');
+const starTypeKeys = ["simpla", "dubla", "variabila", "pulsatila", "eruptiva", "rotativa", "eclipsanta"]; 
+const dsoTypeKeys = ["galaxy", "nebula", "planetary_nebula", "open_cluster", "globular_cluster"];
+
+const setupModal = document.getElementById('setup-modal'); const btnLaunch = document.getElementById('btn-launch'); const targetGroup = document.getElementById('target-group'); const diffGroup = document.getElementById('diff-group'); const timeGroup = document.getElementById('time-group'); const multiPlayersGroup = document.getElementById('multi-players-group'); const hudContainer = document.getElementById('hud-container'); const frCard = document.getElementById('free-roam-card'); const hudInstruction = document.getElementById('hud-instruction'); const inputGroupName = document.getElementById('input-group-name'); const inputGroupType = document.getElementById('input-group-type'); const inputGroupMag = document.getElementById('input-group-mag'); const inputName = document.getElementById('input-name'); const inputMag = document.getElementById('input-mag'); const hudFeedback = document.getElementById('hud-feedback'); const btnCheck = document.getElementById('btn-check'); const btnEnd = document.getElementById('btn-end'); const scoreDisplay = document.getElementById('score-display'); const timerDisplay = document.getElementById('timer-display'); const graphTitle = document.getElementById('form-graph-title');
 
 // UI LOBBY ONLINE
-const onlineLobbyUI = document.getElementById('online-lobby-ui');
-const btnCreateRoom = document.getElementById('btn-create-room');
-const btnShowJoin = document.getElementById('btn-show-join');
-const createRoomUI = document.getElementById('create-room-ui');
-const joinRoomUI = document.getElementById('join-room-ui');
-const inputRoomCode = document.getElementById('input-room-code');
-const btnJoinRoom = document.getElementById('btn-join-room');
-const namesInputsGroup = document.getElementById('names-inputs-group');
-const opponentSelect = document.getElementById('multi-opponent');
-const botDiffSelect = document.getElementById('bot-difficulty');
-const multiRoundsSelect = document.getElementById('multi-rounds');
-const p1Inp = document.getElementById('multi-p1-name');
-const p2Inp = document.getElementById('multi-p2-name');
+const onlineLobbyUI = document.getElementById('online-lobby-ui'); const btnCreateRoom = document.getElementById('btn-create-room'); const btnShowJoin = document.getElementById('btn-show-join'); const createRoomUI = document.getElementById('create-room-ui'); const joinRoomUI = document.getElementById('join-room-ui'); const inputRoomCode = document.getElementById('input-room-code'); const btnJoinRoom = document.getElementById('btn-join-room'); const namesInputsGroup = document.getElementById('names-inputs-group'); const botDiffSelect = document.getElementById('bot-difficulty'); const multiRoundsSelect = document.getElementById('multi-rounds'); const p1Inp = document.getElementById('multi-p1-name'); const p2Inp = document.getElementById('multi-p2-name');
 
 function updateLobbyUIList() {
     const listEl = document.getElementById('lobby-players-list');
@@ -721,9 +658,15 @@ function updateLobbyUIList() {
     }
 }
 
-// EVENIMENTE LOBBY ONLINE
-if(opponentSelect) {
-    opponentSelect.addEventListener('change', (e) => {
+// ==========================================
+// 5.1 MULTIPLAYER OPPONENT & SKILL TOGGLES
+// ==========================================
+document.querySelectorAll('#multi-opponent-grid .opt-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        document.querySelectorAll('#multi-opponent-grid .opt-btn').forEach(b => b.classList.remove('selected'));
+        e.target.classList.add('selected');
+        multiOpponentType = e.target.dataset.opponent;
+
         botDiffSelect.style.display = 'none';
         onlineLobbyUI.style.display = 'none';
         namesInputsGroup.style.display = 'flex';
@@ -736,12 +679,12 @@ if(opponentSelect) {
         btnLaunch.innerText = "Start Arena Duel";
         checkLaunchReady();
 
-        if(e.target.value === 'bot') {
+        if(multiOpponentType === 'bot') {
             botDiffSelect.style.display = 'block';
             p2Inp.value = "A.I. Bot";
             p2Inp.disabled = true;
             p2Inp.style.opacity = '0.5';
-        } else if(e.target.value === 'online') {
+        } else if(multiOpponentType === 'online') {
             onlineLobbyUI.style.display = 'block';
             namesInputsGroup.style.display = 'none';
             isOnlineMatch = true;
@@ -749,7 +692,15 @@ if(opponentSelect) {
             btnLaunch.innerText = "Awaiting connection...";
         }
     });
-}
+});
+
+document.querySelectorAll('#multi-skill-grid .opt-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        document.querySelectorAll('#multi-skill-grid .opt-btn').forEach(b => b.classList.remove('selected'));
+        e.target.classList.add('selected');
+        multiGameMode = e.target.dataset.skill;
+    });
+});
 
 btnCreateRoom.addEventListener('click', () => {
     onlineRole = 'host';
@@ -761,34 +712,21 @@ btnCreateRoom.addEventListener('click', () => {
     
     const roomRef = ref(db, 'lobbies/' + onlineRoomCode);
     const myName = currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : "Player 1";
-
     maxRounds = parseInt(multiRoundsSelect.value);
 
     set(roomRef, {
-        status: 'waiting',
-        hostId: myClientId,
-        target: activeTarget,
-        diff: activeDiff,
-        rounds: maxRounds
+        status: 'waiting', hostId: myClientId, target: activeTarget, diff: activeDiff, rounds: maxRounds, gameMode: multiGameMode
     });
 
     const myPlayerRef = ref(db, `lobbies/${onlineRoomCode}/players/${myClientId}`);
-    set(myPlayerRef, {
-        name: myName,
-        score: 0,
-        timeMs: 0
-    });
-
+    set(myPlayerRef, { name: myName, score: 0, timeMs: 0 });
     onDisconnect(roomRef).remove();
 
     if(lobbyListenerUnsubscribe) lobbyListenerUnsubscribe();
     lobbyListenerUnsubscribe = onValue(ref(db, `lobbies/${onlineRoomCode}`), (snapshot) => {
         const data = snapshot.val();
         if(!data) {
-            if (onlineRole === 'guest') {
-                alert("Host disconnected. Room closed.");
-                endGameSession();
-            }
+            if (onlineRole === 'guest') { alert("Host disconnected. Room closed."); endGameSession(); }
             return;
         }
 
@@ -806,11 +744,9 @@ btnCreateRoom.addEventListener('click', () => {
             }
         }
 
-        if (data.status === 'starting') {
-            if (!isGameRunning) {
-                isGameRunning = true;
-                triggerGameStart();
-            }
+        if (data.status === 'starting' && !isGameRunning) {
+            isGameRunning = true;
+            triggerGameStart();
         }
     });
 });
@@ -833,56 +769,32 @@ btnJoinRoom.addEventListener('click', () => {
         if (snapshot.exists() && snapshot.val().status === 'waiting') {
             onlineRole = 'guest';
             onlineRoomCode = code;
-            
             const myName = currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : "Guest";
             
-            activeTarget = snapshot.val().target;
-            activeDiff = snapshot.val().diff;
-            maxRounds = snapshot.val().rounds || 25;
-            
-            multiRoundsSelect.value = maxRounds;
-            multiRoundsSelect.disabled = true;
+            activeTarget = snapshot.val().target; activeDiff = snapshot.val().diff; maxRounds = snapshot.val().rounds || 25; multiGameMode = snapshot.val().gameMode || 'name';
+            multiRoundsSelect.value = maxRounds; multiRoundsSelect.disabled = true;
 
             const myPlayerRef = ref(db, `lobbies/${onlineRoomCode}/players/${myClientId}`);
-            set(myPlayerRef, {
-                name: myName,
-                score: 0,
-                timeMs: 0
-            }).then(() => {
+            set(myPlayerRef, { name: myName, score: 0, timeMs: 0 }).then(() => {
                 onDisconnect(myPlayerRef).remove();
-                
                 statusText.style.color = "var(--accent-green)";
                 statusText.innerText = "Connected! Waiting for Host to start.";
-                btnLaunch.disabled = true;
-                btnLaunch.innerText = "Waiting for Host...";
+                btnLaunch.disabled = true; btnLaunch.innerText = "Waiting for Host...";
                 
                 if(lobbyListenerUnsubscribe) lobbyListenerUnsubscribe();
                 lobbyListenerUnsubscribe = onValue(ref(db, `lobbies/${onlineRoomCode}`), (snap) => {
                     const data = snap.val();
-                    if(!data) {
-                        alert("Host disconnected. Room closed.");
-                        endGameSession();
-                        return;
-                    }
-                    
+                    if(!data) { alert("Host disconnected. Room closed."); endGameSession(); return; }
                     multiPlayers = data.players || {};
                     updateLobbyUIList();
-
-                    if (data.status === 'starting') {
-                        if (!isGameRunning) {
-                            isGameRunning = true;
-                            triggerGameStart();
-                        }
-                    }
+                    if (data.status === 'starting' && !isGameRunning) { isGameRunning = true; triggerGameStart(); }
                 });
             });
         } else {
             statusText.style.color = "var(--accent-red)";
             statusText.innerText = "Invalid room code or match already started.";
         }
-    }).catch((error) => {
-        statusText.innerText = "Connection error.";
-    });
+    }).catch((error) => { statusText.innerText = "Connection error."; });
 });
 
 function unselectPractice() {
@@ -913,29 +825,23 @@ document.querySelectorAll('#mode-grid .opt-btn').forEach(btn => {
 
         if (activeMode === 'free') {
             unselectPractice();
-            targetGroup.style.display = 'none';
-            diffGroup.style.display = 'none';
-            timeGroup.style.display = 'none';
+            targetGroup.style.display = 'none'; diffGroup.style.display = 'none'; timeGroup.style.display = 'none';
         } else if (activeMode === 'multi') {
             unselectPractice();
             if(multiPlayersGroup) multiPlayersGroup.style.display = 'block';
-            targetGroup.style.display = 'block';
-            diffGroup.style.display = 'block';
-            timeGroup.style.display = 'none';
+            targetGroup.style.display = 'block'; diffGroup.style.display = 'block'; timeGroup.style.display = 'none';
             activeTime = 'unlimited';
             const dsoBtn = document.querySelector('#target-grid .opt-btn[data-target="dso"]');
             if(dsoBtn) { dsoBtn.disabled = false; dsoBtn.style.opacity = '1'; }
             
-            if(opponentSelect && opponentSelect.value === 'online') {
+            if(multiOpponentType === 'online') {
                 isOnlineMatch = true;
                 namesInputsGroup.style.display = 'none';
                 onlineLobbyUI.style.display = 'block';
             }
         } else if (activeMode === 'mag') {
             unselectPractice();
-            targetGroup.style.display = 'block';
-            diffGroup.style.display = 'block';
-            timeGroup.style.display = 'block';
+            targetGroup.style.display = 'block'; diffGroup.style.display = 'block'; timeGroup.style.display = 'block';
             activeTarget = 'stars';
             document.querySelectorAll('#target-grid .opt-btn').forEach(b => b.classList.remove('selected'));
             document.querySelector('#target-grid .opt-btn[data-target="stars"]').classList.add('selected');
@@ -943,9 +849,7 @@ document.querySelectorAll('#mode-grid .opt-btn').forEach(btn => {
             document.querySelector('#target-grid .opt-btn[data-target="dso"]').style.opacity = '0.3';
         } else {
             if (!activePracticeConstellation) {
-                targetGroup.style.display = 'block';
-                diffGroup.style.display = 'block';
-                timeGroup.style.display = 'block';
+                targetGroup.style.display = 'block'; diffGroup.style.display = 'block'; timeGroup.style.display = 'block';
                 const dsoBtn = document.querySelector('#target-grid .opt-btn[data-target="dso"]');
                 if(dsoBtn) { dsoBtn.disabled = false; dsoBtn.style.opacity = '1'; }
             }
@@ -989,7 +893,7 @@ document.querySelectorAll('#lb-tabs .lb-tab').forEach(btn => {
 });
 
 function checkLaunchReady() {
-    if(isOnlineMatch && onlineRoomCode) return; 
+    if(isOnlineMatch && onlineRoomCode) return;
 
     if (activePracticeConstellation) {
         if (!activeMode || activeMode === 'free' || activeMode === 'multi') {
@@ -1020,9 +924,8 @@ function populateLearningSection() {
     listElement.innerHTML = '';
 
     let constelStats = new Map(); 
-    
     targetObjects.forEach(obj => {
-        if (!obj.isDSO && obj.correctName && obj.correctName !== "" && obj.bayerName) {
+        if (!obj.isDSO && obj.bayerName) {
             const parts = obj.bayerName.split(' ');
             if (parts.length > 1) {
                 const abbr = parts[parts.length - 1]; 
@@ -1033,8 +936,6 @@ function populateLearningSection() {
     });
 
     const sortedAbbrs = Array.from(constelStats.keys()).sort();
-
-    let allPScores = JSON.parse(localStorage.getItem('planetariu_practice_lb')) || [];
     let evalMode = activeMode || 'name'; 
     const dName = currentUser ? (currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : "Student")) : "Student";
 
@@ -1042,7 +943,8 @@ function populateLearningSection() {
         const fullName = constellationFullNames[abbr] || abbr;
         const maxStars = constelStats.get(abbr);
 
-        let cScores = allPScores.filter(s => s.constellation === abbr && s.mode === evalMode);
+        let cScores = JSON.parse(localStorage.getItem('planetariu_practice_lb')) || [];
+        cScores = cScores.filter(s => s.constellation === abbr && s.mode === evalMode);
         
         let userBests = {};
         cScores.forEach(sc => {
@@ -1061,14 +963,9 @@ function populateLearningSection() {
             return a.timeMs - b.timeMs;
         });
 
-        let myRank = -1;
-        let myBest = null;
+        let myRank = -1; let myBest = null;
         for(let i=0; i<sortedBests.length; i++){
-            if(sortedBests[i].user === dName) {
-                myRank = i + 1;
-                myBest = sortedBests[i];
-                break;
-            }
+            if(sortedBests[i].user === dName) { myRank = i + 1; myBest = sortedBests[i]; break; }
         }
 
         let btnClass = 'learn-btn';
@@ -1078,22 +975,15 @@ function populateLearningSection() {
             if (myRank === 1) btnClass += ' rank-1';
             else if (myRank <= 10) btnClass += ' rank-top10';
             else if (myBest.points >= maxStars) btnClass += ' completed';
-            
-            bestTimeHtml = `<div class="best-time-label">Best: <span class="best-time-val">${myBest.points}pts / ${formatTimeMs(myBest.timeMs)}</span></div>`;
+            bestTimeHtml = `<div class="best-time-label">Best: <span class="best-time-val">${formatPoints(myBest.points)}pts / ${formatTimeMs(myBest.timeMs)}</span></div>`;
         }
 
-        if (abbr === activePracticeConstellation) {
-            btnClass += ' selected';
-        }
+        if (abbr === activePracticeConstellation) btnClass += ' selected';
         
         const li = document.createElement('li');
         const btn = document.createElement('button');
         btn.className = btnClass;
-        btn.innerHTML = `
-            <span class="learn-title">${fullName} <span class="learn-abbr">(${abbr})</span></span> 
-            <span class="learn-count"><i class="fa-solid fa-star" style="font-size:0.8em; color:var(--text-muted);"></i> ${maxStars} targets</span>
-            ${bestTimeHtml}
-        `;
+        btn.innerHTML = `<span class="learn-title">${fullName} <span class="learn-abbr">(${abbr})</span></span> <span class="learn-count"><i class="fa-solid fa-star" style="font-size:0.8em; color:var(--text-muted);"></i> ${maxStars} targets</span> ${bestTimeHtml}`;
         btn.title = fullName;
         
         btn.addEventListener('click', () => {
@@ -1116,6 +1006,137 @@ function populateLearningSection() {
         li.appendChild(btn);
         listElement.appendChild(li);
     });
+}
+
+// ==========================================
+// 5.2 DEEP-SKY OBJECT DIFFICULTY CLASSIFICATION
+// ==========================================
+function classifyDSODifficultyRank(obj) {
+    if (obj.difficultyRank) return obj.difficultyRank; 
+
+    const idStr = (obj.id || '').toString();
+    const bayerStr = (obj.bayerName || '').toString();
+    const nameStr = (obj.correctName || '').toString();
+    const catalogStr = (obj.catalog || obj.designation || obj.messierId || obj.caldwellId || '').toString();
+    const haystack = `${idStr} ${bayerStr} ${nameStr} ${catalogStr}`;
+
+    const isMessier = obj.isMessier === true || /\bM\s?\d{1,3}\b/i.test(haystack);
+    if (isMessier) return 1;
+
+    const isCaldwell = obj.isCaldwell === true || /\bC(?:ald(?:well)?)?\s?\d{1,3}\b/i.test(haystack);
+    if (isCaldwell) return 2;
+
+    const isGalaxy = obj.correctType === 'galaxy';
+    if (isGalaxy) return 3;
+
+    return 4; 
+}
+
+function filterDSOByDifficulty(objects, diff) {
+    let maxRank = 4;
+    if (diff === 'easy') maxRank = 1;
+    else if (diff === 'medium') maxRank = 2;
+    else if (diff === 'hard') maxRank = 3;
+    else maxRank = 4;
+    return objects.filter(o => classifyDSODifficultyRank(o) <= maxRank);
+}
+
+// ==========================================
+// 5.3 CLASSIFY-TYPE BUTTON GRID
+// ==========================================
+function renderTypeButtonGrid() {
+    const grid = document.getElementById('type-button-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    selectedTypesStar = [];
+    selectedTypeDSO = null;
+
+    const isDSO = !!(currentTarget && currentTarget.isDSO);
+    const keys = isDSO ? dsoTypeKeys : starTypeKeys;
+
+    const hint = document.getElementById('type-grid-hint');
+    if (hint) hint.innerText = isDSO ? "Select one classification." : "Select ALL classifications that apply (a star can be e.g. both Double and Variable).";
+
+    keys.forEach(key => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt-btn type-btn';
+        btn.dataset.type = key;
+        btn.innerText = typeDict[key];
+        btn.addEventListener('click', () => {
+            if (isDSO) {
+                grid.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedTypeDSO = key;
+            } else {
+                btn.classList.toggle('selected');
+                if (btn.classList.contains('selected')) {
+                    if (!selectedTypesStar.includes(key)) selectedTypesStar.push(key);
+                } else {
+                    selectedTypesStar = selectedTypesStar.filter(t => t !== key);
+                }
+            }
+        });
+        grid.appendChild(btn);
+    });
+}
+
+// ==========================================
+// 5.4 SHARED ROUND-UI HELPERS
+// ==========================================
+function showInputGroupForSkill(skill) {
+    inputGroupName.style.display = 'none';
+    inputGroupType.style.display = 'none';
+    if (inputGroupMag) inputGroupMag.style.display = 'none';
+    inputName.value = "";
+    if (inputMag) inputMag.value = "";
+    hudFeedback.className = "hud-feedback";
+    hudFeedback.style.display = "none";
+    btnCheck.style.display = "block";
+
+    if (skill === 'name') {
+        inputGroupName.style.display = 'flex';
+    } else if (skill === 'type') {
+        inputGroupType.style.display = 'flex';
+        renderTypeButtonGrid();
+    } else if (skill === 'mag') {
+        if (inputGroupMag) inputGroupMag.style.display = 'flex';
+    }
+}
+
+function prepareSkillRoundUI(skill) {
+    showInputGroupForSkill(skill);
+    currentSelectedId = null;
+    if (skill === 'position') {
+        btnCheck.disabled = true;
+        btnCheck.style.opacity = '0.5';
+        btnCheck.innerText = 'Confirm Target';
+    } else {
+        btnCheck.disabled = false;
+        btnCheck.style.opacity = '1';
+        btnCheck.innerText = (activeMode === 'multi') ? 'Submit Answer' : 'Submit';
+    }
+}
+
+function panCameraToTarget(target) {
+    const raRad = target.ra * RA_TO_RAD;
+    const decRad = target.dec * DEG_TO_RAD;
+    const starPos = new THREE.Vector3(
+        100 * Math.cos(decRad) * Math.sin(raRad),
+        100 * Math.sin(decRad),
+        100 * Math.cos(decRad) * Math.cos(raRad)
+    );
+    camera.position.copy(starPos).normalize().multiplyScalar(-0.1);
+    controls.target.set(0, 0, 0);
+    controls.update();
+}
+
+function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
 }
 
 function updateHUDGraph() {
@@ -1183,7 +1204,7 @@ function updateLiveLeaderboard() {
             div.style.background = bg;
             div.innerHTML = `
                 <div class="live-lb-name">${idx + 1}. ${p.name}</div>
-                <div><span class="live-lb-score">${p.score}</span><span class="live-lb-time">(${tSecs}s)</span></div>
+                <div><span class="live-lb-score">${formatPoints(p.score || 0)}</span><span class="live-lb-time">(${tSecs}s)</span></div>
             `;
             lbList.appendChild(div);
         });
@@ -1229,11 +1250,7 @@ function showVSScreenAndStart() {
         
         let playersArr = [];
         if (activeMode === 'multi') {
-            if (isOnlineMatch) {
-                playersArr = Object.values(multiPlayers).map(p => p.name);
-            } else {
-                playersArr = Object.values(multiPlayers).map(p => p.name);
-            }
+            playersArr = Object.values(multiPlayers).map(p => p.name);
         } else {
             playersArr = [currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : "Player 1"];
         }
@@ -1267,10 +1284,10 @@ function triggerGameStart() {
     
     currentRound = 1;
     currentTurnIndex = 0;
+    currentTurnDeadline = null;
 
     if (activeMode === 'multi' && !isOnlineMatch) {
-        const oppType = opponentSelect ? opponentSelect.value : 'local';
-        isBotMatch = (oppType === 'bot');
+        isBotMatch = (multiOpponentType === 'bot');
         if (botDiffSelect) botAccuracy = parseFloat(botDiffSelect.value);
 
         const p1In = document.getElementById('multi-p1-name');
@@ -1285,18 +1302,17 @@ function triggerGameStart() {
             'p2': { name: name2, score: 0, timeMs: 0, streak: 0, history: [] }
         };
         multiOrder = ['p1', 'p2'];
+        isMyTurnNow = true; 
     }
 
     updateHUDGraph();
     updateLiveLeaderboard();
 
     if (activePracticeConstellation) {
-        let practicePool = targetObjects.filter(obj => 
-            !obj.isDSO && obj.correctName && obj.correctName !== "" && 
-            obj.bayerName && obj.bayerName.endsWith(` ${activePracticeConstellation}`)
+        let practicePool = targetObjects.filter(obj =>
+            !obj.isDSO && obj.bayerName && obj.bayerName.endsWith(` ${activePracticeConstellation}`)
         );
-        practiceQueue = [...practicePool];
-        shuffleArray(practiceQueue);
+        practiceQueue = shuffleArray([...practicePool]);
         currentPracticeIndex = 0;
     }
 
@@ -1319,28 +1335,86 @@ btnLaunch.addEventListener('click', () => {
     triggerGameStart();
 });
 
+// ==========================================
+// 5.5 TIMER SYSTEM
+// ==========================================
+function startHostTimeoutWatcher() {
+    if (onlineHostTimeoutWatcher) clearInterval(onlineHostTimeoutWatcher);
+    onlineHostTimeoutWatcher = setInterval(() => {
+        if (!isOnlineMatch || onlineRole !== 'host' || !currentTurnDeadline || isTimerPaused) return;
+        if (Date.now() >= currentTurnDeadline) {
+            advanceOnlineTurnAsTimeout();
+        }
+    }, 400);
+}
+
+function buildSkillAnswerLabel(target, skill) {
+    if (!target) return "N/A";
+    if (skill === 'type') {
+        if (target.isDSO) return typeDict[target.correctType] || "Unknown";
+        return (target.correctTypes && target.correctTypes.length > 0 ? target.correctTypes : ['simpla']).map(t => typeDict[t] || t).join(', ');
+    } else if (skill === 'mag') {
+        return target.mag.toFixed(2);
+    } else if (skill === 'position') {
+        return target.correctName ? target.correctName.toUpperCase() : (target.bayerName || target.id);
+    }
+    return target.correctName ? target.correctName.toUpperCase() : "NONE (blank)";
+}
+
+function advanceOnlineTurnAsTimeout() {
+    if (!currentTurnDeadline) return;
+    currentTurnDeadline = null; 
+
+    const activeId = multiOrder[currentTurnIndex];
+    const activePlayer = multiPlayers[activeId] || { history: [], streak: 0, timeMs: 0 };
+    let history = (activePlayer.history || []).slice();
+    history.push({ correct: false, time: 15000 });
+    if (history.length > 20) history.shift();
+
+    update(ref(db, `lobbies/${onlineRoomCode}/players/${activeId}`), {
+        streak: 0,
+        history: history,
+        timeMs: (activePlayer.timeMs || 0) + 15000
+    });
+
+    update(ref(db, `lobbies/${onlineRoomCode}/lastAction`), {
+        playerId: activeId,
+        correct: false,
+        points: 0,
+        time: 15000,
+        answerLabel: buildSkillAnswerLabel(currentTarget, multiGameMode),
+        timeout: true
+    });
+}
+
 function startGlobalTimer() {
     if (timerInterval) clearInterval(timerInterval);
     if (duelTurnTimer) clearInterval(duelTurnTimer);
+    if (onlineHostTimeoutWatcher) clearInterval(onlineHostTimeoutWatcher);
     isTimerPaused = false;
     totalPlayTimeSec = 0;
     
     if (activeMode === 'multi') {
+        if (isOnlineMatch) {
+            duelTurnTimer = setInterval(() => {
+                if (isTimerPaused || !currentTurnDeadline) return;
+                const remainingSec = Math.max(0, Math.ceil((currentTurnDeadline - Date.now()) / 1000));
+                timerDisplay.innerText = `00:${remainingSec.toString().padStart(2, '0')}`;
+            }, 250);
+
+            if (onlineRole === 'host') startHostTimeoutWatcher();
+            return;
+        }
+
         duelTurnSeconds = 15;
         timerDisplay.innerText = "00:15";
         duelTurnTimer = setInterval(() => {
             if(isTimerPaused) return;
             duelTurnSeconds--;
+            if (duelTurnSeconds < 0) duelTurnSeconds = 0;
             timerDisplay.innerText = `00:${duelTurnSeconds.toString().padStart(2, '0')}`;
             if(duelTurnSeconds <= 0) {
-                if(isOnlineMatch) {
-                    let activeId = multiOrder[currentTurnIndex];
-                    if(activeId === myClientId) {
-                        processAnswer(false, currentTarget, true);
-                    }
-                } else {
-                    processAnswer(false, currentTarget, true);
-                }
+                processAnswer(false, currentTarget, true, 0);
             }
         }, 1000);
         return;
@@ -1397,6 +1471,8 @@ function updateTimerUI(totalSeconds) {
 function endGameSession() {
     clearInterval(timerInterval);
     if(duelTurnTimer) clearInterval(duelTurnTimer);
+    if(onlineHostTimeoutWatcher) clearInterval(onlineHostTimeoutWatcher);
+    currentTurnDeadline = null;
     
     if(isOnlineMatch && onlineRole === 'host' && onlineRoomCode) {
         remove(ref(db, 'lobbies/' + onlineRoomCode));
@@ -1425,7 +1501,7 @@ function endGameSession() {
     
     createRoomUI.style.display = 'none';
     joinRoomUI.style.display = 'none';
-    if(opponentSelect && opponentSelect.value === 'online') {
+    if(multiOpponentType === 'online') {
         document.getElementById('room-status').innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Awaiting connection...`;
         const js = document.getElementById('join-status');
         if(js) js.style.display = 'none';
@@ -1464,19 +1540,12 @@ document.getElementById('btn-close-practice')?.addEventListener('click', () => {
 
 btnEnd.addEventListener('click', () => {
     if(confirm("End current session?")) {
-        if (activePracticeConstellation) {
-            endPracticeSession(false); 
-        } else {
-            endGameSession();
-        }
+        if (activePracticeConstellation) endPracticeSession(false); 
+        else endGameSession();
     }
 });
 
-const highlightGeometry = new THREE.RingGeometry(2.0, 2.3, 32); 
-const highlightMaterial = new THREE.MeshBasicMaterial({ color: 0xffeb3b, side: THREE.DoubleSide, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false });
-const highlightRing = new THREE.Mesh(highlightGeometry, highlightMaterial);
-highlightRing.visible = false;
-scene.add(highlightRing);
+const highlightGeometry = new THREE.RingGeometry(2.0, 2.3, 32); const highlightMaterial = new THREE.MeshBasicMaterial({ color: 0xffeb3b, side: THREE.DoubleSide, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false }); const highlightRing = new THREE.Mesh(highlightGeometry, highlightMaterial); highlightRing.visible = false; scene.add(highlightRing);
 
 function updateHighlightRing(starObj, hexColor = 0xffeb3b) {
     if (!starObj) { highlightRing.visible = false; return; }
@@ -1497,7 +1566,10 @@ function pickRandomTarget() {
     let playableObjects = baseObjects;
     
     if (activeTarget === 'stars') playableObjects = baseObjects.filter(obj => !obj.isDSO && obj.bayerName && obj.bayerName !== "Necunoscut");
-    else if (activeTarget === 'dso') playableObjects = baseObjects.filter(obj => obj.isDSO);
+    else if (activeTarget === 'dso') {
+        playableObjects = baseObjects.filter(obj => obj.isDSO);
+        playableObjects = filterDSOByDifficulty(playableObjects, activeDiff);
+    }
 
     if (playableObjects.length === 0) return targetObjects[0];
 
@@ -1505,11 +1577,8 @@ function pickRandomTarget() {
     const unnamedTargets = playableObjects.filter(s => !s.correctName && (!s.altNames || s.altNames.length === 0));
 
     if (namedTargets.length > 0 && unnamedTargets.length > 0) {
-        if (Math.random() < 0.90) {
-            return namedTargets[Math.floor(Math.random() * namedTargets.length)];
-        } else {
-            return unnamedTargets[Math.floor(Math.random() * unnamedTargets.length)];
-        }
+        if (Math.random() < 0.90) return namedTargets[Math.floor(Math.random() * namedTargets.length)];
+        else return unnamedTargets[Math.floor(Math.random() * unnamedTargets.length)];
     }
     return playableObjects[Math.floor(Math.random() * playableObjects.length)];
 }
@@ -1519,19 +1588,14 @@ function initOnlineGame() {
         multiOrder = Object.keys(multiPlayers);
         const firstTarget = pickRandomTarget();
         update(ref(db, 'lobbies/' + onlineRoomCode + '/state'), {
-            targetId: firstTarget.id,
-            turnIndex: 0, 
-            currentRound: 1,
-            order: multiOrder
+            targetId: firstTarget.id, turnIndex: 0, currentRound: 1, order: multiOrder, turnDeadline: Date.now() + 15000, gameMode: multiGameMode
         });
     }
 
     if(stateListenerUnsubscribe) stateListenerUnsubscribe();
     stateListenerUnsubscribe = onValue(ref(db, 'lobbies/' + onlineRoomCode + '/state'), (snapshot) => {
         const data = snapshot.val();
-        if(data) {
-            syncOnlineGame(data);
-        }
+        if(data) syncOnlineGame(data);
     });
 
     if(actionListenerUnsubscribe) actionListenerUnsubscribe();
@@ -1542,10 +1606,12 @@ function initOnlineGame() {
         isTimerPaused = true;
         const pName = multiPlayers[action.playerId]?.name || "Player";
         if (action.correct) {
-            hudFeedback.innerText = `${pName} got it right! (+${action.points} pts)`;
+            hudFeedback.innerText = `${pName} got it right! (+${formatPoints(action.points)} pts)`;
             hudFeedback.className = "hud-feedback correct";
         } else {
-            hudFeedback.innerHTML = `${pName} missed! Target was: <b>${action.targetName.toUpperCase()}</b>`;
+            const prefix = action.timeout ? "<b>Time expired!</b> " : "Missed! ";
+            const label = (action.answerLabel !== undefined && action.answerLabel !== null) ? action.answerLabel.toString().toUpperCase() : "N/A";
+            hudFeedback.innerHTML = `${prefix}${pName} - correct answer: <b>${label}</b>`;
             hudFeedback.className = "hud-feedback wrong";
         }
         hudFeedback.style.display = "block";
@@ -1558,9 +1624,7 @@ function initOnlineGame() {
                 if (nextIndex === 0) nextRound++;
                 
                 update(ref(db, 'lobbies/' + onlineRoomCode + '/state'), {
-                    turnIndex: nextIndex,
-                    currentRound: nextRound,
-                    targetId: pickRandomTarget().id
+                    turnIndex: nextIndex, currentRound: nextRound, targetId: pickRandomTarget().id, turnDeadline: Date.now() + 15000
                 });
             }, 2500);
         }
@@ -1577,51 +1641,41 @@ function initOnlineGame() {
 }
 
 function syncOnlineGame(data) {
-    multiOrder = data.order || [];
-    currentTurnIndex = data.turnIndex;
-    currentRound = data.currentRound;
+    multiOrder = data.order || []; currentTurnIndex = data.turnIndex; currentRound = data.currentRound;
+    currentTurnDeadline = data.turnDeadline || (Date.now() + 15000);
+    if (data.gameMode) multiGameMode = data.gameMode;
     currentTarget = targetObjects.find(s => s.id === data.targetId) || targetObjects[0];
 
     if (currentRound > maxRounds) {
         let sorted = Object.values(multiPlayers).sort((a,b) => b.score - a.score);
-        alert(`GAME OVER! ${sorted[0].name} wins the match!`);
+        if (sorted.length > 0) alert(`GAME OVER! ${sorted[0].name} wins the match!`);
         endGameSession();
         return;
     }
 
-    duelTurnSeconds = 15;
     isTimerPaused = false;
-    timerDisplay.innerText = "00:15";
     scoreDisplay.innerText = `Round ${currentRound} / ${maxRounds}`;
 
-    currentSelectedId = null;
-    inputGroupName.style.display = 'none';
-    inputGroupType.style.display = 'none';
-    if(inputGroupMag) inputGroupMag.style.display = 'none';
-    inputName.value = "";
-    if(inputMag) inputMag.value = "";
-    document.getElementById('select-type').value = "";
-    hudFeedback.style.display = "none";
-    btnCheck.style.display = "block";
-    updateHighlightRing(null);
+    let activeId = multiOrder[currentTurnIndex];
+    let currName = multiPlayers[activeId]?.name || "Unknown";
+    let localIsActing = (activeId === myClientId);
+    isMyTurnNow = localIsActing;
+
+    prepareSkillRoundUI(multiGameMode);
+    updateHighlightRing(currentTarget, localIsActing ? 0x3b82f6 : 0xfbbf24);
 
     targetStartTime = performance.now();
     updateHUDGraph();
 
-    let activeId = multiOrder[currentTurnIndex];
-    let currName = multiPlayers[activeId]?.name || "Unknown";
-    let isMyTurn = (activeId === myClientId);
-    
-    updateHighlightRing(currentTarget, isMyTurn ? 0x3b82f6 : 0xfbbf24);
-    inputGroupName.style.display = 'flex';
+    const skillLabel = dictMode[multiGameMode] || 'Identify Name';
 
-    if (isMyTurn) {
-        hudInstruction.innerHTML = `<span style="color:var(--accent-blue); font-weight:800;">YOUR TURN:</span> Identify highlighted target`;
-        btnCheck.innerText = "Submit Answer";
-        btnCheck.disabled = false;
-        btnCheck.style.opacity = "1";
+    if (localIsActing) {
+        hudInstruction.innerHTML = `<span style="color:var(--accent-blue); font-weight:800;">YOUR TURN:</span> ${skillLabel} for highlighted target`;
+        btnCheck.disabled = (multiGameMode === 'position'); 
+        btnCheck.style.opacity = (multiGameMode === 'position') ? "0.5" : "1";
         inputName.disabled = false;
-        setTimeout(() => { inputName.focus(); }, 100);
+        if (multiGameMode === 'name') setTimeout(() => { inputName.focus(); }, 100);
+        else if (multiGameMode === 'mag' && inputMag) setTimeout(() => { inputMag.focus(); }, 100);
     } else {
         hudInstruction.innerHTML = `<span style="color:var(--accent-gold); font-weight:800;">${currName.toUpperCase()} IS ANSWERING...</span>`;
         btnCheck.disabled = true;
@@ -1629,16 +1683,7 @@ function syncOnlineGame(data) {
         inputName.disabled = true;
     }
 
-    const raRad = currentTarget.ra * RA_TO_RAD;
-    const decRad = currentTarget.dec * DEG_TO_RAD;
-    const starPos = new THREE.Vector3(
-        100 * Math.cos(decRad) * Math.sin(raRad),
-        100 * Math.sin(decRad),
-        100 * Math.cos(decRad) * Math.cos(raRad)
-    );
-    camera.position.copy(starPos).normalize().multiplyScalar(-0.1);
-    controls.target.set(0, 0, 0);
-    controls.update();
+    if (multiGameMode !== 'position') panCameraToTarget(currentTarget);
 }
 
 function startNewRound() {
@@ -1660,13 +1705,10 @@ function startNewRound() {
     }
 
     if (activePracticeConstellation) {
-        if (currentPracticeIndex >= practiceQueue.length) {
-            endPracticeSession(true);
-            return;
-        }
+        if (currentPracticeIndex >= practiceQueue.length) { endPracticeSession(true); return; }
         currentTarget = practiceQueue[currentPracticeIndex];
-        if(scoreDisplay) scoreDisplay.innerText = `${currentScore} / ${practiceQueue.length}`;
-    } else {
+        if(scoreDisplay) scoreDisplay.innerText = `${formatPoints(currentScore)} / ${practiceQueue.length}`;
+    } else if (activeMode !== 'multi') {
         let maxMag = 6.5; 
         if (activeMode !== 'mag') {
             if (activeDiff === 'easy') maxMag = 2.0;
@@ -1679,31 +1721,48 @@ function startNewRound() {
         let playableObjects = baseObjects;
         
         if (activeTarget === 'stars' || activeMode === 'mag') playableObjects = baseObjects.filter(obj => !obj.isDSO && obj.bayerName && obj.bayerName !== "Necunoscut");
-        else if (activeTarget === 'dso') playableObjects = baseObjects.filter(obj => obj.isDSO);
+        else if (activeTarget === 'dso') {
+            playableObjects = baseObjects.filter(obj => obj.isDSO);
+            playableObjects = filterDSOByDifficulty(playableObjects, activeDiff);
+        }
 
         if (playableObjects.length === 0) return;
 
         const namedTargets = playableObjects.filter(s => (s.correctName && s.correctName !== "") || (s.altNames && s.altNames.length > 0));
         const unnamedTargets = playableObjects.filter(s => !s.correctName && (!s.altNames || s.altNames.length === 0));
 
-        if ((activeMode === 'name' || activeMode === 'multi') && namedTargets.length > 0 && unnamedTargets.length > 0) {
-            if (Math.random() < 0.90) {
-                currentTarget = namedTargets[Math.floor(Math.random() * namedTargets.length)];
-            } else {
-                currentTarget = unnamedTargets[Math.floor(Math.random() * unnamedTargets.length)];
-            }
+        if (activeMode === 'name' && namedTargets.length > 0 && unnamedTargets.length > 0) {
+            if (Math.random() < 0.90) currentTarget = namedTargets[Math.floor(Math.random() * namedTargets.length)];
+            else currentTarget = unnamedTargets[Math.floor(Math.random() * unnamedTargets.length)];
+        } else {
+            currentTarget = playableObjects[Math.floor(Math.random() * playableObjects.length)];
+        }
+    } else {
+        // Local multiplayer logic
+        let maxMag = 6.5;
+        if (activeDiff === 'easy') maxMag = 2.0;
+        else if (activeDiff === 'medium') maxMag = 4.0;
+        else if (activeDiff === 'hard') maxMag = 5.0;
+
+        let baseObjects = targetObjects.filter(obj => obj.mag <= maxMag);
+        let playableObjects = baseObjects;
+        if (activeTarget === 'stars') playableObjects = baseObjects.filter(obj => !obj.isDSO && obj.bayerName && obj.bayerName !== "Necunoscut");
+        else if (activeTarget === 'dso') {
+            playableObjects = baseObjects.filter(obj => obj.isDSO);
+            playableObjects = filterDSOByDifficulty(playableObjects, activeDiff);
+        }
+        if (playableObjects.length === 0) return;
+
+        const namedTargets = playableObjects.filter(s => (s.correctName && s.correctName !== "") || (s.altNames && s.altNames.length > 0));
+        const unnamedTargets = playableObjects.filter(s => !s.correctName && (!s.altNames || s.altNames.length === 0));
+        if (multiGameMode === 'name' && namedTargets.length > 0 && unnamedTargets.length > 0) {
+            currentTarget = (Math.random() < 0.90) ? namedTargets[Math.floor(Math.random() * namedTargets.length)] : unnamedTargets[Math.floor(Math.random() * unnamedTargets.length)];
         } else {
             currentTarget = playableObjects[Math.floor(Math.random() * playableObjects.length)];
         }
     }
 
     currentSelectedId = null;
-    inputGroupName.style.display = 'none';
-    inputGroupType.style.display = 'none';
-    if(inputGroupMag) inputGroupMag.style.display = 'none';
-    inputName.value = "";
-    if(inputMag) inputMag.value = "";
-    document.getElementById('select-type').value = "";
     hudFeedback.className = "hud-feedback";
     hudFeedback.style.display = "none";
     btnCheck.style.display = "block";
@@ -1713,75 +1772,60 @@ function startNewRound() {
     let prefix = activePracticeConstellation ? `<span style="color: var(--accent-gold); font-size:0.8em; margin-right: 5px;">[${activePracticeConstellation}]</span> ` : '';
 
     if (activeMode === 'position') {
+        showInputGroupForSkill('position');
         hudInstruction.innerHTML = `${prefix}Locate Target: <b>${currentTarget.bayerName || currentTarget.id}</b> ${mistakesHtml}`;
         btnCheck.innerText = "Confirm Target"; 
-        btnCheck.disabled = true; 
-        btnCheck.style.opacity = "0.5";
+        btnCheck.disabled = true; btnCheck.style.opacity = "0.5";
     } else if (activeMode === 'name') {
+        showInputGroupForSkill('name');
         hudInstruction.innerHTML = `${prefix}Identify traditional name ${mistakesHtml}`;
-        btnCheck.innerText = "Submit";
-        btnCheck.disabled = false;
-        btnCheck.style.opacity = "1";
+        btnCheck.innerText = "Submit"; btnCheck.disabled = false; btnCheck.style.opacity = "1";
         updateHighlightRing(currentTarget, 0xffeb3b);
-        inputGroupName.style.display = 'flex';
         setTimeout(() => { inputName.focus(); }, 100);
     } else if (activeMode === 'type') {
+        showInputGroupForSkill('type');
         hudInstruction.innerHTML = `${prefix}Classify target: <b>${currentTarget.bayerName || currentTarget.id}</b> ${mistakesHtml}`;
-        btnCheck.innerText = "Submit";
-        btnCheck.disabled = false;
-        btnCheck.style.opacity = "1";
+        btnCheck.innerText = "Submit"; btnCheck.disabled = false; btnCheck.style.opacity = "1";
         updateHighlightRing(currentTarget, 0xffeb3b);
-        inputGroupType.style.display = 'flex';
     } else if (activeMode === 'mag') {
+        showInputGroupForSkill('mag');
         hudInstruction.innerHTML = `${prefix}Estimate visual magnitude of <b>${currentTarget.bayerName || currentTarget.id}</b> ${mistakesHtml}`;
-        btnCheck.innerText = "Submit Magnitude";
-        btnCheck.disabled = false;
-        btnCheck.style.opacity = "1";
+        btnCheck.innerText = "Submit Magnitude"; btnCheck.disabled = false; btnCheck.style.opacity = "1";
         updateHighlightRing(currentTarget, 0xffeb3b);
-        if(inputGroupMag) inputGroupMag.style.display = 'flex';
         setTimeout(() => { if(inputMag) inputMag.focus(); }, 100);
     } else if (activeMode === 'multi') {
         let activeId = multiOrder[currentTurnIndex];
         let activePlayer = multiPlayers[activeId];
         let pColor = activeId === 'p1' ? 'var(--accent-blue)' : 'var(--accent-gold)';
+        const skillLabel = dictMode[multiGameMode] || 'Identify Name';
         
         updateHighlightRing(currentTarget, activeId === 'p1' ? 0x3b82f6 : 0xfbbf24);
-        inputGroupName.style.display = 'flex';
+        prepareSkillRoundUI(multiGameMode);
 
         if (isBotMatch && activeId === 'p2') {
             hudInstruction.innerHTML = `<span style="color:${pColor}; font-weight:800;">${activePlayer.name.toUpperCase()} IS THINKING...</span>`;
-            btnCheck.disabled = true;
-            btnCheck.style.opacity = "0.5";
-            inputName.disabled = true;
+            btnCheck.disabled = true; btnCheck.style.opacity = "0.5"; inputName.disabled = true;
             
             let botDelay = 2000 + Math.random() * 3500; 
             setTimeout(() => {
                 if (activeMode !== 'multi' || isTimerPaused) return; 
                 const botIsCorrect = Math.random() < botAccuracy;
-                processAnswer(botIsCorrect, currentTarget, false);
+                // Bot assumes points correctly if right
+                processAnswer(botIsCorrect, currentTarget, false, botIsCorrect ? 1 : 0);
             }, botDelay);
 
         } else {
-            hudInstruction.innerHTML = `<span style="color:${pColor}; font-weight:800;">${activePlayer.name.toUpperCase()}'S TURN:</span> Identify highlighted target`;
+            hudInstruction.innerHTML = `<span style="color:${pColor}; font-weight:800;">${activePlayer.name.toUpperCase()}'S TURN:</span> ${skillLabel}`;
             btnCheck.innerText = "Submit Answer";
-            btnCheck.disabled = false;
-            btnCheck.style.opacity = "1";
             inputName.disabled = false;
-            setTimeout(() => { inputName.focus(); }, 100);
+            if (multiGameMode === 'name') setTimeout(() => { inputName.focus(); }, 100);
+            else if (multiGameMode === 'mag' && inputMag) setTimeout(() => { inputMag.focus(); }, 100);
         }
     }
 
-    if (activeMode !== 'free' && activeMode !== 'position') {
-        const raRad = currentTarget.ra * RA_TO_RAD;
-        const decRad = currentTarget.dec * DEG_TO_RAD;
-        const starPos = new THREE.Vector3(
-            100 * Math.cos(decRad) * Math.sin(raRad),
-            100 * Math.sin(decRad),
-            100 * Math.cos(decRad) * Math.cos(raRad)
-        );
-        camera.position.copy(starPos).normalize().multiplyScalar(-0.1);
-        controls.target.set(0, 0, 0);
-        controls.update();
+    const effectiveSkillForCamera = (activeMode === 'multi') ? multiGameMode : activeMode;
+    if (activeMode !== 'free' && effectiveSkillForCamera !== 'position') {
+        panCameraToTarget(currentTarget);
     }
 }
 
@@ -1794,9 +1838,7 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-const raycaster = new THREE.Raycaster();
-raycaster.params.Points.threshold = 0.8; 
-const mouse = new THREE.Vector2();
+const raycaster = new THREE.Raycaster(); raycaster.params.Points.threshold = 0.8; const mouse = new THREE.Vector2();
 
 window.addEventListener('click', (event) => {
     if (event.target.closest('.hud-container') || event.target.closest('.overlay-modal') || event.target.closest('nav') || event.target.closest('#free-roam-card') || event.target.closest('#countdown-overlay') || event.target.closest('#practice-result-modal')) return;
@@ -1806,12 +1848,8 @@ window.addEventListener('click', (event) => {
     raycaster.setFromCamera(mouse, camera);
 
     let allIntersects = [];
-    if (starPointsMesh) {
-        allIntersects = allIntersects.concat(raycaster.intersectObject(starPointsMesh));
-    }
-    if (dsoPointsMesh) {
-        allIntersects = allIntersects.concat(raycaster.intersectObject(dsoPointsMesh));
-    }
+    if (starPointsMesh) allIntersects = allIntersects.concat(raycaster.intersectObject(starPointsMesh));
+    if (dsoPointsMesh) allIntersects = allIntersects.concat(raycaster.intersectObject(dsoPointsMesh));
 
     if (allIntersects.length > 0) {
         allIntersects.sort((a, b) => a.distanceToRay - b.distanceToRay);
@@ -1828,11 +1866,12 @@ window.addEventListener('click', (event) => {
 
         if (clickedObj) {
             currentSelectedId = clickedObj.id;
-            
+            const effectiveSkill = (activeMode === 'multi') ? multiGameMode : activeMode;
+
             if (activeMode === 'free') {
                 updateHighlightRing(clickedObj, 0x3b82f6);
                 showFreeRoamCard(clickedObj);
-            } else if (activeMode === 'position' && btnCheck.style.display !== "none") {
+            } else if (effectiveSkill === 'position' && btnCheck.style.display !== "none" && isMyTurnNow) {
                 updateHighlightRing(clickedObj, 0xffeb3b); 
                 btnCheck.disabled = false;
                 btnCheck.style.opacity = "1";
@@ -1849,7 +1888,7 @@ function showFreeRoamCard(star) {
     document.getElementById('fr-name').innerText = star.correctName ? star.correctName.toUpperCase() : "UNNAMED OBJECT";
     document.getElementById('fr-bayer').innerText = star.bayerName || star.id || `Unknown`;
     document.getElementById('fr-mag').innerText = star.mag.toFixed(2);
-    document.getElementById('fr-type').innerText = typeDict[star.correctType] || "Unknown";
+    document.getElementById('fr-type').innerText = star.isDSO ? (typeDict[star.correctType] || "Unknown") : ((star.correctTypes || ['simpla']).map(t => typeDict[t] || t).join(', '));
     document.getElementById('fr-ra').innerText = star.ra.toFixed(4) + "h";
     document.getElementById('fr-dec').innerText = star.dec.toFixed(4) + "°";
     frCard.style.display = 'block';
@@ -1861,6 +1900,7 @@ function processAnswer(isCorrect, starReference, isShotClockExpire = false, cust
     isTimerPaused = true;
     
     let timeTaken = performance.now() - targetStartTime;
+    const effectiveSkill = (activeMode === 'multi') ? multiGameMode : activeMode;
 
     if (activeMode === 'multi') {
         if (isOnlineMatch) {
@@ -1884,9 +1924,9 @@ function processAnswer(isCorrect, starReference, isShotClockExpire = false, cust
                 correct: isCorrect,
                 points: customEarnedPoints,
                 time: timeTaken,
-                targetName: currentTarget.correctName || "NONE"
+                answerLabel: buildSkillAnswerLabel(currentTarget, effectiveSkill)
             });
-            // Host trece la tura urmatoare din listener
+            // Host listens to lastAction and advances
         } else {
             let activeId = multiOrder[currentTurnIndex];
             let activePlayer = multiPlayers[activeId];
@@ -1907,12 +1947,12 @@ function processAnswer(isCorrect, starReference, isShotClockExpire = false, cust
             updateLiveLeaderboard();
 
             if (isCorrect) {
-                hudFeedback.innerText = `${activePlayer.name} got it right! (+${customEarnedPoints} pts)`;
+                hudFeedback.innerText = `${activePlayer.name} got it right! (+${formatPoints(customEarnedPoints)} pts)`;
                 hudFeedback.className = "hud-feedback correct";
                 updateHighlightRing(starReference, 0x10b981);
             } else {
-                const cName = currentTarget.correctName ? currentTarget.correctName.toUpperCase() : "NONE (Blank)";
-                hudFeedback.innerHTML = (isShotClockExpire ? "<b>Time expired!</b> " : "Missed! ") + `Target was: <b>${cName}</b>.`;
+                const label = buildSkillAnswerLabel(currentTarget, effectiveSkill);
+                hudFeedback.innerHTML = (isShotClockExpire ? "<b>Time expired!</b> " : "Missed! ") + `Correct answer: <b>${label}</b>.`;
                 hudFeedback.className = "hud-feedback wrong";
                 updateHighlightRing(starReference, 0xef4444);
             }
@@ -1945,7 +1985,7 @@ function processAnswer(isCorrect, starReference, isShotClockExpire = false, cust
             totalLettersGuessed += currentTarget.correctName ? currentTarget.correctName.length : 0;
         }
 
-        let extraText = activeMode === 'mag' ? ` (+${customEarnedPoints} pts)` : "";
+        let extraText = (activeMode === 'mag' || activeMode === 'type') ? ` (+${formatPoints(customEarnedPoints)} pts)` : "";
         hudFeedback.innerText = `Correct! Target acquired.${extraText}`;
         hudFeedback.className = "hud-feedback correct";
         updateHighlightRing(starReference, 0x10b981);
@@ -1956,7 +1996,7 @@ function processAnswer(isCorrect, starReference, isShotClockExpire = false, cust
                 currentPracticeIndex++;
                 startNewRound(); 
             } else {
-                if(scoreDisplay) scoreDisplay.innerText = currentScore;
+                if(scoreDisplay) scoreDisplay.innerText = formatPoints(currentScore);
                 startNewRound();
             }
         }, 1000);
@@ -1977,7 +2017,8 @@ function processAnswer(isCorrect, starReference, isShotClockExpire = false, cust
             const correctName = currentTarget.correctName ? currentTarget.correctName.toUpperCase() : "NONE (Leave blank)";
             wrongMsg = `Incorrect. Target was: <b>${correctName}</b>.`;
         } else if (activeMode === 'type') {
-            wrongMsg = `Incorrect. Classification was: <b>${typeDict[currentTarget.correctType] || "Unknown"}</b>.`;
+            let truthText = currentTarget.isDSO ? (typeDict[currentTarget.correctType] || "Unknown") : ((currentTarget.correctTypes||[]).map(t=>typeDict[t]).join(', '));
+            wrongMsg = `Incorrect. Classification was: <b>${truthText}</b>.`;
         } else if (activeMode === 'position') {
             const clickedName = starReference ? (starReference.bayerName || starReference.id || 'unnamed object') : 'unknown point';
             wrongMsg = `Incorrect. You clicked <b>${clickedName}</b>. Correct target highlighted in green.`;
@@ -2011,7 +2052,9 @@ function processAnswer(isCorrect, starReference, isShotClockExpire = false, cust
 }
 
 btnCheck.addEventListener('click', () => {
-    if (activeMode === 'name' || activeMode === 'multi') {
+    const effectiveMode = (activeMode === 'multi') ? multiGameMode : activeMode;
+
+    if (effectiveMode === 'name') {
         const userInput = inputName.value.trim().toLowerCase();
         let isCorrect = false;
 
@@ -2029,13 +2072,38 @@ btnCheck.addEventListener('click', () => {
         } else {
             if (userInput === "") isCorrect = true;
         }
+        processAnswer(isCorrect, currentTarget, false, isCorrect ? 1 : 0);
 
-        processAnswer(isCorrect, currentTarget);
-    } else if (activeMode === 'type') {
-        const userType = document.getElementById('select-type').value;
-        const isCorrect = (userType === currentTarget.correctType);
-        processAnswer(isCorrect, currentTarget);
-    } else if (activeMode === 'mag') {
+    } else if (effectiveMode === 'type') {
+        let isCorrect = false;
+        let earnedPoints = 0;
+
+        if (currentTarget.isDSO) {
+            if (selectedTypeDSO && selectedTypeDSO === currentTarget.correctType) {
+                isCorrect = true;
+                earnedPoints = 1;
+            }
+        } else {
+            const correctArr = currentTarget.correctTypes || ['simpla'];
+            const selArr = selectedTypesStar || [];
+            
+            if (selArr.length === 0) {
+                isCorrect = false;
+                earnedPoints = 0;
+            } else {
+                let hasWrong = selArr.some(t => !correctArr.includes(t));
+                if (hasWrong) {
+                    isCorrect = false;
+                    earnedPoints = 0;
+                } else {
+                    earnedPoints = selArr.length / correctArr.length;
+                    isCorrect = true; 
+                }
+            }
+        }
+        processAnswer(isCorrect, currentTarget, false, earnedPoints);
+
+    } else if (effectiveMode === 'mag') {
         const userMag = parseFloat(inputMag.value);
         let earnedPoints = 0;
 
@@ -2050,11 +2118,12 @@ btnCheck.addEventListener('click', () => {
 
         const isCorrect = (earnedPoints > 0);
         processAnswer(isCorrect, currentTarget, false, earnedPoints);
-    } else if (activeMode === 'position') {
+
+    } else if (effectiveMode === 'position') {
         if (currentSelectedId) {
             const clickedStar = targetObjects.find(s => s.id === currentSelectedId);
             const isCorrect = (currentSelectedId === currentTarget.id);
-            processAnswer(isCorrect, clickedStar);
+            processAnswer(isCorrect, clickedStar, false, isCorrect ? 1 : 0);
         }
     }
 });
@@ -2067,7 +2136,7 @@ function updatePersonalRecords() {
     listElement.innerHTML = '';
 
     const dName = currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : "Student");
-    if(nameLabel) nameLabel.innerText = dName + "'s"; 
+    if(nameLabel) nameLabel.innerText = dName + "'s";
 
     let allScores = JSON.parse(localStorage.getItem('planetariu_leaderboard')) || [];
     let myScores = allScores.filter(s => s.user === dName && s.time !== 'unlimited' && !s.constellation);
@@ -2093,14 +2162,14 @@ function updatePersonalRecords() {
         const li = document.createElement('li');
         let extraInfo = sc.mode === 'name' ? `<div class="lb-extra" style="margin:0;">(avg ${sc.avgNameLength || 0} chr)</div>` : "";
         li.innerHTML = `
-            <div class="lb-user">
-                <div><span style="color: var(--accent-gold); font-weight: bold; margin-right: 3px;">#${globalRank}</span> ${dictMode[sc.mode]} ${targetStr}</div>
-                <span class="lb-subtext">${dictDiff[sc.diff]} | ${sc.time}m | ${formattedDate}</span>
-            </div> 
-            <div style="text-align: right;">
-                <span class="lb-score">${sc.points} pts</span> ${rateStr}
-                ${extraInfo}
-            </div>`;
+        <div class="lb-user">
+            <div><span style="color: var(--accent-gold); font-weight: bold; margin-right: 3px;">#${globalRank}</span> ${dictMode[sc.mode]} ${targetStr}</div>
+            <span class="lb-subtext">${dictDiff[sc.diff]} | ${sc.time}m | ${formattedDate}</span>
+        </div> 
+        <div style="text-align: right;">
+            <span class="lb-score">${formatPoints(sc.points)} pts</span> ${rateStr}
+            ${extraInfo}
+        </div>`;
         listElement.appendChild(li);
     });
 }
@@ -2108,6 +2177,7 @@ function updatePersonalRecords() {
 function updatePublicLeaderboardView() {
     const lbSection = document.getElementById('public-leaderboard-section');
     const lbTabs = document.getElementById('lb-tabs');
+    const listElement = document.getElementById('public-leaderboard-list');
     
     if (!activeMode || activeMode === 'free' || activeMode === 'multi') {
         lbSection.style.display = 'none';
@@ -2119,10 +2189,170 @@ function updatePublicLeaderboardView() {
         document.getElementById('lb-category-label').innerText = `[PRACT] ${activePracticeConstellation} | ${dictMode[activeMode].toUpperCase()}`;
         lbTabs.style.display = 'none'; 
         
-        const listElement = document.getElementById('public-leaderboard-list');
-        listElement.innerHTML = '';
+        listElement.innerHTML = '<li class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</li>';
         
-        let pScores = JSON.parse(localStorage.getItem('planetariu_practice_lb')) || [];
+        get(ref(db, 'leaderboards/practice')).then((snapshot) => {
+            listElement.innerHTML = '';
+            let pScores = [];
+            snapshot.forEach(child => { pScores.push(child.val()); });
+            
+            pScores = pScores.filter(s => s.constellation === activePracticeConstellation && s.mode === activeMode);
+            
+            let userBests = {};
+            pScores.forEach(sc => {
+                if (!userBests[sc.user]) userBests[sc.user] = sc;
+                else {
+                    let curr = userBests[sc.user];
+                    if (sc.points > curr.points || (sc.points === curr.points && sc.timeMs < curr.timeMs)) {
+                        userBests[sc.user] = sc;
+                    }
+                }
+            });
+
+            let sortedBests = Object.values(userBests);
+            sortedBests.sort((a, b) => {
+                if (b.points !== a.points) return b.points - a.points;
+                return a.timeMs - b.timeMs;
+            });
+            
+            if (sortedBests.length === 0) {
+                listElement.innerHTML = '<li class="empty-msg">No practice records yet. Be the first!</li>';
+                return;
+            }
+            
+            const dName = currentUser ? (currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : "Student")) : "";
+
+            sortedBests.slice(0,10).forEach((sc, idx) => {
+                const li = document.createElement('li');
+                if (sc.user === dName) li.style.background = 'rgba(255,255,255,0.1)'; 
+                let formattedDate = sc.date ? formatDate(sc.date) : "N/A";
+                li.innerHTML = `
+                <div class="lb-user">
+                    <span>${idx + 1}. ${sc.user}</span>
+                    <span class="lb-subtext" style="font-size: 0.7em; color: var(--text-muted); margin-top: 2px;">${formattedDate}</span>
+                </div> 
+                <div style="text-align: right;">
+                    <span class="lb-score" style="margin-right: 8px;">${formatPoints(sc.points)} pts</span>
+                    <div class="lb-score" style="color:var(--accent-green); margin:0;">${formatTimeMs(sc.timeMs)}</div>
+                </div>`;
+                listElement.appendChild(li);
+            });
+        });
+    } else {
+        if (!activeDiff || !activeTarget) {
+            lbSection.style.display = 'none';
+            return;
+        }
+        
+        lbSection.style.display = 'block';
+        lbTabs.style.display = 'flex';
+        document.getElementById('lb-category-label').innerText = `[${dictTarget[activeTarget].toUpperCase()}] ${activeMode.toUpperCase()} | ${activeDiff.toUpperCase()}`;
+        
+        listElement.innerHTML = '<li class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</li>';
+        
+        get(ref(db, 'leaderboards/global')).then((snapshot) => {
+            listElement.innerHTML = '';
+            let scores = [];
+            snapshot.forEach(child => { scores.push(child.val()); });
+
+            scores = scores.filter(s => s.mode === activeMode && s.diff === activeDiff && s.time === activeTimeTab && s.target === activeTarget && !s.constellation);
+            
+            let userBests = {};
+            scores.forEach(sc => {
+                if (!userBests[sc.user]) userBests[sc.user] = sc;
+                else {
+                    let curr = userBests[sc.user];
+                    if (sc.points > curr.points || (sc.points === curr.points && (sc.avgNameLength||0) > (curr.avgNameLength||0))) {
+                        userBests[sc.user] = sc;
+                    }
+                }
+            });
+
+            let sortedScores = Object.values(userBests).sort((a, b) => {
+                if (b.points !== a.points) return b.points - a.points;
+                return (b.avgNameLength || 0) - (a.avgNameLength || 0);
+            }); 
+            
+            if (sortedScores.length === 0) {
+                listElement.innerHTML = '<li class="empty-msg">No records yet. Be the first!</li>';
+                return;
+            }
+            
+            sortedScores.slice(0, 10).forEach((sc, idx) => {
+                const li = document.createElement('li');
+                let extraInfo = sc.mode === 'name' ? `<span class="lb-extra">(avg ${sc.avgNameLength || 0} chr)</span>` : "";
+                let rateStr = sc.rate ? `<span class="lb-extra" style="color:var(--accent-green); margin-left:8px;">${sc.rate}s/obj</span>` : "";
+                let formattedDate = sc.date ? formatDate(sc.date) : "N/A";
+                li.innerHTML = `
+                <div class="lb-user">
+                    <span>${idx + 1}. ${sc.user}</span>
+                    <span class="lb-subtext" style="font-size: 0.7em; color: var(--text-muted); margin-top: 2px;">${formattedDate}</span>
+                </div> 
+                <div><span class="lb-score">${formatPoints(sc.points)} pts</span> ${rateStr} ${extraInfo}</div>`;
+                listElement.appendChild(li);
+            });
+        });
+    }
+}
+
+function saveLeaderboardScore() {
+    if (!currentUser || activePracticeConstellation || activeMode === 'free' || activeMode === 'multi' || activeTime === 'unlimited') return;
+    
+    const dName = currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : "Student");
+    let avgLen = currentScore > 0 ? parseFloat((totalLettersGuessed / currentScore).toFixed(1)) : 0;
+    let rate = currentScore > 0 ? parseFloat((totalPlayTimeSec / currentScore).toFixed(2)) : 0;
+
+    const scoreData = {
+        user: dName,
+        target: activeTarget,
+        mode: activeMode,
+        diff: activeDiff,
+        time: activeTime,
+        points: currentScore,
+        avgNameLength: activeMode === 'name' ? avgLen : 0,
+        date: new Date().toISOString(),
+        rate: rate,
+        timestamp: serverTimestamp()
+    };
+
+    push(ref(db, 'leaderboards/global'), scoreData);
+
+    let scores = JSON.parse(localStorage.getItem('planetariu_leaderboard')) || [];
+    scores.push(scoreData);
+    localStorage.setItem('planetariu_leaderboard', JSON.stringify(scores));
+}
+
+function savePracticeScore(timeMs) {
+    if (!currentUser || !activePracticeConstellation) return;
+    
+    const dName = currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : "Student");
+    
+    const scoreData = {
+        user: dName,
+        constellation: activePracticeConstellation,
+        mode: activeMode,
+        points: currentScore,
+        timeMs: timeMs,
+        date: new Date().toISOString(),
+        timestamp: serverTimestamp()
+    };
+
+    push(ref(db, 'leaderboards/practice'), scoreData);
+
+    let pScores = JSON.parse(localStorage.getItem('planetariu_practice_lb')) || [];
+    pScores.push(scoreData);
+    localStorage.setItem('planetariu_practice_lb', JSON.stringify(pScores));
+}
+
+function populatePracticeLeaderboardModal() {
+    const listElement = document.getElementById('practice-lb-list');
+    listElement.innerHTML = '<li class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</li>';
+    
+    get(ref(db, 'leaderboards/practice')).then((snapshot) => {
+        listElement.innerHTML = '';
+        let pScores = [];
+        snapshot.forEach(child => { pScores.push(child.val()); });
+        
         pScores = pScores.filter(s => s.constellation === activePracticeConstellation && s.mode === activeMode);
         
         let userBests = {};
@@ -2141,12 +2371,9 @@ function updatePublicLeaderboardView() {
             if (b.points !== a.points) return b.points - a.points;
             return a.timeMs - b.timeMs;
         });
-        
-        if (sortedBests.length === 0) {
-            listElement.innerHTML = '<li class="empty-msg">No practice records yet. Be the first!</li>';
-            return;
-        }
-        
+
+        if (sortedBests.length === 0) return;
+
         const dName = currentUser ? (currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : "Student")) : "";
 
         sortedBests.forEach((sc, idx) => {
@@ -2154,163 +2381,16 @@ function updatePublicLeaderboardView() {
             if (sc.user === dName) li.style.background = 'rgba(255,255,255,0.1)'; 
             let formattedDate = sc.date ? formatDate(sc.date) : "N/A";
             li.innerHTML = `
-                <div class="lb-user">
-                    <span>${idx + 1}. ${sc.user}</span>
-                    <span class="lb-subtext" style="font-size: 0.7em; color: var(--text-muted); margin-top: 2px;">${formattedDate}</span>
-                </div> 
-                <div style="text-align: right;">
-                    <span class="lb-score" style="margin-right: 8px;">${sc.points} pts</span>
-                    <div class="lb-score" style="color:var(--accent-green); margin:0;">${formatTimeMs(sc.timeMs)}</div>
-                </div>`;
-            listElement.appendChild(li);
-        });
-        
-    } else {
-        if (!activeDiff || !activeTarget) {
-            lbSection.style.display = 'none';
-            return;
-        }
-        
-        lbSection.style.display = 'block';
-        lbTabs.style.display = 'flex';
-        document.getElementById('lb-category-label').innerText = `[${dictTarget[activeTarget].toUpperCase()}] ${activeMode.toUpperCase()} | ${activeDiff.toUpperCase()}`;
-        
-        const listElement = document.getElementById('public-leaderboard-list');
-        listElement.innerHTML = '';
-        
-        let scores = JSON.parse(localStorage.getItem('planetariu_leaderboard')) || [];
-        scores = scores.filter(s => s.mode === activeMode && s.diff === activeDiff && s.time === activeTimeTab && s.target === activeTarget && !s.constellation);
-        
-        scores.sort((a, b) => {
-            if (b.points !== a.points) return b.points - a.points;
-            return (b.avgNameLength || 0) - (a.avgNameLength || 0);
-        }); 
-        
-        if (scores.length === 0) {
-            listElement.innerHTML = '<li class="empty-msg">No records yet. Be the first!</li>';
-            return;
-        }
-        
-        scores.slice(0, 10).forEach((sc, idx) => {
-            const li = document.createElement('li');
-            let extraInfo = sc.mode === 'name' ? `<span class="lb-extra">(avg ${sc.avgNameLength || 0} chr)</span>` : "";
-            let rateStr = sc.rate ? `<span class="lb-extra" style="color:var(--accent-green); margin-left:8px;">${sc.rate}s/obj</span>` : "";
-            let formattedDate = sc.date ? formatDate(sc.date) : "N/A";
-            li.innerHTML = `
-                <div class="lb-user">
-                    <span>${idx + 1}. ${sc.user}</span>
-                    <span class="lb-subtext" style="font-size: 0.7em; color: var(--text-muted); margin-top: 2px;">${formattedDate}</span>
-                </div> 
-                <div><span class="lb-score">${sc.points} pts</span> ${rateStr} ${extraInfo}</div>`;
-            listElement.appendChild(li);
-        });
-    }
-}
-
-function saveLeaderboardScore() {
-    if (!currentUser || activePracticeConstellation || activeMode === 'free' || activeMode === 'multi' || activeTime === 'unlimited') return;
-    
-    let scores = JSON.parse(localStorage.getItem('planetariu_leaderboard')) || [];
-    const dName = currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : "Student");
-    
-    let avgLen = currentScore > 0 ? parseFloat((totalLettersGuessed / currentScore).toFixed(1)) : 0;
-    let rate = currentScore > 0 ? (totalPlayTimeSec / currentScore).toFixed(2) : 0;
-
-    const existingIndex = scores.findIndex(s => s.user === dName && s.mode === activeMode && s.diff === activeDiff && s.time === activeTime && s.target === activeTarget && !s.constellation);
-    
-    if (existingIndex !== -1) {
-        if (currentScore > scores[existingIndex].points || (currentScore === scores[existingIndex].points && avgLen > (scores[existingIndex].avgNameLength || 0))) {
-            scores[existingIndex].points = currentScore;
-            scores[existingIndex].avgNameLength = activeMode === 'name' ? avgLen : 0;
-            scores[existingIndex].date = new Date().toISOString(); 
-            scores[existingIndex].rate = rate;
-        }
-    } else {
-        scores.push({
-            user: dName,
-            target: activeTarget,
-            mode: activeMode,
-            diff: activeDiff,
-            time: activeTime,
-            points: currentScore,
-            avgNameLength: activeMode === 'name' ? avgLen : 0,
-            date: new Date().toISOString(),
-            rate: rate
-        });
-    }
-    
-    localStorage.setItem('planetariu_leaderboard', JSON.stringify(scores));
-}
-
-function savePracticeScore(timeMs) {
-    if (!currentUser || !activePracticeConstellation) return;
-    let pScores = JSON.parse(localStorage.getItem('planetariu_practice_lb')) || [];
-    const dName = currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : "Student");
-    
-    let existingIndex = pScores.findIndex(s => s.user === dName && s.constellation === activePracticeConstellation && s.mode === activeMode);
-
-    if (existingIndex !== -1) {
-        if (currentScore > pScores[existingIndex].points || (currentScore === pScores[existingIndex].points && timeMs < pScores[existingIndex].timeMs)) {
-            pScores[existingIndex].points = currentScore;
-            pScores[existingIndex].timeMs = timeMs;
-            pScores[existingIndex].date = new Date().toISOString();
-        }
-    } else {
-        pScores.push({
-            user: dName,
-            constellation: activePracticeConstellation,
-            mode: activeMode,
-            points: currentScore,
-            timeMs: timeMs,
-            date: new Date().toISOString()
-        });
-    }
-    
-    localStorage.setItem('planetariu_practice_lb', JSON.stringify(pScores));
-}
-
-function populatePracticeLeaderboardModal() {
-    const listElement = document.getElementById('practice-lb-list');
-    listElement.innerHTML = '';
-    
-    let pScores = JSON.parse(localStorage.getItem('planetariu_practice_lb')) || [];
-    pScores = pScores.filter(s => s.constellation === activePracticeConstellation && s.mode === activeMode);
-    
-    let userBests = {};
-    pScores.forEach(sc => {
-        if (!userBests[sc.user]) userBests[sc.user] = sc;
-        else {
-            let curr = userBests[sc.user];
-            if (sc.points > curr.points || (sc.points === curr.points && sc.timeMs < curr.timeMs)) {
-                userBests[sc.user] = sc;
-            }
-        }
-    });
-
-    let sortedBests = Object.values(userBests);
-    sortedBests.sort((a, b) => {
-        if (b.points !== a.points) return b.points - a.points;
-        return a.timeMs - b.timeMs;
-    });
-
-    if (sortedBests.length === 0) return;
-
-    const dName = currentUser ? (currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : "Student")) : "";
-
-    sortedBests.forEach((sc, idx) => {
-        const li = document.createElement('li');
-        if (sc.user === dName) li.style.background = 'rgba(255,255,255,0.1)'; 
-        let formattedDate = sc.date ? formatDate(sc.date) : "N/A";
-        li.innerHTML = `
             <div class="lb-user">
                 <span>${idx + 1}. ${sc.user}</span>
                 <span class="lb-subtext" style="font-size: 0.7em; color: var(--text-muted); margin-top: 2px;">${formattedDate}</span>
             </div> 
             <div style="text-align: right;">
-                <span class="lb-score" style="margin-right: 8px;">${sc.points} pts</span>
+                <span class="lb-score" style="margin-right: 8px;">${formatPoints(sc.points)} pts</span>
                 <div class="lb-score" style="color:var(--accent-green); margin:0;">${formatTimeMs(sc.timeMs)}</div>
             </div>`;
-        listElement.appendChild(li);
+            listElement.appendChild(li);
+        });
     });
 }
 
@@ -2319,7 +2399,6 @@ function populatePracticeLeaderboardModal() {
 // ==========================================
 if (typeof initDatabase === "function") {
     initDatabase().then(() => {
-        
         targetObjects = astronomyDatabase.filter(star => star.mag > -10);
         
         customStarCorrections.forEach(corr => {
@@ -2332,7 +2411,6 @@ if (typeof initDatabase === "function") {
         });
 
         applyStarClassifications();
-
         buildStarfield(); 
         drawConstellations(); 
         populateLearningSection(); 
