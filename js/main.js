@@ -7,6 +7,7 @@ import { getDatabase, ref, set, get, update, onValue, onDisconnect, remove, serv
 
 let currentUser = null;
 let db = getDatabase(app);
+let myElo = 1200;
 
 onAuthStateChanged(auth, (user) => {
     const statusText = document.getElementById('auth-status-text');
@@ -17,9 +18,18 @@ onAuthStateChanged(auth, (user) => {
         currentUser = user;
         const displayName = user.displayName || (user.email ? user.email.split('@')[0] : "Student");
         
-        if (statusText) {
-            statusText.innerHTML = `Welcome, <span style="color: var(--accent-blue);">${displayName}</span>. Please configure your session.`;
-        }
+        // Fetch ELO
+        get(ref(db, `users/${user.uid}/elo`)).then(snap => {
+            if(snap.exists()) {
+                myElo = snap.val();
+            } else {
+                set(ref(db, `users/${user.uid}/elo`), 1200);
+            }
+            if (statusText) {
+                statusText.innerHTML = `Welcome, <span style="color: var(--accent-blue);">${displayName}</span> (ELO: ${myElo}). Please configure your session.`;
+            }
+        });
+
         if (configForms) {
             configForms.style.display = 'grid'; 
             updatePersonalRecords(); 
@@ -481,7 +491,7 @@ const constellationPairs = [
     // 70. Reticulum
     ["Alpha Ret", "Beta Ret"], ["Beta Ret", "Delta Ret"], ["Delta Ret", "Epsilon Ret"], ["Epsilon Ret", "Alpha Ret"],
     // 71. Sagitta
-    ["Alpha Sgt", "Delta Sgt"], ["Delta Sgt", "Beta Sgt"], ["Alpha Sgt", "Delta Sgt"], ["Delta Sgt", "Gamma Sgt"], ["Gamma Sgt", "Eta Sgt"],
+    ["Alpha Sge", "Delta Sge"], ["Delta Sge", "Beta Sge"], ["Alpha Sge", "Delta Sge"], ["Delta Sge", "Gamma Sge"], ["Gamma Sge", "Eta Sge"],
     // 72. Sagittarius
     ["HIP 95294", "Iota Sgr"], ["Iota Sgr", "Alpha Sgr"], ["Iota Sgr", "Theta Sgr"], ["Theta Sgr", "HIP 98688"], ["HIP 98688", "HIP 96406"],
     ["HIP 96406", "Tau Sgr"], ["Tau Sgr", "Zeta Sgr"], ["Zeta Sgr", "Phi Sgr"], ["Phi Sgr", "Sigma Sgr"], ["Sigma Sgr", "Tau Sgr"],
@@ -650,7 +660,7 @@ function updateLobbyUIList() {
         container.style.display = 'block';
         keys.forEach(k => {
             const li = document.createElement('li');
-            li.innerHTML = `<i class="fa-solid fa-user-astronaut" style="color:var(--accent-blue);"></i> ${multiPlayers[k].name}`;
+            li.innerHTML = `<i class="fa-solid fa-user-astronaut" style="color:var(--accent-blue);"></i> ${multiPlayers[k].name} (ELO: ${multiPlayers[k].elo || 1200})`;
             listEl.appendChild(li);
         });
     } else {
@@ -684,7 +694,7 @@ document.querySelectorAll('#multi-opponent-grid .opt-btn').forEach(btn => {
             p2Inp.value = "A.I. Bot";
             p2Inp.disabled = true;
             p2Inp.style.opacity = '0.5';
-        } else if(multiOpponentType === 'online') {
+        } else if(multiOpponentType.startsWith('online')) {
             onlineLobbyUI.style.display = 'block';
             namesInputsGroup.style.display = 'none';
             isOnlineMatch = true;
@@ -715,11 +725,17 @@ btnCreateRoom.addEventListener('click', () => {
     maxRounds = parseInt(multiRoundsSelect.value);
 
     set(roomRef, {
-        status: 'waiting', hostId: myClientId, target: activeTarget, diff: activeDiff, rounds: maxRounds, gameMode: multiGameMode
+        status: 'waiting', 
+        hostId: myClientId, 
+        target: activeTarget, 
+        diff: activeDiff, 
+        rounds: maxRounds, 
+        gameMode: multiGameMode,
+        ranked: multiOpponentType === 'online-ranked'
     });
 
     const myPlayerRef = ref(db, `lobbies/${onlineRoomCode}/players/${myClientId}`);
-    set(myPlayerRef, { name: myName, score: 0, timeMs: 0 });
+    set(myPlayerRef, { name: myName, score: 0, timeMs: 0, elo: myElo });
     onDisconnect(roomRef).remove();
 
     if(lobbyListenerUnsubscribe) lobbyListenerUnsubscribe();
@@ -767,6 +783,15 @@ btnJoinRoom.addEventListener('click', () => {
     const roomRef = ref(db, 'lobbies/' + code);
     get(roomRef).then((snapshot) => {
         if (snapshot.exists() && snapshot.val().status === 'waiting') {
+            
+            // Check if ranked match connects properly
+            const isRankedRoom = snapshot.val().ranked === true;
+            if (isRankedRoom && multiOpponentType !== 'online-ranked') {
+                statusText.style.color = "var(--accent-red)";
+                statusText.innerText = "This is a Ranked room. Please select Online Ranked.";
+                return;
+            }
+
             onlineRole = 'guest';
             onlineRoomCode = code;
             const myName = currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : "Guest";
@@ -775,7 +800,7 @@ btnJoinRoom.addEventListener('click', () => {
             multiRoundsSelect.value = maxRounds; multiRoundsSelect.disabled = true;
 
             const myPlayerRef = ref(db, `lobbies/${onlineRoomCode}/players/${myClientId}`);
-            set(myPlayerRef, { name: myName, score: 0, timeMs: 0 }).then(() => {
+            set(myPlayerRef, { name: myName, score: 0, timeMs: 0, elo: myElo }).then(() => {
                 onDisconnect(myPlayerRef).remove();
                 statusText.style.color = "var(--accent-green)";
                 statusText.innerText = "Connected! Waiting for Host to start.";
@@ -808,6 +833,20 @@ document.querySelectorAll('#target-grid .opt-btn').forEach(btn => {
         document.querySelectorAll('#target-grid .opt-btn').forEach(b => b.classList.remove('selected'));
         e.target.classList.add('selected');
         activeTarget = e.target.dataset.target;
+
+        // Dynamic DSO difficulties
+        if (activeTarget === 'dso') {
+            document.querySelector('[data-diff="easy"]').innerText = "Messier Only";
+            document.querySelector('[data-diff="medium"]').innerText = "Messier + Caldwell";
+            document.querySelector('[data-diff="hard"]').innerText = "Med + Bright NGCs";
+            document.querySelector('[data-diff="extreme"]').innerText = "All DSOs";
+        } else {
+            document.querySelector('[data-diff="easy"]').innerText = "Easy (< 2.0)";
+            document.querySelector('[data-diff="medium"]').innerText = "Medium (< 4.0)";
+            document.querySelector('[data-diff="hard"]').innerText = "Hard (< 5.0)";
+            document.querySelector('[data-diff="extreme"]').innerText = "Extreme (< 6.5)";
+        }
+
         checkLaunchReady();
         updatePublicLeaderboardView();
         populateLearningSection();
@@ -834,7 +873,7 @@ document.querySelectorAll('#mode-grid .opt-btn').forEach(btn => {
             const dsoBtn = document.querySelector('#target-grid .opt-btn[data-target="dso"]');
             if(dsoBtn) { dsoBtn.disabled = false; dsoBtn.style.opacity = '1'; }
             
-            if(multiOpponentType === 'online') {
+            if(multiOpponentType.startsWith('online')) {
                 isOnlineMatch = true;
                 namesInputsGroup.style.display = 'none';
                 onlineLobbyUI.style.display = 'block';
@@ -847,6 +886,11 @@ document.querySelectorAll('#mode-grid .opt-btn').forEach(btn => {
             document.querySelector('#target-grid .opt-btn[data-target="stars"]').classList.add('selected');
             document.querySelector('#target-grid .opt-btn[data-target="dso"]').disabled = true;
             document.querySelector('#target-grid .opt-btn[data-target="dso"]').style.opacity = '0.3';
+            
+            document.querySelector('[data-diff="easy"]').innerText = "Easy (< 2.0)";
+            document.querySelector('[data-diff="medium"]').innerText = "Medium (< 4.0)";
+            document.querySelector('[data-diff="hard"]').innerText = "Hard (< 5.0)";
+            document.querySelector('[data-diff="extreme"]').innerText = "Extreme (< 6.5)";
         } else {
             if (!activePracticeConstellation) {
                 targetGroup.style.display = 'block'; diffGroup.style.display = 'block'; timeGroup.style.display = 'block';
@@ -972,10 +1016,17 @@ function populateLearningSection() {
         let bestTimeHtml = '';
 
         if (myBest) {
-            if (myRank === 1) btnClass += ' rank-1';
-            else if (myRank <= 10) btnClass += ' rank-top10';
-            else if (myBest.points >= maxStars) btnClass += ' completed';
-            bestTimeHtml = `<div class="best-time-label">Best: <span class="best-time-val">${formatPoints(myBest.points)}pts / ${formatTimeMs(myBest.timeMs)}</span></div>`;
+            if (myRank === 1) btnClass += ' rank-gold';
+            else if (myRank === 2) btnClass += ' rank-silver';
+            else if (myRank === 3) btnClass += ' rank-bronze';
+            else if (myBest.points >= maxStars) btnClass += ' rank-completed';
+            else btnClass += ' rank-unranked';
+
+            const rankText = myRank === 1 ? '1st Place' : myRank === 2 ? '2nd Place' : myRank === 3 ? '3rd Place' : 'Completed';
+            bestTimeHtml = `<div class="best-time-label">${rankText}: <span class="best-time-val">${formatPoints(myBest.points)}pts / ${formatTimeMs(myBest.timeMs)}</span></div>`;
+        } else {
+            btnClass += ' rank-unranked';
+            bestTimeHtml = `<div class="best-time-label" style="font-style: italic;">Unranked</div>`;
         }
 
         if (abbr === activePracticeConstellation) btnClass += ' selected';
@@ -1021,15 +1072,15 @@ function classifyDSODifficultyRank(obj) {
     const haystack = `${idStr} ${bayerStr} ${nameStr} ${catalogStr}`;
 
     const isMessier = obj.isMessier === true || /\bM\s?\d{1,3}\b/i.test(haystack);
-    if (isMessier) return 1;
+    if (isMessier) return 1; // Easy
 
     const isCaldwell = obj.isCaldwell === true || /\bC(?:ald(?:well)?)?\s?\d{1,3}\b/i.test(haystack);
-    if (isCaldwell) return 2;
+    if (isCaldwell) return 2; // Medium
 
-    const isGalaxy = obj.correctType === 'galaxy';
-    if (isGalaxy) return 3;
+    const isNGC = /\bNGC\s?\d{1,4}\b/i.test(haystack);
+    if (isNGC && obj.correctType !== 'open_cluster') return 3; // Hard
 
-    return 4; 
+    return 4; // Extreme
 }
 
 function filterDSOByDifficulty(objects, diff) {
@@ -1468,12 +1519,48 @@ function updateTimerUI(totalSeconds) {
     if(timerDisplay) timerDisplay.innerText = `${mins}:${secs}`;
 }
 
+function handleRankedEloUpdate() {
+    if (activeMode === 'multi' && isOnlineMatch && multiOpponentType === 'online-ranked') {
+        let myPlayer = multiPlayers[myClientId];
+        let oppId = Object.keys(multiPlayers).find(id => id !== myClientId);
+        let oppPlayer = multiPlayers[oppId];
+        
+        if (myPlayer && oppPlayer) {
+            let myScore = myPlayer.score;
+            let oppScore = oppPlayer.score;
+            
+            let S = myScore > oppScore ? 1 : (myScore === oppScore ? 0.5 : 0);
+            let E = 1 / (1 + Math.pow(10, ((oppPlayer.elo || 1200) - (myPlayer.elo || 1200)) / 400));
+            let newElo = Math.round((myPlayer.elo || 1200) + 32 * (S - E));
+            
+            let diff = newElo - (myPlayer.elo || 1200);
+            let diffStr = diff > 0 ? `+${diff}` : `${diff}`;
+            
+            myElo = newElo;
+            if(currentUser) {
+                update(ref(db, `users/${currentUser.uid}`), { elo: myElo });
+            }
+            
+            let winText = myScore > oppScore ? 'You won!' : (myScore < oppScore ? 'You lost!' : 'Draw!');
+            alert(`GAME OVER! ${winText}\nYour Score: ${formatPoints(myScore)} vs Opponent: ${formatPoints(oppScore)}\nNew ELO: ${newElo} (${diffStr})`);
+        }
+    } else if (activeMode === 'multi') {
+        let sorted = Object.values(multiPlayers).sort((a,b) => b.score - a.score);
+        if (sorted.length > 0) alert(`GAME OVER! ${sorted[0].name} wins the match!`);
+    }
+}
+
+
 function endGameSession() {
     clearInterval(timerInterval);
     if(duelTurnTimer) clearInterval(duelTurnTimer);
     if(onlineHostTimeoutWatcher) clearInterval(onlineHostTimeoutWatcher);
     currentTurnDeadline = null;
     
+    if (isGameRunning && activeMode === 'multi') {
+        handleRankedEloUpdate();
+    }
+
     if(isOnlineMatch && onlineRole === 'host' && onlineRoomCode) {
         remove(ref(db, 'lobbies/' + onlineRoomCode));
     }
@@ -1501,7 +1588,7 @@ function endGameSession() {
     
     createRoomUI.style.display = 'none';
     joinRoomUI.style.display = 'none';
-    if(multiOpponentType === 'online') {
+    if(multiOpponentType.startsWith('online')) {
         document.getElementById('room-status').innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Awaiting connection...`;
         const js = document.getElementById('join-status');
         if(js) js.style.display = 'none';
@@ -1647,8 +1734,6 @@ function syncOnlineGame(data) {
     currentTarget = targetObjects.find(s => s.id === data.targetId) || targetObjects[0];
 
     if (currentRound > maxRounds) {
-        let sorted = Object.values(multiPlayers).sort((a,b) => b.score - a.score);
-        if (sorted.length > 0) alert(`GAME OVER! ${sorted[0].name} wins the match!`);
         endGameSession();
         return;
     }
@@ -1694,8 +1779,6 @@ function startNewRound() {
 
     if (activeMode === 'multi') {
         if (currentRound > maxRounds) {
-            let sorted = Object.values(multiPlayers).sort((a,b) => b.score - a.score);
-            alert(`GAME OVER! ${sorted[0].name} wins the match!`);
             endGameSession();
             return;
         }
@@ -1810,7 +1893,6 @@ function startNewRound() {
             setTimeout(() => {
                 if (activeMode !== 'multi' || isTimerPaused) return; 
                 const botIsCorrect = Math.random() < botAccuracy;
-                // Bot assumes points correctly if right
                 processAnswer(botIsCorrect, currentTarget, false, botIsCorrect ? 1 : 0);
             }, botDelay);
 
@@ -2133,44 +2215,52 @@ function updatePersonalRecords() {
     const nameLabel = document.getElementById('pb-user-name');
     
     if (!listElement || !currentUser) return;
-    listElement.innerHTML = '';
+    listElement.innerHTML = '<li class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Syncing...</li>';
 
     const dName = currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : "Student");
     if(nameLabel) nameLabel.innerText = dName + "'s";
 
-    let allScores = JSON.parse(localStorage.getItem('planetariu_leaderboard')) || [];
-    let myScores = allScores.filter(s => s.user === dName && s.time !== 'unlimited' && !s.constellation);
-    myScores.sort((a, b) => b.points - a.points);
-    
-    if (myScores.length === 0) {
-        listElement.innerHTML = '<li class="empty-msg">No completed sessions yet.</li>';
-        return;
-    }
-
-    myScores.slice(0, 5).forEach(sc => {
-        let categoryScores = allScores.filter(s => s.mode === sc.mode && s.diff === sc.diff && s.time === sc.time && s.target === sc.target);
-        categoryScores.sort((a, b) => {
-            if (b.points !== a.points) return b.points - a.points;
-            return (b.avgNameLength || 0) - (a.avgNameLength || 0);
-        });
+    // Fetch live directly from Firebase instead of local storage to sync across devices
+    get(ref(db, 'leaderboards/global')).then((snapshot) => {
+        listElement.innerHTML = '';
+        let allScores = [];
+        snapshot.forEach(child => { allScores.push(child.val()); });
         
-        let globalRank = categoryScores.findIndex(s => s.user === dName) + 1;
-        let formattedDate = sc.date ? formatDate(sc.date) : "N/A";
-        let targetStr = sc.target ? `<span style="font-size:0.85em; color:var(--accent-blue)">[${dictTarget[sc.target]}]</span>` : "";
-        let rateStr = sc.rate ? `<span class="lb-extra" style="color:var(--accent-green); margin-left:8px;">${sc.rate}s/obj</span>` : "";
+        let myScores = allScores.filter(s => s.user === dName && s.time !== 'unlimited' && !s.constellation);
+        myScores.sort((a, b) => b.points - a.points);
+        
+        if (myScores.length === 0) {
+            listElement.innerHTML = '<li class="empty-msg">No completed sessions yet.</li>';
+            return;
+        }
 
-        const li = document.createElement('li');
-        let extraInfo = sc.mode === 'name' ? `<div class="lb-extra" style="margin:0;">(avg ${sc.avgNameLength || 0} chr)</div>` : "";
-        li.innerHTML = `
-        <div class="lb-user">
-            <div><span style="color: var(--accent-gold); font-weight: bold; margin-right: 3px;">#${globalRank}</span> ${dictMode[sc.mode]} ${targetStr}</div>
-            <span class="lb-subtext">${dictDiff[sc.diff]} | ${sc.time}m | ${formattedDate}</span>
-        </div> 
-        <div style="text-align: right;">
-            <span class="lb-score">${formatPoints(sc.points)} pts</span> ${rateStr}
-            ${extraInfo}
-        </div>`;
-        listElement.appendChild(li);
+        myScores.slice(0, 5).forEach(sc => {
+            let categoryScores = allScores.filter(s => s.mode === sc.mode && s.diff === sc.diff && s.time === sc.time && s.target === sc.target);
+            categoryScores.sort((a, b) => {
+                if (b.points !== a.points) return b.points - a.points;
+                return (b.avgNameLength || 0) - (a.avgNameLength || 0);
+            });
+            
+            let globalRank = categoryScores.findIndex(s => s.user === dName) + 1;
+            let formattedDate = sc.date ? formatDate(sc.date) : "N/A";
+            let targetStr = sc.target ? `<span style="font-size:0.85em; color:var(--accent-blue)">[${dictTarget[sc.target]}]</span>` : "";
+            let rateStr = sc.rate ? `<span class="lb-extra" style="color:var(--accent-green); margin-left:8px;">${sc.rate}s/obj</span>` : "";
+
+            const li = document.createElement('li');
+            let extraInfo = sc.mode === 'name' ? `<div class="lb-extra" style="margin:0;">(avg ${sc.avgNameLength || 0} chr)</div>` : "";
+            li.innerHTML = `
+            <div class="lb-user">
+                <div><span style="color: var(--accent-gold); font-weight: bold; margin-right: 3px;">#${globalRank}</span> ${dictMode[sc.mode]} ${targetStr}</div>
+                <span class="lb-subtext">${dictDiff[sc.diff]} | ${sc.time}m | ${formattedDate}</span>
+            </div> 
+            <div style="text-align: right;">
+                <span class="lb-score">${formatPoints(sc.points)} pts</span> ${rateStr}
+                ${extraInfo}
+            </div>`;
+            listElement.appendChild(li);
+        });
+    }).catch(() => {
+        listElement.innerHTML = '<li class="empty-msg">Error syncing records.</li>';
     });
 }
 
@@ -2316,10 +2406,6 @@ function saveLeaderboardScore() {
     };
 
     push(ref(db, 'leaderboards/global'), scoreData);
-
-    let scores = JSON.parse(localStorage.getItem('planetariu_leaderboard')) || [];
-    scores.push(scoreData);
-    localStorage.setItem('planetariu_leaderboard', JSON.stringify(scores));
 }
 
 function savePracticeScore(timeMs) {
@@ -2338,7 +2424,7 @@ function savePracticeScore(timeMs) {
     };
 
     push(ref(db, 'leaderboards/practice'), scoreData);
-
+    
     let pScores = JSON.parse(localStorage.getItem('planetariu_practice_lb')) || [];
     pScores.push(scoreData);
     localStorage.setItem('planetariu_practice_lb', JSON.stringify(pScores));

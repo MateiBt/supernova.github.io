@@ -78,12 +78,15 @@
     .learn-btn.selected { border-color: var(--text-light); background: rgba(255,255,255,0.15);}
     
     /* Rank Colors for Learning Mode */
-    .learn-btn.rank-1 { border-color: var(--accent-gold); background: rgba(251, 191, 36, 0.1); }
-    .learn-btn.rank-1 .learn-title { color: var(--accent-gold); }
-    .learn-btn.rank-top10 { border-color: var(--accent-blue); background: rgba(59, 130, 246, 0.1); }
-    .learn-btn.rank-top10 .learn-title { color: var(--accent-blue); }
-    .learn-btn.completed { border-color: var(--accent-green); background: rgba(16, 185, 129, 0.1); }
-    .learn-btn.completed .learn-title { color: var(--accent-green); }
+    .learn-btn.rank-gold { border-color: #ffd700; background: rgba(255, 215, 0, 0.1); }
+    .learn-btn.rank-gold .learn-title { color: #ffd700; }
+    .learn-btn.rank-silver { border-color: #c0c0c0; background: rgba(192, 192, 192, 0.1); }
+    .learn-btn.rank-silver .learn-title { color: #c0c0c0; }
+    .learn-btn.rank-bronze { border-color: #cd7f32; background: rgba(205, 127, 50, 0.1); }
+    .learn-btn.rank-bronze .learn-title { color: #cd7f32; }
+    .learn-btn.rank-completed { border-color: #90ee90; background: rgba(144, 238, 144, 0.1); }
+    .learn-btn.rank-completed .learn-title { color: #90ee90; }
+    .learn-btn.rank-unranked { border-color: var(--border-color); }
     
     .learn-title { font-size: 0.85rem; font-weight: 600; transition: 0.2s;}
     .learn-count { font-size: 0.7rem; opacity: 0.8; font-family: 'Inter', sans-serif;}
@@ -318,7 +321,8 @@
                             <div class="option-grid" id="multi-opponent-grid">
                                 <button class="opt-btn selected" data-opponent="local">Pass & Play</button>
                                 <button class="opt-btn" data-opponent="bot">Vs A.I. Bot</button>
-                                <button class="opt-btn" data-opponent="online">Online</button>
+                                <button class="opt-btn" data-opponent="online-unranked">Online Unranked</button>
+                                <button class="opt-btn" data-opponent="online-ranked">Online Ranked</button>
                             </div>
 
                             <span class="config-label" style="color: var(--accent-gold); margin-top: 10px;">Arena Game Mode</span>
@@ -459,7 +463,6 @@
                 <input type="text" id="input-name" class="hud-input" autocomplete="off" spellcheck="false" placeholder="Traditional name (leave blank if none)...">
             </div>
 
-            <!-- New Multi-select Grid for Classify Type -->
             <div class="hud-input-group" id="input-group-type" style="flex-direction: column;">
                 <div id="type-button-grid" class="option-grid" style="grid-template-columns: 1fr 1fr;"></div>
                 <p id="type-grid-hint" style="font-size:0.75rem; color:var(--text-muted); margin-top:5px; margin-bottom:0; text-align:center;"></p>
