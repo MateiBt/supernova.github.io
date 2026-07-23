@@ -334,8 +334,9 @@ if(DOM.btnLaunchMulti) {
     DOM.btnLaunchMulti.addEventListener('click', () => {
         State.activeMode = 'multi';
         if (State.isOnlineMatch && State.onlineRole === 'host') {
+            // FIREBASE FIX: Trimitem statusul dar NU ne oprim cu "return" aici. 
+            // Fortam pornirea locala a jocului pentru a evita crash-ul de desincronizare.
             update(ref(db, 'lobbies/' + State.onlineRoomCode), { status: 'starting' });
-            return; 
         }
         State.isGameRunning = true;
         triggerGameStart();

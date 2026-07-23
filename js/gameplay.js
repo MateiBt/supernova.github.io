@@ -170,7 +170,9 @@ export function advanceOnlineTurnAsTimeout() {
     State.currentTurnDeadline = null; 
 
     const activeId = State.multiOrder[State.currentTurnIndex];
-    const activePlayer = State.multiPlayers[activeId] || { history: [], streak: 0, timeMs: 0 };
+    let activePlayer = State.multiPlayers[activeId];
+    if (!activePlayer) activePlayer = { history: [], streak: 0, timeMs: 0 };
+    
     let history = (activePlayer.history || []).slice();
     history.push({ correct: false, time: 15000 });
     if (history.length > 20) history.shift();
@@ -349,10 +351,14 @@ export function endPracticeSession(completed = true) {
 export function initOnlineGame() {
     if(State.onlineRole === 'host') {
         State.multiOrder = Object.keys(State.multiPlayers);
-        const firstTarget = pickRandomTarget();
-        update(ref(db, 'lobbies/' + State.onlineRoomCode + '/state'), {
-            targetId: firstTarget.id, turnIndex: 0, currentRound: 1, order: State.multiOrder, turnDeadline: Date.now() + 15000, gameMode: State.multiGameMode
-        });
+        // SAFETY FIX: Asigurare in caz extrem in care randarea pica
+        const firstTarget = pickRandomTarget() || State.targetObjects[0];
+        
+        if (firstTarget && firstTarget.id) {
+            update(ref(db, 'lobbies/' + State.onlineRoomCode + '/state'), {
+                targetId: firstTarget.id, turnIndex: 0, currentRound: 1, order: State.multiOrder, turnDeadline: Date.now() + 15000, gameMode: State.multiGameMode || 'name'
+            });
+        }
     }
 
     if(State.stateListenerUnsubscribe) State.stateListenerUnsubscribe();
@@ -524,13 +530,21 @@ export function processAnswer(isCorrect, starReference, isShotClockExpire = fals
 
     if (State.activeMode === 'multi') {
         if (State.isOnlineMatch) {
+            // SAFETY FIX: Asigurare daca obiectul lipseste momentan
             let me = State.multiPlayers[State.myClientId];
+            if (!me) me = { score: 0, timeMs: 0, streak: 0, history: [] };
             if (!me.history) me.history = [];
-            if (isCorrect) { me.streak = (me.streak || 0) + 1; me.score += customEarnedPoints; } else me.streak = 0;
+            
+            if (isCorrect) { 
+                me.streak = (me.streak || 0) + 1; 
+                me.score = (me.score || 0) + customEarnedPoints; 
+            } else { 
+                me.streak = 0; 
+            }
             
             me.history.push({ correct: isCorrect, time: timeTaken });
             if (me.history.length > 20) me.history.shift();
-            me.timeMs += timeTaken;
+            me.timeMs = (me.timeMs || 0) + timeTaken;
 
             update(ref(db, `lobbies/${State.onlineRoomCode}/players/${State.myClientId}`), me);
             update(ref(db, `lobbies/${State.onlineRoomCode}/lastAction`), {
