@@ -12,6 +12,7 @@ import { initScene3D, buildStarfield, drawConstellations, updateHighlightRing, r
 import { updatePersonalRecords, updatePublicLeaderboardView } from './leaderboards.js';
 import { unselectPractice, checkLaunchReady, populateLearningSection, updateLobbyUIList, showFreeRoamCard, updateArenaEloDisplay } from './ui.js';
 import { triggerGameStart, processAnswer, endGameSession, endPracticeSession } from './gameplay.js';
+import { initTournamentUI } from './tournament.js'; // IMPORT NOU PENTRU TURNEE
 
 function applyStarClassifications() {
     State.targetObjects.forEach(star => {
@@ -154,7 +155,6 @@ document.querySelectorAll('#time-grid .opt-btn').forEach(btn => {
     });
 });
 
-// RECORDS TAB NEW FILTERS 
 ['#rec-target-btns', '#rec-mode-btns', '#rec-diff-btns', '#lb-tabs'].forEach(groupId => {
     document.querySelectorAll(`${groupId} .lb-tab`).forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -368,7 +368,12 @@ if(DOM.btnLaunchPractice) {
 if(DOM.btnEnd) {
     DOM.btnEnd.addEventListener('click', () => {
         if(confirm("Abort current session?")) {
-            if (State.activePracticeConstellation && State.activeMode !== 'multi' && State.activeMode !== 'free') {
+            if (State.isTournament) {
+                State.isTournament = false;
+                endGameSession();
+                if(DOM.tActiveUI) DOM.tActiveUI.style.display = 'none';
+            }
+            else if (State.activePracticeConstellation && State.activeMode !== 'multi' && State.activeMode !== 'free') {
                 endPracticeSession(false); 
             } else {
                 endGameSession();
@@ -514,5 +519,6 @@ if (typeof initDatabase === "function") {
         buildStarfield(State.targetObjects); 
         drawConstellations(State.targetObjects); 
         populateLearningSection(); 
+        initTournamentUI(); // APELAM SETUP-UL DE TURNEE AICI
     });
 }
