@@ -2,7 +2,7 @@
 // UI.JS - Controlul Interfeței Utilizator
 // ==========================================
 import { State, DOM, db } from './state.js';
-import { constellationFullNames, typeDict, starTypeKeys, dsoTypeKeys } from './config.js';
+import { constellationFullNames, typeDict, starTypeKeys, dsoTypeKeys, dictMode } from './config.js';
 import { formatPoints, formatTimeMs } from './utils.js';
 import { updatePublicLeaderboardView, updatePracticePreview } from './leaderboards.js';
 import { ref, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -18,7 +18,9 @@ export function updateLobbyUIList() {
         container.style.display = 'block';
         keys.forEach(k => {
             const li = document.createElement('li');
-            li.innerHTML = `<i class="fa-solid fa-user-astronaut" style="color:var(--cyan);"></i> ${State.multiPlayers[k].name} (ELO: ${State.multiPlayers[k].elo || 1200})`;
+            // Afișăm ELO-ul oponentului bazat pe modul selectat curent
+            const currentElo = State.multiPlayers[k].elo || 1200; 
+            li.innerHTML = `<i class="fa-solid fa-user-astronaut" style="color:var(--cyan);"></i> ${State.multiPlayers[k].name} (ELO: ${currentElo})`;
             listEl.appendChild(li);
         });
     } else {
@@ -64,7 +66,6 @@ export function populateLearningSection() {
 
     let constelStats = new Map(); 
     State.targetObjects.forEach(obj => {
-        // Numărăm TOATE stelele din constelație, inclusiv cele fără nume tradițional
         if (!obj.isDSO && obj.bayerName) {
             const parts = obj.bayerName.split(' ');
             if (parts.length > 1) {
@@ -78,7 +79,6 @@ export function populateLearningSection() {
     const sortedAbbrs = Array.from(constelStats.keys()).sort();
     const dName = State.currentUser ? (State.currentUser.displayName || (State.currentUser.email ? State.currentUser.email.split('@')[0] : "Student")) : "Student";
 
-    // Preluăm de pe Firebase pentru a colora corect chiar și de pe alte dispozitive
     get(ref(db, 'leaderboards/practice')).then((snapshot) => {
         listElement.innerHTML = '';
         let allPracticeScores = [];
@@ -310,4 +310,14 @@ export function showFreeRoamCard(star) {
     document.getElementById('fr-ra').innerText = star.ra.toFixed(4) + "h";
     document.getElementById('fr-dec').innerText = star.dec.toFixed(4) + "°";
     DOM.frCard.style.display = 'block';
+}
+
+export function updateArenaEloDisplay() {
+    const eloDisplay = document.getElementById('multi-elo-display');
+    const modeLabel = document.getElementById('multi-elo-mode-label');
+    if (eloDisplay && State.myElo) {
+        let mode = State.multiGameMode || 'name';
+        eloDisplay.innerText = State.myElo[mode] || 1200;
+        if(modeLabel) modeLabel.innerText = `${dictMode[mode]} ELO`;
+    }
 }

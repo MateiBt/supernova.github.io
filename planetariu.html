@@ -236,7 +236,6 @@
     .learn-btn.rank-gold, .learn-btn.rank-silver, .learn-btn.rank-bronze, .learn-btn.rank-completed { padding-right: 40px; }
     .learn-btn.rank-gold::after, .learn-btn.rank-silver::after, .learn-btn.rank-bronze::after, .learn-btn.rank-completed::after { position: absolute; top: 12px; right: 12px; font-size: 0.9rem; font-family: var(--font-mono); }
     
-    /* FIX: Fundaluri evidente pentru rank-uri */
     .learn-btn.rank-gold { border-color: rgba(255,207,92,0.8); background: rgba(255,207,92,0.15); }
     .learn-btn.rank-gold::after { content: "\f521"; font-family: "Font Awesome 6 Free"; font-weight: 900; color: var(--gold); }
     .learn-btn.rank-gold .learn-title { color: var(--gold); }
@@ -282,12 +281,14 @@
     .lb-list li .lb-extra { font-size: 0.75em; color: var(--text-low); font-weight: 400; margin-left: 5px; font-family: var(--font-mono); }
     .lb-list li.empty-msg { justify-content: center; color: var(--text-low); font-style: italic; text-align: center; padding: 20px 0; border: none; font-family: var(--font-mono); counter-increment: none; }
 
-    #public-leaderboard-list li::before, #practice-lb-list li::before, #practice-lb-preview-list li::before, #live-leaderboard-list .live-lb-item::before {
+    #public-leaderboard-list li::before, #practice-lb-list li::before, #practice-lb-preview-list li::before, #live-leaderboard-list .live-lb-item::before, #elo-leaderboard-list li::before {
         content: counter(rank, decimal-leading-zero); font-family: var(--font-mono); font-weight: 600; font-size: 0.75rem; margin-right: 12px; color: var(--text-low); flex-shrink: 0;
     }
-    #public-leaderboard-list li:nth-child(1)::before, #practice-lb-list li:nth-child(1)::before, #practice-lb-preview-list li:nth-child(1)::before { color: var(--gold); text-shadow: 0 0 5px var(--gold); }
-    #public-leaderboard-list li:nth-child(2)::before, #practice-lb-list li:nth-child(2)::before, #practice-lb-preview-list li:nth-child(2)::before { color: var(--silver); text-shadow: 0 0 5px var(--silver); }
-    #public-leaderboard-list li:nth-child(3)::before, #practice-lb-list li:nth-child(3)::before, #practice-lb-preview-list li:nth-child(3)::before { color: var(--bronze); text-shadow: 0 0 5px var(--bronze); }
+    #public-leaderboard-list li:nth-child(1)::before, #practice-lb-list li:nth-child(1)::before, #practice-lb-preview-list li:nth-child(1)::before, #elo-leaderboard-list li:nth-child(1)::before { color: var(--gold); text-shadow: 0 0 5px var(--gold); }
+    #public-leaderboard-list li:nth-child(2)::before, #practice-lb-list li:nth-child(2)::before, #practice-lb-preview-list li:nth-child(2)::before, #elo-leaderboard-list li:nth-child(2)::before { color: var(--silver); text-shadow: 0 0 5px var(--silver); }
+    #public-leaderboard-list li:nth-child(3)::before, #practice-lb-list li:nth-child(3)::before, #practice-lb-preview-list li:nth-child(3)::before, #elo-leaderboard-list li:nth-child(3)::before { color: var(--bronze); text-shadow: 0 0 5px var(--bronze); }
+    
+    #match-history-list li::before { content: none; }
 
     /* ==========================================================
        DESCRIPTION / WELCOME PANEL
@@ -512,7 +513,7 @@
 
             <div id="tab-multi" class="tab-content">
                 <div class="elo-display">
-                    <h3>Your Global Arena ELO</h3>
+                    <h3 id="multi-elo-mode-label">IDENTIFY NAME ELO</h3>
                     <div class="elo-val" id="multi-elo-display">1200</div>
                 </div>
                 
@@ -597,22 +598,13 @@
             </div>
 
             <div id="tab-records" class="tab-content">
-                <div class="three-col-grid">
-                    
+                <div class="three-col-grid" style="margin-bottom: 25px;">
                     <div class="lb-section">
-                        <div class="lb-title title-personal">
-                            <span><i class="fa-solid fa-medal"></i> <span id="pb-user-name">Personal</span> Bests</span>
-                        </div>
-                        <ul class="lb-list" id="personal-records-list">
-                            <li class="empty-msg">Syncing records...</li>
-                        </ul>
+                        <div class="lb-title title-personal"><span><i class="fa-solid fa-medal"></i> <span id="pb-user-name">Personal</span> Bests</span></div>
+                        <ul class="lb-list" id="personal-records-list"><li class="empty-msg">Syncing records...</li></ul>
                     </div>
-
                     <div class="lb-section" id="public-leaderboard-section">
-                        <div class="lb-title title-public">
-                            <span><i class="fa-solid fa-trophy"></i> Global Top 10</span>
-                        </div>
-                        
+                        <div class="lb-title title-public"><span><i class="fa-solid fa-trophy"></i> Global Top 10</span></div>
                         <div style="font-size: 0.70rem; color: var(--text-low); margin-bottom: 6px; text-align: center; font-family: var(--font-mono); letter-spacing: 1px;">TARGET & MODE</div>
                         <div class="lb-tabs" id="rec-target-btns" style="margin-bottom: 6px;">
                             <button class="lb-tab active" data-val="stars">Stars</button>
@@ -624,7 +616,6 @@
                             <button class="lb-tab" data-val="position">Locate</button>
                             <button class="lb-tab" data-val="mag">Mag</button>
                         </div>
-
                         <div style="font-size: 0.70rem; color: var(--text-low); margin-bottom: 6px; text-align: center; font-family: var(--font-mono); letter-spacing: 1px;">DIFFICULTY & TIME</div>
                         <div class="lb-tabs" id="rec-diff-btns" style="margin-bottom: 6px;">
                             <button class="lb-tab" data-val="easy">Easy</button>
@@ -637,22 +628,34 @@
                             <button class="lb-tab" data-tab="15">15M</button>
                             <button class="lb-tab" data-tab="30">30M</button>
                         </div>
-                        
-                        <ul class="lb-list" id="public-leaderboard-list" style="margin-top: 15px;">
-                            <li class="empty-msg">Loading records...</li>
-                        </ul>
+                        <ul class="lb-list" id="public-leaderboard-list" style="margin-top: 15px;"><li class="empty-msg">Loading records...</li></ul>
                     </div>
-                    
                     <div class="lb-section">
-                        <div class="lb-title" style="color: var(--success);">
-                            <span><i class="fa-solid fa-book-open"></i> Constellation Leaders</span>
-                        </div>
+                        <div class="lb-title" style="color: var(--success);"><span><i class="fa-solid fa-book-open"></i> Constellation Leaders</span></div>
                         <div style="font-size: 0.75rem; color: var(--text-low); margin-bottom: 10px; text-align: center; font-family: var(--font-mono);">CLICK A CONSTELLATION IN PRACTICE TO VIEW</div>
-                        <ul class="lb-list" id="practice-lb-preview-list">
-                            <li class="empty-msg">Select a constellation first.</li>
+                        <ul class="lb-list" id="practice-lb-preview-list"><li class="empty-msg">Select a constellation first.</li></ul>
+                    </div>
+                </div>
+                
+                <div class="split-grid">
+                    <div class="lb-section">
+                        <div class="lb-title" style="color: var(--cyan);"><span><i class="fa-solid fa-clock-rotate-left"></i> Arena Match History</span></div>
+                        <ul class="lb-list" id="match-history-list" style="max-height: 350px; overflow-y: auto;">
+                            <li class="empty-msg">No matches played yet.</li>
                         </ul>
                     </div>
-
+                    <div class="lb-section">
+                        <div class="lb-title" style="color: var(--gold);"><span><i class="fa-solid fa-crown"></i> Global ELO Rankings</span></div>
+                        <div class="lb-tabs" id="elo-mode-btns" style="margin-bottom: 15px;">
+                            <button class="lb-tab active" data-val="name">Name</button>
+                            <button class="lb-tab" data-val="type">Type</button>
+                            <button class="lb-tab" data-val="position">Locate</button>
+                            <button class="lb-tab" data-val="mag">Mag</button>
+                        </div>
+                        <ul class="lb-list" id="elo-leaderboard-list" style="max-height: 300px; overflow-y: auto;">
+                            <li class="empty-msg">Loading rankings...</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 

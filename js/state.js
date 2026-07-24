@@ -8,7 +8,7 @@ export const db = getDatabase(app);
 
 export const State = {
     currentUser: null,
-    myElo: 1200,
+    myElo: { name: 1200, type: 1200, mag: 1200, position: 1200 }, // ELO modificat per gamemode
     targetObjects: [],
     
     // Stare Game UI & Logic

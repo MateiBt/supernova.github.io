@@ -10,7 +10,7 @@ import { customStarCorrections, starClassifications } from './config.js';
 import { getLevenshteinDistance } from './utils.js';
 import { initScene3D, buildStarfield, drawConstellations, updateHighlightRing, raycaster, mouse, camera, starPointsMesh, dsoPointsMesh } from './scene3d.js';
 import { updatePersonalRecords, updatePublicLeaderboardView } from './leaderboards.js';
-import { unselectPractice, checkLaunchReady, populateLearningSection, updateLobbyUIList, showFreeRoamCard } from './ui.js';
+import { unselectPractice, checkLaunchReady, populateLearningSection, updateLobbyUIList, showFreeRoamCard, updateArenaEloDisplay } from './ui.js';
 import { triggerGameStart, processAnswer, endGameSession, endPracticeSession } from './gameplay.js';
 
 function applyStarClassifications() {
@@ -44,12 +44,16 @@ onAuthStateChanged(auth, (user) => {
         const displayName = user.displayName || (user.email ? user.email.split('@')[0] : "Student");
         
         get(ref(db, `users/${user.uid}/elo`)).then(snap => {
-            if(snap.exists()) State.myElo = snap.val();
-            else set(ref(db, `users/${user.uid}/elo`), 1200);
+            let data = snap.val();
+            if (data !== null) {
+                if (typeof data === 'number') State.myElo = { name: data, type: data, mag: data, position: data };
+                else State.myElo = Object.assign({ name: 1200, type: 1200, mag: 1200, position: 1200 }, data);
+            } else {
+                set(ref(db, `users/${user.uid}/elo`), State.myElo);
+            }
             
             if (statusText) statusText.innerHTML = `Welcome, <span style="color: var(--cyan); font-weight: 700;">${displayName}</span>.`;
-            const eloDisplay = document.getElementById('multi-elo-display');
-            if (eloDisplay) eloDisplay.innerText = State.myElo;
+            updateArenaEloDisplay();
         });
 
         if (configForms) {
@@ -162,6 +166,14 @@ document.querySelectorAll('#time-grid .opt-btn').forEach(btn => {
     });
 });
 
+document.querySelectorAll('#elo-mode-btns .lb-tab').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        document.querySelectorAll('#elo-mode-btns .lb-tab').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        import('./leaderboards.js').then(module => module.updateEloLeaderboardView());
+    });
+});
+
 // ==========================================
 // ARENA MULTIPLAYER BUTTONS
 // ==========================================
@@ -200,6 +212,7 @@ document.querySelectorAll('#multi-skill-grid .opt-btn').forEach(btn => {
         document.querySelectorAll('#multi-skill-grid .opt-btn').forEach(b => b.classList.remove('selected'));
         e.target.classList.add('selected');
         State.multiGameMode = e.target.dataset.skill;
+        updateArenaEloDisplay();
     });
 });
 
@@ -239,7 +252,7 @@ if(DOM.btnCreateRoom) {
         });
 
         const myPlayerRef = ref(db, `lobbies/${State.onlineRoomCode}/players/${State.myClientId}`);
-        set(myPlayerRef, { name: myName, score: 0, timeMs: 0, elo: State.myElo });
+        set(myPlayerRef, { name: myName, score: 0, timeMs: 0, elo: State.myElo[State.multiGameMode] || 1200 });
         onDisconnect(roomRef).remove();
 
         if(State.lobbyListenerUnsubscribe) State.lobbyListenerUnsubscribe();
@@ -300,7 +313,7 @@ if(DOM.btnJoinRoom) {
                 State.activeTarget = snapshot.val().target; State.activeDiff = snapshot.val().diff; State.maxRounds = snapshot.val().rounds || 25; State.multiGameMode = snapshot.val().gameMode || 'name';
 
                 const myPlayerRef = ref(db, `lobbies/${State.onlineRoomCode}/players/${State.myClientId}`);
-                set(myPlayerRef, { name: myName, score: 0, timeMs: 0, elo: State.myElo }).then(() => {
+                set(myPlayerRef, { name: myName, score: 0, timeMs: 0, elo: State.myElo[State.multiGameMode] || 1200 }).then(() => {
                     onDisconnect(myPlayerRef).remove();
                     statusText.style.color = "var(--success)"; statusText.innerText = "Connection Established. Awaiting Host.";
                     DOM.btnLaunchMulti.disabled = true; DOM.btnLaunchMulti.innerText = "AWAITING HOST...";
@@ -334,9 +347,8 @@ if(DOM.btnLaunchMulti) {
     DOM.btnLaunchMulti.addEventListener('click', () => {
         State.activeMode = 'multi';
         if (State.isOnlineMatch && State.onlineRole === 'host') {
-            // FIREBASE FIX: Trimitem statusul dar NU ne oprim cu "return" aici. 
-            // Fortam pornirea locala a jocului pentru a evita crash-ul de desincronizare.
             update(ref(db, 'lobbies/' + State.onlineRoomCode), { status: 'starting' });
+            return; 
         }
         State.isGameRunning = true;
         triggerGameStart();

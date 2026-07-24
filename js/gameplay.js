@@ -111,7 +111,7 @@ export function showVSScreenAndStart() {
 export function triggerGameStart() {
     DOM.setupModal.style.display = 'none';
     State.currentScore = 0; State.mistakesCount = 0; State.totalLettersGuessed = 0; State.currentTarget = null; State.currentStreak = 0; State.performanceHistory = []; State.totalPlayTimeSec = 0;
-    State.currentRound = 1; State.currentTurnIndex = 0; State.currentTurnDeadline = null;
+    State.currentRound = 1; State.currentTurnIndex = 0;
 
     if (State.activeMode === 'multi' && !State.isOnlineMatch) {
         State.isBotMatch = (State.multiOpponentType === 'bot');
@@ -147,14 +147,6 @@ export function triggerGameStart() {
     }
 }
 
-export function startHostTimeoutWatcher() {
-    if (State.onlineHostTimeoutWatcher) clearInterval(State.onlineHostTimeoutWatcher);
-    State.onlineHostTimeoutWatcher = setInterval(() => {
-        if (!State.isOnlineMatch || State.onlineRole !== 'host' || !State.currentTurnDeadline || State.isTimerPaused) return;
-        if (Date.now() >= State.currentTurnDeadline) advanceOnlineTurnAsTimeout();
-    }, 400);
-}
-
 export function buildSkillAnswerLabel(target, skill) {
     if (!target) return "N/A";
     if (skill === 'type') {
@@ -166,12 +158,9 @@ export function buildSkillAnswerLabel(target, skill) {
 }
 
 export function advanceOnlineTurnAsTimeout() {
-    if (!State.currentTurnDeadline) return;
-    State.currentTurnDeadline = null; 
-
+    State.isTimerPaused = true;
     const activeId = State.multiOrder[State.currentTurnIndex];
-    let activePlayer = State.multiPlayers[activeId];
-    if (!activePlayer) activePlayer = { history: [], streak: 0, timeMs: 0 };
+    const activePlayer = State.multiPlayers[activeId] || { history: [], streak: 0, timeMs: 0 };
     
     let history = (activePlayer.history || []).slice();
     history.push({ correct: false, time: 15000 });
@@ -184,25 +173,20 @@ export function advanceOnlineTurnAsTimeout() {
     update(ref(db, `lobbies/${State.onlineRoomCode}/lastAction`), {
         playerId: activeId, correct: false, points: 0, time: 15000,
         answerLabel: buildSkillAnswerLabel(State.currentTarget, State.multiGameMode),
-        timeout: true
+        timeout: true,
+        timestamp: Date.now() // Forțăm update-ul în Firebase chiar dacă e un timeout duplicat
     });
 }
 
 export function startGlobalTimer() {
     if (State.timerInterval) clearInterval(State.timerInterval);
     if (State.duelTurnTimer) clearInterval(State.duelTurnTimer);
-    if (State.onlineHostTimeoutWatcher) clearInterval(State.onlineHostTimeoutWatcher);
     State.isTimerPaused = false;
     State.totalPlayTimeSec = 0;
     
     if (State.activeMode === 'multi') {
         if (State.isOnlineMatch) {
-            State.duelTurnTimer = setInterval(() => {
-                if (State.isTimerPaused || !State.currentTurnDeadline) return;
-                const remainingSec = Math.max(0, Math.ceil((State.currentTurnDeadline - Date.now()) / 1000));
-                DOM.timerDisplay.innerText = `00:${remainingSec.toString().padStart(2, '0')}`;
-            }, 250);
-            if (State.onlineRole === 'host') startHostTimeoutWatcher();
+            // Sincronizarea timer-ului online se face acum rundă de rundă în syncOnlineGame
             return;
         }
 
@@ -266,18 +250,34 @@ export function handleRankedEloUpdate() {
             let myScore = myPlayer.score;
             let oppScore = oppPlayer.score;
             
+            let currentElo = State.myElo[State.multiGameMode] || 1200;
             let S = myScore > oppScore ? 1 : (myScore === oppScore ? 0.5 : 0);
-            let E = 1 / (1 + Math.pow(10, ((oppPlayer.elo || 1200) - (State.myElo || 1200)) / 400));
-            let newElo = Math.round((State.myElo || 1200) + 32 * (S - E));
+            let E = 1 / (1 + Math.pow(10, ((oppPlayer.elo || 1200) - currentElo) / 400));
+            let newElo = Math.round(currentElo + 32 * (S - E));
             
-            let diff = newElo - (State.myElo || 1200);
-            let diffStr = diff > 0 ? `+${diff}` : `${diff}`;
+            let diff = newElo - currentElo;
+            let diffStr = diff >= 0 ? `+${diff}` : `${diff}`;
             
-            State.myElo = newElo;
-            if(State.currentUser) update(ref(db, `users/${State.currentUser.uid}`), { elo: State.myElo });
+            State.myElo[State.multiGameMode] = newElo;
+            
+            if(State.currentUser) {
+                // Actualizăm ELO-ul utilizatorului pentru modul specific
+                update(ref(db, `users/${State.currentUser.uid}/elo`), State.myElo);
+                
+                // Salvăm în istoricul meciurilor
+                import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js").then(({ push }) => {
+                    push(ref(db, `users/${State.currentUser.uid}/history`), {
+                        opponent: oppPlayer.name, mode: State.multiGameMode, score: myScore, oppScore: oppScore, eloChange: diff, newElo: newElo, date: new Date().toISOString()
+                    });
+                });
+                
+                // Actualizăm Leaderboard-ul Global ELO
+                const dName = State.currentUser.displayName || (State.currentUser.email ? State.currentUser.email.split('@')[0] : "Student");
+                update(ref(db, `leaderboards/elo/${State.multiGameMode}/${State.currentUser.uid}`), { user: dName, elo: newElo });
+            }
             
             let winText = myScore > oppScore ? 'You won!' : (myScore < oppScore ? 'You lost!' : 'Draw!');
-            alert(`GAME OVER! ${winText}\nYour Score: ${formatPoints(myScore)} vs Opponent: ${formatPoints(oppScore)}\nNew ELO: ${newElo} (${diffStr})`);
+            alert(`GAME OVER! ${winText}\nYour Score: ${formatPoints(myScore)} vs Opponent: ${formatPoints(oppScore)}\nNew ${dictMode[State.multiGameMode]} ELO: ${newElo} (${diffStr})`);
         }
     } else if (State.activeMode === 'multi') {
         let sorted = Object.values(State.multiPlayers).sort((a,b) => b.score - a.score);
@@ -288,8 +288,6 @@ export function handleRankedEloUpdate() {
 export function endGameSession() {
     clearInterval(State.timerInterval);
     if(State.duelTurnTimer) clearInterval(State.duelTurnTimer);
-    if(State.onlineHostTimeoutWatcher) clearInterval(State.onlineHostTimeoutWatcher);
-    State.currentTurnDeadline = null;
     
     if (State.isGameRunning && State.activeMode === 'multi') handleRankedEloUpdate();
 
@@ -351,14 +349,11 @@ export function endPracticeSession(completed = true) {
 export function initOnlineGame() {
     if(State.onlineRole === 'host') {
         State.multiOrder = Object.keys(State.multiPlayers);
-        // SAFETY FIX: Asigurare in caz extrem in care randarea pica
-        const firstTarget = pickRandomTarget() || State.targetObjects[0];
-        
-        if (firstTarget && firstTarget.id) {
-            update(ref(db, 'lobbies/' + State.onlineRoomCode + '/state'), {
-                targetId: firstTarget.id, turnIndex: 0, currentRound: 1, order: State.multiOrder, turnDeadline: Date.now() + 15000, gameMode: State.multiGameMode || 'name'
-            });
-        }
+        const firstTarget = pickRandomTarget();
+        // Nu mai trimitem niciun turnDeadline absolut
+        update(ref(db, 'lobbies/' + State.onlineRoomCode + '/state'), {
+            targetId: firstTarget.id, turnIndex: 0, currentRound: 1, order: State.multiOrder, gameMode: State.multiGameMode
+        });
     }
 
     if(State.stateListenerUnsubscribe) State.stateListenerUnsubscribe();
@@ -393,7 +388,7 @@ export function initOnlineGame() {
                 if (nextIndex === 0) nextRound++;
                 
                 update(ref(db, 'lobbies/' + State.onlineRoomCode + '/state'), {
-                    turnIndex: nextIndex, currentRound: nextRound, targetId: pickRandomTarget().id, turnDeadline: Date.now() + 15000
+                    turnIndex: nextIndex, currentRound: nextRound, targetId: pickRandomTarget().id
                 });
             }, 2500);
         }
@@ -407,14 +402,14 @@ export function initOnlineGame() {
 }
 
 export function syncOnlineGame(data) {
-    State.multiOrder = data.order || []; State.currentTurnIndex = data.turnIndex; State.currentRound = data.currentRound;
-    State.currentTurnDeadline = data.turnDeadline || (Date.now() + 15000);
+    State.multiOrder = data.order || []; 
+    State.currentTurnIndex = data.turnIndex; 
+    State.currentRound = data.currentRound;
     if (data.gameMode) State.multiGameMode = data.gameMode;
     State.currentTarget = State.targetObjects.find(s => s.id === data.targetId) || State.targetObjects[0];
 
     if (State.currentRound > State.maxRounds) { endGameSession(); return; }
 
-    State.isTimerPaused = false;
     DOM.scoreDisplay.innerText = `Round ${State.currentRound} / ${State.maxRounds}`;
 
     let activeId = State.multiOrder[State.currentTurnIndex];
@@ -443,6 +438,30 @@ export function syncOnlineGame(data) {
     }
 
     if (State.multiGameMode !== 'position') panCameraToTarget(State.currentTarget);
+    
+    // SISTEMUL NOU DE SINCRONIZARE TIMER ONLINE (Curățat de bug-ul NaN:NaN)
+    if (State.duelTurnTimer) clearInterval(State.duelTurnTimer);
+    State.duelTurnSeconds = 15;
+    DOM.timerDisplay.innerText = "00:15";
+    State.isTimerPaused = false; // Pornim oficial numărătoarea!
+    
+    State.duelTurnTimer = setInterval(() => {
+        if (State.isTimerPaused) return;
+        State.duelTurnSeconds--;
+        if (State.duelTurnSeconds < 0) State.duelTurnSeconds = 0;
+        
+        DOM.timerDisplay.innerText = `00:${State.duelTurnSeconds.toString().padStart(2, '0')}`;
+        
+        if (State.duelTurnSeconds <= 0) {
+            if (State.onlineRole === 'host') {
+                advanceOnlineTurnAsTimeout();
+            } else if (localIsActing) {
+                // Dacă suntem Guest și ne expiră timpul, ascundem butonul preventiv 
+                // și așteptăm comanda supremă de avansare de la Host.
+                DOM.btnCheck.style.display = "none";
+            }
+        }
+    }, 1000);
 }
 
 export function startNewRound() {
@@ -530,25 +549,18 @@ export function processAnswer(isCorrect, starReference, isShotClockExpire = fals
 
     if (State.activeMode === 'multi') {
         if (State.isOnlineMatch) {
-            // SAFETY FIX: Asigurare daca obiectul lipseste momentan
             let me = State.multiPlayers[State.myClientId];
-            if (!me) me = { score: 0, timeMs: 0, streak: 0, history: [] };
             if (!me.history) me.history = [];
-            
-            if (isCorrect) { 
-                me.streak = (me.streak || 0) + 1; 
-                me.score = (me.score || 0) + customEarnedPoints; 
-            } else { 
-                me.streak = 0; 
-            }
+            if (isCorrect) { me.streak = (me.streak || 0) + 1; me.score += customEarnedPoints; } else me.streak = 0;
             
             me.history.push({ correct: isCorrect, time: timeTaken });
             if (me.history.length > 20) me.history.shift();
-            me.timeMs = (me.timeMs || 0) + timeTaken;
+            me.timeMs += timeTaken;
 
             update(ref(db, `lobbies/${State.onlineRoomCode}/players/${State.myClientId}`), me);
             update(ref(db, `lobbies/${State.onlineRoomCode}/lastAction`), {
-                playerId: State.myClientId, correct: isCorrect, points: customEarnedPoints, time: timeTaken, answerLabel: buildSkillAnswerLabel(State.currentTarget, effectiveSkill)
+                playerId: State.myClientId, correct: isCorrect, points: customEarnedPoints, time: timeTaken, answerLabel: buildSkillAnswerLabel(State.currentTarget, effectiveSkill),
+                timestamp: Date.now() // Forțăm update-ul în Firebase
             });
         } else {
             let activeId = State.multiOrder[State.currentTurnIndex];
