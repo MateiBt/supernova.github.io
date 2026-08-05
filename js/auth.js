@@ -38,6 +38,8 @@ const difficultyMap = {
     'q19_usaaao_2025': 'theory',
     'q26_usaaao_2025': 'medium',
 
+    'q20_usaaao_2024': 'medium',
+
     'q1_usaaao_2018': 'easy',
     'q30_usaaao_2018': 'easy'
 };

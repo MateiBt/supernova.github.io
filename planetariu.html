@@ -124,6 +124,15 @@
     .c-comet-2 { top: 10%; left: 40%; animation: shootComet 12s infinite 6s; }
     .c-comet-3 { top: 50%; right: 10%; animation: shootComet 9s infinite 4s; }
 
+    .c-rocket-wrapper { position: absolute; opacity: 0; z-index: -1; }
+    .c-smoke { position: absolute; background: #cbd5e1; border-radius: 50%; z-index: 1; animation: puff 0.6s infinite ease-out; box-shadow: 0 0 10px rgba(255,255,255,0.4); }
+    @keyframes puff { 0% { transform: scale(0.5); opacity: 0.8; } 100% { transform: scale(3) translate(-15px, 20px); opacity: 0; } }
+    @keyframes flyRocket1 { 0% { transform: translate(-10vw, 110vh); opacity: 1; } 100% { transform: translate(110vw, -10vh); opacity: 1; } }
+    @keyframes flyRocket2 { 0% { transform: translate(40vw, 110vh); opacity: 1; } 100% { transform: translate(110vw, 20vh); opacity: 1; } }
+
+    .rw-1 { animation: flyRocket1 18s linear infinite 1s; }
+    .rw-2 { animation: flyRocket2 25s linear infinite 12s; }
+
     #vs-overlay, #countdown-overlay, #practice-result-modal {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(2, 4, 10, 0.85); backdrop-filter: blur(8px);
@@ -163,7 +172,6 @@
 
     .modal-header { text-align: center; padding: 25px 30px 15px; border-bottom: 1px solid var(--edge); background: rgba(0,0,0,0.4); position: relative; }
     .modal-header-deco { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 150px; height: 3px; background: var(--cyan); opacity: 0.8; box-shadow: 0 0 10px var(--cyan); }
-    .modal-header::before { content: "SYSTEM.INTERFACE.V2.5"; display: block; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 3px; color: var(--cyan-2); opacity: 0.8; margin-bottom: 8px; }
     .modal-title { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; color: var(--text-hi); margin: 0 0 5px 0; letter-spacing: 2px; text-transform: uppercase; }
     .modal-desc { font-family: var(--font-mono); font-size: 0.85rem; color: var(--cyan); margin: 0; letter-spacing: 1px; }
 
@@ -222,14 +230,8 @@
     #btn-launch-practice::before { background: linear-gradient(to right, transparent, rgba(43,227,138,0.4), transparent); }
     #btn-launch-practice:hover:not(:disabled) { background: var(--success); color: #000; box-shadow: 0 0 20px rgba(43,227,138,0.5); }
 
-    /* ==========================================================
-       CONSTELLATION PRACTICE - Culori fixe pentru medalii
-       ========================================================== */
     .learning-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; list-style: none; padding: 0; margin: 0; }
-    .learn-btn {
-        background: var(--panel-inset); border: 1px solid var(--edge); color: var(--text-mid); padding: 14px; cursor: pointer; transition: all 0.2s ease; text-align: left; display: flex; flex-direction: column; gap: 5px; position: relative;
-        clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
-    }
+    .learn-btn { background: var(--panel-inset); border: 1px solid var(--edge); color: var(--text-mid); padding: 14px; cursor: pointer; transition: all 0.2s ease; text-align: left; display: flex; flex-direction: column; gap: 5px; position: relative; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
     .learn-btn:hover { color: var(--text-hi); border-color: rgba(53,230,255,0.4); background: rgba(53,230,255,0.05); }
     .learn-btn.selected { border-color: var(--cyan); background: rgba(53,230,255,0.1); box-shadow: inset 0 0 10px rgba(53,230,255,0.15); }
     
@@ -253,15 +255,11 @@
     .learn-btn.rank-completed .learn-title { color: var(--success); }
     
     .learn-btn.rank-unranked { border-color: var(--edge); }
-
     .learn-title { font-family: var(--font-ui); font-size: 1rem; font-weight: 700; transition: 0.2s; letter-spacing: 0.5px; }
     .learn-count { font-size: 0.75rem; opacity: 0.6; font-family: var(--font-mono); }
     .best-time-label { font-size: 0.7rem; color: var(--text-low); margin-top: 5px; font-family: var(--font-mono); }
     .best-time-val { color: var(--text-hi); font-weight: 500; font-variant-numeric: tabular-nums; }
 
-    /* ==========================================================
-       LEADERBOARDS
-       ========================================================== */
     .lb-section { margin-bottom: 25px; background: rgba(0,0,0,0.2); border: 1px solid var(--edge); padding: 20px; }
     .lb-title { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
     .title-personal { color: var(--gold); }
@@ -287,12 +285,8 @@
     #public-leaderboard-list li:nth-child(1)::before, #practice-lb-list li:nth-child(1)::before, #practice-lb-preview-list li:nth-child(1)::before, #elo-leaderboard-list li:nth-child(1)::before { color: var(--gold); text-shadow: 0 0 5px var(--gold); }
     #public-leaderboard-list li:nth-child(2)::before, #practice-lb-list li:nth-child(2)::before, #practice-lb-preview-list li:nth-child(2)::before, #elo-leaderboard-list li:nth-child(2)::before { color: var(--silver); text-shadow: 0 0 5px var(--silver); }
     #public-leaderboard-list li:nth-child(3)::before, #practice-lb-list li:nth-child(3)::before, #practice-lb-preview-list li:nth-child(3)::before, #elo-leaderboard-list li:nth-child(3)::before { color: var(--bronze); text-shadow: 0 0 5px var(--bronze); }
-    
     #match-history-list li::before { content: none; }
 
-    /* ==========================================================
-       DESCRIPTION / WELCOME PANEL
-       ========================================================== */
     .desc-panel { background: transparent; border: 1px solid var(--edge); padding: 30px; text-align: left; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 10px); }
     .desc-title { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; color: var(--cyan); margin: 0 0 20px 0; border-bottom: 1px solid var(--edge); padding-bottom: 10px; letter-spacing: 1px; text-transform: uppercase;}
     .desc-content { font-size: 0.95rem; color: var(--text-mid); line-height: 1.6; }
@@ -301,9 +295,6 @@
     .desc-content li { margin-bottom: 8px; }
     .desc-content b { color: var(--text-hi); font-weight: 600; }
 
-    /* ==========================================================
-       MULTIPLAYER / ARENA LOBBY
-       ========================================================== */
     .elo-display { text-align: center; padding: 20px; background: rgba(255,207,92,0.05); border: 1px solid rgba(255,207,92,0.3); margin-bottom: 25px; clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px); }
     .elo-display h3 { margin: 0 0 5px 0; color: var(--gold); font-family: var(--font-mono); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 3px; }
     .elo-display .elo-val { font-size: 2.5rem; font-weight: 700; color: var(--text-hi); font-family: var(--font-display); text-shadow: 0 0 15px var(--gold-glow); }
@@ -318,9 +309,6 @@
     .hud-input:focus { border-color: var(--cyan); background: rgba(53,230,255,0.05); }
     .hud-input::placeholder { color: var(--text-low); }
 
-    /* ==========================================================
-       IN-GAME HUD
-       ========================================================== */
     .hud-container { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 600px; display: none; z-index: 10; }
     .hud-panel { background: rgba(5, 8, 16, 0.85); border: 1px solid var(--cyan); padding: 20px; backdrop-filter: blur(8px); clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); box-shadow: inset 0 0 20px rgba(53,230,255,0.1), 0 10px 30px rgba(0,0,0,0.8); }
     .hud-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--edge-strong); padding-bottom: 10px; }
@@ -348,9 +336,6 @@
     .hud-feedback.correct { border-color: var(--success); color: var(--success); display: block; box-shadow: inset 0 0 10px rgba(43,227,138,0.2); }
     .hud-feedback.wrong { border-color: var(--danger); color: var(--danger); display: block; box-shadow: inset 0 0 10px rgba(255,77,106,0.2); }
 
-    /* ==========================================================
-       FREE ROAM CARD
-       ========================================================== */
     #free-roam-card { position: absolute; right: 30px; top: 90px; width: 280px; background: rgba(5, 8, 16, 0.85); border: 1px solid var(--cyan); padding: 20px; display: none; z-index: 10; backdrop-filter: blur(8px); clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px); }
     .fr-title { font-family: var(--font-display); font-size: 1.1rem; color: var(--cyan); font-weight: 700; margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px;}
     .fr-bayer { font-size: 0.75rem; color: var(--text-mid); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--edge-strong); font-family: var(--font-mono); }
@@ -413,7 +398,6 @@
     </div>
 
     <div class="overlay-modal" id="setup-modal">
-        
         <div class="cartoon-bg">
             <div class="c-comet c-comet-1"></div>
             <div class="c-comet c-comet-2"></div>
@@ -425,10 +409,45 @@
             <div class="c-star c-star-5"></div>
             <div class="c-star c-star-6"></div>
             <div class="c-star c-star-7"></div>
+            
+            <div class="c-rocket-wrapper rw-1">
+                <svg viewBox="0 0 100 100" width="60" height="60" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(45deg); filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));">
+                    <path d="M 30,70 Q 10,100 35,95 Q 45,90 45,70 Z" fill="#FDD835" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+                    <path d="M 35,75 Q 25,90 35,85 Q 40,82 40,75 Z" fill="#FF9800"/>
+                    <path d="M 35,45 C 10,50 5,70 5,75 C 20,75 30,65 35,60 Z" fill="#E53935" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+                    <path d="M 65,45 C 90,50 95,70 95,75 C 80,75 70,65 65,60 Z" fill="#E53935" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+                    <path d="M 32,68 L 68,68 L 65,75 L 35,75 Z" fill="#455A64" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+                    <path d="M 50,5 C 25,25 30,70 35,70 L 65,70 C 70,70 75,25 50,5 Z" fill="#CFD8DC" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+                    <path d="M 50,5 C 38,15 34,25 33,35 L 67,35 C 66,25 62,15 50,5 Z" fill="#E53935" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+                    <circle cx="50" cy="45" r="12" fill="#29B6F6" stroke="#263238" stroke-width="4"/>
+                    <circle cx="46" cy="41" r="3" fill="#E1F5FE"/>
+                    <path d="M 43,65 L 57,65 L 54,82 L 46,82 Z" fill="#E53935" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+                </svg>
+                <div class="c-smoke" style="bottom: 5px; left: 0px; width: 14px; height: 14px;"></div>
+                <div class="c-smoke" style="bottom: -8px; left: -8px; width: 18px; height: 18px;"></div>
+                <div class="c-smoke" style="bottom: -15px; left: -5px; width: 12px; height: 12px;"></div>
+            </div>
+
+            <div class="c-rocket-wrapper rw-2">
+                <svg viewBox="0 0 100 100" width="50" height="50" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(45deg); filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));">
+                    <path d="M 30,70 Q 10,100 35,95 Q 45,90 45,70 Z" fill="#FDD835" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+                    <path d="M 35,75 Q 25,90 35,85 Q 40,82 40,75 Z" fill="#FF9800"/>
+                    <path d="M 35,45 C 10,50 5,70 5,75 C 20,75 30,65 35,60 Z" fill="#E53935" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+                    <path d="M 65,45 C 90,50 95,70 95,75 C 80,75 70,65 65,60 Z" fill="#E53935" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+                    <path d="M 32,68 L 68,68 L 65,75 L 35,75 Z" fill="#455A64" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+                    <path d="M 50,5 C 25,25 30,70 35,70 L 65,70 C 70,70 75,25 50,5 Z" fill="#CFD8DC" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+                    <path d="M 50,5 C 38,15 34,25 33,35 L 67,35 C 66,25 62,15 50,5 Z" fill="#E53935" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+                    <circle cx="50" cy="45" r="12" fill="#29B6F6" stroke="#263238" stroke-width="4"/>
+                    <circle cx="46" cy="41" r="3" fill="#E1F5FE"/>
+                    <path d="M 43,65 L 57,65 L 54,82 L 46,82 Z" fill="#E53935" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+                </svg>
+                <div class="c-smoke" style="bottom: 5px; left: 0px; width: 14px; height: 14px;"></div>
+                <div class="c-smoke" style="bottom: -8px; left: -8px; width: 18px; height: 18px;"></div>
+                <div class="c-smoke" style="bottom: -15px; left: -5px; width: 12px; height: 12px;"></div>
+            </div>
         </div>
 
         <div class="modal-content" id="config-forms" style="display: flex;">
-            
             <div class="modal-header">
                 <h2 class="modal-title">Planetarium Control Panel</h2>
                 <p class="modal-desc" id="auth-status-text">Checking authentication protocols...</p>
@@ -438,6 +457,7 @@
                 <button class="main-tab-btn active" onclick="switchTab('tab-welcome')"><i class="fa-solid fa-terminal"></i> <span>Welcome</span></button>
                 <button class="main-tab-btn" onclick="switchTab('tab-single')"><i class="fa-solid fa-user-astronaut"></i> <span>Singleplayer</span></button>
                 <button class="main-tab-btn" onclick="switchTab('tab-multi')"><i class="fa-solid fa-satellite-dish"></i> <span>Arena</span></button>
+                <button class="main-tab-btn" onclick="switchTab('tab-tournaments')"><i class="fa-solid fa-trophy"></i> <span>Tournaments</span></button>
                 <button class="main-tab-btn" onclick="switchTab('tab-practice')"><i class="fa-solid fa-draw-polygon"></i> <span>Constellations</span></button>
                 <button class="main-tab-btn" onclick="switchTab('tab-records')"><i class="fa-solid fa-database"></i> <span>Records</span></button>
             </div>
@@ -457,6 +477,7 @@
                         <ul>
                             <li>Go to <b>Singleplayer</b> to test your skills in specific gamemodes (Name, Type, Magnitude, etc.) with strict timers and leaderboards.</li>
                             <li>Go to <b>Arena</b> to challenge your friends, play against the A.I. Bot, or compete in Online Ranked matches for ELO.</li>
+                            <li>Go to <b>Tournaments</b> to set up massive brackets and multi-stage competitions.</li>
                             <li>Go to <b>Constellations</b> for an isolated practice session on specific star patterns.</li>
                         </ul>
                     </div>
@@ -584,6 +605,78 @@
                         </div>
                         
                         <button class="btn-launch" id="btn-launch-multi">Initiate Duel Protocol</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB-UL NOU DE TURNEE (Updated with direct IDs for DOM parsing) -->
+            <div id="tab-tournaments" class="tab-content">
+                <div id="tourney-setup-ui">
+                    <div class="split-grid">
+                        <div>
+                            <div class="config-group">
+                                <span class="config-label" style="color: var(--gold);">1. Tournament Format</span>
+                                <div class="option-grid" id="tourney-format-grid">
+                                    <button class="opt-btn selected" data-format="elimination">Elimination (Survival)</button>
+                                    <button class="opt-btn" data-format="classic">Classic Bracket</button>
+                                    <button class="opt-btn" data-format="champions" style="grid-column: span 2; border-color: var(--gold); color: var(--gold);">Champions Cup (vs 35 Bots)</button>
+                                </div>
+                            </div>
+                            
+                            <div class="config-group">
+                                <span class="config-label" style="color: var(--gold);">2. Match Rules</span>
+                                 <div class="option-grid" id="tourney-skill-grid" style="margin-bottom: 15px;">
+                                    <button class="opt-btn selected" data-skill="name">Identify Name</button>
+                                    <button class="opt-btn" data-skill="type">Classify Type</button>
+                                    <button class="opt-btn" data-skill="position">Locate Target</button>
+                                    <button class="opt-btn" data-skill="mag">Guess Magnitude</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="config-group" id="tourney-players-setup">
+                                <span class="config-label" style="color: var(--cyan);">3. Roster & Network</span>
+                                
+                                <div class="option-grid" style="margin-bottom: 10px;">
+                                    <button class="opt-btn selected" id="btn-t-local">Local Mode</button>
+                                    <button class="opt-btn" id="btn-t-online">Online Room</button>
+                                </div>
+
+                                <div id="tourney-online-controls" style="display: none; padding: 10px; border: 1px solid var(--edge); margin-bottom: 10px;">
+                                     <div style="display: flex; gap: 5px;">
+                                         <button class="opt-btn" id="btn-t-host" style="flex: 1; border-color: var(--cyan); color: var(--cyan);">Host</button>
+                                         <input type="text" id="inp-t-code" class="hud-input" placeholder="Code..." style="flex: 1; text-transform: uppercase;">
+                                         <button class="opt-btn" id="btn-t-join" style="flex: 1;">Join</button>
+                                     </div>
+                                     <p id="t-room-status" style="font-size: 0.75rem; margin-top: 10px; margin-bottom: 0; color: var(--gold); font-family: var(--font-mono);"></p>
+                                </div>
+
+                                <div style="display: flex; gap: 10px; margin-bottom: 15px;" id="tourney-add-group">
+                                    <input type="text" id="tourney-player-name" class="hud-input" placeholder="Name..." style="flex: 2;">
+                                    <button class="opt-btn" id="btn-add-t-player" style="flex: 1; border-color: var(--cyan); color: var(--cyan);">+ Player</button>
+                                    <button class="opt-btn" id="btn-add-t-bot" style="flex: 1;">+ Bot</button>
+                                </div>
+
+                                <ul class="lb-list" id="tourney-players-list" style="max-height: 180px; overflow-y: auto; border: 1px solid var(--edge); padding: 10px; background: rgba(0,0,0,0.3);">
+                                </ul>
+                            </div>
+                            
+                            <button class="btn-launch" id="btn-launch-tourney" disabled>Initialize Tournament</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tourney-active-ui" style="display: none;">
+                    <h2 id="tourney-active-title" style="color: var(--gold); text-align: center; font-family: var(--font-display); letter-spacing: 2px; text-transform: uppercase;">Tournament Phase</h2>
+                    <p id="tourney-active-desc" style="text-align: center; font-family: var(--font-mono); color: var(--text-mid); font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">League Phase - Matchday 1</p>
+                    
+                    <div id="tourney-view-container" style="min-height: 250px; background: rgba(0,0,0,0.3); border: 1px solid var(--edge); padding: 20px; margin-bottom: 20px; overflow-x: auto; font-family: var(--font-mono); font-size: 0.85rem;">
+                    </div>
+                    
+                    <div style="text-align: center; display: flex; justify-content: center; gap: 15px;">
+                        <button class="opt-btn" id="btn-abort-tourney" style="border-color: var(--danger); color: var(--danger); width: 200px;">Abort Tournament</button>
+                        <button class="btn-launch" id="btn-next-tourney-match" style="max-width: 300px; margin-top: 0;">Play Next Match</button>
                     </div>
                 </div>
             </div>

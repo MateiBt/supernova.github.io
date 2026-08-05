@@ -1,24 +1,31 @@
 // ==========================================
 // TOURNAMENT.JS - Logică pentru Turnee (Local & A.I.)
 // ==========================================
-import { State, DOM } from './state.js';
+import { State, DOM, db } from './state.js';
 import { triggerGameStart } from './gameplay.js';
+import { ref, set, update, onValue, onDisconnect, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 export function initTournamentUI() {
-    if(!DOM.btnAddTPlayer) return;
+    const btnAddPlayer = document.getElementById('btn-add-t-player');
+    const btnAddBot = document.getElementById('btn-add-t-bot');
+    const inpName = document.getElementById('tourney-player-name');
+    
+    if(btnAddPlayer) {
+        btnAddPlayer.addEventListener('click', () => {
+            const name = inpName.value.trim() || `Player ${State.tourneyRoster.length + 1}`;
+            addContestant(name, false, 0);
+            inpName.value = '';
+        });
+    }
 
-    DOM.btnAddTPlayer.addEventListener('click', () => {
-        const name = DOM.tInpName.value.trim() || `Player ${State.tourneyRoster.length + 1}`;
-        addContestant(name, false, 0);
-        DOM.tInpName.value = '';
-    });
-
-    DOM.btnAddTBot.addEventListener('click', () => {
-        const diffs = [0.2, 0.4, 0.6, 0.8, 0.95];
-        const acc = diffs[Math.floor(Math.random() * diffs.length)];
-        const name = `A.I. Bot (Acc: ${Math.round(acc*100)}%)`;
-        addContestant(name, true, acc);
-    });
+    if(btnAddBot) {
+        btnAddBot.addEventListener('click', () => {
+            const diffs = [0.2, 0.4, 0.6, 0.8, 0.95];
+            const acc = diffs[Math.floor(Math.random() * diffs.length)];
+            const name = `A.I. Bot (Acc: ${Math.round(acc*100)}%)`;
+            addContestant(name, true, acc);
+        });
+    }
 
     document.querySelectorAll('#tourney-format-grid .opt-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -37,11 +44,84 @@ export function initTournamentUI() {
         });
     });
 
-    DOM.btnLaunchTourney.addEventListener('click', startTournament);
-    DOM.btnNextTMatch.addEventListener('click', playNextTournamentMatch);
-    DOM.btnAbortTourney.addEventListener('click', () => {
+    const btnLocal = document.getElementById('btn-t-local');
+    const btnOnline = document.getElementById('btn-t-online');
+    const onlineControls = document.getElementById('tourney-online-controls');
+
+    if (btnLocal && btnOnline) {
+        btnLocal.addEventListener('click', () => {
+            btnLocal.classList.add('selected');
+            btnOnline.classList.remove('selected');
+            onlineControls.style.display = 'none';
+            State.tourneyIsOnline = false;
+        });
+        btnOnline.addEventListener('click', () => {
+            btnOnline.classList.add('selected');
+            btnLocal.classList.remove('selected');
+            onlineControls.style.display = 'block';
+            State.tourneyIsOnline = true;
+        });
+    }
+
+    const btnHost = document.getElementById('btn-t-host');
+    const btnJoin = document.getElementById('btn-t-join');
+    if (btnHost) btnHost.addEventListener('click', hostTournamentRoom);
+    if (btnJoin) btnJoin.addEventListener('click', joinTournamentRoom);
+
+    const btnLaunch = document.getElementById('btn-launch-tourney');
+    if(btnLaunch) btnLaunch.addEventListener('click', startTournament);
+    
+    const btnNext = document.getElementById('btn-next-tourney-match');
+    if(btnNext) btnNext.addEventListener('click', playNextTournamentMatch);
+    
+    const btnAbort = document.getElementById('btn-abort-tourney');
+    if(btnAbort) btnAbort.addEventListener('click', () => {
         if(confirm("Abort tournament? All progress will be lost.")) {
             resetTournament();
+        }
+    });
+}
+
+function hostTournamentRoom() {
+    State.tourneyRole = 'host';
+    State.tourneyRoomCode = Math.random().toString(36).substring(2, 6).toUpperCase();
+    
+    const statusLabel = document.getElementById('t-room-status');
+    statusLabel.innerText = `Hosting Room: ${State.tourneyRoomCode}`;
+    
+    const roomRef = ref(db, 'tourneys/' + State.tourneyRoomCode);
+    set(roomRef, { status: 'waiting', hostId: State.myClientId, roster: {} });
+    onDisconnect(roomRef).remove();
+
+    addContestant(State.currentUser ? (State.currentUser.displayName || State.currentUser.email.split('@')[0]) : "Host", false, 0);
+    
+    listenToTournamentRoster();
+}
+
+function joinTournamentRoom() {
+    const codeInp = document.getElementById('inp-t-code');
+    const code = codeInp.value.trim().toUpperCase();
+    if(code.length !== 4) return;
+
+    State.tourneyRole = 'guest';
+    State.tourneyRoomCode = code;
+    
+    const statusLabel = document.getElementById('t-room-status');
+    statusLabel.innerText = `Connected to Room: ${State.tourneyRoomCode}`;
+    
+    addContestant(State.currentUser ? (State.currentUser.displayName || State.currentUser.email.split('@')[0]) : "Guest", false, 0);
+    
+    listenToTournamentRoster();
+}
+
+function listenToTournamentRoster() {
+    if(State.tourneyListenerUnsubscribe) State.tourneyListenerUnsubscribe();
+    State.tourneyListenerUnsubscribe = onValue(ref(db, `tourneys/${State.tourneyRoomCode}/roster`), (snapshot) => {
+        const data = snapshot.val();
+        if(data) {
+            State.tourneyRoster = Object.values(data);
+            renderRoster();
+            checkTourneyLaunchReady();
         }
     });
 }
@@ -65,44 +145,56 @@ function addContestant(name, isBot, accuracy) {
         alert("Champions Cup only supports 1 human player.");
         return;
     }
-    State.tourneyRoster.push({
-        id: 't_' + Math.random().toString(36).substr(2, 9),
+
+    const playerId = 't_' + Math.random().toString(36).substr(2, 9);
+    const playerObj = {
+        id: playerId,
         name: name,
         isBot: isBot,
         botAccuracy: accuracy,
         score: 0, 
         eliminated: false
-    });
-    renderRoster();
-    checkTourneyLaunchReady();
+    };
+
+    if (State.tourneyIsOnline && State.tourneyRoomCode) {
+        update(ref(db, `tourneys/${State.tourneyRoomCode}/roster/${playerId}`), playerObj);
+    } else {
+        State.tourneyRoster.push(playerObj);
+        renderRoster();
+        checkTourneyLaunchReady();
+    }
 }
 
 function renderRoster() {
-    DOM.tPlayersList.innerHTML = '';
+    const list = document.getElementById('tourney-players-list');
+    if(!list) return;
+    list.innerHTML = '';
     State.tourneyRoster.forEach((p, index) => {
         const li = document.createElement('li');
         li.style.display = "flex"; li.style.justifyContent = "space-between";
         li.innerHTML = `<span>${index + 1}. ${p.isBot ? '<i class="fa-solid fa-robot" style="color:var(--text-low);"></i>' : '<i class="fa-solid fa-user-astronaut" style="color:var(--cyan);"></i>'} ${p.name}</span>`;
-        DOM.tPlayersList.appendChild(li);
+        list.appendChild(li);
     });
 }
 
 function checkTourneyLaunchReady() {
+    const btnLaunch = document.getElementById('btn-launch-tourney');
+    if(!btnLaunch) return;
+
     let ready = false;
     let count = State.tourneyRoster.length;
     if (State.tourneyFormat === 'champions') {
-        ready = (count === 1); // Trebuie fix 1 jucător uman (restul de 35 se autogenerează)
+        ready = (count === 1);
     } else if (State.tourneyFormat === 'classic') {
-        ready = (count >= 4 && (count & (count - 1)) === 0); // Trebuie să fie o putere a lui 2
+        ready = (count >= 4 && (count & (count - 1)) === 0);
     } else {
-        ready = (count >= 4); // Elimination minim 4
+        ready = (count >= 4);
     }
-    DOM.btnLaunchTourney.disabled = !ready;
+    btnLaunch.disabled = !ready;
 }
 
 function startTournament() {
     if (State.tourneyFormat === 'champions') {
-        // Generăm 35 de boți automat pentru formatul de ligă
         for(let i=0; i<35; i++) {
             const acc = [0.2, 0.4, 0.6, 0.8, 0.95][Math.floor(Math.random()*5)];
             State.tourneyRoster.push({ 
@@ -119,23 +211,20 @@ function startTournament() {
         currentMatchIndex: 0
     };
 
-    DOM.tSetupUI.style.display = 'none';
-    DOM.tActiveUI.style.display = 'block';
+    document.getElementById('tourney-setup-ui').style.display = 'none';
+    document.getElementById('tourney-active-ui').style.display = 'block';
     renderTournamentView();
 }
 
 function generateMatches() {
     let matches = [];
     if (State.tourneyFormat === 'classic') {
-        // Perechi 1 la 1
         for(let i=0; i<State.tourneyRoster.length; i+=2) {
             matches.push({ p1: State.tourneyRoster[i], p2: State.tourneyRoster[i+1], winner: null, type: '1v1' });
         }
     } else if (State.tourneyFormat === 'elimination') {
-        // Toată lumea în aceeași arenă
         matches.push({ type: 'ffa', participants: [...State.tourneyRoster] });
     } else if (State.tourneyFormat === 'champions') {
-        // Modul ligă - jucătorul uman vs 8 boți aleatori (simplificat pt prima fază)
         let player = State.tourneyRoster[0];
         let opponents = State.tourneyRoster.slice(1).sort(() => 0.5 - Math.random()).slice(0, 8);
         opponents.forEach(opp => {
@@ -146,31 +235,37 @@ function generateMatches() {
 }
 
 export function renderTournamentView() {
-    DOM.tViewContainer.innerHTML = '';
+    const viewContainer = document.getElementById('tourney-view-container');
+    const tTitle = document.getElementById('tourney-active-title');
+    const tDesc = document.getElementById('tourney-active-desc');
+    const btnNext = document.getElementById('btn-next-tourney-match');
+    
+    if(!viewContainer) return;
+    viewContainer.innerHTML = '';
     const match = State.tourneyState.matches[State.tourneyState.currentMatchIndex];
     
     if (!match) {
-        DOM.tViewContainer.innerHTML = `<h2 style="color:var(--success); text-align:center; font-family:var(--font-display); font-size: 2rem;">TOURNAMENT CONCLUDED!</h2>`;
-        DOM.btnNextTMatch.style.display = 'none';
+        viewContainer.innerHTML = `<h2 style="color:var(--success); text-align:center; font-family:var(--font-display); font-size: 2rem;">TOURNAMENT CONCLUDED!</h2>`;
+        btnNext.style.display = 'none';
         return;
     }
     
-    DOM.btnNextTMatch.style.display = 'inline-block';
+    btnNext.style.display = 'inline-block';
 
     if (match.type === 'ffa') {
-        DOM.tTitle.innerText = "ELIMINATION ROUND";
-        DOM.tDesc.innerText = `Survival Match - Last place is eliminated after 10 rounds!`;
+        tTitle.innerText = "ELIMINATION ROUND";
+        tDesc.innerText = `Survival Match - Last place is eliminated after 10 rounds!`;
         let html = `<ul class="lb-list" style="max-width: 400px; margin: 0 auto; border: 1px solid var(--edge);">`;
         match.participants.forEach(p => {
             let style = p.eliminated ? 'color:var(--danger); text-decoration:line-through;' : 'color:var(--text-hi);';
             html += `<li style="${style}">${p.name} ${p.eliminated ? '<span>OUT</span>' : ''}</li>`;
         });
         html += `</ul>`;
-        DOM.tViewContainer.innerHTML = html;
+        viewContainer.innerHTML = html;
     } else {
-        DOM.tTitle.innerText = match.type === '1v1_league' ? `LEAGUE PHASE - MATCHDAY ${State.tourneyState.currentMatchIndex + 1}` : "KNOCKOUT BRACKET";
-        DOM.tDesc.innerText = `10 Rounds - Winner advances!`;
-        DOM.tViewContainer.innerHTML = `
+        tTitle.innerText = match.type === '1v1_league' ? `LEAGUE PHASE - MATCHDAY ${State.tourneyState.currentMatchIndex + 1}` : "KNOCKOUT BRACKET";
+        tDesc.innerText = `10 Rounds - Winner advances!`;
+        viewContainer.innerHTML = `
             <div style="display:flex; justify-content:center; align-items:center; gap: 40px; font-family:var(--font-display); font-size:1.5rem; margin-top:30px;">
                 <div style="color:var(--cyan); text-align:right;">${match.p1.name}</div>
                 <div style="color:var(--danger); font-size:2rem;">VS</div>
@@ -214,7 +309,6 @@ export function handleTournamentMatchEnd() {
     const match = State.currentTourneyMatch;
     
     if (match.type === 'ffa') {
-        // Găsim cel mai slab punctaj și îl eliminăm
         let sorted = Object.keys(State.multiPlayers).sort((a,b) => State.multiPlayers[b].score - State.multiPlayers[a].score);
         let loserId = sorted[sorted.length-1];
         let loser = State.tourneyRoster.find(p => p.id === loserId);
@@ -223,19 +317,18 @@ export function handleTournamentMatchEnd() {
         let remaining = match.participants.filter(p => !p.eliminated);
         if(remaining.length === 1) {
             alert(`TOURNAMENT OVER! ${remaining[0].name.toUpperCase()} IS THE CHAMPION!`);
-            State.tourneyState.currentMatchIndex++; // End
+            State.tourneyState.currentMatchIndex++;
         } else {
             alert(`${loser.name} has been eliminated from the tournament!`);
         }
     } else {
         let p1Score = State.multiPlayers[match.p1.id].score;
         let p2Score = State.multiPlayers[match.p2.id].score;
-        match.winner = p1Score > p2Score ? match.p1 : (p2Score > p1Score ? match.p2 : match.p1); // Draw goes to p1 pt simplitate
+        match.winner = p1Score > p2Score ? match.p1 : (p2Score > p1Score ? match.p2 : match.p1);
         alert(`Match Concluded! ${match.winner.name} won!`);
         
         State.tourneyState.currentMatchIndex++;
         
-        // Dacă runda curentă din bracket s-a terminat, generăm semifinalele/finala
         if (State.tourneyFormat === 'classic' && State.tourneyState.currentMatchIndex >= State.tourneyState.matches.length) {
             let winners = State.tourneyState.matches.map(m => m.winner);
             if (winners.length === 1) {
@@ -253,15 +346,29 @@ export function handleTournamentMatchEnd() {
     }
 
     DOM.setupModal.style.display = 'flex';
-    DOM.tActiveUI.style.display = 'block';
+    document.getElementById('tourney-active-ui').style.display = 'block';
     renderTournamentView();
 }
 
 function resetTournament() {
     State.isTournament = false;
     State.tourneyRoster = [];
-    DOM.tSetupUI.style.display = 'block';
-    DOM.tActiveUI.style.display = 'none';
+    
+    if(State.tourneyIsOnline && State.tourneyRole === 'host' && State.tourneyRoomCode) {
+        remove(ref(db, 'tourneys/' + State.tourneyRoomCode));
+    }
+    
+    if(State.tourneyListenerUnsubscribe) {
+        State.tourneyListenerUnsubscribe();
+        State.tourneyListenerUnsubscribe = null;
+    }
+    
+    document.getElementById('tourney-setup-ui').style.display = 'block';
+    document.getElementById('tourney-active-ui').style.display = 'none';
+    const statusLabel = document.getElementById('t-room-status');
+    if(statusLabel) statusLabel.innerText = '';
+    
     renderRoster();
-    DOM.btnLaunchTourney.disabled = true;
+    const btnLaunch = document.getElementById('btn-launch-tourney');
+    if(btnLaunch) btnLaunch.disabled = true;
 }

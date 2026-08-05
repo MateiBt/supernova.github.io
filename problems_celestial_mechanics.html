@@ -474,7 +474,58 @@
                     </div>
                 </details>
             </div>
-
+            
+            <div class="problem-card">
+                <div class="card-header-badges">
+                    <span class="source-badge">Q20 / USAAAO 2024</span>
+                    <span class="diff-badge diff-medium"><i class="fas fa-fire"></i> Diff: 5/10</span>
+                </div>
+                <div class="problem-text">
+                    <strong>Orbital Period Around a Cylindrical Planet</strong>
+                    <p>Imagine a very long cylindrical planet that has a satellite orbiting around it. Considering that the average density of the planet is \(\rho\) and the radius is \(R\), find the expression that relates the period \(P\) of the satellite with its distance \(d\) to the center of the planet.</p>
+                    
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li>(a) \( \frac{2d}{R} \sqrt{\frac{2\pi}{G\rho}} \)</li>
+                        <li>(b) \( \frac{d}{R} \sqrt{\frac{2\pi}{G\rho}} \)</li>
+                        <li>(c) \( \frac{d}{2R} \sqrt{\frac{4\pi}{G\rho}} \)</li>
+                        <li>(d) \( \frac{d}{R} \sqrt{\frac{4\pi}{G\rho}} \)</li>
+                        <li>(e) \( \frac{d}{R} \sqrt{\frac{\pi}{G\rho}} \)</li>
+                    </ul>
+                </div>
+                <div style="text-align: right; margin-bottom: 20px;">
+                    <button id="btn-q20_usaaao_2024" onclick="toggleProblemSolved('q20_usaaao_2024')" class="solve-btn"><i class="far fa-circle"></i> Mark as Solved</button>
+                </div>
+                <details>
+                    <summary>View Solution</summary>
+                    <div class="solution-box">
+                        <img src="assets/img/Q20_USAAAO_2024.png" alt="Solution Diagram" class="user-diagram" onclick="openImageModal(this)">
+                        
+                        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Note: The solution relies on using Gauss's Law for gravity to find the field of an infinite cylinder, then setting it equal to the centripetal acceleration.</p>
+                        
+                        <p><strong>Step 1: Gravitational Field of a Cylinder</strong></p>
+                        <p>Using Gauss's Law for gravity (\(\oint g \cdot dA = 4\pi G M_{enc}\)), we draw a Gaussian cylinder of radius \(d\) and length \(L\). The mass enclosed is \(M_{enc} = \rho \cdot V = \rho \cdot \pi R^2 L\).</p>
+                        <p>The flux is \(g \cdot 2\pi d L\). Equating the two:</p>
+                        <p>$$ g \cdot 2\pi d L = 4\pi G (\rho \pi R^2 L) $$</p>
+                        <p>Solving for the gravitational field \(g\), we get:</p>
+                        <p>$$ g = \frac{2\pi G \rho R^2}{d} $$</p>
+                        
+                        <p><strong>Step 2: Centripetal Acceleration</strong></p>
+                        <p>For a circular orbit, the gravitational acceleration provides the centripetal acceleration. In terms of the orbital period \(P\):</p>
+                        <p>$$ g = \omega^2 d = \left(\frac{2\pi}{P}\right)^2 d = \frac{4\pi^2 d}{P^2} $$</p>
+                        
+                        <p><strong>Step 3: Solve for Period (\(P\))</strong></p>
+                        <p>Equate the two expressions for \(g\):</p>
+                        <p>$$ \frac{4\pi^2 d}{P^2} = \frac{2\pi G \rho R^2}{d} $$</p>
+                        <p>$$ P^2 = \frac{4\pi^2 d^2}{2\pi G \rho R^2} $$</p>
+                        <p>$$ P^2 = \frac{2\pi d^2}{G \rho R^2} $$</p>
+                        <p>Taking the square root gives the final expression:</p>
+                        <p>$$ P = \frac{d}{R} \sqrt{\frac{2\pi}{G\rho}} $$</p>
+                        
+                        <p><strong>Answer: (b)</strong></p>
+                    </div>
+                </details>
+            </div>
+            
             <div class="problem-card">
                 <div class="card-header-badges">
                     <span class="source-badge">Q4 / USAAAO 2025</span>

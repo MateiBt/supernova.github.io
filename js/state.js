@@ -8,7 +8,7 @@ export const db = getDatabase(app);
 
 export const State = {
     currentUser: null,
-    myElo: { name: 1200, type: 1200, mag: 1200, position: 1200 }, // ELO modificat per gamemode
+    myElo: { name: 1200, type: 1200, mag: 1200, position: 1200 },
     targetObjects: [],
     
     // Stare Game UI & Logic
@@ -38,7 +38,7 @@ export const State = {
     lastTickMs: 0,
     totalPracticeMs: 0,
     
-    // Stare Multiplayer (cu update-uri)
+    // Stare Multiplayer / Arena
     multiPlayers: {},
     multiOrder: [],
     currentTurnIndex: 0,
@@ -60,35 +60,42 @@ export const State = {
     stateListenerUnsubscribe: null,
     actionListenerUnsubscribe: null,
     playersListenerUnsubscribe: null,
-    onlineHostTimeoutWatcher: null,
     currentTurnDeadline: null,
     isMyTurnNow: true,
     
     selectedTypesStar: [],
-    selectedTypeDSO: null
+    selectedTypeDSO: null,
+
+    // TOURNAMENT STATE
+    isTournament: false,
+    tourneyFormat: 'elimination',
+    tourneyGameMode: 'name',
+    tourneyIsOnline: false,
+    tourneyRole: null,
+    tourneyRoomCode: null,
+    tourneyRoster: [], 
+    tourneyState: null,
+    currentTourneyMatch: null,
+    tourneyListenerUnsubscribe: null
 };
 
 export const DOM = {
     setupModal: document.getElementById('setup-modal'),
     
-    // Butoanele Noi de Launch
     btnLaunchSingle: document.getElementById('btn-launch-single'),
     btnLaunchMulti: document.getElementById('btn-launch-multi'),
     btnLaunchPractice: document.getElementById('btn-launch-practice'),
-    btnLaunchHidden: document.getElementById('btn-launch'), // Fallback pt siguranță
+    btnLaunchHidden: document.getElementById('btn-launch'), 
     
-    // Dropdowns & Grids
     targetGroup: document.getElementById('target-group'),
     diffGroup: document.getElementById('diff-group'),
     timeGroup: document.getElementById('time-group'),
     multiPlayersGroup: document.getElementById('multi-players-group'),
     
-    // Noi Filtre pentru Records Tab
     recTarget: document.getElementById('rec-target'),
     recMode: document.getElementById('rec-mode'),
     recDiff: document.getElementById('rec-diff'),
     
-    // HUD & Game Elements
     hudContainer: document.getElementById('hud-container'),
     frCard: document.getElementById('free-roam-card'),
     hudInstruction: document.getElementById('hud-instruction'),
@@ -104,7 +111,6 @@ export const DOM = {
     timerDisplay: document.getElementById('timer-display'),
     graphTitle: document.getElementById('form-graph-title'),
     
-    // Multiplayer & Lobby Elements
     onlineLobbyUI: document.getElementById('online-lobby-ui'),
     btnCreateRoom: document.getElementById('btn-create-room'),
     btnShowJoin: document.getElementById('btn-show-join'),
@@ -115,7 +121,5 @@ export const DOM = {
     namesInputsGroup: document.getElementById('names-inputs-group'),
     p1Inp: document.getElementById('multi-p1-name'),
     p2Inp: document.getElementById('multi-p2-name'),
-    
-    // Grupurile noi de butoane
     botDiffGroup: document.getElementById('bot-diff-group')
 };
