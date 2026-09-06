@@ -170,10 +170,16 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+function init() {
     document.getElementById('searchFilter').addEventListener('keyup', window.applyFilters);
     document.getElementById('diffFilter').addEventListener('change', window.applyFilters);
     document.getElementById('statusFilter').addEventListener('change', window.applyFilters);
     
     window.applyFilters();
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
