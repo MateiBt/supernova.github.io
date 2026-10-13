@@ -3,473 +3,910 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supernova Guide | Astronomy & Astrophysics</title>
+    <title>Supernova Guide | Olympiad Astrophysics</title>
     
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Canonical Typography: Bricolage Grotesque, Inter, Space Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&family=JetBrains+Mono:wght@400;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Load Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <style>
-        /* --- 1. DESIGN TOKENS (HIGH-CONTRAST DEEP VOID + PASTELS) --- */
         :root {
-            /* True Black Architecture */
-            --bg-void: #050507;
-            --bg-bento: #0A0B0E;
-            --bg-hover: #111318;
+            /* Authentic Flat Palette */
+            --ink: #030305;
+            --ink-elevated: #0d0f14;
+            --bone: #f4f4f0;
+            --stone: #23262f;
+            --stone-light: #3a3f4e;
+            --blue: #35e6ff; 
+            --icon-outline: #5c3a21;
             
             /* Typography */
-            --text-pure: #EDEDED;
-            --text-muted: #8A94A6;
-            
-            /* Pastel Accents */
-            --accent-ice: #A8DADC;       /* Soft Cyan */
-            --accent-rose: #FFC1CC;      /* Powder Rose */
-            --accent-lavender: #B39CD0;  /* Pale Lavender */
-            
-            /* Structural Borders */
-            --border-base: rgba(255, 255, 255, 0.12);
-            --border-rim: rgba(255, 255, 255, 0.22);
-            --border-hover: rgba(255, 255, 255, 0.30);
-            
-            /* Font Stacks */
-            --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
-            --font-body: 'Inter', sans-serif;
-            --font-mono: 'Space Mono', monospace;
-            
-            --radius-sharp: 8px;
+            --font-display: 'Montserrat', sans-serif;
+            --font-body: 'Bricolage Grotesque', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
-        /* --- 2. GLOBAL RESET & SKY BACKGROUND --- */
-        html { scroll-behavior: smooth; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: var(--bg-void);
-            color: var(--text-muted);
-            margin: 0;
+            background-color: var(--ink);
+            color: var(--bone);
             font-family: var(--font-body);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* CSS Sky Background & Comets */
-        .sky-background {
+        /* --- BACKGROUND DEPTH --- */
+        .universe-bg { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            z-index: -3; 
+            background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=2048&auto=format&fit=crop'); 
+            background-size: cover; 
+            background-position: center; 
+            opacity: 0.12; 
+        }
+        
+        .nebula-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            z-index: -2; 
+            background: radial-gradient(circle at 85% 50%, rgba(53, 230, 255, 0.05), transparent 60%), 
+                        linear-gradient(to bottom, rgba(3, 3, 5, 0.3), #030305); 
+        }
+
+        /* Architectural Grid Lines */
+        .grid-guide {
             position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 1200px;
+            height: 100vh;
             z-index: -1;
             pointer-events: none;
-            overflow: hidden;
-            background-color: var(--bg-void);
+            border-left: 1px solid rgba(255,255,255,0.03);
+            border-right: 1px solid rgba(255,255,255,0.03);
+            display: flex;
+            justify-content: space-evenly;
         }
-
-        .star {
-            position: absolute;
-            background-color: #FFFFFF;
-            border-radius: 50%;
-            animation-name: twinkle;
-            animation-timing-function: ease-in-out;
-            animation-iteration-count: infinite;
-        }
-
-        /* Colored foreground stars */
-        .star.ice { background-color: var(--accent-ice); box-shadow: 0 0 8px rgba(168, 218, 220, 0.8); }
-        .star.lavender { background-color: var(--accent-lavender); box-shadow: 0 0 8px rgba(179, 156, 208, 0.8); }
-        .star.rose { background-color: var(--accent-rose); box-shadow: 0 0 8px rgba(255, 193, 204, 0.8); }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(0.8); }
-            50% { opacity: 0.95; transform: scale(1.3); }
-        }
-
-        /* Physically Accurate Comets */
-        .comet {
-            position: absolute;
-            width: 160px;
-            height: 2px;
-            /* Tail trails behind (to the left), head is on the right */
-            background: linear-gradient(to right, transparent, var(--accent-ice));
-            border-radius: 50%;
-            opacity: 0;
-        }
-
-        .comet::before {
+        .grid-guide::before, .grid-guide::after {
             content: '';
-            position: absolute;
-            top: -2px; right: 0; /* Head positioned at the leading edge */
-            width: 6px; height: 6px;
-            background: #FFFFFF;
-            border-radius: 50%;
-            box-shadow: 0 0 14px 4px rgba(168, 218, 220, 0.9);
+            width: 1px;
+            height: 100%;
+            background: rgba(255,255,255,0.03);
         }
 
-        /* Rotated 145deg points the local X axis down and to the left */
-        @keyframes shooting {
-            0% { transform: rotate(145deg) translateX(-200px); opacity: 0; }
-            10% { opacity: 1; }
-            100% { transform: rotate(145deg) translateX(2500px); opacity: 0; }
+        /* --- SVG MASCOT --- */
+        .nova-icon {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .nav-logo:hover .nova-icon { transform: scale(1.1) rotate(15deg); }
+        .nova-eyes-group { animation: blink 4s infinite; }
+        @keyframes blink {
+            0%, 96%, 98%, 100% { transform: scaleY(1); }
+            97%, 99% { transform: scaleY(0.1); transform-origin: center 46px; }
         }
 
-        /* --- 3. TYPOGRAPHY --- */
-        h1, h2, h3, .brand-text, .quote-text {
+        /* --- NAVBAR --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(5, 11, 20, 0.85); 
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--stone);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            z-index: 1000;
+        }
+        .nav-logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .main {
             font-family: var(--font-display);
-            color: var(--text-pure);
-            margin: 0;
-            letter-spacing: -0.035em;
-        }
-
-        .mono-label {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--bone);
+            letter-spacing: 1px;
             text-transform: uppercase;
         }
 
-        /* --- 4. TOP NAVIGATION --- */
-        nav { 
-            position: fixed; top: 0; width: 100%; 
-            background: rgba(5, 5, 7, 0.85); backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-base); 
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 48px; height: 64px; z-index: 1000; box-sizing: border-box;
+        /* --- BUTTONS --- */
+        .btn-solid {
+            background-color: var(--blue);
+            color: var(--ink);
+            font-family: var(--font-mono);
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 12px 24px;
+            text-decoration: none;
+            border: 2px solid var(--blue);
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            box-shadow: 4px 4px 0 var(--bone);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .btn-solid:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--bone);
+        }
+        .btn-link {
+            font-family: var(--font-mono);
+            color: var(--bone);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-bottom: 2px solid var(--stone-light);
+            padding-bottom: 4px;
+            transition: all 0.2s;
+            display: inline-block;
+            margin-top: auto;
+        }
+        .btn-link:hover {
+            color: var(--blue);
+            border-color: var(--blue);
         }
 
-        .nav-logo { text-decoration: none; display: flex; align-items: center; gap: 12px; }
-        .nav-logo i { color: var(--accent-rose); font-size: 1.1rem; }
-        .brand-text { font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; }
-
-        .nav-links { display: flex; align-items: center; height: 100%; }
-        .nav-links a { 
-            color: var(--text-muted); text-decoration: none; margin: 0 16px; 
-            font-weight: 500; font-size: 0.85rem; transition: color 0.15s ease, border-color 0.15s ease;
-            border-bottom: 1px solid transparent;
-        }
-        .nav-links a:hover, .nav-links a.active { color: var(--text-pure); border-bottom: 1px solid var(--accent-ice); padding-bottom: 2px; }
-
-        .nav-auth { display: flex; align-items: center; }
-        .btn-nav-auth { 
-            background: transparent; border: 1px solid var(--border-base); color: var(--text-pure); 
-            padding: 8px 20px; border-radius: var(--radius-sharp); cursor: pointer; 
-            font-family: var(--font-body); font-size: 0.85rem; font-weight: 500; transition: all 0.15s ease; 
-        }
-        .btn-nav-auth:hover { border-color: var(--accent-ice); color: var(--accent-ice); background: rgba(168, 218, 220, 0.08); }
-
-        /* --- 5. BENTO WORKSPACE (DECLUTTERED) --- */
-        .workspace {
-            max-width: 1440px; width: 100%; margin: 0 auto;
-            padding: 120px clamp(24px, 5vw, 64px) 80px; 
-            box-sizing: border-box; display: flex; flex-direction: column;
+        /* --- HERO SECTION --- */
+        .hero {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr; 
+            min-height: 100vh;
+            padding: 140px 40px 40px;
+            border-bottom: 1px solid var(--stone);
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: center; 
+            gap: 40px;
         }
 
-        .bento-section {
-            margin-bottom: 96px; /* Generous breathing room between macro-sections */
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
         }
 
-        .bento-row { display: grid; gap: 32px; }
-        .row-hero { grid-template-columns: 2.2fr 1fr; }
-        .row-3-col { grid-template-columns: repeat(3, 1fr); }
-        .row-4-col { grid-template-columns: repeat(4, 1fr); }
-
-        .bento-card {
-            background: var(--bg-bento); border: 1px solid var(--border-base);
-            border-top: 1px solid var(--border-rim); border-radius: var(--radius-sharp);
-            padding: 48px 40px; transition: all 0.2s ease; position: relative; overflow: hidden;
-            display: flex; flex-direction: column;
+        .dialogue-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            border: 2px solid var(--stone);
+            padding: 8px 20px;
+            border-radius: 99px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--bone);
+            width: fit-content;
+            margin-bottom: 32px;
+            background-color: var(--ink-elevated);
         }
-        .bento-card:hover { background: var(--bg-hover); border-color: var(--border-hover); transform: translateY(-2px); }
+        .dialogue-pill svg { width: 24px; height: 24px; }
 
-        /* Buttons */
-        .btn {
-            padding: 14px 28px; border-radius: var(--radius-sharp); font-family: var(--font-body);
-            font-weight: 500; font-size: 0.9rem; text-decoration: none; cursor: pointer;
-            transition: all 0.15s ease; display: inline-flex; align-items: center; justify-content: center;
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 5vw, 5rem); 
+            line-height: 1.05;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 24px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .btn-primary { background: var(--accent-ice); color: #050507; border: 1px solid var(--accent-ice); font-weight: 600; }
-        .btn-primary:hover { background: #DDF3F4; border-color: #DDF3F4; }
-        .btn-outline { background: transparent; color: var(--text-pure); border: 1px solid var(--border-base); }
-        .btn-outline:hover { background: rgba(255,255,255,0.05); border-color: var(--accent-lavender); }
-        .btn-card-action { width: 100%; box-sizing: border-box; font-size: 0.85rem; margin-top: auto; padding: 12px; }
 
-        /* Accents */
-        .txt-ice { color: var(--accent-ice); }
-        .txt-lavender { color: var(--accent-lavender); }
-        .txt-rose { color: var(--accent-rose); }
+        .hero p {
+            font-size: 1.25rem;
+            color: #a0a0a0;
+            max-width: 540px;
+            margin-bottom: 40px;
+        }
 
-        /* Typography spacing inside cards */
-        .hero-title { font-size: 4.4rem; font-weight: 700; line-height: 1.05; margin: 16px 0 28px; }
-        .hero-desc { font-size: 1.15rem; line-height: 1.7; max-width: 600px; margin: 0 0 48px 0; color: var(--text-muted); }
-        .cta-group { display: flex; gap: 16px; }
+        .hero-right {
+            position: relative;
+            border: 1px solid var(--stone);
+            background-color: rgba(13, 15, 20, 0.4);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            width: 100%;
+            aspect-ratio: 1 / 1; 
+            border-radius: 8px;
+        }
 
-        .pt-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-        .badge { padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; font-family: var(--font-mono); }
-        .badge-rose { background: rgba(255, 193, 204, 0.15); color: var(--accent-rose); }
-        .badge-ice { background: rgba(168, 218, 220, 0.15); color: var(--accent-ice); }
+        #planet-canvas {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: grab;
+        }
+        #planet-canvas:active { cursor: grabbing; }
+
+        /* --- TICKER STRIP --- */
+        .ticker {
+            width: 100%;
+            overflow: hidden;
+            border-bottom: 1px solid var(--stone);
+            background-color: var(--blue);
+            color: var(--ink);
+            padding: 14px 0;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+        .ticker-content {
+            display: inline-block;
+            animation: marquee 25s linear infinite;
+        }
+        .ticker-item { margin: 0 30px; display: inline-block; }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- SECTIONS GENERAL --- */
+        section.content-section { 
+            padding: 120px 40px; 
+            border-bottom: 1px solid var(--stone); 
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .section-header { margin-bottom: 60px; }
+        .section-header .tag {
+            font-family: var(--font-mono);
+            color: var(--blue);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        /* --- GRID CARDS --- */
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+        .flat-card {
+            background-color: rgba(13, 15, 20, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--stone);
+            padding: 36px 32px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, border-color 0.2s, background-color 0.2s;
+            border-radius: 8px;
+        }
+        .flat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--blue);
+            background-color: rgba(13, 15, 20, 0.9);
+        }
+
+        .card-meta {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--blue);
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
         
-        .pt-image { width: 100%; height: 160px; border-radius: 4px; border: 1px solid var(--border-base); object-fit: cover; margin-bottom: 24px; opacity: 0.85; transition: opacity 0.2s ease; filter: grayscale(20%); }
-        .bento-card:hover .pt-image { opacity: 1; }
-
-        .card-title { font-size: 1.5rem; margin-bottom: 16px; }
-        .card-desc { font-size: 0.95rem; line-height: 1.7; margin-bottom: 32px; color: var(--text-muted); }
-
-        .sy-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 36px; }
-        .sy-icon { width: 48px; height: 48px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-base); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
-        .sy-index { font-weight: 700; font-size: 0.85rem; }
-
-        /* Review Cards */
-        .quote-text { font-size: 1.35rem; line-height: 1.6; color: var(--text-pure); margin-bottom: 28px; font-weight: 500; font-style: italic; }
-        .quote-author { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-top: auto; }
-
-        /* --- 6. FOOTER --- */
-        footer { margin-top: auto; padding: 40px clamp(24px, 5vw, 64px); border-top: 1px solid var(--border-base); display: flex; justify-content: space-between; }
-
-        /* --- RESPONSIVE --- */
-        @media(max-width: 1024px) {
-            .row-hero, .row-3-col, .row-4-col { grid-template-columns: repeat(2, 1fr); }
-            .hero-title { font-size: 3.5rem; }
+        .inline-icon {
+            width: 48px;
+            height: 48px;
         }
-        @media(max-width: 768px) {
-            nav { padding: 0 24px; }
-            .nav-links { display: none; }
-            .row-hero, .row-3-col, .row-4-col { grid-template-columns: 1fr; }
-            .workspace { padding-top: 100px; }
-            footer { flex-direction: column; gap: 16px; text-align: center; }
-            .bento-card { padding: 36px 24px; }
+
+        .flat-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: var(--bone);
+            text-transform: uppercase;
+        }
+        .flat-card p {
+            color: #a0a0a0;
+            font-size: 0.95rem;
+            margin-bottom: 32px;
+            flex-grow: 1;
+            line-height: 1.7;
+        }
+
+        /* --- TESTIMONIALS --- */
+        .testimonials-wrapper {
+            background-color: var(--bone);
+            width: 100%;
+            border-bottom: 1px solid var(--stone);
+        }
+        .testimonials { 
+            color: var(--ink); 
+            border-bottom: none;
+            padding: 80px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .testimonials .flat-card { 
+            background-color: var(--bone); 
+            border: 1px solid var(--stone-light); 
+        }
+        .testimonials .flat-card:hover { 
+            border-color: var(--ink); 
+            transform: translateY(-4px);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.05);
+        }
+        .testimonials p { color: var(--stone-light); font-size: 1.1rem; font-style: italic; }
+        .testimonials .author {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: var(--ink);
+        }
+
+        footer {
+            padding: 40px;
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--stone-light);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* --- LOGIN MODAL --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(3, 3, 5, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--ink-elevated);
+            border: 1px solid var(--stone);
+            padding: 40px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: none;
+            border: none;
+            color: var(--stone-light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: var(--blue);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--bone);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--stone);
+            color: var(--bone);
+            font-family: var(--font-body);
+            border-radius: 4px;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
+
+        @media (max-width: 1000px) {
+            .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 120px; gap: 60px; }
+            .hero-right { width: 100%; max-width: 600px; margin: 0 auto; aspect-ratio: 1 / 1; }
+            .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .grid-guide { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- CSS Sky Background & Comets -->
-    <div class="sky-background">
-        <!-- TIER 1: Distant Field (1px, slow, dim) -->
-        <div class="star" style="top: 12%; left: 8%; width: 1px; height: 1px; animation-duration: 4.1s; animation-delay: 0.5s;"></div>
-        <div class="star" style="top: 25%; left: 22%; width: 1px; height: 1px; animation-duration: 3.5s; animation-delay: 1.2s;"></div>
-        <div class="star" style="top: 65%; left: 15%; width: 1px; height: 1px; animation-duration: 4.8s; animation-delay: 0.3s;"></div>
-        <div class="star" style="top: 85%; left: 5%; width: 1px; height: 1px; animation-duration: 3.9s; animation-delay: 2.1s;"></div>
-        <div class="star" style="top: 18%; left: 45%; width: 1px; height: 1px; animation-duration: 4.2s; animation-delay: 1.8s;"></div>
-        <div class="star" style="top: 55%; left: 35%; width: 1px; height: 1px; animation-duration: 3.7s; animation-delay: 0.7s;"></div>
-        <div class="star" style="top: 42%; left: 65%; width: 1px; height: 1px; animation-duration: 4.5s; animation-delay: 2.5s;"></div>
-        <div class="star" style="top: 88%; left: 55%; width: 1px; height: 1px; animation-duration: 3.6s; animation-delay: 1.1s;"></div>
-        <div class="star" style="top: 15%; left: 85%; width: 1px; height: 1px; animation-duration: 4.9s; animation-delay: 0.9s;"></div>
-        <div class="star" style="top: 75%; left: 92%; width: 1px; height: 1px; animation-duration: 3.4s; animation-delay: 2.4s;"></div>
-        <div class="star" style="top: 35%; left: 95%; width: 1px; height: 1px; animation-duration: 4.3s; animation-delay: 1.5s;"></div>
+    <!-- Background Layers -->
+    <div class="universe-bg"></div>
+    <div class="nebula-overlay"></div>
+    <div class="grid-guide"></div>
 
-        <!-- TIER 2: Mid Field (2px, moderate, medium opacity) -->
-        <div class="star" style="top: 8%; left: 28%; width: 2px; height: 2px; animation-duration: 2.5s; animation-delay: 0.2s;"></div>
-        <div class="star" style="top: 45%; left: 12%; width: 2px; height: 2px; animation-duration: 2.8s; animation-delay: 1.1s;"></div>
-        <div class="star" style="top: 72%; left: 25%; width: 2px; height: 2px; animation-duration: 2.2s; animation-delay: 0.8s;"></div>
-        <div class="star" style="top: 95%; left: 18%; width: 2px; height: 2px; animation-duration: 3.1s; animation-delay: 1.6s;"></div>
-        <div class="star" style="top: 22%; left: 55%; width: 2px; height: 2px; animation-duration: 2.6s; animation-delay: 0.4s;"></div>
-        <div class="star" style="top: 68%; left: 48%; width: 2px; height: 2px; animation-duration: 2.9s; animation-delay: 1.3s;"></div>
-        <div class="star" style="top: 10%; left: 75%; width: 2px; height: 2px; animation-duration: 2.4s; animation-delay: 1.9s;"></div>
-        <div class="star" style="top: 50%; left: 82%; width: 2px; height: 2px; animation-duration: 2.7s; animation-delay: 0.6s;"></div>
-        <div class="star" style="top: 85%; left: 78%; width: 2px; height: 2px; animation-duration: 3.0s; animation-delay: 1.4s;"></div>
-        <div class="star" style="top: 32%; left: 90%; width: 2px; height: 2px; animation-duration: 2.3s; animation-delay: 2.2s;"></div>
+    <!-- SVG MASCOT TEMPLATE -->
+    <svg style="display: none;">
+        <symbol id="nova-mascot" viewBox="0 0 100 100">
+            <path d="M 50 12 L 61 36 L 87 38 L 67 55 L 73 81 L 50 67 L 27 81 L 33 55 L 13 38 L 39 36 Z"
+                  fill="#fef08a" stroke="#785a46" stroke-width="7" stroke-linejoin="round" stroke-linecap="round" />
+            <g class="nova-eyes-group">
+                <ellipse cx="40" cy="46" rx="3.5" ry="5" fill="#785a46" transform="rotate(-15 40 46)" />
+                <ellipse cx="56" cy="46" rx="3.5" ry="5" fill="#785a46" transform="rotate(-15 56 46)" />
+                <path d="M 43 56 Q 48 62 53 56" stroke="#785a46" stroke-width="3" fill="none" stroke-linecap="round" />
+            </g>
+        </symbol>
+    </svg>
 
-        <!-- TIER 3: Foreground / Focal (3-4px, fast, colored glows) -->
-        <div class="star ice" style="top: 15%; left: 15%; width: 3px; height: 3px; animation-duration: 1.5s; animation-delay: 0.1s;"></div>
-        <div class="star lavender" style="top: 38%; left: 5%; width: 4px; height: 4px; animation-duration: 1.8s; animation-delay: 0.7s;"></div>
-        <div class="star rose" style="top: 60%; left: 8%; width: 3px; height: 3px; animation-duration: 1.4s; animation-delay: 1.2s;"></div>
-        <div class="star ice" style="top: 80%; left: 35%; width: 3px; height: 3px; animation-duration: 1.7s; animation-delay: 0.4s;"></div>
-        <div class="star lavender" style="top: 25%; left: 40%; width: 4px; height: 4px; animation-duration: 1.6s; animation-delay: 1.5s;"></div>
-        <div class="star" style="top: 5%; left: 50%; width: 3px; height: 3px; animation-duration: 1.3s; animation-delay: 0.8s;"></div>
-        <div class="star rose" style="top: 55%; left: 60%; width: 3px; height: 3px; animation-duration: 1.9s; animation-delay: 0.2s;"></div>
-        <div class="star ice" style="top: 88%; left: 65%; width: 4px; height: 4px; animation-duration: 1.5s; animation-delay: 1.1s;"></div>
-        <div class="star lavender" style="top: 20%; left: 80%; width: 3px; height: 3px; animation-duration: 1.8s; animation-delay: 0.6s;"></div>
-        <div class="star ice" style="top: 65%; left: 88%; width: 4px; height: 4px; animation-duration: 1.4s; animation-delay: 1.3s;"></div>
-        <div class="star rose" style="top: 45%; left: 95%; width: 3px; height: 3px; animation-duration: 1.7s; animation-delay: 0.9s;"></div>
-
-        <!-- Physically Accurate Comets (Entering top right, exiting bottom left) -->
-        <div class="comet" style="top: 5%; left: 90%; animation: shooting 8s infinite linear 2s;"></div>
-        <div class="comet" style="top: -5%; left: 60%; animation: shooting 12s infinite linear 7s;"></div>
-        <div class="comet" style="top: 20%; left: 110%; animation: shooting 10s infinite linear 14s;"></div>
-        <div class="comet" style="top: 10%; left: 80%; animation: shooting 15s infinite linear 4s;"></div>
-    </div>
-
-    <!-- Navigation -->
+    <!-- NAVBAR -->
     <nav>
-        <a href="index.html" class="nav-logo">
-            <i class="fa-solid fa-star"></i>
-            <span class="brand-text">SUPERNOVA</span>
+        <a href="landing.html" class="nav-logo">
+            <svg class="nova-icon"><use href="#nova-mascot"></use></svg>
+            <div class="logo-text">
+                <span class="main">SUPERNOVA</span>
+            </div>
         </a>
-        <div class="nav-links">
-            <a href="index.html" class="active">Home</a>
-            <a href="handouts.html">Handouts</a>
-            <a href="problems.html">Practice</a>
-            <a href="#">Competitions</a>
-            <a href="resources.html">Resources</a>
-            <a href="community.html">Community</a>
-        </div>
-        <div class="nav-auth">
-            <button id="loginBtn" class="btn-nav-auth">Student Login</button>
-        </div>
+        <a href="#" id="login-trigger" class="btn-solid">Student Login</a>
     </nav>
 
-    <!-- Bento Workspace -->
-    <main class="workspace">
-        
-        <!-- SECTION 1: Hero & Planetarium Viewport -->
-        <section class="bento-section">
-            <div class="bento-row row-hero">
-                <div class="bento-card">
-                    <span class="mono-label txt-lavender" style="margin-bottom: 20px; display: block;">[ IOAA PREPARATION ENGINE ]</span>
-                    <h1 class="hero-title">Excellence in Astronomy<br>and Astrophysics</h1>
-                    <p class="hero-desc">
-                        An open-source platform designed for Olympiad preparation. 
-                        Master the core disciplines of IOAA through comprehensive problem sets, observational tools, and curated resources.
-                    </p>
-                    <div class="cta-group">
-                        <a href="problems.html" class="btn btn-primary">Start Practice</a>
-                        <a href="#" class="btn btn-outline">Join Community</a>
-                    </div>
-                </div>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-left">
+            <div class="dialogue-pill">
+                <svg class="nova-icon" style="width: 24px; height: 24px;"><use href="#nova-mascot"></use></svg>
+                <span>"Per aspera ad astra."</span>
+            </div>
+            
+            <h1>Excellence in <br>Astronomy & <br><span style="color: var(--blue);">Astrophysics</span></h1>
+            
+            <p>
+                An open-source platform designed for Olympiad preparation. Master the core disciplines of IOAA through comprehensive problem sets, observational tools, and curated resources.
+            </p>
+            
+            <div class="hero-buttons">
+                <a href="index.html" class="btn-solid">Start Practice</a>
+            </div>
+        </div>
 
-                <div class="bento-card">
-                    <div class="pt-header">
-                        <span class="mono-label txt-pure">[ SIMULATION ]</span>
-                        <span class="badge badge-rose">NEW</span>
-                    </div>
-                    <img src="https://images.unsplash.com/photo-1518066000714-58c45f1a2c0a?q=80&w=1000&auto=format&fit=crop" alt="Virtual Star Map Simulation" class="pt-image">
-                    <h2 class="card-title">3D Observational Engine</h2>
-                    <p class="card-desc">Mathematically accurate virtual sky. Locate target stars and identify traditional nomenclature.</p>
-                    <a href="planetariu.html" class="btn btn-outline btn-card-action">Access Module <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
+        <div class="hero-right">
+            <div id="planet-canvas"></div>
+        </div>
+    </section>
+
+    <!-- TICKER -->
+    <section class="ticker">
+        <div class="ticker-content">
+            <span class="ticker-item">◈ MULTIPLAYER PLANETARIUM ARENA</span>
+            <span class="ticker-item">◈ REAL-TIME ORBITAL MECHANICS</span>
+            <span class="ticker-item">◈ BLIND MAP SIMULATION</span>
+            <span class="ticker-item">◈ SPECTRAL CLASSIFICATION</span>
+            <span class="ticker-item">◈ DEEP SKY OBJECT TRACKING</span>
+            <span class="ticker-item">◈ MULTIPLAYER PLANETARIUM ARENA</span>
+            <span class="ticker-item">◈ REAL-TIME ORBITAL MECHANICS</span>
+            <span class="ticker-item">◈ BLIND MAP SIMULATION</span>
+            <span class="ticker-item">◈ SPECTRAL CLASSIFICATION</span>
+            <span class="ticker-item">◈ DEEP SKY OBJECT TRACKING</span>
+        </div>
+    </section>
+
+    <!-- DAILY CADENCE -->
+    <section id="problems" class="content-section">
+        <div class="section-header">
+            <span class="tag">Active Problem Rotations</span>
+            <h2>The Training Ground</h2>
+        </div>
+        <div class="grid-3">
+            <div class="flat-card">
+                <div class="card-meta"><span>[ Daily // 24H Remaining ]</span></div>
+                <h3>Problem of the Day</h3>
+                <p>Keplerian Orbit Shift: A brief academic setup requiring a single-answer analytical derivation.</p>
+                <a href="index.html" class="btn-link">Solve Today's Problem</a>
+            </div>
+            <div class="flat-card">
+                <div class="card-meta"><span>[ Weekly // Advanced Deriv ]</span></div>
+                <h3>Problem of the Week</h3>
+                <p>Accretion Disk Viscosity: Complex derivation sheet requiring rigorous mathematical proof and detailed rubric grading.</p>
+                <a href="index.html" class="btn-link">Open Weekly Challenge</a>
+            </div>
+            <div class="flat-card">
+                <div class="card-meta"><span>[ Monthly // IOAA Grand Round ]</span></div>
+                <h3>Problem of the Month</h3>
+                <p>Dark Matter Profiles: A multi-part Olympiad problem containing real-world datasets, graphing tasks, and theoretical implications.</p>
+                <a href="index.html" class="btn-link">Download Complete Packet</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4 COMPETENCY PILLARS -->
+    <section id="curriculum" class="content-section">
+        <div class="section-header">
+            <span class="tag">Curriculum Matrix</span>
+            <h2>Core Disciplines</h2>
+        </div>
+        <div class="grid-4">
+            <div class="flat-card">
+                <div class="card-meta">
+                    <span>01</span>
+                    <svg viewBox="0 0 64 64" class="inline-icon">
+                        <path d="M12 16 C 12 16, 24 12, 32 16 C 40 12, 52 16, 52 16 L 52 52 C 52 52, 40 48, 32 52 C 24 48, 12 52, 12 52 Z" fill="#a2d2ff" stroke="var(--icon-outline)" stroke-width="4" stroke-linejoin="round"/>
+                        <line x1="32" y1="16" x2="32" y2="52" stroke="var(--icon-outline)" stroke-width="4"/>
+                    </svg>
+                </div>
+                <h3>Theory</h3>
+                <p>Comprehensive problem solving in celestial mechanics, astrophysics, thermodynamics, and cosmology.</p>
+            </div>
+            <div class="flat-card">
+                <div class="card-meta">
+                    <span>02</span>
+                    <svg viewBox="0 0 64 64" class="inline-icon">
+                        <rect x="10" y="10" width="44" height="44" rx="4" fill="#ffb7b2" stroke="var(--icon-outline)" stroke-width="4" stroke-linejoin="round"/>
+                        <polyline points="18,46 28,30 38,38 48,20" fill="none" stroke="var(--icon-outline)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="48" cy="20" r="3" fill="var(--icon-outline)"/>
+                    </svg>
+                </div>
+                <h3>Data Analysis</h3>
+                <p>Extracting parameters from real datasets, light curves, error analysis, and graph plotting.</p>
+            </div>
+            <div class="flat-card">
+                <div class="card-meta">
+                    <span>03</span>
+                    <svg viewBox="0 0 64 64" class="inline-icon">
+                        <circle cx="32" cy="32" r="22" fill="#b5e48c" stroke="var(--icon-outline)" stroke-width="4"/>
+                        <path d="M16 20 Q 32 32 48 20 M12 32 Q 32 48 52 32 M16 44 Q 32 56 48 44" fill="none" stroke="var(--icon-outline)" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3>Blind Map</h3>
+                <p>Naked eye observation techniques, constellation mapping, and star identification without coordinates.</p>
+            </div>
+            <div class="flat-card">
+                <div class="card-meta">
+                    <span>04</span>
+                    <svg viewBox="0 0 64 64" class="inline-icon">
+                        <polygon points="14,46 50,18 54,24 18,52" fill="#e2e2ea" stroke="var(--icon-outline)" stroke-width="4" stroke-linejoin="round"/>
+                        <rect x="10" y="44" width="8" height="12" rx="2" fill="var(--icon-outline)" transform="rotate(-38 14 46)"/>
+                        <line x1="28" y1="44" x2="28" y2="60" stroke="var(--icon-outline)" stroke-width="4" stroke-linecap="round"/>
+                        <line x1="28" y1="50" x2="16" y2="60" stroke="var(--icon-outline)" stroke-width="4" stroke-linecap="round"/>
+                        <line x1="28" y1="50" x2="40" y2="60" stroke="var(--icon-outline)" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3>Telescope</h3>
+                <p>Field of view calculations, equatorial mount calibration, and tracking deep-sky objects.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPETITIVE LEAGUES -->
+    <section id="leagues" class="content-section">
+        <div class="section-header">
+            <span class="tag">Ranked Matchmaking</span>
+            <h2>Competitive Leagues</h2>
+        </div>
+        <div class="grid-3">
+            <div class="flat-card">
+                <div class="card-meta"><span>Olympiad Simulation</span></div>
+                <h3>Monthly Grand Prix</h3>
+                <p>5 Hours // 4 Comprehensive Tasks. A rigorous league mimicking senior IOAA theoretical rounds. Accumulate points over the season for the global leaderboard.</p>
+                <a href="index.html" class="btn-link">View League Schedule</a>
+            </div>
+            <div class="flat-card">
+                <div class="card-meta"><span>Sudden Death</span></div>
+                <h3>Top-16 Knockout Bracket</h3>
+                <p>Qualifier to Sudden Death. Pass the rapid MCQ stage to enter the final 16. Compete in timed head-to-head astrophysics matchups until the Grand Final.</p>
+                <a href="index.html" class="btn-link">Enter Qualifiers</a>
+            </div>
+            <div class="flat-card">
+                <div class="card-meta"><span>Virtual Observatory</span></div>
+                <h3>Live Planetarium Cup</h3>
+                <p>Observational Simulation. Prove your naked-eye navigation. Real-time 3D celestial mapping, blind coordinate tests, and star classifications.</p>
+                <a href="index.html" class="btn-link">Launch Arena</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <div class="testimonials-wrapper">
+        <section class="testimonials">
+            <div class="grid-3">
+                <div class="flat-card">
+                    <p>"Supernova's raw dataset problems bridges the gap between textbook physics and IOAA medals."</p>
+                    <div class="author">— IOAA Gold Medalist</div>
+                </div>
+                <div class="flat-card">
+                    <p>"The planetarium engine replicates national team selection tests with unmatched precision."</p>
+                    <div class="author">— National Team Mentor</div>
+                </div>
+                <div class="flat-card">
+                    <p>"The most rigorous IOAA prep archive currently available on the web."</p>
+                    <div class="author">— IAO Winner</div>
                 </div>
             </div>
         </section>
+    </div>
 
-        <!-- SECTION 2: Olympiad Challenge Cadence -->
-        <section class="bento-section">
-            <div class="bento-row row-3-col">
-                <div class="bento-card">
-                    <span class="mono-label txt-ice" style="margin-bottom: 20px; display: block;">[ DAILY // 24H REMAINING ]</span>
-                    <h2 class="card-title">Problem of the Day</h2>
-                    <p class="card-desc"><strong>Keplerian Orbit Shift:</strong> A brief academic setup requiring a single-answer analytical derivation.</p>
-                    <a href="#" class="btn btn-outline btn-card-action">Solve Today's Problem</a>
+    <!-- LOGIN MODAL -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="close-modal" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <h2 style="margin-bottom: 20px; font-family: var(--font-display); text-transform: uppercase;">Student Access</h2>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="student@supernova.edu">
                 </div>
-                
-                <div class="bento-card">
-                    <span class="mono-label txt-lavender" style="margin-bottom: 20px; display: block;">[ WEEKLY // ADVANCED DERIV ]</span>
-                    <h2 class="card-title">Problem of the Week</h2>
-                    <p class="card-desc"><strong>Accretion Disk Viscosity:</strong> Complex derivation sheet requiring rigorous mathematical proof and detailed rubric grading.</p>
-                    <a href="#" class="btn btn-outline btn-card-action">Open Weekly Challenge</a>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="••••••••">
                 </div>
+                <button type="submit" class="btn-solid" style="width: 100%; justify-content: center; margin-top: 10px;">Login to Platform</button>
+            </form>
+        </div>
+    </div>
 
-                <div class="bento-card">
-                    <span class="mono-label txt-rose" style="margin-bottom: 20px; display: block;">[ MONTHLY // IOAA GRAND ROUND ]</span>
-                    <h2 class="card-title">Problem of the Month</h2>
-                    <p class="card-desc"><strong>Dark Matter Profiles:</strong> A multi-part Olympiad problem containing real-world datasets, graphing tasks, and theoretical implications.</p>
-                    <a href="#" class="btn btn-outline btn-card-action">Download Complete Packet</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 3: Arena Competitions -->
-        <section class="bento-section">
-            <div class="bento-row row-3-col">
-                <div class="bento-card">
-                    <div class="pt-header">
-                        <span class="mono-label txt-lavender">SOLAR League</span>
-                        <i class="fa-solid fa-ranking-star txt-lavender" style="font-size: 1.2rem;"></i>
-                    </div>
-                    <h2 class="card-title">Monthly Grand Prix</h2>
-                    <p class="card-desc"><strong>5 Hours // 4 Comprehensive Tasks.</strong> A rigorous league mimicking senior IOAA theoretical rounds. Accumulate points over the season for the global leaderboard.</p>
-                    <a href="#" class="btn btn-outline btn-card-action">View League Schedule</a>
-                </div>
-
-                <div class="bento-card">
-                    <div class="pt-header">
-                        <span class="mono-label txt-rose">NOVA-16 Tournament</span>
-                        <i class="fa-solid fa-trophy txt-rose" style="font-size: 1.2rem;"></i>
-                    </div>
-                    <h2 class="card-title">Top-16 Knockout Bracket</h2>
-                    <p class="card-desc"><strong>Qualifier to Sudden Death.</strong> Pass the rapid MCQ stage to enter the final 16. Compete in timed head-to-head astrophysics matchups until the Grand Final.</p>
-                    <a href="#" class="btn btn-outline btn-card-action">Enter Qualifiers</a>
-                </div>
-
-                <div class="bento-card">
-                    <div class="pt-header">
-                        <span class="mono-label txt-ice">SPECTRA Sky Duel</span>
-                        <i class="fa-solid fa-satellite-dish txt-ice" style="font-size: 1.2rem;"></i>
-                    </div>
-                    <h2 class="card-title">Live Planetarium Cup</h2>
-                    <p class="card-desc"><strong>Observational Simulation.</strong> Prove your naked-eye navigation. Real-time 3D celestial mapping, blind coordinate tests, and star classifications.</p>
-                    <a href="#" class="btn btn-outline btn-card-action">Launch Arena</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 4: Curriculum Discipline Cards -->
-        <section class="bento-section">
-            <div class="bento-row row-4-col">
-                <div class="bento-card" style="padding: 36px 32px;">
-                    <div class="sy-header">
-                        <div class="sy-icon txt-lavender"><i class="fa-solid fa-book-open"></i></div>
-                        <span class="mono-label sy-index txt-lavender">01</span>
-                    </div>
-                    <h3 class="card-title" style="font-size: 1.3rem;">Theory</h3>
-                    <p class="card-desc" style="margin: 0;">Comprehensive problem solving in celestial mechanics, astrophysics, thermodynamics, and cosmology.</p>
-                </div>
-
-                <div class="bento-card" style="padding: 36px 32px;">
-                    <div class="sy-header">
-                        <div class="sy-icon txt-ice"><i class="fa-solid fa-chart-line"></i></div>
-                        <span class="mono-label sy-index txt-ice">02</span>
-                    </div>
-                    <h3 class="card-title" style="font-size: 1.3rem;">Data Analysis</h3>
-                    <p class="card-desc" style="margin: 0;">Extracting parameters from real datasets, light curves, error analysis, and graph plotting.</p>
-                </div>
-
-                <div class="bento-card" style="padding: 36px 32px;">
-                    <div class="sy-header">
-                        <div class="sy-icon txt-rose"><i class="fa-solid fa-map"></i></div>
-                        <span class="mono-label sy-index txt-rose">03</span>
-                    </div>
-                    <h3 class="card-title" style="font-size: 1.3rem;">Blind Map</h3>
-                    <p class="card-desc" style="margin: 0;">Naked-eye observation techniques, constellation mapping, and star identification without coordinates.</p>
-                </div>
-
-                <div class="bento-card" style="padding: 36px 32px;">
-                    <div class="sy-header">
-                        <div class="sy-icon txt-lavender"><i class="fa-solid fa-binoculars"></i></div>
-                        <span class="mono-label sy-index txt-lavender">04</span>
-                    </div>
-                    <h3 class="card-title" style="font-size: 1.3rem;">Telescope</h3>
-                    <p class="card-desc" style="margin: 0;">Field of view calculations, equatorial mount calibration, and tracking deep-sky objects.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 5: Reviews & Endorsements -->
-        <section class="bento-section" style="margin-bottom: 0;">
-            <div class="bento-row row-3-col">
-                <div class="bento-card">
-                    <p class="quote-text">"Supernova's raw dataset problems bridges the gap between textbook physics and IOAA medals."</p>
-                    <span class="quote-author">— IOAA Gold Medalist</span>
-                </div>
-                
-                <div class="bento-card">
-                    <p class="quote-text">"The planetarium engine replicates national team selection tests with unmatched precision."</p>
-                    <span class="quote-author">— National Team Mentor</span>
-                </div>
-
-                <div class="bento-card">
-                    <p class="quote-text">"The most rigorous IOAA prep archive currently available on the web."</p>
-                    <span class="quote-author">— IAAC Winner</span>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
+    <!-- FOOTER -->
     <footer>
-        <span class="mono-label" style="color: var(--text-muted);">&copy; 2026 Supernova Guide. All rights reserved.</span>
-        <span class="mono-label" style="color: var(--accent-ice);">SYSTEM ACTIVE</span>
+        <div>SUPERNOVA GUIDE © 2026. ALL RIGHTS RESERVED.</div>
+        <div>SYSTEM ACTIVE</div>
     </footer>
 
+    <!-- THREE.JS PLANET SCRIPT & MODAL LOGIC -->
+    <script>
+        const container = document.getElementById('planet-canvas');
+        const scene = new THREE.Scene();
+        
+        const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
+        camera.position.z = 14; 
+        camera.position.y = 1;
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        const systemGroup = new THREE.Group();
+        scene.add(systemGroup);
+
+        // 1. Planet Body
+        const planetGeo = new THREE.SphereGeometry(2.8, 64, 64);
+        const planetMat = new THREE.MeshStandardMaterial({ 
+            color: 0x1a1c23,
+            roughness: 0.7,
+            metalness: 0.1,
+            flatShading: false
+        });
+        const planet = new THREE.Mesh(planetGeo, planetMat);
+        systemGroup.add(planet);
+
+        // 2. Atmospheric Glow
+        const atmosGeo = new THREE.SphereGeometry(3.0, 64, 64);
+        const atmosMat = new THREE.MeshBasicMaterial({
+            color: 0x35e6ff,
+            transparent: true,
+            opacity: 0.08,
+            blending: THREE.AdditiveBlending,
+            side: THREE.BackSide
+        });
+        const atmosphere = new THREE.Mesh(atmosGeo, atmosMat);
+        systemGroup.add(atmosphere);
+
+        // 3. Single Blue Ring
+        const ringGeo = new THREE.RingGeometry(3.8, 5.8, 64);
+        const ringMat = new THREE.MeshStandardMaterial({ 
+            color: 0x35e6ff, 
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.6,
+            roughness: 0.4
+        });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.rotation.x = Math.PI / 2;
+        systemGroup.add(ring);
+
+        // 4. Orbiting Moons
+        const moons = [];
+        const moonColors = [0xf4f4f0, 0x35e6ff, 0x5c3a21];
+        const moonRadii = [6.8, 7.8, 8.8];
+        const moonSpeeds = [0.6, 0.4, 0.2];
+
+        for(let i=0; i<3; i++) {
+            const moonGroup = new THREE.Group();
+            const mGeo = new THREE.SphereGeometry(0.12 + Math.random()*0.08, 32, 32);
+            const mMat = new THREE.MeshStandardMaterial({ color: moonColors[i], roughness: 0.8 });
+            const mMesh = new THREE.Mesh(mGeo, mMat);
+            
+            mMesh.position.x = moonRadii[i];
+            moonGroup.add(mMesh);
+            
+            const trailGeo = new THREE.RingGeometry(moonRadii[i] - 0.015, moonRadii[i] + 0.015, 64);
+            const trailMat = new THREE.MeshBasicMaterial({ color: moonColors[i], transparent: true, opacity: 0.15, side: THREE.DoubleSide });
+            const trail = new THREE.Mesh(trailGeo, trailMat);
+            trail.rotation.x = Math.PI / 2;
+            systemGroup.add(trail);
+
+            moonGroup.userData = { speed: moonSpeeds[i] };
+            moons.push(moonGroup);
+            systemGroup.add(moonGroup);
+        }
+
+        // 5. Debris / Dust Swirl
+        const debrisGeo = new THREE.BufferGeometry();
+        const debrisCount = 400;
+        const positions = new Float32Array(debrisCount * 3);
+        
+        for(let i=0; i<debrisCount; i++) {
+            const radius = 6.2 + Math.random() * 4;
+            const theta = Math.random() * Math.PI * 2;
+            positions[i*3] = Math.cos(theta) * radius;     
+            positions[i*3+1] = (Math.random() - 0.5) * 0.4; 
+            positions[i*3+2] = Math.sin(theta) * radius;
+        }
+        debrisGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const debrisMat = new THREE.PointsMaterial({
+            color: 0x35e6ff,
+            size: 0.04,
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
+        });
+        const debris = new THREE.Points(debrisGeo, debrisMat);
+        systemGroup.add(debris);
+
+        // Initial Tilt
+        systemGroup.rotation.z = 0.35;
+        systemGroup.rotation.x = 0.25;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        dirLight.position.set(8, 5, 2);
+        scene.add(dirLight);
+
+        const rimLight = new THREE.PointLight(0x35e6ff, 4, 30); 
+        rimLight.position.set(-8, -4, -4);
+        scene.add(rimLight);
+        
+        const fillLight = new THREE.DirectionalLight(0x3a3f4e, 0.8);
+        fillLight.position.set(-5, 0, 5);
+        scene.add(fillLight);
+
+        // Mouse Interaction
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouseY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+            const elapsedTime = clock.getElapsedTime();
+
+            planet.rotation.y += 0.15 * delta;
+            ring.rotation.z -= 0.08 * delta;
+            debris.rotation.y -= 0.04 * delta;
+
+            moons.forEach(moon => {
+                moon.rotation.y += moon.userData.speed * delta;
+            });
+
+            systemGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.15;
+
+            targetX = mouseX * 0.2;
+            targetY = mouseY * 0.2;
+            
+            systemGroup.rotation.y += 0.05 * (targetX - systemGroup.rotation.y);
+            systemGroup.rotation.x += 0.05 * (targetY - systemGroup.rotation.x) + 0.25 * 0.05;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // --- LOGIN MODAL LOGIC ---
+        const loginTrigger = document.getElementById('login-trigger');
+        const loginModal = document.getElementById('login-modal');
+        const closeModal = document.getElementById('close-modal');
+        const loginForm = document.getElementById('login-form');
+
+        // Open Modal
+        loginTrigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginModal.classList.add('active');
+        });
+
+        // Close Modal via X button
+        closeModal.addEventListener('click', () => {
+            loginModal.classList.remove('active');
+        });
+
+        // Close Modal by clicking overlay backdrop
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.classList.remove('active');
+            }
+        });
+
+        // Redirect to index.html on submit
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            window.location.href = 'index.html'; 
+        });
+    </script>
 </body>
 </html>

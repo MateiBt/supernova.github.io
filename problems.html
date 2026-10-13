@@ -3,471 +3,637 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supernova Guide | Practice Hub</title>
+    <title>Practice Hub | Supernova Guide</title>
+    
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Canonical Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. SETĂRI GENERALE & TEMA BLUEISH --- */
+        /* --- 1. DESIGN TOKENS --- */
         :root {
-            --bg-deep: #050b14; 
-            --bg-panel: rgba(13, 20, 33, 0.7);
-            --bg-hover: rgba(20, 30, 48, 0.9);
-            --text-main: #a1aab8;
-            --text-light: #ffffff;
-            --accent-blue: #3b82f6;
+            --bg-base: #0A0A0C;
+            --bg-sidebar: #101115;
+            --bg-card: #15161A;
+            --bg-card-hover: #1C1D22;
+            
+            --accent-green: #2BE38A;
+            --accent-blue: #35E6FF;
+            --accent-purple: #B39CD0;
+            --accent-rose: #FFC1CC;
+            
+            --text-pure: #FFFFFF;
+            --text-main: #EDEDED;
+            --text-muted: #8A94A6;
+            
             --border-subtle: rgba(255, 255, 255, 0.08);
-            --timeline-color: #1e293b;
+            --border-light: rgba(255, 255, 255, 0.15);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            
+            --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Space Mono', monospace;
         }
 
-        /* 1. Forțăm bara de scroll pentru a preveni "săritura" navbar-ului */
-        html { 
-            scroll-behavior: smooth; 
-            overflow-y: scroll; 
-        }
+        /* --- 2. GLOBAL RESET & SKY BACKGROUND --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
 
-        /* 2. Definim animația de fade-in */
-        @keyframes fadeIn { 
-            from { opacity: 0; } 
-            to { opacity: 1; } 
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 3. Aplicăm animația pe întregul corp al paginii */
         body {
-            background-color: var(--bg-deep);
+            background-color: var(--bg-base);
             color: var(--text-main);
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
+            font-family: var(--font-body);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* CSS Sky Background & Comets */
+        .sky-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; pointer-events: none; overflow: hidden; background-color: var(--bg-base);
+        }
+
+        .comet {
+            position: absolute; width: 160px; height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent-blue));
+            border-radius: 50%; opacity: 0;
+        }
+
+        .comet::before {
+            content: ''; position: absolute; top: -2px; right: 0; width: 6px; height: 6px;
+            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px rgba(53, 230, 255, 0.6);
+        }
+
+        @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
+
+        /* --- 3. SIDEBAR --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
             display: flex;
             flex-direction: column;
-            animation: fadeIn 0.6s ease-out;
+            padding: 24px 20px;
+            flex-shrink: 0;
+            z-index: 100;
         }
 
-        .universe-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
-            background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=2048&auto=format&fit=crop');
-            background-size: cover; background-position: center; opacity: 0.12; 
+        .brand {
+            display: flex; 
+            align-items: center; 
+            gap: 16px;
+            font-family: var(--font-display); 
+            font-size: 1.3rem;
+            font-weight: 700; 
+            color: var(--text-pure);
+            margin-bottom: 40px; 
+            padding-left: 4px;
+            line-height: 1.2;
         }
-
-        /* --- 2. NAVBAR SIMPLU --- */
-        nav { 
-            position: fixed; top: 0; width: 100%; 
-            background: rgba(5, 11, 20, 0.95); border-bottom: 1px solid var(--border-subtle); 
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 50px; z-index: 1000; box-sizing: border-box;
-        }
-
-        .nav-logo { text-decoration: none; display: flex; align-items: center; gap: 12px; }
-        .nav-logo i { color: #fbbf24; font-size: 1.6rem; }
         
-        .logo-text { display: flex; flex-direction: column; line-height: 1; }
-        .logo-text .main { font-weight: 700; font-size: 1.2rem; color: var(--text-light); letter-spacing: 1px; }
-        .logo-text .sub { font-weight: 400; font-size: 0.65rem; color: var(--accent-blue); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 2px; }
-
-        .nav-links { display: flex; align-items: center; }
-        .nav-links a { 
-            color: var(--text-main); text-decoration: none; margin: 0 20px; 
-            font-weight: 500; font-size: 0.85rem; transition: color 0.2s ease;
+        .brand img {
+            width: 80px; 
+            height: 80px;
+            border-radius: 50%; 
+            object-fit: cover;
         }
-        .nav-links a:hover, .nav-links a.active { color: var(--text-light); } 
 
-        .btn-auth { 
-            background: transparent; border: 1px solid var(--border-subtle); color: var(--text-light); 
-            padding: 8px 24px; border-radius: 2px; cursor: pointer; font-weight: 500; 
-            margin-left: 20px; transition: all 0.2s ease; font-size: 0.85rem; 
+        .menu-label {
+            font-family: var(--font-mono); font-size: 0.7rem;
+            color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.05em; margin: 20px 0 10px 8px;
         }
-        .btn-auth:hover { background: var(--text-light); color: var(--bg-deep); }
 
-        /* --- 3. HEADER PAGINĂ --- */
-        header { padding: 160px 20px 60px; text-align: center; max-width: 800px; margin: 0 auto; }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 12px; border-radius: var(--radius-sm);
+            color: var(--text-muted); text-decoration: none;
+            font-weight: 500; font-size: 0.9rem; transition: all 0.2s ease;
+        }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
+        .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
+        .nav-item.active { background-color: rgba(53, 230, 255, 0.1); color: var(--accent-blue); border-left: 3px solid var(--accent-blue); }
+
+        .sidebar-footer { margin-top: auto; }
+        .mobile-app-promo {
+            background: linear-gradient(135deg, rgba(43, 227, 138, 0.1), rgba(43, 227, 138, 0.02));
+            border: 1px solid rgba(43, 227, 138, 0.2);
+            padding: 16px; border-radius: var(--radius-md); text-align: center;
+        }
+        .mobile-app-promo h4 { color: var(--accent-green); font-size: 0.85rem; margin-bottom: 8px; }
+        .mobile-app-promo p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px; }
+        .btn-promo {
+            background: var(--accent-green); color: var(--bg-base); border: none;
+            width: 100%; padding: 8px; border-radius: 6px; font-weight: 600; cursor: pointer;
+        }
+
+        /* --- 4. MAIN CONTENT AREA --- */
+        .dashboard-main {
+            flex: 1; overflow-y: auto; padding: 32px 40px;
+            display: flex; flex-direction: column; gap: 32px;
+        }
+
+        .top-header { display: flex; justify-content: space-between; align-items: center; }
+        .header-title h1 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; color: var(--text-pure); }
+        .header-title p { color: var(--text-muted); font-size: 0.9rem; max-width: 600px; line-height: 1.5; }
         
-        .page-title { 
-            font-size: 3.2rem; font-weight: 700; line-height: 1.2; margin: 0 0 20px 0; 
-            background: linear-gradient(135deg, #ffffff 20%, #93c5fd 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px;
-        }
-        .page-desc { font-size: 1.05rem; color: var(--text-main); line-height: 1.8; max-width: 700px; margin: 0 auto; font-weight: 400; }
+        .header-actions { display: flex; align-items: center; gap: 20px; }
+        .icon-btn { background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; transition: color 0.2s; }
+        .icon-btn:hover { color: var(--text-pure); }
+        
+        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border-light); object-fit: cover; }
+        .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
+        .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
 
-        /* --- 4. LAYOUT PRINCIPAL (THEORY & DATA ANALYSIS) --- */
-        .practice-layout {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 60px;
-            max-width: 1200px;
-            margin: 0 auto 60px;
-            padding: 0 20px;
-            width: 100%;
-            box-sizing: border-box;
+        /* Dynamic Grid System */
+        .grid-layout { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 24px; 
         }
 
-        .track-title {
-            font-size: 1.5rem; color: var(--text-light); margin: 0 0 30px 0;
-            display: flex; align-items: center; gap: 12px; font-weight: 600;
-            padding-bottom: 15px; border-bottom: 1px solid var(--border-subtle);
+        /* Section Titles */
+        .section-header { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            margin-bottom: -8px; 
+            padding-top: 16px; 
+            border-bottom: 1px solid var(--border-subtle); 
+            padding-bottom: 12px; 
         }
-        .track-title i { color: var(--accent-blue); }
+        .section-header h2 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--text-pure); }
+        .section-header i { font-size: 1.2rem; }
 
-        /* --- 5. TIMELINE DESIGN --- */
-        .timeline {
-            border-left: 2px solid var(--timeline-color);
-            padding-left: 35px;
-            margin-left: 10px;
+        /* Module Cards */
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            text-decoration: none; color: inherit;
         }
+        .card:hover { transform: translateY(-4px); border-color: var(--border-light); background: var(--bg-card-hover); }
 
-        .timeline-item {
-            position: relative;
-            margin-bottom: 30px;
-        }
-        .timeline-item:last-child { margin-bottom: 0; }
-
-        .timeline-dot {
-            position: absolute;
-            left: -42px; 
-            top: 25px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--bg-deep);
-            border: 2px solid var(--text-main);
-            transition: all 0.3s ease;
-            z-index: 1;
-        }
-
-        .timeline-item:hover .timeline-dot {
-            border-color: var(--accent-blue);
-            background: var(--accent-blue);
-            box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
-        }
-
-        /* --- 6. DESIGN CARDURI (ACADEMIC) --- */
-        .practice-card {
-            background: var(--bg-panel); 
-            border: 1px solid var(--border-subtle);
-            border-radius: 2px; 
-            padding: 25px 30px; 
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+        
+        .module-icon {
+            width: 160px; 
+            height: 160px;
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            font-size: 3.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
             transition: all 0.2s ease;
-            display: flex; flex-direction: column;
-            text-decoration: none; 
+            background-color: #FFFFFF;
+            flex-shrink: 0;
         }
-
-        .practice-card:hover { 
-            border-color: #3b4252; 
-            background: var(--bg-hover); 
-            transform: translateX(5px); 
-        }
-
-        .card-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
         
-        .icon-box {
-            width: 40px; height: 40px; 
-            background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-subtle);
-            border-radius: 2px; display: flex; align-items: center; justify-content: center;
-            font-size: 1.1rem; color: var(--text-light); flex-shrink: 0; transition: all 0.2s ease;
+        .module-icon img {
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain;
+            transform: scale(1.4);
+            padding: 0;
+            transition: transform 0.2s ease;
         }
-        .practice-card:hover .icon-box { border-color: var(--accent-blue); color: var(--accent-blue); }
-
-        .card-title { margin: 0; font-size: 1.15rem; font-weight: 600; color: var(--text-light); }
         
-        /* DESIGN PENTRU CONTORUL DE PROGRES */
+        .card:hover .module-icon img { 
+            transform: scale(1.5); 
+        }
+
         .progress-pill {
-            margin-left: auto; /* Îl împinge perfect în dreapta casetei */
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-subtle);
-            padding: 4px 10px;
-            border-radius: 2px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-main);
-            transition: all 0.2s ease;
-        }
-        .practice-card:hover .progress-pill {
-            border-color: var(--accent-blue);
-            color: var(--accent-blue);
-            background: rgba(59, 130, 246, 0.1);
+            font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
+            background: var(--bg-sidebar); padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-subtle);
+            font-weight: bold;
         }
 
-        .card-desc { font-size: 0.9rem; color: var(--text-main); margin: 0; line-height: 1.6; }
-
-        .enter-arrow {
-            margin-top: 15px; font-size: 0.8rem; font-weight: 600; color: var(--text-main);
-            display: flex; align-items: center; gap: 8px; transition: color 0.2s; text-transform: uppercase; letter-spacing: 1px;
+        .card-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--text-pure); margin-bottom: 8px; }
+        
+        /* Updated List Styling for Subchapters */
+        .module-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; flex-grow: 1; }
+        .module-desc ol { margin-left: 20px; margin-top: 8px; }
+        .module-desc li { margin-bottom: 6px; padding-left: 4px; }
+        
+        .btn-action {
+            background: var(--bg-sidebar); color: var(--text-pure); border: 1px solid var(--border-light);
+            padding: 10px 16px; border-radius: var(--radius-sm); font-weight: 500; font-size: 0.85rem;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
+            text-decoration: none; transition: all 0.2s; margin-top: auto; width: 100%;
         }
-        .practice-card:hover .enter-arrow { color: var(--accent-blue); }
+        .card:hover .btn-action { background: var(--text-pure); color: var(--bg-base); }
 
-        /* --- 7. OBSERVATIONAL TRACK (JOS, FULL WIDTH) --- */
-        .observational-layout {
-            max-width: 1200px;
-            margin: 0 auto 100px;
-            padding: 0 20px;
-            width: 100%;
-            box-sizing: border-box;
-        }
+        /* Category Accents */
+        .accent-theory .module-icon { background: rgba(179, 156, 208, 0.1); }
+        .card.accent-theory:hover { border-color: var(--accent-purple); }
+        .card.accent-theory:hover .btn-action { background: var(--accent-purple); color: var(--bg-base); border-color: var(--accent-purple); }
+        .accent-theory-title { color: var(--accent-purple); }
 
-        .obs-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
+        .accent-data .module-icon { background: rgba(53, 230, 255, 0.1); }
+        .card.accent-data:hover { border-color: var(--accent-blue); }
+        .card.accent-data:hover .btn-action { background: var(--accent-blue); color: var(--bg-base); border-color: var(--accent-blue); }
+        .accent-data-title { color: var(--accent-blue); }
 
-        /* --- 8. FOOTER & MODALA --- */
-        footer { margin-top: auto; padding: 40px 20px; color: #475569; font-size: 0.85rem; text-align: center; border-top: 1px solid var(--border-subtle); }
+        .accent-obs .module-icon { background: rgba(255, 193, 204, 0.1); }
+        .card.accent-obs:hover { border-color: var(--accent-rose); }
+        .card.accent-obs:hover .btn-action { background: var(--accent-rose); color: var(--bg-base); border-color: var(--accent-rose); }
+        .accent-obs-title { color: var(--accent-rose); }
 
-        .auth-modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .auth-content { background: var(--bg-deep); padding: 40px; border-radius: 2px; width: 320px; text-align: center; border: 1px solid var(--border-subtle); position: relative; }
-        .close-btn { position: absolute; right: 20px; top: 15px; color: var(--text-main); cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
-        .close-btn:hover { color: var(--text-light); }
-        .auth-input { width: 100%; padding: 12px; margin: 8px 0 16px; background: var(--bg-panel); border: 1px solid var(--border-subtle); color: var(--text-light); border-radius: 2px; outline: none; box-sizing: border-box; font-family: 'Inter', sans-serif;}
-        .auth-input:focus { border-color: var(--text-main); }
-        .submit-btn { width: 100%; padding: 12px; background: var(--text-light); border: none; color: var(--bg-deep); font-weight: 600; border-radius: 2px; cursor: pointer; margin-top: 15px; transition: 0.3s; }
-        .submit-btn:hover { background: #e2e8f0; }
-        .toggle-text { font-size: 0.85rem; margin-top: 20px; color: var(--text-main); }
-        .toggle-text span { color: var(--text-light); cursor: pointer; text-decoration: underline; }
-        .error-msg { color: #ef4444; font-size: 0.8rem; margin-top: 10px; }
-
-        @media(max-width: 900px) {
-            nav { flex-direction: column; padding: 15px; gap: 15px; }
-            .nav-links { flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 10px; }
-            .page-title { font-size: 2.5rem; }
-            .practice-layout { grid-template-columns: 1fr; gap: 40px; }
-            .obs-grid { grid-template-columns: 1fr; }
+        @media (max-width: 800px) {
+            .sidebar { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <div class="universe-bg"></div>
-
-    <nav>
-        <a href="index.html" class="nav-logo">
-            <i class="fa-solid fa-star"></i>
-            <div class="logo-text">
-                <span class="main">SUPERNOVA</span>
-                <span class="sub">Guide</span>
-            </div>
-        </a>
-
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="handouts.html">Handouts</a>
-            <a href="problems.html" class="active">Practice</a> 
-            <a href="resources.html">Resources</a>
-            <a href="community.html">Community</a>
-            <a href="profile.html" id="profileLink" style="display: none;">My Profile</a>
-        </div>
-
-        <div class="nav-auth-container">
-            <button id="loginBtn" onclick="openAuthModal()" class="btn-auth">Login</button>
-            <button id="logoutBtn" class="btn-auth" style="display: none;">Logout</button>
-        </div>
-    </nav>
-
-    <header>
-        <h1 class="page-title">Practice Hub</h1>
-        <p class="page-desc">
-            Follow the IOAA curriculum tracks below. Build your theoretical foundation, master data analysis, and train your observational skills.
-        </p>
-    </header>
-
-    <div class="practice-layout">
-        
-        <div class="track-column">
-            <h2 class="track-title"><i class="fa-solid fa-book-open"></i> Theory Track</h2>
-            
-            <div class="timeline">
-                
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="problems_math.html" class="practice-card">
-                        <div class="card-header">
-                            <div class="icon-box"><i class="fa-solid fa-square-root-variable"></i></div>
-                            <h3 class="card-title">1. Physics & Math Basics</h3>
-                            <div class="progress-pill">0/0</div>
-                        </div>
-                        <p class="card-desc">Thermodynamics, relativity, blackbody radiation, and mathematical tools.</p>
-                        <span class="enter-arrow">Start <i class="fa-solid fa-arrow-right"></i></span>
-                    </a>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="problems_positional.html" class="practice-card">
-                        <div class="card-header">
-                            <div class="icon-box"><i class="fa-solid fa-compass-drafting"></i></div>
-                            <h3 class="card-title">2. Positional Astronomy</h3>
-                            <div class="progress-pill">0/0</div>
-                        </div>
-                        <p class="card-desc">Spherical coordinates, time systems (solar/sidereal), and coordinate transformations.</p>
-                        <span class="enter-arrow">Start <i class="fa-solid fa-arrow-right"></i></span>
-                    </a>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="problems_celestial_mechanics.html" class="practice-card">
-                        <div class="card-header">
-                            <div class="icon-box"><i class="fa-solid fa-satellite"></i></div>
-                            <h3 class="card-title">3. Celestial Mechanics</h3>
-                            <div class="progress-pill" id="celestial-progress">0/16</div>
-                        </div>
-                        <p class="card-desc">Kepler's laws, orbital dynamics, N-body problems, and Hohmann transfers.</p>
-                        <span class="enter-arrow">Start <i class="fa-solid fa-arrow-right"></i></span>
-                    </a>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="problems_astro.html" class="practice-card">
-                        <div class="card-header">
-                            <div class="icon-box"><i class="fa-solid fa-star-half-stroke"></i></div>
-                            <h3 class="card-title">4. Stellar Astrophysics</h3>
-                            <div class="progress-pill">0/0</div>
-                        </div>
-                        <p class="card-desc">Stellar evolution, HR diagrams, fusion processes, and magnitude systems.</p>
-                        <span class="enter-arrow">Start <i class="fa-solid fa-arrow-right"></i></span>
-                    </a>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="problems_exo.html" class="practice-card">
-                        <div class="card-header">
-                            <div class="icon-box"><i class="fa-solid fa-earth-americas"></i></div>
-                            <h3 class="card-title">5. Exoplanets & Systems</h3>
-                            <div class="progress-pill">0/0</div>
-                        </div>
-                        <p class="card-desc">Transit methods, radial velocity, albedo, and planetary atmospheres.</p>
-                        <span class="enter-arrow">Start <i class="fa-solid fa-arrow-right"></i></span>
-                    </a>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="problems_cosmo.html" class="practice-card">
-                        <div class="card-header">
-                            <div class="icon-box"><i class="fa-solid fa-infinity"></i></div>
-                            <h3 class="card-title">6. Cosmology & Galaxies</h3>
-                            <div class="progress-pill">0/0</div>
-                        </div>
-                        <p class="card-desc">Hubble's law, redshift, dark matter, active galactic nuclei, and universe expansion.</p>
-                        <span class="enter-arrow">Start <i class="fa-solid fa-arrow-right"></i></span>
-                    </a>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="problems_telescopes_theory.html" class="practice-card">
-                        <div class="card-header">
-                            <div class="icon-box"><i class="fa-solid fa-microscope"></i></div>
-                            <h3 class="card-title">7. Optics & Instrumentation</h3>
-                            <div class="progress-pill">0/0</div>
-                        </div>
-                        <p class="card-desc">Theoretical aspects of telescopes: magnification, focal ratio, resolution, and CCDs.</p>
-                        <span class="enter-arrow">Start <i class="fa-solid fa-arrow-right"></i></span>
-                    </a>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="track-column">
-            <h2 class="track-title"><i class="fa-solid fa-chart-line"></i> Data Analysis Track</h2>
-            
-            <div class="timeline">
-                
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="problems_data_basics.html" class="practice-card">
-                        <div class="card-header">
-                            <div class="icon-box"><i class="fa-solid fa-calculator"></i></div>
-                            <h3 class="card-title">1. Methods & Plotting</h3>
-                            <div class="progress-pill">0/0</div>
-                        </div>
-                        <p class="card-desc">Error propagation, statistical regression, graphing techniques, and plotting calculations.</p>
-                        <span class="enter-arrow">Start <i class="fa-solid fa-arrow-right"></i></span>
-                    </a>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <a href="problems_data_full.html" class="practice-card">
-                        <div class="card-header">
-                            <div class="icon-box"><i class="fa-solid fa-table"></i></div>
-                            <h3 class="card-title">2. Full Data Sets</h3>
-                            <div class="progress-pill">0/0</div>
-                        </div>
-                        <p class="card-desc">Comprehensive real-world datasets from past IOAA exams. Light curves, spectra, and complex analysis.</p>
-                        <span class="enter-arrow">Start <i class="fa-solid fa-arrow-right"></i></span>
-                    </a>
-                </div>
-
-            </div>
-        </div>
-
+    <!-- Sky Background Layer -->
+    <div class="sky-background">
+        <div class="comet" style="top: 5%; left: 90%; animation: shooting 8s infinite linear 2s;"></div>
     </div>
 
-    <div class="observational-layout">
-        <h2 class="track-title" style="justify-content: center; border-bottom: none; margin-bottom: 20px;">
-            <i class="fa-solid fa-eye"></i> Observational Track
-        </h2>
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar">
+        <div class="brand">
+            <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span>SUPERNOVA<br>GUIDE</span>
+        </div>
         
-        <div class="obs-grid">
-            
-            <a href="problems_blind_map.html" class="practice-card">
-                <div class="card-header">
-                    <div class="icon-box"><i class="fa-solid fa-map"></i></div>
-                    <h3 class="card-title">Blind Map Practice</h3>
-                    <div class="progress-pill">0/0</div>
+        <div class="menu-label">Menu</div>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Problems</a></li>
+            <li><a href="handouts.html" class="nav-item"><i class="fa-solid fa-book-atlas"></i> Handouts</a></li>
+            <li><a href="#" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+        </ul>
+        
+        <div class="menu-label">General</div>
+        <ul class="nav-menu">
+            <li><a href="profile.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
+            <li><a href="landing.html" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <div class="mobile-app-promo">
+                <h4>Join the League</h4>
+                <p>Register for the upcoming IOAA Simulation Grand Prix.</p>
+                <button class="btn-promo">Register Now</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+        
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="header-title">
+                <h1>Practice Hub</h1>
+                <p>Follow the IOAA curriculum tracks below. Build your theoretical foundation, master data analysis, and train your observational skills.</p>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
+                <div class="user-profile">
+                    <img id="user-avatar" src="https://ui-avatars.com/api/?name=Loading&background=1C1D22&color=FFFFFF" alt="User" class="avatar">
+                    <div class="user-info">
+                        <h4 id="user-name-display">Loading...</h4>
+                        <p id="user-role-display">Authenticating</p>
+                    </div>
                 </div>
-                <p class="card-desc">
-                    Train for the naked-eye observation round. Star identification, constellation boundaries, deep sky object coordinates without grids.
-                </p>
-                <span class="enter-arrow">Start <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+        </header>
+
+        <!-- THEORY TRACK -->
+        <div class="section-header">
+            <i class="fa-solid fa-book-open accent-theory-title"></i>
+            <h2>Theory Track</h2>
+        </div>
+        <div class="grid-layout">
+            
+            <a href="problems_math.html" class="card accent-theory">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/theory/positional_celestial_mechanics_logo.png" alt="Positional Astronomy and Celestial Mechanics">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">1. Positional Astronomy and Celestial Mechanics</h3>
+                <div class="module-desc">
+                    <ol>
+                        <li>The Celestial Sphere</li>
+                        <li>Celestial Mechanics</li>
+                    </ol>
+                </div>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
             </a>
 
-            <a href="problems_telescope_obs.html" class="practice-card">
+            <a href="problems_radiation.html" class="card accent-theory">
                 <div class="card-header">
-                    <div class="icon-box"><i class="fa-solid fa-binoculars"></i></div>
-                    <h3 class="card-title">Telescope Practice</h3>
-                    <div class="progress-pill">0/0</div>
+                    <div class="module-icon">
+                        <img src="assets/img/theory/radiation_relativity_logo.png" alt="Radiation Physics and Relativity Fundamentals">
+                    </div>
+                    <span class="progress-pill">0/0</span>
                 </div>
-                <p class="card-desc">
-                    Practical telescope operations. Equatorial mount calibration, field of view mapping, tracking, and pointing exercises.
-                </p>
-                <span class="enter-arrow">Start <i class="fa-solid fa-arrow-right"></i></span>
+                <h3 class="card-title">2. Radiation Physics and Relativity Fundamentals</h3>
+                <div class="module-desc">
+                    <ol>
+                        <li>The Continuous Spectrum of Light</li>
+                        <li>The Theory of Special Relativity</li>
+                        <li>The Interaction of Light and Matter</li>
+                    </ol>
+                </div>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
             </a>
 
+            <a href="problems_instrumentation.html" class="card accent-theory">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/theory/astronomical_instrumentation_logo.png" alt="Astronomical Instrumentation">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">3. Astronomical Instrumentation</h3>
+                <div class="module-desc">
+                    <ol>
+                        <li>Telescopes</li>
+                    </ol>
+                </div>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+
+            <a href="problems_stellar_params.html" class="card accent-theory">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/theory/stellar_parameters_logo.png" alt="Stellar Parameters and Spectral Classification">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">4. Stellar Parameters and Spectral Classification</h3>
+                <div class="module-desc">
+                    <ol>
+                        <li>Binary Systems and Stellar Parameters</li>
+                        <li>The Classification of Stellar Spectra</li>
+                    </ol>
+                </div>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+
+            <a href="problems_stellar_structure.html" class="card accent-theory">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/theory/stellar_structure_logo.png" alt="Stellar Structure and Atmospheres">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">5. Stellar Structure and Atmospheres</h3>
+                <div class="module-desc">
+                    <ol>
+                        <li>Stellar Atmospheres</li>
+                        <li>The Sun</li>
+                        <li>The Interiors of Stars</li>
+                    </ol>
+                </div>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+
+            <a href="problems_ism.html" class="card accent-theory">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/theory/interstellar_medium_logo.png" alt="Interstellar Medium and Star Formation">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">6. Interstellar Medium and Star Formation</h3>
+                <div class="module-desc">
+                    <ol>
+                        <li>The Interstellar Medium and Star Formation</li>
+                    </ol>
+                </div>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+
+            <a href="problems_stellar_evolution.html" class="card accent-theory">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/theory/stellar_evolution_logo.png" alt="Stellar Evolution">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">7. Stellar Evolution</h3>
+                <div class="module-desc">
+                    <ol>
+                        <li>Main Sequence and Post-Main-Sequence Stellar Evolution</li>
+                        <li>Stellar Pulsation</li>
+                        <li>The Fate of Massive Stars</li>
+                    </ol>
+                </div>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+
+            <a href="problems_remnants.html" class="card accent-theory">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/theory/stellar_remnants_logo.png" alt="Stellar Remnants and General Relativity">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">8. Stellar Remnants and General Relativity</h3>
+                <div class="module-desc">
+                    <ol>
+                        <li>The Degenerate Remnants of Stars</li>
+                        <li>General Relativity and Black Holes</li>
+                        <li>Close Binary Star Systems</li>
+                    </ol>
+                </div>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+
+            <a href="problems_planetary.html" class="card accent-theory">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/theory/planetary_systems_logo.png" alt="Planetary Systems and Formation">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">9. Planetary Systems and Formation</h3>
+                <div class="module-desc">
+                    <ol>
+                        <li>Physical Processes in the Solar System</li>
+                        <li>The Terrestrial Planets</li>
+                        <li>The Realms of the Giant Planets</li>
+                        <li>Minor Bodies of the Solar System</li>
+                        <li>Formation of Planetary Systems</li>
+                    </ol>
+                </div>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+
+            <a href="problems_galactic_structure.html" class="card accent-theory">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/theory/galactic_structure_logo.png" alt="Galactic Structure">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">10. Galactic Structure</h3>
+                <div class="module-desc">
+                    <ol>
+                        <li>The Nature of Galaxies</li>
+                        <li>The Milky Way Galaxy</li>
+                    </ol>
+                </div>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+
+            <a href="problems_galactic_evolution.html" class="card accent-theory">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/theory/galactic_evolution_logo.png" alt="Galactic Evolution and Active Galaxies">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">11. Galactic Evolution and Active Galaxies</h3>
+                <div class="module-desc">
+                    <ol>
+                        <li>Galactic Evolution</li>
+                        <li>Active Galaxies</li>
+                    </ol>
+                </div>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+
+            <a href="problems_cosmology.html" class="card accent-theory">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/theory/cosmology_logo.png" alt="Cosmology and the Structure of the Universe">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">12. Cosmology and the Structure of the Universe</h3>
+                <div class="module-desc">
+                    <ol>
+                        <li>The Structure of the Universe</li>
+                        <li>Cosmology</li>
+                        <li>The Early Universe</li>
+                    </ol>
+                </div>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
         </div>
-    </div>
 
-    <footer>
-        &copy; 2026 Supernova Guide. All rights reserved.
-    </footer>
-
-    <div id="authModal" class="auth-modal">
-        <div class="auth-content">
-            <span onclick="closeModal()" class="close-btn"><i class="fas fa-times"></i></span>
-            <h3 id="modalTitle" style="color: var(--text-light); margin: 0 0 20px 0; font-weight: 600;">Student Login</h3>
-            
-            <form id="authForm">
-                <input type="text" id="usernameInput" class="auth-input" placeholder="Username" style="display:none;">
-                <input type="email" id="emailInput" class="auth-input" placeholder="Academic Email" required>
-                <input type="password" id="passwordInput" class="auth-input" placeholder="Password" required>
-                <button type="submit" id="submitAuthBtn" class="submit-btn">Sign In</button>
-                <p id="authError" class="error-msg" style="color: #ef4444; font-size: 0.8rem; margin-top: 10px;"></p>
-            </form>
-
-            <p class="toggle-text" id="toggleText">
-                New to the platform? <span onclick="toggleMode()">Register</span>
-            </p>
+        <!-- DATA ANALYSIS TRACK -->
+        <div class="section-header" style="margin-top: 24px;">
+            <i class="fa-solid fa-chart-line accent-data-title"></i>
+            <h2>Data Analysis Track</h2>
         </div>
-    </div>
+        <div class="grid-layout">
+            <a href="problems_data_basics.html" class="card accent-data">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/data_analysis/methods_plotting_logo.png" alt="Methods & Plotting">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">1. Methods & Plotting</h3>
+                <p class="module-desc">Error propagation, statistical regression, graphing techniques, and plotting calculations.</p>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
 
-    <script type="module" src="js/auth.js"></script>
+            <a href="problems_data_full.html" class="card accent-data">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/data_analysis/full_data_sets_logo.png" alt="Full Data Sets">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">2. Full Data Sets</h3>
+                <p class="module-desc">Comprehensive real-world datasets from past IOAA exams. Light curves, spectra, and complex analysis.</p>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+        </div>
 
-    <script>
+        <!-- OBSERVATIONAL TRACK -->
+        <div class="section-header" style="margin-top: 24px;">
+            <i class="fa-solid fa-eye accent-obs-title"></i>
+            <h2>Observational Track</h2>
+        </div>
+        <div class="grid-layout" style="margin-bottom: 60px;">
+            <a href="problems_blind_map.html" class="card accent-obs">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/observational/blind_map_logo.png" alt="Blind Map Practice">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">Blind Map Practice</h3>
+                <p class="module-desc">Train for the naked-eye observation round. Star identification, constellation boundaries, deep sky object coordinates without grids.</p>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+
+            <a href="problems_telescope_obs.html" class="card accent-obs">
+                <div class="card-header">
+                    <div class="module-icon">
+                        <img src="assets/img/observational/telescope_practice_logo.png" alt="Telescope Practice">
+                    </div>
+                    <span class="progress-pill">0/0</span>
+                </div>
+                <h3 class="card-title">Telescope Practice</h3>
+                <p class="module-desc">Practical telescope operations. Equatorial mount calibration, field of view mapping, tracking, and pointing exercises.</p>
+                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Auth Hydration & Progress Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        onAuthStateChanged(auth, (user) => {
+            const nameDisplay = document.getElementById('user-name-display');
+            const avatarDisplay = document.getElementById('user-avatar');
+            const roleDisplay = document.getElementById('user-role-display');
+
+            if (user) {
+                const displayName = user.displayName || user.email.split('@')[0];
+                if (nameDisplay) nameDisplay.innerText = displayName;
+                if (roleDisplay) roleDisplay.innerText = "Candidate";
+                if (avatarDisplay) avatarDisplay.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=35E6FF&color=050507`;
+            } else {
+                if (nameDisplay) nameDisplay.innerText = "Guest";
+                if (roleDisplay) roleDisplay.innerText = "Not Logged In";
+                if (avatarDisplay) avatarDisplay.src = `https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF`;
+            }
+        });
+
         document.addEventListener("DOMContentLoaded", () => {
-            // ID-urile exacte din problems_celestial_mechanics.html
             const celestialIds = [
                 'q1_usaaao_2018', 'q30_usaaao_2018', 'q1_usaaao_2025', 'q4_usaaao_2025', 
                 'q5_usaaao_2025', 'q11-12_usaaao_2025', 'q13_usaaao_2025', 'q19_usaaao_2025', 
@@ -477,7 +643,6 @@
             
             let solvedCount = 0;
             
-            // Această verificare caută în memoria locală (ca soluție de backup până la linkarea bazei de date reale)
             celestialIds.forEach(id => {
                 if(localStorage.getItem(id) === 'true' || 
                    localStorage.getItem('solved_' + id) === 'true' || 
@@ -494,16 +659,13 @@
                 } catch(e) {}
             }
 
-            // Actualizează textul
             const progressElement = document.getElementById('celestial-progress');
             if(progressElement) {
                 progressElement.textContent = `${solvedCount}/16`;
-                
-                // Efect special dacă le rezolvă pe toate
                 if(solvedCount === 16) {
-                    progressElement.style.color = '#10b981';
-                    progressElement.style.borderColor = '#10b981';
-                    progressElement.style.background = 'rgba(16, 185, 129, 0.1)';
+                    progressElement.style.color = 'var(--bg-base)';
+                    progressElement.style.borderColor = 'var(--accent-purple)';
+                    progressElement.style.background = 'var(--accent-purple)';
                 }
             }
         });
