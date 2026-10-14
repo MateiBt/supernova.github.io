@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formula & Reference Tools | Supernova Guide</title>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Canonical Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- MathJax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+
+    <style>
+        :root {
+            --bg-base: #0A0A0C;
+            --bg-sidebar: #101115;
+            --bg-card: #15161A;
+            --bg-card-hover: #1C1D22;
+            
+            --accent-green: #2BE38A;
+            --accent-blue: #35E6FF;
+            --accent-purple: #B39CD0;
+            --accent-rose: #FFC1CC;
+            
+            --text-pure: #FFFFFF;
+            --text-main: #EDEDED;
+            --text-muted: #8A94A6;
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            
+            --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        body {
+            background-color: var(--bg-base); color: var(--text-main);
+            font-family: var(--font-body); display: flex; height: 100vh;
+            overflow: hidden; -webkit-font-smoothing: antialiased;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .sky-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; pointer-events: none; overflow: hidden; background-color: var(--bg-base);
+        }
+        .comet {
+            position: absolute; width: 160px; height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent-purple));
+            border-radius: 50%; opacity: 0;
+        }
+        .comet::before {
+            content: ''; position: absolute; top: -2px; right: 0; width: 6px; height: 6px;
+            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px rgba(179, 156, 208, 0.6);
+        }
+        @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
+
+        /* --- UNIFIED SIDEBAR --- */
+        .sidebar {
+            width: 260px; background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+            display: flex; flex-direction: column;
+            padding: 24px 20px; flex-shrink: 0; z-index: 100; overflow-y: auto;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 16px;
+            font-family: var(--font-display); font-size: 1.3rem;
+            font-weight: 700; color: var(--text-pure);
+            margin-bottom: 32px; padding-left: 4px; line-height: 1.2; text-decoration: none;
+        }
+        .brand img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+        .menu-label {
+            font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.05em; margin: 18px 0 8px 8px;
+        }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px; padding: 9px 12px;
+            border-radius: var(--radius-sm); color: var(--text-muted); text-decoration: none;
+            font-weight: 500; font-size: 0.88rem; transition: all 0.2s ease;
+        }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.05rem; }
+        .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
+        .nav-item.active { background-color: rgba(179, 156, 208, 0.12); color: var(--accent-purple); border-left: 3px solid var(--accent-purple); }
+
+        /* --- MAIN AREA --- */
+        .dashboard-main {
+            flex: 1; overflow-y: auto; padding: 32px 44px 60px;
+            display: flex; flex-direction: column; gap: 28px;
+        }
+
+        .top-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .header-title h1 { font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--text-pure); margin-bottom: 4px; }
+        .header-title p { color: var(--text-muted); font-size: 0.9rem; }
+
+        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); text-decoration: none; }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border-light); object-fit: cover; }
+        .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
+        .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+        .calc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .calc-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 26px;
+            display: flex; flex-direction: column; gap: 16px;
+        }
+        .calc-card h3 {
+            font-family: var(--font-display); font-size: 1.15rem; color: var(--text-pure);
+            display: flex; align-items: center; gap: 10px;
+            border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;
+        }
+        .calc-inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .inp-box label {
+            display: block; font-family: var(--font-mono); font-size: 0.7rem;
+            color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase;
+        }
+        .inp-box input {
+            width: 100%; background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
+            color: var(--text-pure); padding: 9px 12px; border-radius: var(--radius-sm);
+            font-family: var(--font-mono); font-size: 0.85rem; outline: none;
+        }
+        .inp-box input:focus { border-color: var(--accent-purple); }
+
+        .calc-result {
+            background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
+            border-left: 3px solid var(--accent-blue); border-radius: var(--radius-sm);
+            padding: 12px 16px; font-family: var(--font-mono); font-size: 0.85rem;
+            color: var(--text-pure); display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .constants-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 28px;
+        }
+        .constants-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 0.86rem; }
+        .constants-table th {
+            text-align: left; padding: 12px; background: var(--bg-sidebar);
+            color: var(--text-pure); font-family: var(--font-mono); font-size: 0.72rem;
+            text-transform: uppercase; border-bottom: 1px solid var(--border-light);
+        }
+        .constants-table td {
+            padding: 12px; border-bottom: 1px solid var(--border-subtle); color: var(--text-main);
+        }
+        .const-val { font-family: var(--font-mono); color: var(--accent-blue); font-weight: 700; }
+        .btn-copy {
+            background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
+            color: var(--text-muted); padding: 5px 10px; border-radius: 6px;
+            font-family: var(--font-mono); font-size: 0.72rem; cursor: pointer;
+        }
+        .btn-copy:hover { border-color: var(--accent-green); color: var(--accent-green); }
+
+        @media (max-width: 1024px) { .calc-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 800px) { .sidebar { display: none; } .dashboard-main { padding: 24px 20px; } }
+    </style>
+</head>
+<body>
+
+    <div class="sky-background">
+        <div class="comet" style="top: 12%; left: 85%; animation: shooting 9s infinite linear 1s;"></div>
+    </div>
+
+    <!-- UNIFIED SIDEBAR (With External Library included) -->
+    <aside class="sidebar">
+        <a href="index.html" class="brand">
+            <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span>SUPERNOVA<br>GUIDE</span>
+        </a>
+        
+        <div class="menu-label">Menu</div>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
+            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
+        </ul>
+
+        <div class="menu-label">Tools &amp; Analytics</div>
+        <ul class="nav-menu">
+            <li><a href="analytics.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="tools.html" class="nav-item active"><i class="fa-solid fa-calculator"></i> Formula &amp; Tools</a></li>
+            <li><a href="notebook.html" class="nav-item"><i class="fa-solid fa-book-open"></i> Mistake Notebook</a></li>
+            <li><a href="resources.html" class="nav-item"><i class="fa-solid fa-book-atlas"></i> External Library</a></li>
+        </ul>
+        
+        <div class="menu-label">General</div>
+        <ul class="nav-menu">
+            <li><a href="profile.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
+            <li><a href="#" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+        
+        <header class="top-header">
+            <div class="header-title">
+                <h1>Canonical Constants &amp; Computation Suite</h1>
+                <p>Standard IAU / IOAA physical constants and rapid verification calculators for study sessions.</p>
+            </div>
+            <a href="profile.html" class="user-profile">
+                <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF" alt="User" class="avatar">
+                <div class="user-info">
+                    <h4 id="user-name-display">Loading...</h4>
+                    <p id="user-role-display">Authenticating</p>
+                </div>
+            </a>
+        </header>
+
+        <!-- INTERACTIVE ASTRO CALCULATORS -->
+        <section class="calc-grid">
+            <div class="calc-card">
+                <h3><i class="fa-solid fa-sun" style="color:var(--accent-blue);"></i> Extinction-Corrected Distance Solver</h3>
+                <p style="font-size:0.84rem; color:var(--text-muted);">Computes true distance \(d\) from \(m - M = 5\log_{10}(d/10\text{ pc}) + A_V\).</p>
+                <div class="calc-inputs">
+                    <div class="inp-box">
+                        <label>Apparent (m)</label>
+                        <input type="number" id="dm-m" value="11.0" step="0.1" oninput="calcDistance()">
+                    </div>
+                    <div class="inp-box">
+                        <label>Absolute (M)</label>
+                        <input type="number" id="dm-M" value="1.0" step="0.1" oninput="calcDistance()">
+                    </div>
+                    <div class="inp-box">
+                        <label>Extinction (A_V)</label>
+                        <input type="number" id="dm-A" value="2.0" step="0.1" oninput="calcDistance()">
+                    </div>
+                </div>
+                <div class="calc-result">
+                    <span>True Distance \(d\):</span>
+                    <strong id="dm-out" style="color:var(--accent-blue);">398.11 pc (1298.5 ly)</strong>
+                </div>
+            </div>
+
+            <div class="calc-card">
+                <h3><i class="fa-solid fa-satellite" style="color:var(--accent-purple);"></i> Keplerian Orbit &amp; Escape Velocity</h3>
+                <p style="font-size:0.84rem; color:var(--text-muted);">Computes circular speed \(v_c = \sqrt{GM/r}\), escape speed \(v_e\), and period \(P\).</p>
+                <div class="calc-inputs">
+                    <div class="inp-box">
+                        <label>Primary Mass (M_☉)</label>
+                        <input type="number" id="kep-M" value="1.0" step="0.1" oninput="calcKepler()">
+                    </div>
+                    <div class="inp-box">
+                        <label>Orbital Radius (AU)</label>
+                        <input type="number" id="kep-r" value="1.0" step="0.1" oninput="calcKepler()">
+                    </div>
+                    <div class="inp-box">
+                        <label>Eccentricity (e)</label>
+                        <input type="number" id="kep-e" value="0.0" step="0.05" oninput="calcKepler()">
+                    </div>
+                </div>
+                <div class="calc-result" style="border-left-color:var(--accent-purple);">
+                    <span>\(v_c\) / \(v_\text{esc}\) / Period \(P\):</span>
+                    <strong id="kep-out" style="color:var(--accent-purple);">29.78 km/s | 42.12 km/s | 1.00 yr</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- OFFICIAL IAU / IOAA CONSTANTS TABLE -->
+        <section class="constants-card">
+            <h3 style="font-family:var(--font-display); font-size:1.2rem; color:var(--text-pure);">
+                <i class="fa-solid fa-table-list" style="color:var(--accent-green); margin-right:8px;"></i>
+                Official IOAA &amp; IAU Physical Constants
+            </h3>
+            <table class="constants-table">
+                <thead>
+                    <tr>
+                        <th>Quantity</th>
+                        <th>Symbol</th>
+                        <th>SI Value</th>
+                        <th>Copy Value</th>
+                    </tr>
+                </thead>
+                <tbody id="constants-tbody"></tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <script type="module" src="js/auth.js"></script>
+    <script>
+        const CONSTANTS_DATA = [
+            { name: "Gravitational Constant", sym: "\\(G\\)", val: "6.67430 × 10⁻¹¹ m³ kg⁻¹ s⁻²", raw: "6.67430e-11" },
+            { name: "Speed of Light in Vacuum", sym: "\\(c\\)", val: "2.99792458 × 10⁸ m s⁻¹", raw: "2.99792458e8" },
+            { name: "Planck Constant", sym: "\\(h\\)", val: "6.62607015 × 10⁻³⁴ J s", raw: "6.62607015e-34" },
+            { name: "Boltzmann Constant", sym: "\\(k_B\\)", val: "1.380649 × 10⁻²³ J K⁻¹", raw: "1.380649e-23" },
+            { name: "Stefan-Boltzmann Constant", sym: "\\(\\sigma\\)", val: "5.670374 × 10⁻⁸ W m⁻² K⁻⁴", raw: "5.670374e-8" },
+            { name: "Astronomical Unit", sym: "\\(1\\text{ AU}\\)", val: "1.495978707 × 10¹¹ m", raw: "1.495978707e11" },
+            { name: "Parsec", sym: "\\(1\\text{ pc}\\)", val: "3.08567758 × 10¹⁶ m (206264.8 AU)", raw: "3.08567758e16" },
+            { name: "Solar Mass", sym: "\\(M_\\odot\\)", val: "1.98847 × 10³⁰ kg", raw: "1.98847e30" },
+            { name: "Solar Luminosity", sym: "\\(L_\\odot\\)", val: "3.828 × 10²⁶ W", raw: "3.828e26" },
+            { name: "Solar Radius", sym: "\\(R_\\odot\\)", val: "6.957 × 10⁸ m", raw: "6.957e8" },
+            { name: "Solar Effective Temperature", sym: "\\(T_{\\text{eff},\\odot}\\)", val: "5772 K", raw: "5772" }
+        ];
+
+        const tbody = document.getElementById('constants-tbody');
+        tbody.innerHTML = CONSTANTS_DATA.map(c => `
+            <tr>
+                <td><strong>${c.name}</strong></td>
+                <td>${c.sym}</td>
+                <td class="const-val">${c.val}</td>
+                <td><button class="btn-copy" onclick="copyConst('${c.raw}', this)"><i class="fa-regular fa-copy"></i> ${c.raw}</button></td>
+            </tr>
+        `).join('');
+
+        window.copyConst = function(val, btn) {
+            navigator.clipboard.writeText(val);
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+            setTimeout(() => btn.innerHTML = orig, 1200);
+        };
+
+        window.calcDistance = function() {
+            const m = parseFloat(document.getElementById('dm-m').value) || 0;
+            const M = parseFloat(document.getElementById('dm-M').value) || 0;
+            const A = parseFloat(document.getElementById('dm-A').value) || 0;
+            const d_pc = 10 * Math.pow(10, (m - M - A) / 5);
+            const d_ly = d_pc * 3.26156;
+            document.getElementById('dm-out').textContent = `${d_pc.toFixed(2)} pc (${d_ly.toFixed(1)} ly)`;
+        };
+
+        window.calcKepler = function() {
+            const M = Math.max(0.0001, parseFloat(document.getElementById('kep-M').value) || 1);
+            const r = Math.max(0.0001, parseFloat(document.getElementById('kep-r').value) || 1);
+            const vc = 29.7847 * Math.sqrt(M / r);
+            const vesc = vc * Math.sqrt(2);
+            const P = Math.sqrt(Math.pow(r, 3) / M);
+            document.getElementById('kep-out').textContent = `${vc.toFixed(2)} km/s | ${vesc.toFixed(2)} km/s | ${P.toFixed(2)} yr`;
+        };
+    </script>
+</body>
+</html>

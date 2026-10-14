@@ -3,420 +3,534 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supernova Guide | Mission Control</title>
+    <title>Settings & Profile | Supernova Guide</title>
     
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Canonical Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* --- 1. SETĂRI GENERALE & TEMA BLUEISH --- */
         :root {
-            --bg-deep: #050b14; 
-            --bg-panel: rgba(13, 20, 33, 0.7);
-            --bg-hover: rgba(20, 30, 48, 0.9);
-            --text-main: #a1aab8;
-            --text-light: #ffffff;
-            --text-muted: #64748b;
-            --accent-blue: #3b82f6;
-            --accent-purple: #8b5cf6;
-            --accent-orange: #ef4444; /* Adaptat mai curat, un roșu deschis */
-            --accent-green: #10b981;
-            --accent-yellow: #f59e0b;
+            --bg-base: #0A0A0C;
+            --bg-sidebar: #101115;
+            --bg-card: #15161A;
+            --bg-card-hover: #1C1D22;
+            
+            --accent-green: #2BE38A;
+            --accent-blue: #35E6FF;
+            --accent-purple: #B39CD0;
+            --accent-rose: #FFC1CC;
+            --accent-gold: #FFCF5C;
+            
+            --text-pure: #FFFFFF;
+            --text-main: #EDEDED;
+            --text-muted: #8A94A6;
+            
             --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            
+            --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Space Mono', monospace;
         }
 
-        /* 1. Forțăm bara de scroll pentru a preveni "săritura" navbar-ului */
-        html { 
-            scroll-behavior: smooth; 
-            overflow-y: scroll; 
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
 
-        /* 2. Definim animația de fade-in */
-        @keyframes fadeIn { 
-            from { opacity: 0; } 
-            to { opacity: 1; } 
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 3. Aplicăm animația pe întregul corp al paginii */
         body {
-            background-color: var(--bg-deep);
-            color: var(--text-main);
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            animation: fadeIn 0.6s ease-out; /* Aici se întâmplă magia! */
+            background-color: var(--bg-base); color: var(--text-main);
+            font-family: var(--font-body); display: flex; height: 100vh;
+            overflow: hidden; -webkit-font-smoothing: antialiased;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        .universe-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
-            background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=2048&auto=format&fit=crop');
-            background-size: cover; background-position: center; opacity: 0.12; 
+        .sky-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; pointer-events: none; overflow: hidden; background-color: var(--bg-base);
+        }
+        .comet {
+            position: absolute; width: 160px; height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent-blue));
+            border-radius: 50%; opacity: 0;
+        }
+        .comet::before {
+            content: ''; position: absolute; top: -2px; right: 0; width: 6px; height: 6px;
+            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px rgba(53, 230, 255, 0.6);
+        }
+        @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
+
+        /* --- UNIFIED SIDEBAR --- */
+        .sidebar {
+            width: 260px; background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+            display: flex; flex-direction: column;
+            padding: 24px 20px; flex-shrink: 0; z-index: 100; overflow-y: auto;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 16px;
+            font-family: var(--font-display); font-size: 1.3rem;
+            font-weight: 700; color: var(--text-pure);
+            margin-bottom: 32px; padding-left: 4px; line-height: 1.2; text-decoration: none;
+        }
+        .brand img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+        .menu-label {
+            font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.05em; margin: 18px 0 8px 8px;
+        }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px; padding: 9px 12px;
+            border-radius: var(--radius-sm); color: var(--text-muted); text-decoration: none;
+            font-weight: 500; font-size: 0.88rem; transition: all 0.2s ease;
+        }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.05rem; }
+        .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
+        .nav-item.active { background-color: rgba(53, 230, 255, 0.12); color: var(--accent-blue); border-left: 3px solid var(--accent-blue); }
+
+        /* --- MAIN AREA --- */
+        .dashboard-main {
+            flex: 1; overflow-y: auto; padding: 32px 44px 60px;
+            display: flex; flex-direction: column; gap: 28px;
         }
 
-        /* --- 2. NAVBAR SIMPLU --- */
-        nav { 
-            position: fixed; top: 0; width: 100%; 
-            background: rgba(5, 11, 20, 0.95); border-bottom: 1px solid var(--border-subtle); 
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 50px; z-index: 1000; box-sizing: border-box;
+        .top-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .header-title h1 { font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--text-pure); margin-bottom: 4px; }
+        .header-title p { color: var(--text-muted); font-size: 0.9rem; }
+
+        .header-actions { display: flex; align-items: center; gap: 16px; }
+        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); text-decoration: none; }
+        .avatar-top { width: 40px; height: 40px; border-radius: 50%; background: var(--border-light); object-fit: cover; }
+        .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
+        .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+        .profile-grid {
+            display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start;
         }
 
-        .nav-logo { text-decoration: none; display: flex; align-items: center; gap: 12px; }
-        .nav-logo i { color: #fbbf24; font-size: 1.6rem; }
-        
-        .logo-text { display: flex; flex-direction: column; line-height: 1; }
-        .logo-text .main { font-weight: 700; font-size: 1.2rem; color: var(--text-light); letter-spacing: 1px; }
-        .logo-text .sub { font-weight: 400; font-size: 0.65rem; color: var(--accent-blue); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 2px; }
-
-        .nav-links { display: flex; align-items: center; }
-        .nav-links a { 
-            color: var(--text-main); text-decoration: none; margin: 0 20px; 
-            font-weight: 500; font-size: 0.85rem; transition: color 0.2s ease;
-        }
-        .nav-links a:hover, .nav-links a.active { color: var(--text-light); } 
-
-        .nav-auth-container { display: flex; align-items: center; }
-        .btn-auth { 
-            background: transparent; border: 1px solid var(--border-subtle); color: var(--text-light); 
-            padding: 8px 24px; border-radius: 2px; cursor: pointer; font-weight: 500; 
-            margin-left: 20px; transition: all 0.2s ease; font-size: 0.85rem; 
-        }
-        .btn-auth:hover { background: var(--text-light); color: var(--bg-deep); }
-
-        /* --- 3. DASHBOARD LAYOUT --- */
-        .dashboard-wrapper {
-            max-width: 1200px; margin: 120px auto 60px; padding: 0 20px;
-            display: grid; grid-template-columns: 320px 1fr; gap: 40px;
-            align-items: start; width: 100%; box-sizing: border-box;
-        }
-
-        /* --- 4. SIDEBAR PROFIL --- */
+        /* Left Settings & Identity Column */
         .profile-sidebar {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-subtle); 
-            border-radius: 2px;
-            padding: 40px 25px 25px; text-align: center;
-            position: sticky; top: 100px;
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 30px 24px; text-align: center;
+            display: flex; flex-direction: column; gap: 20px;
         }
-        
-        /* Avatar Academic */
-        .avatar-container { position: relative; width: 110px; height: 110px; margin: 0 auto 25px; }
-        .avatar { 
-            width: 100%; height: 100%; background: var(--bg-deep); border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; font-size: 3rem; 
-            color: var(--text-main); border: 1px solid var(--border-subtle); 
-            z-index: 2; position: relative; transition: color 0.3s;
+
+        .avatar-container {
+            position: relative; width: 120px; height: 120px; margin: 0 auto;
+            cursor: pointer; border-radius: 50%; overflow: hidden;
+            border: 2px solid var(--border-light); transition: border-color 0.2s;
         }
-        .profile-sidebar:hover .avatar { color: var(--text-light); border-color: var(--accent-blue); }
-
-        /* User Info */
-        .username { font-size: 1.4rem; font-weight: 600; color: var(--text-light); margin: 0 0 5px; }
-        .email-display { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 25px; }
-        .edit-trigger { font-size: 0.85rem; color: var(--text-muted); cursor: pointer; margin-left: 8px; transition: 0.2s; }
-        .edit-trigger:hover { color: var(--text-light); }
-
-        /* Current Rank Pill */
-        .current-rank-pill { 
-            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-subtle); 
-            color: var(--text-light); padding: 8px 20px; border-radius: 2px; 
-            font-weight: 500; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px; 
-            margin-bottom: 30px; letter-spacing: 0.5px;
+        .avatar-container:hover { border-color: var(--accent-blue); }
+        .avatar-container img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-overlay {
+            position: absolute; inset: 0; background: rgba(10, 10, 12, 0.75);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: var(--text-pure); font-family: var(--font-mono); font-size: 0.68rem;
+            opacity: 0; transition: opacity 0.2s; gap: 4px;
         }
-        .current-rank-pill i { color: var(--accent-blue); }
+        .avatar-container:hover .avatar-overlay { opacity: 1; }
 
-        /* Progress Bar */
-        .level-section { margin-bottom: 30px; text-align: left;}
-        .progress-header { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-main); margin-bottom: 8px; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;}
-        .progress-header span:last-child { color: var(--text-light); }
-        .progress-container { background: rgba(0, 0, 0, 0.3); height: 6px; border-radius: 2px; overflow: hidden; border: 1px solid var(--border-subtle);}
-        .progress-bar { height: 100%; width: 0%; background: var(--text-light); transition: width 1s ease; }
-
-        /* Rank Path List */
-        .progression-section { text-align: left; border-top: 1px solid var(--border-subtle); padding-top: 20px; }
-        .progression-title { font-size: 0.75rem; text-transform: uppercase; color: var(--text-main); font-weight: 600; letter-spacing: 1px; margin-bottom: 15px; }
-        
-        .rank-list-container { max-height: 250px; overflow-y: auto; padding-right: 5px; }
-        .rank-list-container::-webkit-scrollbar { width: 4px; }
-        .rank-list-container::-webkit-scrollbar-track { background: transparent; }
-        .rank-list-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
-        .rank-list-container::-webkit-scrollbar-thumb:hover { background: var(--text-main); }
-
-        .rank-list { list-style: none; padding: 0; margin: 0; }
-        .rank-item { 
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 10px 12px; margin-bottom: 8px; border-radius: 2px; 
-            background: transparent; color: var(--text-muted); transition: 0.2s; 
-            font-size: 0.85rem; border: 1px solid transparent; font-weight: 500;
+        .username {
+            font-family: var(--font-display); font-size: 1.45rem; font-weight: 700;
+            color: var(--text-pure); margin-bottom: 4px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-        .rank-req { font-size: 0.7rem; background: rgba(0,0,0,0.3); padding: 3px 8px; border-radius: 2px; border: 1px solid var(--border-subtle);}
-        
-        /* Rank States */
-        .rank-item.unlocked { color: var(--text-light); }
+        .edit-trigger { font-size: 0.85rem; color: var(--text-muted); cursor: pointer; transition: color 0.2s; }
+        .edit-trigger:hover { color: var(--accent-blue); }
+        .email-display { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); }
+
+        /* Explicit Settings Controls Box */
+        .settings-card-inner {
+            background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md); padding: 16px; text-align: left;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .settings-card-inner h4 {
+            font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase;
+            color: var(--accent-blue); letter-spacing: 0.06em;
+        }
+        .settings-btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .btn-setting-action {
+            background: var(--bg-card); border: 1px solid var(--border-light);
+            color: var(--text-pure); padding: 9px 10px; border-radius: var(--radius-sm);
+            font-family: var(--font-body); font-size: 0.8rem; font-weight: 600;
+            cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-setting-action:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+
+        #editUserContainer {
+            display: none; gap: 8px; justify-content: center; margin-top: 4px;
+        }
+        .modern-input {
+            background: var(--bg-card); border: 1px solid var(--accent-blue);
+            color: var(--text-pure); padding: 8px 12px; border-radius: var(--radius-sm);
+            font-family: var(--font-body); font-size: 0.85rem; outline: none; flex: 1;
+        }
+        .action-btn {
+            background: var(--bg-card); border: 1px solid var(--border-light);
+            color: var(--text-pure); width: 36px; height: 36px;
+            border-radius: var(--radius-sm); cursor: pointer;
+        }
+        .action-btn:hover { border-color: var(--accent-green); color: var(--accent-green); }
+
+        .cooldown-box {
+            display: flex; flex-direction: column; gap: 6px;
+            font-family: var(--font-mono); font-size: 0.7rem;
+            padding-top: 8px; border-top: 1px solid var(--border-subtle);
+        }
+
+        .current-rank-pill {
+            background: rgba(53, 230, 255, 0.1); border: 1px solid rgba(53, 230, 255, 0.3);
+            color: var(--accent-blue); padding: 8px 18px; border-radius: 99px;
+            font-family: var(--font-mono); font-weight: 700; font-size: 0.78rem;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            margin: 0 auto;
+        }
+
+        .level-section { text-align: left; }
+        .progress-header {
+            display: flex; justify-content: space-between; font-family: var(--font-mono);
+            font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;
+        }
+        .progress-container {
+            background: var(--bg-sidebar); height: 8px; border-radius: 99px;
+            overflow: hidden; border: 1px solid var(--border-subtle);
+        }
+        .progress-bar { height: 100%; width: 0%; background: var(--accent-blue); transition: width 0.6s ease; }
+
+        .progression-section { text-align: left; border-top: 1px solid var(--border-subtle); padding-top: 16px; }
+        .progression-title {
+            font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase;
+            color: var(--text-muted); font-weight: 700; margin-bottom: 12px;
+        }
+        .rank-list-container { max-height: 230px; overflow-y: auto; padding-right: 4px; }
+        .rank-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+        .rank-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 9px 12px; border-radius: var(--radius-sm);
+            color: var(--text-muted); font-size: 0.84rem; font-weight: 500;
+            border: 1px solid transparent;
+        }
+        .rank-req {
+            font-family: var(--font-mono); font-size: 0.7rem;
+            background: var(--bg-sidebar); padding: 2px 8px; border-radius: 4px;
+        }
+        .rank-item.unlocked { color: var(--text-pure); }
         .rank-item.unlocked i { color: var(--accent-green); }
-        .rank-item.unlocked .rank-req { border-color: var(--accent-green); color: var(--accent-green); background: transparent;}
-        
-        .rank-item.active { 
-            background: rgba(255, 255, 255, 0.05); 
-            border: 1px solid var(--border-subtle); 
-            color: var(--text-light); 
+        .rank-item.active {
+            background: rgba(53, 230, 255, 0.1); border-color: rgba(53, 230, 255, 0.3); color: var(--text-pure);
         }
         .rank-item.active i { color: var(--accent-blue); }
-        .rank-item.active .rank-req { border-color: var(--accent-blue); color: var(--accent-blue); background: transparent;}
 
-        /* Edit Inputs */
-        #editUserContainer { display: none; margin-bottom: 25px; }
-        .modern-input { background: rgba(0,0,0,0.3); border: 1px solid var(--text-main); color: white; padding: 8px 12px; border-radius: 2px; width: 60%; text-align: center; font-family: 'Inter', sans-serif; font-size: 0.85rem; outline: none;}
-        .modern-input:focus { border-color: var(--accent-blue); }
-        .action-btn { background: transparent; border: 1px solid var(--border-subtle); color: var(--text-light); width: 32px; height: 32px; border-radius: 2px; cursor: pointer; margin-left: 5px; transition: 0.2s;}
-        .action-btn:hover { background: var(--text-light); color: var(--bg-deep); }
-
-        /* --- 5. MAIN CONTENT (Right) --- */
-        .main-content { display: flex; flex-direction: column; gap: 30px; }
-
-        /* Top Hero Stats */
-        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        /* Right Content Area */
+        .main-content { display: flex; flex-direction: column; gap: 24px; }
+        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
         .stat-card {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-subtle); border-radius: 2px;
-            padding: 25px; display: flex; flex-direction: column; justify-content: center;
-            transition: all 0.2s; position: relative;
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 22px;
         }
-        .stat-card:hover { border-color: #3b4252; background: var(--bg-hover); }
-        
-        .stat-icon-small { font-size: 1.1rem; margin-bottom: 12px; width: fit-content; background: rgba(0,0,0,0.3); padding: 8px 10px; border-radius: 2px; border: 1px solid var(--border-subtle);}
-        .stat-value { font-size: 2rem; font-weight: 700; color: var(--text-light); line-height: 1.2; letter-spacing: -0.5px;}
-        .stat-label { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; color: var(--text-muted); margin-top: 5px; letter-spacing: 1px; }
+        .stat-icon-small {
+            font-size: 1rem; margin-bottom: 10px; width: fit-content;
+            background: var(--bg-sidebar); padding: 8px 10px; border-radius: var(--radius-sm);
+            color: var(--accent-blue);
+        }
+        .stat-value { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--text-pure); display: block; }
+        .stat-label { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); }
 
-        .card-blue .stat-icon-small { color: var(--accent-blue); }
-        .card-orange .stat-icon-small { color: var(--accent-orange); }
-        .card-purple .stat-icon-small { color: var(--accent-purple); }
-
-        /* --- STATISTICI DIFICULTATE --- */
-        .section-mini-title { font-size: 1.1rem; font-weight: 600; color: var(--text-light); margin: 10px 0 0 0; }
-        
-        .difficulty-breakdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        
+        .difficulty-breakdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
         .diff-card {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-subtle); border-radius: 2px;
-            padding: 20px 15px; text-align: center; transition: 0.2s;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md); padding: 18px; text-align: center;
         }
-        .diff-card:hover { background: var(--bg-hover); border-color: #3b4252;}
-        .diff-val { font-size: 1.5rem; font-weight: 600; color: var(--text-light); margin: 5px 0; }
-        .diff-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-        
-        /* Accente superioare pentru dificultate */
-        .diff-card.easy { border-top: 2px solid var(--accent-green); }
-        .diff-card.medium { border-top: 2px solid var(--accent-yellow); }
-        .diff-card.hard { border-top: 2px solid var(--accent-orange); }
-        .diff-card.theory { border-top: 2px solid var(--accent-purple); }
+        .diff-val { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--text-pure); display: block; }
+        .diff-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
+        .diff-card.easy { border-top: 3px solid var(--accent-green); }
+        .diff-card.medium { border-top: 3px solid var(--accent-blue); }
+        .diff-card.hard { border-top: 3px solid var(--accent-rose); }
+        .diff-card.theory { border-top: 3px solid var(--accent-purple); }
 
-        /* Chart Widget */
         .chart-widget {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-subtle); border-radius: 2px;
-            padding: 30px; display: flex; flex-direction: column;
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 26px;
         }
-        .widget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .widget-title { margin: 0; color: var(--text-light); font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 10px;}
-        .widget-title i { color: var(--accent-blue); }
-
+        .widget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .widget-title { font-family: var(--font-display); font-size: 1.15rem; color: var(--text-pure); display: flex; align-items: center; gap: 10px; }
         .time-filters { display: flex; gap: 8px; }
-        .filter-btn { 
-            background: transparent; border: 1px solid var(--border-subtle); color: var(--text-main); 
-            padding: 6px 14px; border-radius: 2px; font-size: 0.75rem; font-weight: 500; 
-            cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif;
+        .filter-btn {
+            background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
+            color: var(--text-muted); padding: 6px 12px; border-radius: 6px;
+            font-family: var(--font-mono); font-size: 0.72rem; cursor: pointer;
         }
-        .filter-btn:hover { color: var(--text-light); border-color: var(--text-muted); }
-        .filter-btn.active { background: var(--text-light); color: var(--bg-deep); border-color: var(--text-light); }
+        .filter-btn.active { background: var(--accent-blue); color: var(--bg-base); border-color: var(--accent-blue); font-weight: 700; }
 
-        /* Activity Feed */
-        .activity-section { margin-top: 35px; border-top: 1px solid var(--border-subtle); padding-top: 25px; }
-        .activity-title { font-size: 0.8rem; color: var(--text-main); margin-bottom: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        
-        #activityLogList { max-height: 250px; overflow-y: auto; padding-right: 5px; }
-        #activityLogList::-webkit-scrollbar { width: 4px; }
-        #activityLogList::-webkit-scrollbar-track { background: transparent; }
-        #activityLogList::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
-        #activityLogList::-webkit-scrollbar-thumb:hover { background: var(--text-main); }
-
-        .activity-item { 
-            display: flex; align-items: center; gap: 15px; padding: 12px; 
-            border-bottom: 1px solid var(--border-subtle); transition: 0.2s; 
+        .activity-section { margin-top: 28px; border-top: 1px solid var(--border-subtle); padding-top: 20px; }
+        .activity-title { font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; }
+        #activityLogList { max-height: 240px; overflow-y: auto; }
+        .activity-item {
+            display: flex; align-items: center; gap: 14px; padding: 10px;
+            border-bottom: 1px solid var(--border-subtle);
         }
-        .activity-item:last-child { border-bottom: none; }
-        .activity-item:hover { background: rgba(255,255,255,0.02); }
-        
-        .activity-icon { 
-            width: 32px; height: 32px; background: rgba(0, 0, 0, 0.3); color: var(--text-main); 
-            border: 1px solid var(--border-subtle); border-radius: 2px; 
-            display: flex; align-items: center; justify-content: center; font-size: 0.8rem; 
+        .activity-icon {
+            width: 30px; height: 30px; background: var(--bg-sidebar);
+            color: var(--accent-green); border-radius: 6px;
+            display: flex; align-items: center; justify-content: center; font-size: 0.8rem;
         }
         .activity-info { display: flex; flex-direction: column; }
-        .activity-id { color: var(--text-light); font-size: 0.9rem; font-weight: 500; }
-        .activity-date { color: var(--text-muted); font-size: 0.75rem; margin-top: 2px;}
+        .activity-id { font-size: 0.88rem; color: var(--text-main); }
+        .activity-date { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); }
 
-        @media(max-width: 900px) {
-            nav { flex-direction: column; gap: 15px; padding: 15px; }
-            .dashboard-wrapper { grid-template-columns: 1fr; gap: 30px; margin-top: 140px;}
-            .profile-sidebar { position: relative; top: 0; }
+        /* Embedded Auth Modal */
+        .auth-modal { display: none; position: fixed; z-index: 2000; inset: 0; background-color: rgba(5, 5, 7, 0.88); backdrop-filter: blur(8px); align-items: center; justify-content: center; }
+        .auth-content { background: var(--bg-card); padding: 36px; border-radius: var(--radius-lg); width: 350px; text-align: center; border: 1px solid var(--border-light); position: relative; }
+        .close-btn { position: absolute; right: 20px; top: 15px; color: var(--text-muted); cursor: pointer; font-size: 1.2rem; }
+        .auth-input { width: 100%; padding: 11px 14px; margin: 8px 0 14px; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-pure); border-radius: var(--radius-sm); outline: none; font-family: var(--font-body); }
+        .submit-btn { width: 100%; padding: 11px; background: var(--accent-blue); border: none; color: var(--bg-base); font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; }
+        .toggle-text { font-size: 0.85rem; margin-top: 18px; color: var(--text-muted); }
+        .toggle-text span { color: var(--accent-blue); cursor: pointer; text-decoration: underline; }
+        .error-msg { color: var(--accent-rose); font-size: 0.8rem; margin-top: 10px; }
+
+        @media (max-width: 1024px) {
+            .profile-grid { grid-template-columns: 1fr; }
             .stats-row, .difficulty-breakdown { grid-template-columns: 1fr 1fr; }
-            .widget-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+        }
+        @media (max-width: 800px) {
+            .sidebar { display: none; }
+            .dashboard-main { padding: 24px 20px; }
         }
     </style>
 </head>
 <body>
-    <div class="universe-bg"></div>
 
-    <nav>
-        <a href="index.html" class="nav-logo">
-            <i class="fa-solid fa-star"></i>
-            <div class="logo-text">
-                <span class="main">SUPERNOVA</span>
-                <span class="sub">Guide</span>
-            </div>
+    <div class="sky-background">
+        <div class="comet" style="top: 8%; left: 88%; animation: shooting 9s infinite linear 1s;"></div>
+    </div>
+
+    <!-- UNIFIED SIDEBAR -->
+    <aside class="sidebar">
+        <a href="index.html" class="brand">
+            <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span>SUPERNOVA<br>GUIDE</span>
         </a>
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="handouts.html">Handouts</a>
-            <a href="problems.html">Practice</a>
-            <a href="resources.html">Resources</a>
-            <a href="community.html">Community</a>
-            <a href="profile.html" class="active" id="profileLink" style="display: none;">My Profile</a>
-        </div>
-        <div class="nav-auth-container">
-            <button id="logoutBtn" class="btn-auth" style="display: none;">Logout</button>
-        </div>
-    </nav>
-
-    <div class="dashboard-wrapper">
         
-        <aside class="profile-sidebar">
-            <div class="avatar-container">
-                <div class="avatar"><i class="fa-solid fa-user-astronaut"></i></div>
-            </div>
-            
-            <div class="user-identity" id="viewMode">
-                <h1 class="username">
-                    <span id="profileUsername">Explorer</span>
-                    <i class="fa-solid fa-pen edit-trigger" onclick="enableEditUsername()"></i>
-                </h1>
-                <p class="email-display" id="profileEmail">loading...</p>
-            </div>
+        <div class="menu-label">Menu</div>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
+            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
+        </ul>
 
-            <div id="editUserContainer">
-                <input type="text" id="newUsernameInput" class="modern-input" placeholder="New Callsign">
-                <button onclick="saveNewUsername()" class="action-btn"><i class="fa-solid fa-check"></i></button>
-                <button onclick="cancelEditUsername()" class="action-btn"><i class="fa-solid fa-xmark"></i></button>
+        <div class="menu-label">Tools &amp; Analytics</div>
+        <ul class="nav-menu">
+            <li><a href="analytics.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="tools.html" class="nav-item"><i class="fa-solid fa-calculator"></i> Formula &amp; Tools</a></li>
+            <li><a href="notebook.html" class="nav-item"><i class="fa-solid fa-book-open"></i> Mistake Notebook</a></li>
+            <li><a href="resources.html" class="nav-item"><i class="fa-solid fa-book-atlas"></i> External Library</a></li>
+        </ul>
+        
+        <div class="menu-label">General</div>
+        <ul class="nav-menu">
+            <li><a href="profile.html" class="nav-item active" id="profileLink"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
+            <li><a href="#" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+        
+        <header class="top-header">
+            <div class="header-title">
+                <h1>Candidate Settings &amp; Profile</h1>
+                <p>Configure your display callsign, profile avatar (14-day cooldown policy), and inspect your progression ladder.</p>
             </div>
-
-            <div class="current-rank-pill">
-                <i class="fa-solid fa-medal"></i> <span id="statsRank">Novice Observer</span>
-            </div>
-
-            <div class="level-section">
-                <div class="progress-header">
-                    <span>Rank Progress</span><span id="progressPercent">0%</span>
-                </div>
-                <div class="progress-container">
-                    <div class="progress-bar" id="levelProgress"></div>
-                </div>
-            </div>
-
-            <div class="progression-section">
-                <p class="progression-title">Advancement Path</p>
-                <div class="rank-list-container">
-                    <ul class="rank-list">
-                        <li class="rank-item" id="rank-0"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-eye"></i><span>Novice</span></div><span class="rank-req">0</span></li>
-                        <li class="rank-item" id="rank-5"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-compass"></i><span>Cadet</span></div><span class="rank-req">5</span></li>
-                        <li class="rank-item" id="rank-10"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-search-location"></i><span>Explorer</span></div><span class="rank-req">10</span></li>
-                        <li class="rank-item" id="rank-25"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-microscope"></i><span>Specialist</span></div><span class="rank-req">25</span></li>
-                        <li class="rank-item" id="rank-50"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-star"></i><span>Expert</span></div><span class="rank-req">50</span></li>
-                        <li class="rank-item" id="rank-67"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-atom"></i><span>Stellar Anomaly</span></div><span class="rank-req">67</span></li>
-                        <li class="rank-item" id="rank-75"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-crown"></i><span>Master</span></div><span class="rank-req">75</span></li>
-                        <li class="rank-item" id="rank-100"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-sun"></i><span>Grandmaster</span></div><span class="rank-req">100</span></li>
-                        <li class="rank-item" id="rank-125"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-space-shuttle"></i><span>Cosmic Voyager</span></div><span class="rank-req">125</span></li>
-                        <li class="rank-item" id="rank-150"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-meteor"></i><span>Galaxy Weaver</span></div><span class="rank-req">150</span></li>
-                        <li class="rank-item" id="rank-175"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-bahai"></i><span>Quasar Tamer</span></div><span class="rank-req">175</span></li>
-                        <li class="rank-item" id="rank-200"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-infinity"></i><span>Universal Architect</span></div><span class="rank-req">200</span></li>
-                        <li class="rank-item" id="rank-250"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-user-ninja"></i><span>Astral Deity</span></div><span class="rank-req">250</span></li>
-                    </ul>
-                </div>
-            </div>
-        </aside>
-
-        <main class="main-content">
-            
-            <div class="stats-row">
-                <div class="stat-card card-blue">
-                    <div class="stat-icon-small"><i class="fa-solid fa-check"></i></div>
-                    <span class="stat-value" id="statsCount">0</span>
-                    <span class="stat-label">Total Solved</span>
-                </div>
-                <div class="stat-card card-orange">
-                    <div class="stat-icon-small"><i class="fa-solid fa-fire"></i></div>
-                    <span class="stat-value" id="statsStreak">1</span>
-                    <span class="stat-label">Day Streak</span>
-                </div>
-                <div class="stat-card card-purple">
-                    <div class="stat-icon-small"><i class="fa-solid fa-trophy"></i></div>
-                    <span class="stat-value">Top 10%</span>
-                    <span class="stat-label">Global Standing</span>
-                </div>
-            </div>
-
-            <h3 class="section-mini-title">Difficulty Breakdown</h3>
-            <div class="difficulty-breakdown">
-                <div class="diff-card easy">
-                    <span class="diff-val" id="stat-easy">0</span>
-                    <span class="diff-label">Easy</span>
-                </div>
-                <div class="diff-card medium">
-                    <span class="diff-val" id="stat-medium">0</span>
-                    <span class="diff-label">Medium</span>
-                </div>
-                <div class="diff-card hard">
-                    <span class="diff-val" id="stat-hard">0</span>
-                    <span class="diff-label">Hard</span>
-                </div>
-                <div class="diff-card theory">
-                    <span class="diff-val" id="stat-theory">0</span>
-                    <span class="diff-label">Theory</span>
-                </div>
-            </div>
-
-            <div class="chart-widget">
-                <div class="widget-header">
-                    <h3 class="widget-title">
-                        <i class="fa-solid fa-chart-line"></i> Performance Log
-                    </h3>
-                    <div class="time-filters">
-                        <button class="filter-btn active" id="btn-week" onclick="updateChart('week')">Week</button>
-                        <button class="filter-btn" id="btn-month" onclick="updateChart('month')">Month</button>
-                        <button class="filter-btn" id="btn-all" onclick="updateChart('all')">All Time</button>
-                    </div>
-                </div>
-                <div style="position: relative; height: 250px; width: 100%;">
-                    <canvas id="activityChart"></canvas>
-                </div>
-
-                <div class="activity-section">
-                    <p class="activity-title">Recent Activity Log</p>
-                    <div id="activityLogList">
-                        <div style="color:var(--text-muted); font-size:0.85rem; padding: 10px;">Loading history...</div>
+            <div class="header-actions">
+                <button id="loginBtn" onclick="openAuthModal()" class="filter-btn" style="padding: 9px 16px; color: var(--accent-blue); border-color: var(--accent-blue); display: none;">
+                    <i class="fa-solid fa-right-to-bracket"></i> Student Login
+                </button>
+                <button id="logoutBtn" class="filter-btn" style="padding: 9px 16px; color: var(--accent-rose); border-color: rgba(255,193,204,0.3); display: none;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+                </button>
+                <div class="user-profile">
+                    <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF" alt="User" class="avatar-top">
+                    <div class="user-info">
+                        <h4 id="user-name-display">Loading...</h4>
+                        <p id="user-role-display">Authenticating</p>
                     </div>
                 </div>
             </div>
+        </header>
 
-        </main>
+        <div class="profile-grid">
+            
+            <aside class="profile-sidebar">
+                <!-- Avatar with 14-day upload trigger -->
+                <div class="avatar-container" onclick="triggerAvatarUpload()" title="Change Profile Picture (14-day cooldown)">
+                    <img id="profileAvatarImg" src="https://ui-avatars.com/api/?name=Explorer&background=35E6FF&color=050507" alt="Profile Avatar">
+                    <div class="avatar-overlay">
+                        <i class="fa-solid fa-camera" style="font-size: 1.2rem;"></i>
+                        <span>UPLOAD PHOTO</span>
+                    </div>
+                </div>
+                <input type="file" id="avatarFileInput" accept="image/*" style="display: none;">
+
+                <div class="user-identity" id="viewMode">
+                    <h2 class="username">
+                        <span id="profileUsername">Guest Candidate</span>
+                        <i class="fa-solid fa-pen edit-trigger" onclick="enableEditUsername()" title="Edit Callsign"></i>
+                    </h2>
+                    <p class="email-display" id="profileEmail">Sign in to sync your profile</p>
+                </div>
+
+                <!-- Explicit Account Modification Panel -->
+                <div class="settings-card-inner">
+                    <h4><i class="fa-solid fa-sliders"></i> Profile Customization</h4>
+                    <div class="settings-btn-row">
+                        <button class="btn-setting-action" onclick="enableEditUsername()">
+                            <i class="fa-solid fa-user-pen"></i> Change Name
+                        </button>
+                        <button class="btn-setting-action" onclick="triggerAvatarUpload()">
+                            <i class="fa-solid fa-image"></i> Upload Avatar
+                        </button>
+                    </div>
+
+                    <div id="editUserContainer">
+                        <input type="text" id="newUsernameInput" class="modern-input" placeholder="New Callsign...">
+                        <button onclick="saveNewUsername()" class="action-btn" title="Save"><i class="fa-solid fa-check"></i></button>
+                        <button onclick="cancelEditUsername()" class="action-btn" title="Cancel"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <div class="cooldown-box">
+                        <div id="name-cooldown-status"><i class="fa-solid fa-unlock"></i> Name change available (14d limit)</div>
+                        <div id="avatar-cooldown-status"><i class="fa-solid fa-unlock"></i> Avatar change available (14d limit)</div>
+                    </div>
+                </div>
+
+                <div class="current-rank-pill">
+                    <i class="fa-solid fa-medal"></i> <span id="statsRank">Novice Observer</span>
+                </div>
+
+                <div class="level-section">
+                    <div class="progress-header">
+                        <span>Next Rank Progress</span><span id="progressPercent">0%</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="levelProgress"></div>
+                    </div>
+                </div>
+
+                <div class="progression-section">
+                    <p class="progression-title">Advancement Ladder</p>
+                    <div class="rank-list-container">
+                        <ul class="rank-list">
+                            <li class="rank-item" id="rank-0"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-eye"></i><span>Novice Observer</span></div><span class="rank-req">0</span></li>
+                            <li class="rank-item" id="rank-5"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-compass"></i><span>Cadet</span></div><span class="rank-req">5</span></li>
+                            <li class="rank-item" id="rank-10"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-location-crosshairs"></i><span>Explorer</span></div><span class="rank-req">10</span></li>
+                            <li class="rank-item" id="rank-25"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-microscope"></i><span>Specialist</span></div><span class="rank-req">25</span></li>
+                            <li class="rank-item" id="rank-50"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-star"></i><span>Expert</span></div><span class="rank-req">50</span></li>
+                            <li class="rank-item" id="rank-67"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-atom"></i><span>Stellar Anomaly</span></div><span class="rank-req">67</span></li>
+                            <li class="rank-item" id="rank-75"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-crown"></i><span>Master</span></div><span class="rank-req">75</span></li>
+                            <li class="rank-item" id="rank-100"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-sun"></i><span>Grandmaster</span></div><span class="rank-req">100</span></li>
+                            <li class="rank-item" id="rank-125"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-shuttle-space"></i><span>Cosmic Voyager</span></div><span class="rank-req">125</span></li>
+                            <li class="rank-item" id="rank-150"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-meteor"></i><span>Galaxy Weaver</span></div><span class="rank-req">150</span></li>
+                            <li class="rank-item" id="rank-175"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-bahai"></i><span>Quasar Tamer</span></div><span class="rank-req">175</span></li>
+                            <li class="rank-item" id="rank-200"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-infinity"></i><span>Universal Architect</span></div><span class="rank-req">200</span></li>
+                            <li class="rank-item" id="rank-250"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-user-astronaut"></i><span>Astral Deity</span></div><span class="rank-req">250</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="main-content">
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-icon-small"><i class="fa-solid fa-check"></i></div>
+                        <span class="stat-value" id="statsCount">0</span>
+                        <span class="stat-label">Total Problems Solved</span>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon-small" style="color: var(--accent-gold);"><i class="fa-solid fa-fire"></i></div>
+                        <span class="stat-value" id="statsStreak">0</span>
+                        <span class="stat-label">Active Day Streak</span>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon-small" style="color: var(--accent-purple);"><i class="fa-solid fa-shield-halved"></i></div>
+                        <span class="stat-value">14 Days</span>
+                        <span class="stat-label">Profile Change Lockout</span>
+                    </div>
+                </div>
+
+                <div class="difficulty-breakdown">
+                    <div class="diff-card easy">
+                        <span class="diff-val" id="stat-easy">0</span>
+                        <span class="diff-label">Easy Solved</span>
+                    </div>
+                    <div class="diff-card medium">
+                        <span class="diff-val" id="stat-medium">0</span>
+                        <span class="diff-label">Medium Solved</span>
+                    </div>
+                    <div class="diff-card hard">
+                        <span class="diff-val" id="stat-hard">0</span>
+                        <span class="diff-label">Hard Solved</span>
+                    </div>
+                    <div class="diff-card theory">
+                        <span class="diff-val" id="stat-theory">0</span>
+                        <span class="diff-label">Theory Solved</span>
+                    </div>
+                </div>
+
+                <div class="chart-widget">
+                    <div class="widget-header">
+                        <h3 class="widget-title"><i class="fa-solid fa-chart-line" style="color:var(--accent-blue);"></i> Solved Problems Velocity</h3>
+                        <div class="time-filters">
+                            <button class="filter-btn active" id="btn-week" onclick="updateChart('week')">7 Days</button>
+                            <button class="filter-btn" id="btn-month" onclick="updateChart('month')">30 Days</button>
+                            <button class="filter-btn" id="btn-all" onclick="updateChart('all')">All Time</button>
+                        </div>
+                    </div>
+                    <div style="position: relative; height: 240px; width: 100%;">
+                        <canvas id="activityChart"></canvas>
+                    </div>
+
+                    <div class="activity-section">
+                        <p class="activity-title">Verified Solution Timestamps</p>
+                        <div id="activityLogList"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Embedded Auth Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-content">
+            <span onclick="closeModal()" class="close-btn"><i class="fas fa-times"></i></span>
+            <h3 id="modalTitle" style="color: var(--text-pure); margin: 0 0 18px 0; font-family: var(--font-display);">Student Login</h3>
+            <form id="authForm">
+                <input type="text" id="usernameInput" class="auth-input" placeholder="Callsign / Username" style="display:none;">
+                <input type="email" id="emailInput" class="auth-input" placeholder="Academic Email" required>
+                <input type="password" id="passwordInput" class="auth-input" placeholder="Password" required>
+                <button type="submit" id="submitAuthBtn" class="submit-btn">Sign In</button>
+                <p id="authError" class="error-msg"></p>
+            </form>
+            <p class="toggle-text" id="toggleText">New to the platform? <span onclick="toggleMode()">Register</span></p>
+        </div>
     </div>
 
     <script type="module" src="js/auth.js"></script>
-
 </body>
 </html>

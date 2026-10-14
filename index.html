@@ -17,7 +17,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
-        /* --- 1. CANONICAL DESIGN TOKENS --- */
         :root {
             --bg-base: #0A0A0C;
             --bg-sidebar: #101115;
@@ -56,7 +55,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- 2. SKY BACKGROUND & SHOOTING COMETS --- */
         .sky-background {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -3; pointer-events: none; overflow: hidden;
@@ -80,7 +78,6 @@
             100% { transform: rotate(145deg) translateX(2500px); opacity: 0; }
         }
 
-        /* Subtle Architectural Grid Lines */
         .grid-guide {
             position: fixed; top: 0; left: 50%; transform: translateX(-50%);
             width: 1320px; height: 100vh; z-index: -1; pointer-events: none;
@@ -92,7 +89,7 @@
             content: ''; width: 1px; height: 100%; background: rgba(255, 255, 255, 0.025);
         }
 
-        /* --- 3. NAVBAR --- */
+        /* Navbar */
         nav {
             position: fixed; top: 0; width: 100%;
             background: rgba(16, 17, 21, 0.85);
@@ -122,7 +119,7 @@
 
         .nav-actions { display: flex; align-items: center; gap: 12px; }
 
-        /* --- 4. BUTTONS --- */
+        /* Buttons */
         .btn-primary {
             background: var(--accent-blue); color: var(--bg-base);
             font-family: var(--font-body); font-weight: 700; font-size: 0.88rem;
@@ -159,7 +156,7 @@
         }
         .btn-link:hover { color: var(--accent-blue); }
 
-        /* --- 5. HERO SECTION --- */
+        /* Hero Section */
         .hero {
             display: grid; grid-template-columns: 1.15fr 0.85fr;
             min-height: 100vh; padding: 130px 48px 60px;
@@ -212,7 +209,7 @@
         }
         #planet-canvas:active { cursor: grabbing; }
 
-        /* --- 6. TICKER STRIP --- */
+        /* Ticker Strip */
         .ticker {
             width: 100%; overflow: hidden;
             border-bottom: 1px solid var(--border-subtle);
@@ -229,7 +226,7 @@
             100% { transform: translateX(-50%); }
         }
 
-        /* --- 7. CONTENT SECTIONS --- */
+        /* Content Sections */
         section.content-section {
             padding: 100px 48px; border-bottom: 1px solid var(--border-subtle);
             max-width: 1360px; margin: 0 auto; position: relative;
@@ -268,7 +265,6 @@
             justify-content: space-between; align-items: center; font-weight: 700;
         }
 
-        /* Custom 2D Artwork Showcase inside Pillar Cards */
         .pillar-art {
             width: 96px; height: 96px; border-radius: var(--radius-md);
             background: #FFFFFF; display: flex; align-items: center; justify-content: center;
@@ -289,7 +285,6 @@
             margin-bottom: 24px; flex-grow: 1; line-height: 1.65;
         }
 
-        /* Pillar Accents */
         .pillar-theory:hover { border-color: var(--accent-purple); }
         .pillar-theory .card-meta { color: var(--accent-purple); }
         .pillar-data:hover { border-color: var(--accent-blue); }
@@ -297,7 +292,6 @@
         .pillar-obs:hover { border-color: var(--accent-rose); }
         .pillar-obs .card-meta { color: var(--accent-rose); }
 
-        /* --- 8. TESTIMONIALS (DARK MODE UNIFIED) --- */
         .testimonials-section {
             padding: 90px 48px; max-width: 1360px; margin: 0 auto;
             border-bottom: 1px solid var(--border-subtle);
@@ -317,7 +311,7 @@
             max-width: 1360px; margin: 0 auto;
         }
 
-        /* --- 9. AUTHENTICATION MODAL --- */
+        /* Authentication Modal */
         .modal-overlay {
             position: fixed; inset: 0;
             background: rgba(5, 5, 7, 0.85);
@@ -377,7 +371,6 @@
 </head>
 <body>
 
-    <!-- Sky & Comets Background -->
     <div class="sky-background">
         <div class="comet" style="top: 8%; left: 85%; animation: shooting 9s infinite linear 1s;"></div>
         <div class="comet" style="top: 45%; left: 95%; animation: shooting 12s infinite linear 5s;"></div>
@@ -393,7 +386,7 @@
         <div class="nav-center">
             <a href="#problems">Rotations</a>
             <a href="#curriculum">Curriculum</a>
-            <a href="#leagues">Leagues</a>
+            <a href="competitions.html">Competitions</a>
             <a href="problems.html">Practice Hub</a>
             <a href="courses.html">Courses</a>
         </div>
@@ -471,7 +464,7 @@
         </div>
     </section>
 
-    <!-- 4 COMPETENCY PILLARS (FEATURING CUSTOM 2D ILLUSTRATIONS) -->
+    <!-- 4 COMPETENCY PILLARS -->
     <section id="curriculum" class="content-section">
         <div class="section-header">
             <span class="tag">Curriculum Matrix</span>
@@ -528,16 +521,16 @@
         </div>
         <div class="grid-3">
             <div class="flat-card">
-                <div class="card-meta"><span>Olympiad Simulation</span></div>
-                <h3>Monthly Grand Prix</h3>
-                <p>5 Hours // 4 Comprehensive Tasks. A timed simulation mirroring senior IOAA theoretical rounds with global leaderboard points.</p>
-                <a href="index.html" class="btn-link">View League Schedule <i class="fa-solid fa-arrow-right"></i></a>
+                <div class="card-meta"><span>Season Event #01</span></div>
+                <h3>Autumn 2026 MCQ Cup</h3>
+                <p>3-Phase MCQ Astrophysics Championship. Registration open 19 October – 1 November 2026.</p>
+                <a href="competitions.html" class="btn-link">Register in Competitions <i class="fa-solid fa-arrow-right"></i></a>
             </div>
             <div class="flat-card">
                 <div class="card-meta" style="color: var(--accent-purple);"><span>Sudden Death</span></div>
                 <h3>Top-16 Knockout Bracket</h3>
                 <p>Pass the rapid qualification stage to enter the final 16. Compete in head-to-head astrophysics matchups until the Grand Final.</p>
-                <a href="index.html" class="btn-link">Enter Qualifiers <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="competitions.html" class="btn-link">Enter Qualifiers <i class="fa-solid fa-arrow-right"></i></a>
             </div>
             <div class="flat-card">
                 <div class="card-meta" style="color: var(--accent-rose);"><span>Virtual Observatory</span></div>
@@ -575,7 +568,7 @@
             
             <form id="login-form">
                 <div class="input-group" id="name-group" style="display: none;">
-                    <label for="username">Full Name / Handle</label>
+                    <label for="username">Full Name / Callsign</label>
                     <input type="text" id="username" placeholder="Matei B.">
                 </div>
                 <div class="input-group">
@@ -604,7 +597,7 @@
         <div style="color: var(--accent-green);">● SYSTEM ONLINE</div>
     </footer>
 
-    <!-- 1. ISOLATED THREE.JS SCRIPT (Fixed Float32Array Syntax Error) -->
+    <!-- 1. THREE.JS 3D PLANET SCENE -->
     <script>
         (function initPlanetScene() {
             const container = document.getElementById('planet-canvas');
@@ -622,7 +615,6 @@
             const systemGroup = new THREE.Group();
             scene.add(systemGroup);
 
-            // 1. Planet Body
             const planetGeo = new THREE.SphereGeometry(2.8, 64, 64);
             const planetMat = new THREE.MeshStandardMaterial({
                 color: 0x15161A,
@@ -632,7 +624,6 @@
             const planet = new THREE.Mesh(planetGeo, planetMat);
             systemGroup.add(planet);
 
-            // 2. Atmospheric Glow
             const atmosGeo = new THREE.SphereGeometry(3.0, 64, 64);
             const atmosMat = new THREE.MeshBasicMaterial({
                 color: 0x35e6ff,
@@ -644,7 +635,6 @@
             const atmosphere = new THREE.Mesh(atmosGeo, atmosMat);
             systemGroup.add(atmosphere);
 
-            // 3. Accretion / Planetary Ring
             const ringGeo = new THREE.RingGeometry(3.8, 5.8, 64);
             const ringMat = new THREE.MeshStandardMaterial({
                 color: 0x35e6ff,
@@ -657,7 +647,6 @@
             ring.rotation.x = Math.PI / 2;
             systemGroup.add(ring);
 
-            // 4. Orbiting Moons (Matched to Track Accent Colors)
             const moons = [];
             const moonColors = [0xB39CD0, 0x35E6FF, 0xFFC1CC];
             const moonRadii = [6.8, 7.8, 8.8];
@@ -688,7 +677,6 @@
                 systemGroup.add(moonGroup);
             }
 
-            // 5. Debris Swirl (FIXED SYNTAX: debrisCount * 3)
             const debrisGeo = new THREE.BufferGeometry();
             const debrisCount = 400;
             const positions = new Float32Array(debrisCount * 3);
@@ -711,11 +699,9 @@
             const debris = new THREE.Points(debrisGeo, debrisMat);
             systemGroup.add(debris);
 
-            // Initial Tilt
             systemGroup.rotation.z = 0.35;
             systemGroup.rotation.x = 0.25;
 
-            // Lighting
             scene.add(new THREE.AmbientLight(0xffffff, 0.25));
             const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
             dirLight.position.set(8, 5, 2);
@@ -769,26 +755,10 @@
         })();
     </script>
 
-    <!-- 2. MODAL & FIREBASE AUTHENTICATION SCRIPT -->
+    <!-- 2. REAL FIREBASE AUTHENTICATION & IMMEDIATE REDIRECT TO INDEX.HTML -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        const isConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY";
-        let auth = null;
-        if (isConfigured) {
-            const app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-        }
+        import { auth } from "./js/auth.js";
+        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const loginTrigger = document.getElementById('login-trigger');
         const loginModal = document.getElementById('login-modal');
@@ -802,8 +772,22 @@
 
         let isRegisterMode = false;
 
-        // Open & Close Modal
+        onAuthStateChanged(auth, (user) => {
+            if (user && loginTrigger) {
+                const name = user.displayName || user.email.split('@')[0];
+                loginTrigger.innerHTML = `<i class="fa-solid fa-border-all"></i> Dashboard (${name})`;
+                loginTrigger.onclick = (e) => {
+                    e.preventDefault();
+                    window.location.href = 'index.html';
+                };
+            }
+        });
+
         loginTrigger.addEventListener('click', (e) => {
+            if (auth.currentUser) {
+                window.location.href = 'index.html';
+                return;
+            }
             e.preventDefault();
             errorEl.style.display = 'none';
             loginModal.classList.add('active');
@@ -814,7 +798,6 @@
             if (e.target === loginModal) loginModal.classList.remove('active');
         });
 
-        // Toggle between Sign In and Register
         toggleBox.addEventListener('click', (e) => {
             if (e.target.id !== 'auth-toggle-link') return;
             isRegisterMode = !isRegisterMode;
@@ -823,7 +806,7 @@
             if (isRegisterMode) {
                 modalTitle.textContent = 'Create Account';
                 nameGroup.style.display = 'block';
-                submitBtn.textContent = 'Register & Enter Hub';
+                submitBtn.textContent = 'Register & Enter Dashboard';
                 toggleBox.innerHTML = 'Already have an account? <span id="auth-toggle-link">Sign In</span>';
             } else {
                 modalTitle.textContent = 'Student Login';
@@ -833,20 +816,14 @@
             }
         });
 
-        // Handle Form Submission
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             errorEl.style.display = 'none';
+            submitBtn.disabled = true;
 
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const username = document.getElementById('username').value.trim();
-
-            // Local Dev Fallback if Firebase keys haven't been pasted yet
-            if (!isConfigured) {
-                window.location.href = 'index.html';
-                return;
-            }
 
             try {
                 if (isRegisterMode) {
@@ -861,21 +838,9 @@
             } catch (err) {
                 errorEl.textContent = err.message.replace('Firebase: ', '');
                 errorEl.style.display = 'block';
+                submitBtn.disabled = false;
             }
         });
-
-        // Update Navbar button if already logged in
-        if (auth) {
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    loginTrigger.textContent = 'Go to Dashboard';
-                    loginTrigger.onclick = (e) => {
-                        e.preventDefault();
-                        window.location.href = 'index.html';
-                    };
-                }
-            });
-        }
     </script>
 </body>
 </html>

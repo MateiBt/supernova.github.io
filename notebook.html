@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mistake Notebook | Supernova Guide</title>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Canonical Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- MathJax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+
+    <style>
+        :root {
+            --bg-base: #0A0A0C;
+            --bg-sidebar: #101115;
+            --bg-card: #15161A;
+            --bg-card-hover: #1C1D22;
+            
+            --accent-green: #2BE38A;
+            --accent-blue: #35E6FF;
+            --accent-purple: #B39CD0;
+            --accent-rose: #FFC1CC;
+            --accent-gold: #FFCF5C;
+            
+            --text-pure: #FFFFFF;
+            --text-main: #EDEDED;
+            --text-muted: #8A94A6;
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            
+            --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        body {
+            background-color: var(--bg-base); color: var(--text-main);
+            font-family: var(--font-body); display: flex; height: 100vh;
+            overflow: hidden; -webkit-font-smoothing: antialiased;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .sky-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; pointer-events: none; overflow: hidden; background-color: var(--bg-base);
+        }
+        .comet {
+            position: absolute; width: 160px; height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent-rose));
+            border-radius: 50%; opacity: 0;
+        }
+        .comet::before {
+            content: ''; position: absolute; top: -2px; right: 0; width: 6px; height: 6px;
+            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px rgba(255, 193, 204, 0.6);
+        }
+        @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
+
+        /* --- UNIFIED SIDEBAR --- */
+        .sidebar {
+            width: 260px; background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+            display: flex; flex-direction: column;
+            padding: 24px 20px; flex-shrink: 0; z-index: 100; overflow-y: auto;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 16px;
+            font-family: var(--font-display); font-size: 1.3rem;
+            font-weight: 700; color: var(--text-pure);
+            margin-bottom: 32px; padding-left: 4px; line-height: 1.2; text-decoration: none;
+        }
+        .brand img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+        .menu-label {
+            font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.05em; margin: 18px 0 8px 8px;
+        }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px; padding: 9px 12px;
+            border-radius: var(--radius-sm); color: var(--text-muted); text-decoration: none;
+            font-weight: 500; font-size: 0.88rem; transition: all 0.2s ease;
+        }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.05rem; }
+        .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
+        .nav-item.active { background-color: rgba(255, 193, 204, 0.12); color: var(--accent-rose); border-left: 3px solid var(--accent-rose); }
+
+        /* --- MAIN AREA --- */
+        .dashboard-main {
+            flex: 1; overflow-y: auto; padding: 32px 44px 60px;
+            display: flex; flex-direction: column; gap: 28px;
+        }
+
+        .top-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .header-title h1 { font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--text-pure); margin-bottom: 4px; }
+        .header-title p { color: var(--text-muted); font-size: 0.9rem; max-width: 640px; }
+
+        .header-actions { display: flex; align-items: center; gap: 16px; }
+        .btn-new-entry {
+            background: var(--accent-rose); color: var(--bg-base);
+            border: 1px solid var(--accent-rose); padding: 10px 18px;
+            border-radius: var(--radius-sm); font-weight: 700; font-size: 0.86rem;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-new-entry:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 193, 204, 0.25); }
+
+        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); text-decoration: none; }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border-light); object-fit: cover; }
+        .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
+        .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+        /* Entry Creator Panel */
+        .entry-creator {
+            background: var(--bg-card); border: 1px solid var(--border-light);
+            border-left: 3px solid var(--accent-rose);
+            border-radius: var(--radius-lg); padding: 26px;
+            display: none; flex-direction: column; gap: 14px;
+        }
+        .entry-creator.open { display: flex; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+        .input-field {
+            background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
+            color: var(--text-pure); padding: 10px 14px; border-radius: var(--radius-sm);
+            font-family: var(--font-body); font-size: 0.86rem; outline: none; width: 100%;
+        }
+        .input-field:focus { border-color: var(--accent-rose); }
+
+        .filter-bar {
+            display: flex; gap: 8px; flex-wrap: wrap;
+            border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px;
+        }
+        .filter-pill {
+            background: var(--bg-card); color: var(--text-muted);
+            border: 1px solid var(--border-subtle); padding: 7px 15px;
+            border-radius: 99px; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+        }
+        .filter-pill.active { background: var(--accent-rose); color: var(--bg-base); border-color: var(--accent-rose); }
+
+        .mistakes-list { display: flex; flex-direction: column; gap: 18px; }
+        .mistake-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 26px;
+            display: flex; flex-direction: column; gap: 14px;
+            transition: border-color 0.2s;
+        }
+        .mistake-card:hover { border-color: var(--border-light); }
+
+        .m-meta { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .m-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+        .m-tag {
+            font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+            padding: 3px 10px; border-radius: 6px; text-transform: uppercase;
+        }
+        .tag-trap { background: rgba(255, 193, 204, 0.14); color: var(--accent-rose); }
+        .tag-mod { background: rgba(179, 156, 208, 0.14); color: var(--accent-purple); }
+        .tag-stage { background: rgba(43, 227, 138, 0.14); color: var(--accent-green); }
+
+        .m-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--text-pure); }
+        .m-flaw {
+            background: rgba(255, 77, 106, 0.06); border-left: 3px solid var(--accent-rose);
+            padding: 12px 16px; border-radius: 6px; font-size: 0.9rem; color: var(--text-main); line-height: 1.6;
+        }
+        .m-fix {
+            background: var(--bg-sidebar); border-left: 3px solid var(--accent-green);
+            padding: 14px 18px; border-radius: 6px; font-size: 0.9rem; color: var(--text-main); line-height: 1.65;
+        }
+
+        .m-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }
+        .btn-small {
+            background: var(--bg-sidebar); color: var(--text-pure);
+            border: 1px solid var(--border-light); padding: 7px 14px;
+            border-radius: var(--radius-sm); font-family: var(--font-mono);
+            font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: 0.2s;
+        }
+        .btn-small:hover { border-color: var(--accent-green); color: var(--accent-green); }
+
+        @media (max-width: 900px) { .form-row { grid-template-columns: 1fr; } }
+        @media (max-width: 800px) { .sidebar { display: none; } .dashboard-main { padding: 24px 20px; } }
+    </style>
+</head>
+<body>
+
+    <div class="sky-background">
+        <div class="comet" style="top: 10%; left: 88%; animation: shooting 9s infinite linear 1s;"></div>
+    </div>
+
+    <!-- UNIFIED SIDEBAR (With External Library included) -->
+    <aside class="sidebar">
+        <a href="index.html" class="brand">
+            <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span>SUPERNOVA<br>GUIDE</span>
+        </a>
+        
+        <div class="menu-label">Menu</div>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
+            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
+        </ul>
+
+        <div class="menu-label">Tools &amp; Analytics</div>
+        <ul class="nav-menu">
+            <li><a href="analytics.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="tools.html" class="nav-item"><i class="fa-solid fa-calculator"></i> Formula &amp; Tools</a></li>
+            <li><a href="notebook.html" class="nav-item active"><i class="fa-solid fa-book-open"></i> Mistake Notebook</a></li>
+            <li><a href="resources.html" class="nav-item"><i class="fa-solid fa-book-atlas"></i> External Library</a></li>
+        </ul>
+        
+        <div class="menu-label">General</div>
+        <ul class="nav-menu">
+            <li><a href="profile.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
+            <li><a href="#" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+        
+        <header class="top-header">
+            <div class="header-title">
+                <h1>Spaced-Repetition Mistake Notebook</h1>
+                <p>Log conceptual traps, omitted physical corrections, and algebraic slips. Review them on a 1d &rarr; 7d &rarr; 30d spaced schedule before competitions.</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-new-entry" id="toggle-entry-btn">
+                    <i class="fa-solid fa-plus"></i> Log New Mistake
+                </button>
+                <a href="profile.html" class="user-profile">
+                    <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF" alt="User" class="avatar">
+                    <div class="user-info">
+                        <h4 id="user-name-display">Loading...</h4>
+                        <p id="user-role-display">Authenticating</p>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <!-- ADD MISTAKE PANEL -->
+        <section class="entry-creator" id="entry-creator">
+            <h3 style="font-family:var(--font-display); color:var(--text-pure);">Log Olympiad Trap or Derivation Error</h3>
+            <div class="form-row">
+                <input type="text" id="m-title-inp" class="input-field" placeholder="Problem ID / Concept Title (e.g. Binary Mass Function)">
+                <select id="m-mod-inp" class="input-field">
+                    <option value="Module 01 · Celestial Mech">Module 01 · Celestial Mech</option>
+                    <option value="Module 02 · Radiation & Rel">Module 02 · Radiation &amp; Rel</option>
+                    <option value="Module 04 · Stellar Params">Module 04 · Stellar Params</option>
+                    <option value="Module 10 · Galactic Struct">Module 10 · Galactic Struct</option>
+                    <option value="Module 12 · Cosmology">Module 12 · Cosmology</option>
+                    <option value="Data Analysis Track">Data Analysis Track</option>
+                </select>
+                <select id="m-cat-inp" class="input-field">
+                    <option value="Physical Trap">Physical Assumption Trap</option>
+                    <option value="Algebraic / Sign">Algebraic / Sign Slip</option>
+                    <option value="Unit Mismatch">Dimensional / Unit Error</option>
+                </select>
+            </div>
+            <input type="text" id="m-flaw-inp" class="input-field" placeholder="What went wrong? (Supports LaTeX e.g. \(A_V\))">
+            <input type="text" id="m-fix-inp" class="input-field" placeholder="Rigorous Fix / Correct Formula (e.g. Always include \(\sin^3 i\) in spectroscopic binaries)">
+            <div>
+                <button class="btn-new-entry" id="save-mistake-btn" style="background:var(--accent-green); border-color:var(--accent-green);">
+                    <i class="fa-solid fa-check"></i> Save to Vault
+                </button>
+            </div>
+        </section>
+
+        <!-- FILTER PILLS -->
+        <div class="filter-bar">
+            <button class="filter-pill active" data-filter="all">All Logged Traps</button>
+            <button class="filter-pill" data-filter="1d Review">1d Review Queue</button>
+            <button class="filter-pill" data-filter="7d Review">7d Review Queue</button>
+            <button class="filter-pill" data-filter="30d Mastered">30d Mastered</button>
+        </div>
+
+        <!-- MISTAKE CARDS -->
+        <div class="mistakes-list" id="mistakes-list"></div>
+
+    </main>
+
+    <script type="module" src="js/auth.js"></script>
+    <script>
+        const DEFAULT_MISTAKES = [
+            {
+                id: "m1",
+                title: "Neglecting Reduced Mass in Two-Body Keplerian Orbits",
+                module: "Module 01 · Celestial Mech",
+                category: "Physical Trap",
+                stage: "1d Review",
+                flaw: "Used \\(M_1\\) instead of total system mass \\((M_1 + M_2)\\) in Kepler's Third Law for a close binary with comparable component masses.",
+                fix: "Always write the exact two-body relation: \\[ P^2 = \\frac{4\\pi^2 a^3}{G(M_1 + M_2)} \\] where \\(a = a_1 + a_2\\) is the relative semi-major axis."
+            },
+            {
+                id: "m2",
+                title: "Iterative Extinction in Photometric Parallax",
+                module: "Module 10 · Galactic Struct",
+                category: "Physical Trap",
+                stage: "7d Review",
+                flaw: "Computed naive distance \\(d' = 10^{(m - M + 5)/5}\\) without accounting for linear dust extinction \\(A_V = k \\cdot d\\).",
+                fix: "Solve the transcendental relation iteratively: \\[ d = d' \\cdot 10^{-k d / 5} \\] Ignoring \\(k \\approx 1\\text{ mag kpc}^{-1}\\) overestimates distances by up to 100% in the Galactic disk."
+            },
+            {
+                id: "m3",
+                title: "Zenith Distance vs. Altitude in Atmospheric Refraction & Airmass",
+                module: "Module 01 · Celestial Mech",
+                category: "Algebraic / Sign",
+                stage: "1d Review",
+                flaw: "Substituted altitude \\(h\\) instead of zenith distance \\(z = 90^\\circ - h\\) into the plane-parallel airmass formula \\(X = \\sec z\\).",
+                fix: "Verify angle definition before evaluating trigonometric functions: \\(X = \\sec z = \\frac{1}{\\cos(90^\\circ - h)} = \\frac{1}{\\sin h}\\)."
+            }
+        ];
+
+        const STORAGE_KEY = 'supernova_mistake_notebook';
+        let activeFilter = 'all';
+
+        function getMistakes() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_MISTAKES));
+                return DEFAULT_MISTAKES;
+            }
+            return JSON.parse(raw);
+        }
+
+        function renderMistakes() {
+            const list = getMistakes().filter(m => activeFilter === 'all' || m.stage === activeFilter);
+            const container = document.getElementById('mistakes-list');
+
+            container.innerHTML = list.map(m => `
+                <article class="mistake-card">
+                    <div class="m-meta">
+                        <div class="m-badges">
+                            <span class="m-tag tag-mod">${m.module}</span>
+                            <span class="m-tag tag-trap">${m.category}</span>
+                            <span class="m-tag tag-stage"><i class="fa-regular fa-clock"></i> ${m.stage}</span>
+                        </div>
+                    </div>
+                    <h3 class="m-title">${m.title}</h3>
+                    <div class="m-flaw"><strong>Error / Trap:</strong> ${m.flaw}</div>
+                    <div class="m-fix"><strong>Rigorous Fix:</strong> ${m.fix}</div>
+                    <div class="m-actions">
+                        <button class="btn-small" onclick="advanceStage('${m.id}')">
+                            <i class="fa-solid fa-forward-step"></i> Mark Reviewed (Advance Interval)
+                        </button>
+                        <button class="btn-small" onclick="deleteMistake('${m.id}')" style="color:var(--text-muted);">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </article>
+            `).join('');
+
+            if (window.MathJax) MathJax.typesetPromise([container]);
+        }
+
+        window.advanceStage = function(id) {
+            const order = ["1d Review", "7d Review", "30d Mastered"];
+            const items = getMistakes().map(m => {
+                if (m.id === id) {
+                    const nextIdx = Math.min(order.length - 1, order.indexOf(m.stage) + 1);
+                    m.stage = order[nextIdx];
+                }
+                return m;
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+            renderMistakes();
+        };
+
+        window.deleteMistake = function(id) {
+            const items = getMistakes().filter(m => m.id !== id);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+            renderMistakes();
+        };
+
+        document.getElementById('toggle-entry-btn').addEventListener('click', () => {
+            document.getElementById('entry-creator').classList.toggle('open');
+        });
+
+        document.getElementById('save-mistake-btn').addEventListener('click', () => {
+            const title = document.getElementById('m-title-inp').value.trim();
+            const module = document.getElementById('m-mod-inp').value;
+            const category = document.getElementById('m-cat-inp').value;
+            const flaw = document.getElementById('m-flaw-inp').value.trim();
+            const fix = document.getElementById('m-fix-inp').value.trim();
+
+            if (!title || !flaw || !fix) return alert('Please fill in the title, error description, and rigorous fix.');
+
+            const items = getMistakes();
+            items.unshift({ id: 'm_' + Date.now(), title, module, category, stage: '1d Review', flaw, fix });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+
+            document.getElementById('m-title-inp').value = '';
+            document.getElementById('m-flaw-inp').value = '';
+            document.getElementById('m-fix-inp').value = '';
+            document.getElementById('entry-creator').classList.remove('open');
+            renderMistakes();
+        });
+
+        document.querySelectorAll('.filter-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter = btn.dataset.filter;
+                renderMistakes();
+            });
+        });
+
+        renderMistakes();
+    </script>
+</body>
+</html>

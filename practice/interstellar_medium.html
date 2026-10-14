@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Workspace | Supernova Guide</title>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Canonical Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --bg-base: #0A0A0C;
+            --bg-sidebar: #101115;
+            --bg-card: #15161A;
+            --bg-card-hover: #1C1D22;
+            
+            --accent-green: #2BE38A;
+            --accent-blue: #35E6FF;
+            --accent-purple: #B39CD0;
+            --accent-rose: #FFC1CC;
+            --track-accent: #B39CD0;
+            
+            --text-pure: #FFFFFF;
+            --text-main: #EDEDED;
+            --text-muted: #8A94A6;
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            
+            --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .sky-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; pointer-events: none; overflow: hidden; background-color: var(--bg-base);
+        }
+        .comet {
+            position: absolute; width: 160px; height: 2px;
+            background: linear-gradient(to right, transparent, var(--track-accent));
+            border-radius: 50%; opacity: 0;
+        }
+        .comet::before {
+            content: ''; position: absolute; top: -2px; right: 0; width: 6px; height: 6px;
+            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px var(--track-accent);
+        }
+        @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px; background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+            display: flex; flex-direction: column;
+            padding: 24px 20px; flex-shrink: 0; z-index: 100;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 16px;
+            font-family: var(--font-display); font-size: 1.3rem;
+            font-weight: 700; color: var(--text-pure);
+            margin-bottom: 40px; padding-left: 4px; line-height: 1.2;
+            text-decoration: none;
+        }
+        .brand img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+
+        .menu-label {
+            font-family: var(--font-mono); font-size: 0.7rem;
+            color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.05em; margin: 20px 0 10px 8px;
+        }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 12px; border-radius: var(--radius-sm);
+            color: var(--text-muted); text-decoration: none;
+            font-weight: 500; font-size: 0.9rem; transition: all 0.2s ease;
+        }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
+        .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
+        .nav-item.active { background-color: rgba(255,255,255,0.06); color: var(--track-accent); border-left: 3px solid var(--track-accent); }
+
+        .sidebar-footer { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+        .btn-auth {
+            background: var(--bg-card); border: 1px solid var(--border-light); color: var(--text-pure);
+            padding: 10px 16px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600;
+            transition: all 0.2s ease; font-size: 0.85rem; width: 100%; font-family: var(--font-body);
+        }
+        .btn-auth:hover { background: var(--track-accent); color: var(--bg-base); border-color: var(--track-accent); }
+
+        /* Main Workspace */
+        .dashboard-main {
+            flex: 1; overflow-y: auto; padding: 32px 44px;
+            display: flex; flex-direction: column; gap: 28px;
+        }
+
+        .module-hero {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .hero-left { display: flex; align-items: center; gap: 22px; }
+        .hero-icon {
+            width: 84px; height: 84px; border-radius: var(--radius-md);
+            background: #FFFFFF; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; flex-shrink: 0; border: 1px solid var(--border-light);
+        }
+        .hero-icon img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.35); }
+        .hero-meta .eyebrow {
+            font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase;
+            color: var(--track-accent); letter-spacing: 0.08em; display: block; margin-bottom: 4px;
+        }
+        .hero-meta h1 {
+            font-family: var(--font-display); font-size: 1.75rem; font-weight: 700;
+            color: var(--text-pure); margin-bottom: 6px;
+        }
+        .hero-meta p { font-size: 0.88rem; color: var(--text-muted); }
+
+        .hero-actions { display: flex; gap: 10px; }
+        .btn-nav-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 16px; border-radius: var(--radius-sm);
+            font-size: 0.84rem; font-weight: 600; text-decoration: none;
+            background: var(--bg-sidebar); color: var(--text-main);
+            border: 1px solid var(--border-light); transition: all 0.2s;
+        }
+        .btn-nav-pill:hover { border-color: var(--track-accent); color: var(--text-pure); }
+        .btn-nav-pill.handout-link { color: var(--track-accent); border-color: var(--track-accent); }
+        .btn-nav-pill.handout-link:hover { background: var(--track-accent); color: var(--bg-base); }
+
+        /* Filters + Problems Layout */
+        .layout-wrapper {
+            display: grid;
+            grid-template-columns: 270px 1fr;
+            gap: 28px;
+            align-items: start;
+            padding-bottom: 60px;
+        }
+
+        .filters-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            position: sticky;
+            top: 0;
+        }
+
+        .filter-header {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            color: var(--text-pure);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 14px;
+            font-weight: 600;
+        }
+        .filter-header i { color: var(--track-accent); }
+
+        .filter-group { display: flex; flex-direction: column; width: 100%; }
+        .filter-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px;
+            text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;
+        }
+
+        .filter-input, .filter-select {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-pure);
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+        .filter-input:focus, .filter-select:focus { border-color: var(--track-accent); }
+        .filter-select option { background: var(--bg-sidebar); color: var(--text-pure); }
+
+        /* Problem Section & Empty/Ready State */
+        .problem-section { display: flex; flex-direction: column; width: 100%; }
+
+        .empty-module-state {
+            background: var(--bg-card);
+            border: 1px dashed var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 56px 32px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+        .empty-badge {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 5px 12px;
+            border-radius: 99px;
+            background: var(--bg-sidebar);
+            color: var(--track-accent);
+            border: 1px solid var(--border-light);
+            font-weight: 700;
+        }
+        .empty-module-state h2 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--text-pure);
+        }
+        .empty-module-state p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            max-width: 520px;
+            line-height: 1.65;
+        }
+
+        @media (max-width: 1024px) {
+            .layout-wrapper { grid-template-columns: 1fr; }
+            .filters-container { position: relative; }
+        }
+        @media (max-width: 800px) {
+            .sidebar { display: none; }
+            .dashboard-main { padding: 24px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sky-background">
+        <div class="comet" style="top: 8%; left: 85%; animation: shooting 9s infinite linear 1s;"></div>
+    </div>
+
+    <aside class="sidebar">
+        <a href="../index.html" class="brand">
+            <img src="../assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span>SUPERNOVA<br>GUIDE</span>
+        </a>
+        
+        <div class="menu-label">Menu</div>
+        <ul class="nav-menu">
+            <li><a href="../index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="../planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="../problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
+            <li><a href="../courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="#" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+        </ul>
+        
+        <div class="menu-label">General</div>
+        <ul class="nav-menu">
+            <li><a href="../profile.html" class="nav-item" id="profileLink"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="../community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <button id="loginBtn" class="btn-auth">Student Login</button>
+            <button id="logoutBtn" class="btn-auth" style="display: none;">Logout</button>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        
+        <section class="module-hero">
+            <div class="hero-left">
+                <div class="hero-icon">
+                    <img id="mod-logo" src="../assets/img/theory/positional_celestial_mechanics_logo.png" alt="Module Icon">
+                </div>
+                <div class="hero-meta">
+                    <span class="eyebrow" id="mod-eyebrow">Theory Track</span>
+                    <h1 id="mod-title">Practice Workspace</h1>
+                    <p id="mod-desc">Curated IOAA & national Olympiad problem sets with full analytical derivations.</p>
+                </div>
+            </div>
+            <div class="hero-actions">
+                <a href="../problems.html" class="btn-nav-pill"><i class="fa-solid fa-arrow-left"></i> All Modules</a>
+                <a id="mod-handout-link" href="../problems.html" class="btn-nav-pill handout-link"><i class="fa-solid fa-book-open"></i> Read Module Handout</a>
+            </div>
+        </section>
+
+        <div class="layout-wrapper">
+            <aside class="filters-container">
+                <h3 class="filter-header"><i class="fas fa-sliders"></i> Problem Filters</h3>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Search by ID / Topic</label>
+                    <input type="text" id="searchFilter" class="filter-input" placeholder="e.g. IOAA 2024">
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Difficulty Level</label>
+                    <select id="diffFilter" class="filter-select">
+                        <option value="all">All Difficulties</option>
+                        <option value="easy">Easy (Score 1-4)</option>
+                        <option value="medium">Medium (Score 5-7)</option>
+                        <option value="hard">Hard (Score 8-10)</option>
+                        <option value="theory">Theory (Conceptual)</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Completion Status</label>
+                    <select id="statusFilter" class="filter-select">
+                        <option value="all">All Problems</option>
+                        <option value="unsolved">Unsolved</option>
+                        <option value="solved">Solved</option>
+                    </select>
+                </div>
+            </aside>
+
+            <div class="problem-section">
+                <div id="problems-container">
+                    <div class="empty-module-state">
+                        <span class="empty-badge"><i class="fa-solid fa-satellite"></i> Problem Archive Indexing</span>
+                        <h2 id="empty-title">Problem Set In Calibration</h2>
+                        <p>Curated Olympiad problems, LaTeX solutions, and grading rubrics for this module are currently being formatted and verified. Check back shortly or explore the Module Handout.</p>
+                        <div style="display:flex; gap:12px; margin-top:8px;">
+                            <a href="../problems.html" class="btn-nav-pill"><i class="fa-solid fa-grid-2"></i> Return to Hub</a>
+                            <a id="empty-handout-btn" href="../problems.html" class="btn-nav-pill handout-link"><i class="fa-solid fa-book-open"></i> Open Handout</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="paginationContainer" class="pagination-container"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- DYNAMIC MODULE HYDRATION SCRIPT -->
+    <script>
+        const MODULE_REGISTRY = {
+            "positional_celestial_mechanics": { eyebrow: "Theory Track · Module 01", title: "Positional Astronomy & Celestial Mechanics", desc: "The Celestial Sphere, spherical trigonometry, and Keplerian orbital mechanics.", logo: "../assets/img/theory/positional_celestial_mechanics_logo.png", accent: "#B39CD0" },
+            "radiation_relativity": { eyebrow: "Theory Track · Module 02", title: "Radiation Physics & Relativity Fundamentals", desc: "Continuous spectrum of light, special relativity, and light-matter interaction.", logo: "../assets/img/theory/radiation_relativity_logo.png", accent: "#B39CD0" },
+            "astronomical_instrumentation": { eyebrow: "Theory Track · Module 03", title: "Astronomical Instrumentation", desc: "Geometric optics, aperture synthesis, resolving power, and CCD detectors.", logo: "../assets/img/theory/astronomical_instrumentation_logo.png", accent: "#B39CD0" },
+            "stellar_parameters": { eyebrow: "Theory Track · Module 04", title: "Stellar Parameters & Spectral Classification", desc: "Binary star systems, stellar radii/masses, and the OBAFGKM spectral sequence.", logo: "../assets/img/theory/stellar_parameters_logo.png", accent: "#B39CD0" },
+            "stellar_structure": { eyebrow: "Theory Track · Module 05", title: "Stellar Structure & Atmospheres", desc: "Hydrostatic equilibrium, radiative transfer, solar physics, and stellar interiors.", logo: "../assets/img/theory/stellar_structure_logo.png", accent: "#B39CD0" },
+            "interstellar_medium": { eyebrow: "Theory Track · Module 06", title: "Interstellar Medium & Star Formation", desc: "Jeans criteria, molecular cloud collapse, extinction, and protostellar jets.", logo: "../assets/img/theory/interstellar_medium_logo.png", accent: "#B39CD0" },
+            "stellar_evolution": { eyebrow: "Theory Track · Module 07", title: "Stellar Evolution", desc: "Main-sequence lifetimes, post-main-sequence branches, pulsation, and supernovae.", logo: "../assets/img/theory/stellar_evolution_logo.png", accent: "#B39CD0" },
+            "stellar_remnants": { eyebrow: "Theory Track · Module 08", title: "Stellar Remnants & General Relativity", desc: "White dwarfs, neutron stars, Schwarzschild black holes, and close binaries.", logo: "../assets/img/theory/stellar_remnants_logo.png", accent: "#B39CD0" },
+            "planetary_systems": { eyebrow: "Theory Track · Module 09", title: "Planetary Systems & Formation", desc: "Solar system dynamics, exoplanet transit/RV detection, and planetary atmospheres.", logo: "../assets/img/theory/planetary_systems_logo.png", accent: "#B39CD0" },
+            "galactic_structure": { eyebrow: "Theory Track · Module 10", title: "Galactic Structure", desc: "The Milky Way morphology, Oort constants, differential rotation, and dark matter halos.", logo: "../assets/img/theory/galactic_structure_logo.png", accent: "#B39CD0" },
+            "galactic_evolution": { eyebrow: "Theory Track · Module 11", title: "Galactic Evolution & Active Galaxies", desc: "Galaxy interactions, supermassive black holes, AGN unified model, and relativistic jets.", logo: "../assets/img/theory/galactic_evolution_logo.png", accent: "#B39CD0" },
+            "cosmology": { eyebrow: "Theory Track · Module 12", title: "Cosmology & Structure of the Universe", desc: "Friedmann equations, Hubble flow, cosmic microwave background, and early universe.", logo: "../assets/img/theory/cosmology_logo.png", accent: "#B39CD0" },
+            "data_methods_plotting": { eyebrow: "Data Analysis Track · Module 01", title: "Methods & Plotting", desc: "Error propagation, weighted linear regression, linearization, and residual plotting.", logo: "../assets/img/data_analysis/methods_plotting_logo.png", accent: "#35E6FF" },
+            "data_full_sets": { eyebrow: "Data Analysis Track · Module 02", title: "Full Data Sets", desc: "Comprehensive real-world datasets from past IOAA exams: light curves and spectra.", logo: "../assets/img/data_analysis/full_data_sets_logo.png", accent: "#35E6FF" },
+            "obs_blind_map": { eyebrow: "Observational Track · Module 01", title: "Blind Map Practice", desc: "Naked-eye star identification, constellation boundaries, and coordinate estimation.", logo: "../assets/img/observational/blind_map_logo.png", accent: "#FFC1CC" },
+            "obs_telescope": { eyebrow: "Observational Track · Module 02", title: "Telescope Practice", desc: "Equatorial mount calibration, polar alignment, FOV mapping, and deep-sky pointing.", logo: "../assets/img/observational/telescope_practice_logo.png", accent: "#FFC1CC" }
+        };
+
+        (function hydratePracticePage() {
+            const fileName = window.location.pathname.split('/').pop().replace('.html', '');
+            const meta = MODULE_REGISTRY[fileName];
+            if (!meta) return;
+
+            document.title = `${meta.title} — Practice | Supernova Guide`;
+            document.documentElement.style.setProperty('--track-accent', meta.accent);
+            document.getElementById('mod-logo').src = meta.logo;
+            document.getElementById('mod-eyebrow').textContent = meta.eyebrow;
+            document.getElementById('mod-title').textContent = meta.title;
+            document.getElementById('mod-desc').textContent = meta.desc;
+            document.getElementById('empty-title').textContent = `${meta.title} — Problem Set Coming Soon`;
+            document.getElementById('mod-handout-link').href = `../handouts/${fileName}.html`;
+            document.getElementById('empty-handout-btn').href = `../handouts/${fileName}.html`;
+        })();
+    </script>
+    <script type="module" src="../js/auth.js"></script>
+</body>
+</html>

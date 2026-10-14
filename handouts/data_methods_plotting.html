@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Handout | Supernova Guide</title>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Canonical Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #0A0A0C;
+            --bg-sidebar: #101115;
+            --bg-card: #15161A;
+            --bg-card-hover: #1C1D22;
+            
+            --accent-green: #2BE38A;
+            --accent-blue: #35E6FF;
+            --accent-purple: #B39CD0;
+            --accent-rose: #FFC1CC;
+            --track-accent: #B39CD0;
+            
+            --text-pure: #FFFFFF;
+            --text-main: #EDEDED;
+            --text-muted: #8A94A6;
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            
+            --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .sky-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; pointer-events: none; overflow: hidden; background-color: var(--bg-base);
+        }
+        .comet {
+            position: absolute; width: 160px; height: 2px;
+            background: linear-gradient(to right, transparent, var(--track-accent));
+            border-radius: 50%; opacity: 0;
+        }
+        .comet::before {
+            content: ''; position: absolute; top: -2px; right: 0; width: 6px; height: 6px;
+            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px var(--track-accent);
+        }
+        @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px; background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+            display: flex; flex-direction: column;
+            padding: 24px 20px; flex-shrink: 0; z-index: 100;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 16px;
+            font-family: var(--font-display); font-size: 1.3rem;
+            font-weight: 700; color: var(--text-pure);
+            margin-bottom: 40px; padding-left: 4px; line-height: 1.2;
+            text-decoration: none;
+        }
+        .brand img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+
+        .menu-label {
+            font-family: var(--font-mono); font-size: 0.7rem;
+            color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.05em; margin: 20px 0 10px 8px;
+        }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 12px; border-radius: var(--radius-sm);
+            color: var(--text-muted); text-decoration: none;
+            font-weight: 500; font-size: 0.9rem; transition: all 0.2s ease;
+        }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
+        .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
+        .nav-item.active { background-color: rgba(255,255,255,0.06); color: var(--track-accent); border-left: 3px solid var(--track-accent); }
+
+        /* Main Area */
+        .dashboard-main {
+            flex: 1; overflow-y: auto; padding: 40px 48px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .coming-soon-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 48px 44px;
+            max-width: 680px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+        }
+
+        .logo-frame {
+            width: 136px; height: 136px;
+            border-radius: 20px;
+            background: #FFFFFF;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            margin-bottom: 24px;
+        }
+        .logo-frame img {
+            width: 100%; height: 100%; object-fit: contain; transform: scale(1.4);
+        }
+
+        .status-pill {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--track-accent);
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-light);
+            padding: 6px 14px;
+            border-radius: 99px;
+            margin-bottom: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .coming-soon-card h1 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-pure);
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .coming-soon-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 28px;
+            max-width: 540px;
+        }
+
+        .syllabus-preview {
+            width: 100%;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 20px 24px;
+            text-align: left;
+            margin-bottom: 32px;
+        }
+        .syllabus-preview h4 {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--track-accent);
+            margin-bottom: 12px;
+        }
+        .syllabus-preview ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .syllabus-preview li {
+            font-size: 0.88rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .syllabus-preview li i {
+            color: var(--track-accent);
+            font-size: 0.75rem;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .btn-action {
+            padding: 12px 22px;
+            border-radius: var(--radius-sm);
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        .btn-back {
+            background: var(--bg-sidebar);
+            color: var(--text-pure);
+            border: 1px solid var(--border-light);
+        }
+        .btn-back:hover {
+            border-color: var(--track-accent);
+            color: var(--track-accent);
+        }
+        .btn-practice-jump {
+            background: var(--track-accent);
+            color: var(--bg-base);
+            border: 1px solid var(--track-accent);
+            font-weight: 700;
+        }
+        .btn-practice-jump:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 800px) {
+            .sidebar { display: none; }
+            .dashboard-main { padding: 24px 16px; }
+            .coming-soon-card { padding: 32px 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sky-background">
+        <div class="comet" style="top: 12%; left: 88%; animation: shooting 9s infinite linear 1s;"></div>
+    </div>
+
+    <aside class="sidebar">
+        <a href="../index.html" class="brand">
+            <img src="../assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span>SUPERNOVA<br>GUIDE</span>
+        </a>
+        
+        <div class="menu-label">Menu</div>
+        <ul class="nav-menu">
+            <li><a href="../index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="../planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="../problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
+            <li><a href="../courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="#" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+        </ul>
+        
+        <div class="menu-label">General</div>
+        <ul class="nav-menu">
+            <li><a href="../profile.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="../community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
+        </ul>
+    </aside>
+
+    <main class="dashboard-main">
+        <div class="coming-soon-card">
+            <div class="logo-frame">
+                <img id="handout-logo" src="../assets/img/theory/positional_celestial_mechanics_logo.png" alt="Module Logo">
+            </div>
+
+            <span class="status-pill">
+                <i class="fa-solid fa-compass-drafting"></i>
+                <span id="handout-eyebrow">Handout In Production</span>
+            </span>
+
+            <h1 id="handout-title">Theoretical Handout Coming Soon</h1>
+            <p>
+                This curriculum handout—including rigorous LaTeX physical derivations, worked Olympiad examples, interactive figures, and a 20-question conceptual quiz—is currently being compiled.
+            </p>
+
+            <div class="syllabus-preview">
+                <h4>Scheduled Subchapters &amp; Derivations</h4>
+                <ul id="handout-topics">
+                    <li><i class="fa-solid fa-check"></i> Core theoretical derivations &amp; physical laws</li>
+                    <li><i class="fa-solid fa-check"></i> Worked Olympiad problem walkthroughs</li>
+                    <li><i class="fa-solid fa-check"></i> 20-question conceptual mastery quiz</li>
+                </ul>
+            </div>
+
+            <div class="action-row">
+                <a href="../problems.html" class="btn-action btn-back">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Curriculum Hub
+                </a>
+                <a id="handout-practice-link" href="../problems.html" class="btn-action btn-practice-jump">
+                    <i class="fa-solid fa-pen-to-square"></i> Go to Module Practice
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- DYNAMIC HANDOUT HYDRATION SCRIPT -->
+    <script>
+        const HANDOUT_REGISTRY = {
+            "positional_celestial_mechanics": {
+                eyebrow: "Theory Track · Module 01 · Coming Soon",
+                title: "1. Positional Astronomy & Celestial Mechanics",
+                logo: "../assets/img/theory/positional_celestial_mechanics_logo.png",
+                accent: "#B39CD0",
+                topics: ["1.1 The Celestial Sphere & Spherical Trigonometry", "1.2 Coordinate Transformations & Time Systems (Solar/Sidereal)", "1.3 Kepler's Laws, Vis-Viva Equation & Orbital Elements", "1.4 Hohmann Transfers, Lagrange Points & The Virial Theorem"]
+            },
+            "radiation_relativity": {
+                eyebrow: "Theory Track · Module 02 · Coming Soon",
+                title: "2. Radiation Physics & Relativity Fundamentals",
+                logo: "../assets/img/theory/radiation_relativity_logo.png",
+                accent: "#B39CD0",
+                topics: ["2.1 Blackbody Radiation: Planck, Wien & Stefan-Boltzmann Laws", "2.2 Special Relativity: Lorentz Transformations & Relativistic Doppler Shift", "2.3 Radiative Transfer, Opacity & Optical Depth"]
+            },
+            "astronomical_instrumentation": {
+                eyebrow: "Theory Track · Module 03 · Coming Soon",
+                title: "3. Astronomical Instrumentation",
+                logo: "../assets/img/theory/astronomical_instrumentation_logo.png",
+                accent: "#B39CD0",
+                topics: ["3.1 Geometric Optics, Focal Ratio & Plate Scale", "3.2 Diffraction Limit, Rayleigh Criterion & Resolving Power", "3.3 Radio Interferometry, Detectors & CCD Signal-to-Noise Ratio"]
+            },
+            "stellar_parameters": {
+                eyebrow: "Theory Track · Module 04 · Coming Soon",
+                title: "4. Stellar Parameters & Spectral Classification",
+                logo: "../assets/img/theory/stellar_parameters_logo.png",
+                accent: "#B39CD0",
+                topics: ["4.1 Visual, Spectroscopic & Eclipsing Binary Systems", "4.2 Boltzmann & Saha Equations in Stellar Spectra", "4.3 The Hertzsprung-Russell Diagram & Luminosity Classes"]
+            },
+            "stellar_structure": {
+                eyebrow: "Theory Track · Module 05 · Coming Soon",
+                title: "5. Stellar Structure & Atmospheres",
+                logo: "../assets/img/theory/stellar_structure_logo.png",
+                accent: "#B39CD0",
+                topics: ["5.1 Hydrostatic Equilibrium & Polytropic Stellar Models", "5.2 Energy Transport: Radiative vs. Convective Zones", "5.3 Nucleosynthesis (pp-chain, CNO cycle) & Solar Structure"]
+            },
+            "interstellar_medium": {
+                eyebrow: "Theory Track · Module 06 · Coming Soon",
+                title: "6. Interstellar Medium & Star Formation",
+                logo: "../assets/img/theory/interstellar_medium_logo.png",
+                accent: "#B39CD0",
+                topics: ["6.1 Interstellar Dust Extinction, Reddening & Strömgren Spheres", "6.2 Jeans Mass, Jeans Length & Molecular Cloud Collapse", "6.3 Protostellar Evolution, Hayashi Track & Bipolar Outflows"]
+            },
+            "stellar_evolution": {
+                eyebrow: "Theory Track · Module 07 · Coming Soon",
+                title: "7. Stellar Evolution",
+                logo: "../assets/img/theory/stellar_evolution_logo.png",
+                accent: "#B39CD0",
+                topics: ["7.1 Main-Sequence & Post-Main-Sequence Evolutionary Tracks", "7.2 Variable Stars, Cepheid Pulsation Mechanism & Period-Luminosity", "7.3 Core-Collapse vs. Type Ia Supernovae"]
+            },
+            "stellar_remnants": {
+                eyebrow: "Theory Track · Module 08 · Coming Soon",
+                title: "8. Stellar Remnants & General Relativity",
+                logo: "../assets/img/theory/stellar_remnants_logo.png",
+                accent: "#B39CD0",
+                topics: ["8.1 Electron Degeneracy Pressure & The Chandrasekhar Limit", "8.2 Neutron Stars, Pulsars & Tolman-Oppenheimer-Volkoff Limit", "8.3 Schwarzschild Metric, Gravitational Redshift & Accretion Disks"]
+            },
+            "planetary_systems": {
+                eyebrow: "Theory Track · Module 09 · Coming Soon",
+                title: "9. Planetary Systems & Formation",
+                logo: "../assets/img/theory/planetary_systems_logo.png",
+                accent: "#B39CD0",
+                topics: ["9.1 Planetary Equilibrium Temperature, Albedo & Hydrostatic Escape", "9.2 Tidal Forces, Roche Limit & Ring Systems", "9.3 Exoplanet Detection: Transit Light Curves & Radial Velocity"]
+            },
+            "galactic_evolution": {
+                eyebrow: "Theory Track · Module 11 · Coming Soon",
+                title: "11. Galactic Evolution & Active Galaxies",
+                logo: "../assets/img/theory/galactic_evolution_logo.png",
+                accent: "#B39CD0",
+                topics: ["11.1 Dynamical Friction, Galaxy Mergers & Scaling Relations (Tully-Fisher)", "11.2 Active Galactic Nuclei (Seyferts, Quasars, Blazars) & Eddington Limit", "11.3 Superluminal Motion & Relativistic Beaming in Jets"]
+            },
+            "cosmology": {
+                eyebrow: "Theory Track · Module 12 · Coming Soon",
+                title: "12. Cosmology & Structure of the Universe",
+                logo: "../assets/img/theory/cosmology_logo.png",
+                accent: "#B39CD0",
+                topics: ["12.1 Robertson-Walker Metric, Friedmann Equations & Fluid Equation", "12.2 Cosmological Redshift, Hubble Parameter & Distance Measures", "12.3 Thermal History, Big Bang Nucleosynthesis & CMB Anisotropies"]
+            },
+            "data_methods_plotting": {
+                eyebrow: "Data Analysis Track · Module 01 · Coming Soon",
+                title: "1. Methods & Plotting Guide",
+                logo: "../assets/img/data_analysis/methods_plotting_logo.png",
+                accent: "#35E6FF",
+                topics: ["D1.1 Variance, Standard Deviation & Gaussian Error Propagation", "D1.2 Ordinary & Weighted Least-Squares Linear Regression", "D1.3 Logarithmic Linearization & Residual Analysis"]
+            },
+            "data_full_sets": {
+                eyebrow: "Data Analysis Track · Module 02 · Coming Soon",
+                title: "2. Interpreting Full Data Sets",
+                logo: "../assets/img/data_analysis/full_data_sets_logo.png",
+                accent: "#35E6FF",
+                topics: ["D2.1 Period Folding & Eclipsing Binary Light Curve Extraction", "D2.2 Spectral Line Fitting, Equivalent Width & Radial Velocity", "D2.3 Color-Magnitude Isochrone Fitting & Extinction Correction"]
+            },
+            "obs_blind_map": {
+                eyebrow: "Observational Track · Manual 01 · Coming Soon",
+                title: "Blind Map Observation Manual",
+                logo: "../assets/img/observational/blind_map_logo.png",
+                accent: "#FFC1CC",
+                topics: ["O1.1 IAU Constellation Boundaries & Bright Navigation Stars", "O1.2 Complete Messier & Caldwell Catalog Star-Hopping Routes", "O1.3 Estimating RA, Dec, Ecliptic & Galactic Coordinates Without Grids"]
+            },
+            "obs_telescope": {
+                eyebrow: "Observational Track · Manual 02 · Coming Soon",
+                title: "Practical Telescope Operations Manual",
+                logo: "../assets/img/observational/telescope_practice_logo.png",
+                accent: "#FFC1CC",
+                topics: ["O2.1 German Equatorial Mount Assembly & Counterweight Balancing", "O2.2 Polar Alignment & Setting Circle Calibration", "O2.3 Eyepiece Field of View Mapping & Drift Timing"]
+            }
+        };
+
+        (function hydrateHandoutPage() {
+            const fileName = window.location.pathname.split('/').pop().replace('.html', '');
+            const meta = HANDOUT_REGISTRY[fileName];
+            if (!meta) return;
+
+            document.title = `${meta.title} — Handout | Supernova Guide`;
+            document.documentElement.style.setProperty('--track-accent', meta.accent);
+            document.getElementById('handout-logo').src = meta.logo;
+            document.getElementById('handout-eyebrow').textContent = meta.eyebrow;
+            document.getElementById('handout-title').textContent = meta.title;
+            document.getElementById('handout-practice-link').href = `../practice/${fileName}.html`;
+
+            const listEl = document.getElementById('handout-topics');
+            listEl.innerHTML = meta.topics.map(t => `<li><i class="fa-solid fa-angle-right"></i> ${t}</li>`).join('');
+        })();
+    </script>
+</body>
+</html>

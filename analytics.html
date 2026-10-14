@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Analytics | Supernova Guide</title>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Canonical Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #0A0A0C;
+            --bg-sidebar: #101115;
+            --bg-card: #15161A;
+            --bg-card-hover: #1C1D22;
+            
+            --accent-green: #2BE38A;
+            --accent-blue: #35E6FF;
+            --accent-purple: #B39CD0;
+            --accent-rose: #FFC1CC;
+            --accent-gold: #FFCF5C;
+            
+            --text-pure: #FFFFFF;
+            --text-main: #EDEDED;
+            --text-muted: #8A94A6;
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            
+            --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-base); color: var(--text-main);
+            font-family: var(--font-body); display: flex; height: 100vh;
+            overflow: hidden; -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 260px; background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+            display: flex; flex-direction: column;
+            padding: 24px 20px; flex-shrink: 0; z-index: 100; overflow-y: auto;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 16px;
+            font-family: var(--font-display); font-size: 1.3rem;
+            font-weight: 700; color: var(--text-pure);
+            margin-bottom: 32px; padding-left: 4px; line-height: 1.2; text-decoration: none;
+        }
+        .brand img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+        .menu-label {
+            font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.05em; margin: 18px 0 8px 8px;
+        }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px; padding: 9px 12px;
+            border-radius: var(--radius-sm); color: var(--text-muted); text-decoration: none;
+            font-weight: 500; font-size: 0.88rem; transition: all 0.2s ease;
+        }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.05rem; }
+        .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
+        .nav-item.active { background-color: rgba(53, 230, 255, 0.12); color: var(--accent-blue); border-left: 3px solid var(--accent-blue); }
+
+        /* --- MAIN AREA --- */
+        .dashboard-main {
+            flex: 1; overflow-y: auto; padding: 32px 44px 60px;
+            display: flex; flex-direction: column; gap: 28px;
+        }
+
+        .top-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .header-title h1 { font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--text-pure); margin-bottom: 4px; }
+        .header-title p { color: var(--text-muted); font-size: 0.9rem; }
+
+        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border-light); object-fit: cover; }
+        .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
+        .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .kpi-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 22px 24px;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .kpi-label {
+            font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase;
+            color: var(--text-muted); letter-spacing: 0.05em; display: flex; justify-content: space-between;
+        }
+        .kpi-val { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--text-pure); }
+        .kpi-sub { font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+        .analytics-split { display: grid; grid-template-columns: 1fr 1.25fr; gap: 24px; }
+        .panel-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 28px;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+        .panel-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border-subtle); padding-bottom: 14px;
+        }
+        .panel-header h3 {
+            font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--text-pure);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .panel-tag {
+            font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-blue);
+            background: rgba(53, 230, 255, 0.1); padding: 4px 10px; border-radius: 6px;
+        }
+
+        .radar-box { display: flex; align-items: center; justify-content: center; padding: 10px 0; }
+        .radar-svg { width: 100%; max-width: 360px; height: auto; overflow: visible; }
+
+        .telemetry-list { display: flex; flex-direction: column; gap: 16px; }
+        .telemetry-item { display: flex; flex-direction: column; gap: 6px; }
+        .telemetry-top { display: flex; justify-content: space-between; font-size: 0.85rem; }
+        .telemetry-top strong { color: var(--text-pure); font-weight: 600; }
+        .telemetry-top span { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); }
+        .bar-track {
+            width: 100%; height: 8px; background: var(--bg-sidebar);
+            border-radius: 99px; overflow: hidden; border: 1px solid var(--border-subtle);
+        }
+        .bar-fill { height: 100%; border-radius: 99px; transition: width 0.5s ease; }
+
+        .syllabus-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+        .mod-stat-box {
+            background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm); padding: 14px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .mod-stat-head {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.82rem; font-weight: 600; color: var(--text-pure);
+        }
+        .mod-stat-head span { font-family: var(--font-mono); font-size: 0.74rem; color: var(--accent-purple); }
+
+        @media (max-width: 1100px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .analytics-split, .syllabus-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 800px) { .sidebar { display: none; } .dashboard-main { padding: 24px 20px; } }
+    </style>
+</head>
+<body>
+
+    <!-- UNIFIED SIDEBAR -->
+    <aside class="sidebar">
+        <a href="index.html" class="brand">
+            <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span>SUPERNOVA<br>GUIDE</span>
+        </a>
+        
+        <div class="menu-label">Menu</div>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
+            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
+        </ul>
+
+        <div class="menu-label">Tools &amp; Analytics</div>
+        <ul class="nav-menu">
+            <li><a href="analytics.html" class="nav-item active"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="tools.html" class="nav-item"><i class="fa-solid fa-calculator"></i> Formula &amp; Tools</a></li>
+            <li><a href="notebook.html" class="nav-item"><i class="fa-solid fa-book-open"></i> Mistake Notebook</a></li>
+            <li><a href="resources.html" class="nav-item"><i class="fa-solid fa-book-atlas"></i> External Library</a></li>
+        </ul>
+        
+        <div class="menu-label">General</div>
+        <ul class="nav-menu">
+            <li><a href="profile.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
+            <li><a href="#" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+        
+        <header class="top-header">
+            <div class="header-title">
+                <h1>Live Diagnostic Telemetry</h1>
+                <p>100% real-time metrics computed directly from your solved problems, difficulty weights, and logged mistake notebook.</p>
+            </div>
+            <div class="user-profile">
+                <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF" alt="User" class="avatar">
+                <div class="user-info">
+                    <h4 id="user-name-display">Loading...</h4>
+                    <p id="user-role-display">Authenticating</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- REAL-DATA KPI STRIP -->
+        <section class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label"><span>Verified Solved</span> <i class="fa-solid fa-check-double" style="color:var(--accent-purple);"></i></div>
+                <div class="kpi-val" id="kpi-solved">0 / 16</div>
+                <div class="kpi-sub" id="kpi-solved-pct">0% Module 01 Completion</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><span>Current Rank Tier</span> <i class="fa-solid fa-medal" style="color:var(--accent-gold);"></i></div>
+                <div class="kpi-val" id="kpi-rank" style="color:var(--accent-gold); font-size:1.55rem;">Novice Observer</div>
+                <div class="kpi-sub" id="kpi-points">0 Weighted Points</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><span>Review Mastery</span> <i class="fa-solid fa-brain" style="color:var(--accent-green);"></i></div>
+                <div class="kpi-val" id="kpi-mastered">0%</div>
+                <div class="kpi-sub" id="kpi-mastered-sub">0 / 0 Notebook Traps Mastered</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><span>Active Blind Spots</span> <i class="fa-solid fa-triangle-exclamation" style="color:var(--accent-rose);"></i></div>
+                <div class="kpi-val" id="kpi-mistakes">0</div>
+                <div class="kpi-sub"><a href="notebook.html" style="color:var(--accent-rose); text-decoration:none;">Open Mistake Notebook &rarr;</a></div>
+            </div>
+        </section>
+
+        <!-- DYNAMIC SVG RADAR & REAL MISTAKE DISTRIBUTION -->
+        <section class="analytics-split">
+            <div class="panel-card">
+                <div class="panel-header">
+                    <h3><i class="fa-solid fa-compass-drafting" style="color:var(--accent-blue);"></i> Live Competency Radar</h3>
+                    <span class="panel-tag">Real-Time Polygon</span>
+                </div>
+                <div class="radar-box">
+                    <svg class="radar-svg" viewBox="0 0 320 280">
+                        <!-- Reference Hexagons (100%, 66%, 33%) -->
+                        <polygon points="160,30 255,85 255,195 160,250 65,195 65,85" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                        <polygon points="160,67 223,103 223,177 160,213 97,177 97,103" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                        <polygon points="160,103 192,122 192,158 160,177 128,158 128,122" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                        <!-- Axes -->
+                        <line x1="160" y1="30" x2="160" y2="250" stroke="rgba(255,255,255,0.08)"/>
+                        <line x1="65" y1="85" x2="255" y2="195" stroke="rgba(255,255,255,0.08)"/>
+                        <line x1="255" y1="85" x2="65" y2="195" stroke="rgba(255,255,255,0.08)"/>
+                        <!-- Dynamic Data Polygon -->
+                        <polygon id="dynamic-radar-poly" points="160,140 160,140 160,140 160,140 160,140 160,140" fill="rgba(53, 230, 255, 0.2)" stroke="#35E6FF" stroke-width="2.5"/>
+                        <!-- Dynamic Axis Labels -->
+                        <text id="lbl-axis-0" x="160" y="18" text-anchor="middle" fill="#EDEDED" font-family="Space Mono" font-size="9.5">EASY SPEED (0%)</text>
+                        <text id="lbl-axis-1" x="262" y="85" text-anchor="start" fill="#EDEDED" font-family="Space Mono" font-size="9.5">MEDIUM ANALYTICAL (0%)</text>
+                        <text id="lbl-axis-2" x="262" y="200" text-anchor="start" fill="#EDEDED" font-family="Space Mono" font-size="9.5">THEORY DERIV (0%)</text>
+                        <text id="lbl-axis-3" x="160" y="268" text-anchor="middle" fill="#EDEDED" font-family="Space Mono" font-size="9.5">MODULE 01 (0%)</text>
+                        <text id="lbl-axis-4" x="58" y="200" text-anchor="end" fill="#EDEDED" font-family="Space Mono" font-size="9.5">TRAP MASTERY (0%)</text>
+                        <text id="lbl-axis-5" x="58" y="85" text-anchor="end" fill="#EDEDED" font-family="Space Mono" font-size="9.5">CONSISTENCY (0%)</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Real Mistake Category Telemetry -->
+            <div class="panel-card">
+                <div class="panel-header">
+                    <h3><i class="fa-solid fa-bug-slash" style="color:var(--accent-rose);"></i> Logged Mistake Distribution (From Notebook)</h3>
+                    <span class="panel-tag" style="color:var(--accent-rose); background:rgba(255,193,204,0.12);">Live Sync</span>
+                </div>
+                <div class="telemetry-list">
+                    <div class="telemetry-item">
+                        <div class="telemetry-top">
+                            <strong>1. Physical Assumption Traps</strong>
+                            <span id="err-trap-txt">0 logged (0%)</span>
+                        </div>
+                        <div class="bar-track"><div class="bar-fill" id="err-trap-bar" style="width: 0%; background: var(--accent-rose);"></div></div>
+                    </div>
+
+                    <div class="telemetry-item">
+                        <div class="telemetry-top">
+                            <strong>2. Algebraic &amp; Trigonometric Sign Slips</strong>
+                            <span id="err-alg-txt">0 logged (0%)</span>
+                        </div>
+                        <div class="bar-track"><div class="bar-fill" id="err-alg-bar" style="width: 0%; background: var(--accent-purple);"></div></div>
+                    </div>
+
+                    <div class="telemetry-item">
+                        <div class="telemetry-top">
+                            <strong>3. Dimensional &amp; Unit Conversion Errors</strong>
+                            <span id="err-unit-txt">0 logged (0%)</span>
+                        </div>
+                        <div class="bar-track"><div class="bar-fill" id="err-unit-bar" style="width: 0%; background: var(--accent-blue);"></div></div>
+                    </div>
+                </div>
+
+                <div style="margin-top:auto; padding:14px 16px; background:var(--bg-sidebar); border-radius:var(--radius-sm); border-left:3px solid var(--accent-blue); font-size:0.84rem; color:var(--text-muted);" id="advisor-note">
+                    Log your derivation mistakes in the <strong>Mistake Notebook</strong> tab to populate real-time error distribution telemetry.
+                </div>
+            </div>
+        </section>
+
+        <!-- 12-MODULE SYLLABUS MATRIX -->
+        <section class="panel-card">
+            <div class="panel-header">
+                <h3><i class="fa-solid fa-layer-group" style="color:var(--accent-purple);"></i> IOAA 12-Module Syllabus Coverage</h3>
+                <span class="panel-tag">Real Problem Counts</span>
+            </div>
+            <div class="syllabus-grid">
+                <div class="mod-stat-box">
+                    <div class="mod-stat-head"><strong>01. Positional &amp; Celestial Mech</strong> <span id="mod1-pct">0 / 16 (0%)</span></div>
+                    <div class="bar-track"><div class="bar-fill" id="mod1-bar" style="width:0%; background:var(--accent-purple);"></div></div>
+                </div>
+                <div class="mod-stat-box"><div class="mod-stat-head"><strong>02. Radiation &amp; Relativity</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
+                <div class="mod-stat-box"><div class="mod-stat-head"><strong>03. Instrumentation</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
+                <div class="mod-stat-box"><div class="mod-stat-head"><strong>04. Stellar Parameters</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
+                <div class="mod-stat-box"><div class="mod-stat-head"><strong>05. Stellar Structure</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
+                <div class="mod-stat-box"><div class="mod-stat-head"><strong>06. ISM &amp; Star Formation</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
+                <div class="mod-stat-box"><div class="mod-stat-head"><strong>07. Stellar Evolution</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
+                <div class="mod-stat-box"><div class="mod-stat-head"><strong>08. Remnants &amp; Gen. Relativity</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
+                <div class="mod-stat-box"><div class="mod-stat-head"><strong>09. Planetary Systems</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
+                <div class="mod-stat-box"><div class="mod-stat-head"><strong>10. Galactic Structure</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
+                <div class="mod-stat-box"><div class="mod-stat-head"><strong>11. Galactic Evolution &amp; AGN</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
+                <div class="mod-stat-box"><div class="mod-stat-head"><strong>12. Cosmology</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
+            </div>
+        </section>
+
+    </main>
+
+    <script type="module">
+        import { difficultyMap, getRankForCount } from './js/auth.js';
+
+        const celestialIds = [
+            'q1_usaaao_2018', 'q30_usaaao_2018', 'q1_usaaao_2025', 'q4_usaaao_2025', 
+            'q5_usaaao_2025', 'q11-12_usaaao_2025', 'q13_usaaao_2025', 'q19_usaaao_2025', 
+            'q26_usaaao_2025', 'q1_usaaao_2026', 'q2_usaaao_2026', 'q9_usaaao_2026', 
+            'q10_usaaao_2026', 'q15_usaaao_2026', 'q16_usaaao_2026', 'q27_usaaao_2026'
+        ];
+
+        function computeRealAnalytics() {
+            const solvedRaw = localStorage.getItem('solvedProblems');
+            const solvedArr = solvedRaw ? JSON.parse(solvedRaw) : [];
+            const validSolved = celestialIds.filter(id => solvedArr.includes(id));
+            const solvedCount = validSolved.length;
+            const mod1Pct = Math.round((solvedCount / 16) * 100);
+
+            // Totals in difficultyMap for Module 1
+            const totalEasy = 11, totalMedium = 3, totalTheory = 2;
+            let sEasy = 0, sMed = 0, sTheory = 0;
+            validSolved.forEach(id => {
+                const d = difficultyMap[id];
+                if (d === 'easy') sEasy++;
+                else if (d === 'medium') sMed++;
+                else if (d === 'theory') sTheory++;
+            });
+
+            const easyPct = Math.round((sEasy / totalEasy) * 100);
+            const medPct = Math.round((sMed / totalMedium) * 100);
+            const theoryPct = Math.round((sTheory / totalTheory) * 100);
+            const weightedPts = (sEasy * 3) + (sMed * 6) + (sTheory * 8);
+
+            // Mistake Notebook Real Telemetry
+            const mistakesRaw = localStorage.getItem('supernova_mistake_notebook');
+            const mistakes = mistakesRaw ? JSON.parse(mistakesRaw) : [];
+            const totalMistakes = mistakes.length;
+            const masteredMistakes = mistakes.filter(m => m.stage === '30d Mastered').length;
+            const masteryPct = totalMistakes > 0 ? Math.round((masteredMistakes / totalMistakes) * 100) : 0;
+
+            let cTrap = 0, cAlg = 0, cUnit = 0;
+            mistakes.forEach(m => {
+                if (m.category === 'Physical Trap') cTrap++;
+                else if (m.category === 'Algebraic / Sign') cAlg++;
+                else if (m.category === 'Unit Mismatch') cUnit++;
+            });
+
+            const pTrap = totalMistakes > 0 ? Math.round((cTrap / totalMistakes) * 100) : 0;
+            const pAlg = totalMistakes > 0 ? Math.round((cAlg / totalMistakes) * 100) : 0;
+            const pUnit = totalMistakes > 0 ? Math.round((cUnit / totalMistakes) * 100) : 0;
+
+            // Update KPI Cards
+            document.getElementById('kpi-solved').textContent = `${solvedCount} / 16`;
+            document.getElementById('kpi-solved-pct').textContent = `${mod1Pct}% Module 01 Completion`;
+            document.getElementById('kpi-rank').textContent = getRankForCount(solvedCount);
+            document.getElementById('kpi-points').textContent = `${weightedPts} Weighted Points Earned`;
+            document.getElementById('kpi-mastered').textContent = `${masteryPct}%`;
+            document.getElementById('kpi-mastered-sub').textContent = `${masteredMistakes} / ${totalMistakes} Traps Mastered`;
+            document.getElementById('kpi-mistakes').textContent = totalMistakes;
+
+            // Update Module 1 Bar
+            document.getElementById('mod1-pct').textContent = `${solvedCount} / 16 (${mod1Pct}%)`;
+            document.getElementById('mod1-bar').style.width = `${mod1Pct}%`;
+
+            // Update Mistake Bars
+            document.getElementById('err-trap-txt').textContent = `${cTrap} logged (${pTrap}%)`;
+            document.getElementById('err-trap-bar').style.width = `${pTrap}%`;
+            document.getElementById('err-alg-txt').textContent = `${cAlg} logged (${pAlg}%)`;
+            document.getElementById('err-alg-bar').style.width = `${pAlg}%`;
+            document.getElementById('err-unit-txt').textContent = `${cUnit} logged (${pUnit}%)`;
+            document.getElementById('err-unit-bar').style.width = `${pUnit}%`;
+
+            // Compute 6-Axis Radar Polygon Coordinates (Center: 160, 140; Max Radius: 110)
+            const consistencyPct = solvedCount > 0 ? Math.min(100, solvedCount * 10) : 0;
+            const axesValues = [easyPct, medPct, theoryPct, mod1Pct, masteryPct, consistencyPct];
+            const angles = [-90, -30, 30, 90, 150, 210].map(deg => deg * Math.PI / 180);
+
+            const polyPoints = axesValues.map((val, idx) => {
+                const r = Math.max(8, (val / 100) * 110); // Minimum 8px radius so polygon center is visible
+                const x = (160 + r * Math.cos(angles[idx])).toFixed(1);
+                const y = (140 + r * Math.sin(angles[idx])).toFixed(1);
+                return `${x},${y}`;
+            }).join(' ');
+
+            document.getElementById('dynamic-radar-poly').setAttribute('points', polyPoints);
+            document.getElementById('lbl-axis-0').textContent = `EASY SPEED (${easyPct}%)`;
+            document.getElementById('lbl-axis-1').textContent = `MEDIUM ANALYTICAL (${medPct}%)`;
+            document.getElementById('lbl-axis-2').textContent = `THEORY DERIV (${theoryPct}%)`;
+            document.getElementById('lbl-axis-3').textContent = `MODULE 01 (${mod1Pct}%)`;
+            document.getElementById('lbl-axis-4').textContent = `TRAP MASTERY (${masteryPct}%)`;
+            document.getElementById('lbl-axis-5').textContent = `CONSISTENCY (${consistencyPct}%)`;
+        }
+
+        window.addEventListener('userDataLoaded', computeRealAnalytics);
+        document.addEventListener('DOMContentLoaded', computeRealAnalytics);
+    </script>
+</body>
+</html>

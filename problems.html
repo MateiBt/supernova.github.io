@@ -76,52 +76,41 @@
 
         @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
 
-        /* --- 3. SIDEBAR --- */
+        /* --- 3. UNIFIED SIDEBAR --- */
         .sidebar {
             width: 260px; background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border-subtle);
             display: flex; flex-direction: column;
             padding: 24px 20px; flex-shrink: 0; z-index: 100;
+            overflow-y: auto;
         }
 
         .brand {
             display: flex; align-items: center; gap: 16px;
             font-family: var(--font-display); font-size: 1.3rem;
             font-weight: 700; color: var(--text-pure);
-            margin-bottom: 40px; padding-left: 4px; line-height: 1.2;
+            margin-bottom: 32px; padding-left: 4px; line-height: 1.2;
+            text-decoration: none;
         }
         
-        .brand img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; }
+        .brand img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
 
         .menu-label {
-            font-family: var(--font-mono); font-size: 0.7rem;
+            font-family: var(--font-mono); font-size: 0.68rem;
             color: var(--text-muted); text-transform: uppercase;
-            letter-spacing: 0.05em; margin: 20px 0 10px 8px;
+            letter-spacing: 0.05em; margin: 18px 0 8px 8px;
         }
 
         .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
         .nav-item {
             display: flex; align-items: center; gap: 12px;
-            padding: 10px 12px; border-radius: var(--radius-sm);
+            padding: 9px 12px; border-radius: var(--radius-sm);
             color: var(--text-muted); text-decoration: none;
-            font-weight: 500; font-size: 0.9rem; transition: all 0.2s ease;
+            font-weight: 500; font-size: 0.88rem; transition: all 0.2s ease;
         }
-        .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.05rem; }
         .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
-        .nav-item.active { background-color: rgba(53, 230, 255, 0.1); color: var(--accent-blue); border-left: 3px solid var(--accent-blue); }
-
-        .sidebar-footer { margin-top: auto; }
-        .mobile-app-promo {
-            background: linear-gradient(135deg, rgba(43, 227, 138, 0.1), rgba(43, 227, 138, 0.02));
-            border: 1px solid rgba(43, 227, 138, 0.2);
-            padding: 16px; border-radius: var(--radius-md); text-align: center;
-        }
-        .mobile-app-promo h4 { color: var(--accent-green); font-size: 0.85rem; margin-bottom: 8px; }
-        .mobile-app-promo p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px; }
-        .btn-promo {
-            background: var(--accent-green); color: var(--bg-base); border: none;
-            width: 100%; padding: 8px; border-radius: 6px; font-weight: 600; cursor: pointer;
-        }
+        .nav-item.active { background-color: rgba(53, 230, 255, 0.12); color: var(--accent-blue); border-left: 3px solid var(--accent-blue); }
 
         /* --- 4. MAIN CONTENT AREA --- */
         .dashboard-main {
@@ -129,15 +118,12 @@
             display: flex; flex-direction: column; gap: 32px;
         }
 
-        .top-header { display: flex; justify-content: space-between; align-items: center; }
+        .top-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
         .header-title h1 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; color: var(--text-pure); }
         .header-title p { color: var(--text-muted); font-size: 0.9rem; max-width: 650px; line-height: 1.5; }
         
         .header-actions { display: flex; align-items: center; gap: 20px; }
-        .icon-btn { background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; transition: color 0.2s; }
-        .icon-btn:hover { color: var(--text-pure); }
-        
-        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); }
+        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); text-decoration: none; }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border-light); object-fit: cover; }
         .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
         .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
@@ -245,12 +231,12 @@
         <div class="comet" style="top: 5%; left: 90%; animation: shooting 8s infinite linear 2s;"></div>
     </div>
 
-    <!-- SIDEBAR NAVIGATION -->
+    <!-- UNIFIED SIDEBAR NAVIGATION -->
     <aside class="sidebar">
-        <div class="brand">
+        <a href="index.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>
-        </div>
+        </a>
         
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
@@ -258,23 +244,23 @@
             <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
             <li><a href="problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
             <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
-            <li><a href="#" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
+        </ul>
+
+        <div class="menu-label">Tools &amp; Analytics</div>
+        <ul class="nav-menu">
+            <li><a href="analytics.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="tools.html" class="nav-item"><i class="fa-solid fa-calculator"></i> Formula &amp; Tools</a></li>
+            <li><a href="notebook.html" class="nav-item"><i class="fa-solid fa-book-open"></i> Mistake Notebook</a></li>
+            <li><a href="resources.html" class="nav-item"><i class="fa-solid fa-book-atlas"></i> External Library</a></li>
         </ul>
         
         <div class="menu-label">General</div>
         <ul class="nav-menu">
             <li><a href="profile.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
             <li><a href="community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
-            <li><a href="landing.html" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+            <li><a href="#" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
         </ul>
-        
-        <div class="sidebar-footer">
-            <div class="mobile-app-promo">
-                <h4>Join the League</h4>
-                <p>Register for the upcoming IOAA Simulation Grand Prix.</p>
-                <button class="btn-promo">Register Now</button>
-            </div>
-        </div>
     </aside>
 
     <!-- MAIN CONTENT -->
@@ -282,18 +268,17 @@
         
         <header class="top-header">
             <div class="header-title">
-                <h1>Curriculum & Practice Hub</h1>
+                <h1>Curriculum &amp; Practice Hub</h1>
                 <p>Follow the unified IOAA curriculum tracks below. Read theoretical handouts and derivation guides, or jump straight into curated competition problem sets.</p>
             </div>
             <div class="header-actions">
-                <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
-                <div class="user-profile">
-                    <img id="user-avatar" src="https://ui-avatars.com/api/?name=Loading&background=1C1D22&color=FFFFFF" alt="User" class="avatar">
+                <a href="profile.html" class="user-profile">
+                    <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF" alt="User" class="avatar">
                     <div class="user-info">
                         <h4 id="user-name-display">Loading...</h4>
                         <p id="user-role-display">Authenticating</p>
                     </div>
-                </div>
+                </a>
             </div>
         </header>
 
@@ -358,7 +343,7 @@
                 <h3 class="card-title">3. Astronomical Instrumentation</h3>
                 <div class="module-desc">
                     <ol>
-                        <li>Telescopes & Detectors</li>
+                        <li>Telescopes &amp; Detectors</li>
                     </ol>
                 </div>
                 <div class="card-actions">
@@ -576,7 +561,7 @@
                     </div>
                     <span class="progress-pill">0/0</span>
                 </div>
-                <h3 class="card-title">1. Methods & Plotting</h3>
+                <h3 class="card-title">1. Methods &amp; Plotting</h3>
                 <p class="module-desc">Error propagation, statistical regression, graphing techniques, and plotting calculations.</p>
                 <div class="card-actions">
                     <a href="practice/data_methods_plotting.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
@@ -639,41 +624,10 @@
 
     </main>
 
-    <!-- Auth Hydration & Progress Script -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        
-        onAuthStateChanged(auth, (user) => {
-            const nameDisplay = document.getElementById('user-name-display');
-            const avatarDisplay = document.getElementById('user-avatar');
-            const roleDisplay = document.getElementById('user-role-display');
-
-            if (user) {
-                const displayName = user.displayName || user.email.split('@')[0];
-                if (nameDisplay) nameDisplay.innerText = displayName;
-                if (roleDisplay) roleDisplay.innerText = "Candidate";
-                if (avatarDisplay) avatarDisplay.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=35E6FF&color=050507`;
-            } else {
-                if (nameDisplay) nameDisplay.innerText = "Guest";
-                if (roleDisplay) roleDisplay.innerText = "Not Logged In";
-                if (avatarDisplay) avatarDisplay.src = `https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF`;
-            }
-        });
-
-        document.addEventListener("DOMContentLoaded", () => {
+    <!-- CENTRALIZED AUTH & PROGRESS HYDRATION -->
+    <script type="module" src="js/auth.js"></script>
+    <script>
+        function syncCelestialBadge() {
             const celestialIds = [
                 'q1_usaaao_2018', 'q30_usaaao_2018', 'q1_usaaao_2025', 'q4_usaaao_2025', 
                 'q5_usaaao_2025', 'q11-12_usaaao_2025', 'q13_usaaao_2025', 'q19_usaaao_2025', 
@@ -682,16 +636,8 @@
             ];
             
             let solvedCount = 0;
-            celestialIds.forEach(id => {
-                if(localStorage.getItem(id) === 'true' || 
-                   localStorage.getItem('solved_' + id) === 'true' || 
-                   localStorage.getItem(id) === 'solved') {
-                    solvedCount++;
-                }
-            });
-            
             const solvedArrayStr = localStorage.getItem('solvedProblems');
-            if(solvedArrayStr) {
+            if (solvedArrayStr) {
                 try {
                     const solvedArray = JSON.parse(solvedArrayStr);
                     solvedCount = celestialIds.filter(id => solvedArray.includes(id)).length;
@@ -699,15 +645,18 @@
             }
 
             const progressElement = document.getElementById('celestial-progress');
-            if(progressElement) {
+            if (progressElement) {
                 progressElement.textContent = `${solvedCount}/16`;
-                if(solvedCount === 16) {
+                if (solvedCount === 16) {
                     progressElement.style.color = 'var(--bg-base)';
                     progressElement.style.borderColor = 'var(--accent-purple)';
                     progressElement.style.background = 'var(--accent-purple)';
                 }
             }
-        });
+        }
+
+        window.addEventListener('userDataLoaded', syncCelestialBadge);
+        document.addEventListener('DOMContentLoaded', syncCelestialBadge);
     </script>
 </body>
 </html>
