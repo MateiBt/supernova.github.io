@@ -3,531 +3,422 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supernova Guide | Olympiad Astrophysics</title>
+    <title>Supernova Guide | Olympiad Astronomy & Astrophysics</title>
     
+    <!-- Canonical Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&family=JetBrains+Mono:wght@400;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Load Three.js -->
+    
+    <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
+        /* --- 1. CANONICAL DESIGN TOKENS --- */
         :root {
-            /* Authentic Flat Palette */
-            --ink: #030305;
-            --ink-elevated: #0d0f14;
-            --bone: #f4f4f0;
-            --stone: #23262f;
-            --stone-light: #3a3f4e;
-            --blue: #35e6ff; 
-            --icon-outline: #5c3a21;
+            --bg-base: #0A0A0C;
+            --bg-sidebar: #101115;
+            --bg-card: #15161A;
+            --bg-card-hover: #1C1D22;
             
-            /* Typography */
-            --font-display: 'Montserrat', sans-serif;
-            --font-body: 'Bricolage Grotesque', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
+            --accent-green: #2BE38A;
+            --accent-blue: #35E6FF;
+            --accent-purple: #B39CD0;
+            --accent-rose: #FFC1CC;
+            
+            --text-pure: #FFFFFF;
+            --text-main: #EDEDED;
+            --text-muted: #8A94A6;
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            
+            --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Space Mono', monospace;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
 
         body {
-            background-color: var(--ink);
-            color: var(--bone);
+            background-color: var(--bg-base);
+            color: var(--text-main);
             font-family: var(--font-body);
             line-height: 1.6;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- BACKGROUND DEPTH --- */
-        .universe-bg { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100vh; 
-            z-index: -3; 
-            background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=2048&auto=format&fit=crop'); 
-            background-size: cover; 
-            background-position: center; 
-            opacity: 0.12; 
-        }
-        
-        .nebula-overlay { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100vh; 
-            z-index: -2; 
-            background: radial-gradient(circle at 85% 50%, rgba(53, 230, 255, 0.05), transparent 60%), 
-                        linear-gradient(to bottom, rgba(3, 3, 5, 0.3), #030305); 
+        /* --- 2. SKY BACKGROUND & SHOOTING COMETS --- */
+        .sky-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -3; pointer-events: none; overflow: hidden;
+            background: radial-gradient(circle at 80% 35%, rgba(53, 230, 255, 0.06), transparent 55%),
+                        radial-gradient(circle at 20% 70%, rgba(179, 156, 208, 0.05), transparent 50%),
+                        var(--bg-base);
         }
 
-        /* Architectural Grid Lines */
+        .comet {
+            position: absolute; width: 160px; height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent-blue));
+            border-radius: 50%; opacity: 0;
+        }
+        .comet::before {
+            content: ''; position: absolute; top: -2px; right: 0; width: 6px; height: 6px;
+            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px rgba(53, 230, 255, 0.6);
+        }
+        @keyframes shooting {
+            0% { transform: rotate(145deg) translateX(-200px); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: rotate(145deg) translateX(2500px); opacity: 0; }
+        }
+
+        /* Subtle Architectural Grid Lines */
         .grid-guide {
-            position: fixed;
-            top: 0; left: 50%;
-            transform: translateX(-50%);
-            width: 1200px;
-            height: 100vh;
-            z-index: -1;
-            pointer-events: none;
-            border-left: 1px solid rgba(255,255,255,0.03);
-            border-right: 1px solid rgba(255,255,255,0.03);
-            display: flex;
-            justify-content: space-evenly;
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+            width: 1320px; height: 100vh; z-index: -1; pointer-events: none;
+            border-left: 1px solid rgba(255, 255, 255, 0.025);
+            border-right: 1px solid rgba(255, 255, 255, 0.025);
+            display: flex; justify-content: space-evenly;
         }
         .grid-guide::before, .grid-guide::after {
-            content: '';
-            width: 1px;
-            height: 100%;
-            background: rgba(255,255,255,0.03);
+            content: ''; width: 1px; height: 100%; background: rgba(255, 255, 255, 0.025);
         }
 
-        /* --- SVG MASCOT --- */
-        .nova-icon {
-            width: 40px;
-            height: 40px;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .nav-logo:hover .nova-icon { transform: scale(1.1) rotate(15deg); }
-        .nova-eyes-group { animation: blink 4s infinite; }
-        @keyframes blink {
-            0%, 96%, 98%, 100% { transform: scaleY(1); }
-            97%, 99% { transform: scaleY(0.1); transform-origin: center 46px; }
-        }
-
-        /* --- NAVBAR --- */
+        /* --- 3. NAVBAR --- */
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(5, 11, 20, 0.85); 
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--stone);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 40px;
-            z-index: 1000;
+            position: fixed; top: 0; width: 100%;
+            background: rgba(16, 17, 21, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 48px; z-index: 1000;
         }
         .nav-logo {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            text-decoration: none; display: flex; align-items: center; gap: 14px;
         }
-        .logo-text { display: flex; flex-direction: column; line-height: 1; }
-        .logo-text .main {
-            font-family: var(--font-display);
-            font-weight: 900;
-            font-size: 1.2rem;
-            color: var(--bone);
-            letter-spacing: 1px;
-            text-transform: uppercase;
+        .nav-logo img {
+            width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
+            border: 1px solid var(--border-light);
+        }
+        .logo-text {
+            font-family: var(--font-display); font-weight: 800; font-size: 1.2rem;
+            color: var(--text-pure); letter-spacing: 0.5px;
         }
 
-        /* --- BUTTONS --- */
-        .btn-solid {
-            background-color: var(--blue);
-            color: var(--ink);
-            font-family: var(--font-mono);
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 12px 24px;
-            text-decoration: none;
-            border: 2px solid var(--blue);
-            font-size: 0.85rem;
-            transition: all 0.2s;
-            box-shadow: 4px 4px 0 var(--bone);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
+        .nav-center { display: flex; gap: 28px; }
+        .nav-center a {
+            color: var(--text-muted); text-decoration: none; font-size: 0.9rem;
+            font-weight: 500; transition: color 0.2s;
         }
-        .btn-solid:hover {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0 var(--bone);
+        .nav-center a:hover { color: var(--text-pure); }
+
+        .nav-actions { display: flex; align-items: center; gap: 12px; }
+
+        /* --- 4. BUTTONS --- */
+        .btn-primary {
+            background: var(--accent-blue); color: var(--bg-base);
+            font-family: var(--font-body); font-weight: 700; font-size: 0.88rem;
+            padding: 11px 22px; border-radius: var(--radius-sm);
+            border: 1px solid var(--accent-blue); text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            cursor: pointer; transition: all 0.2s ease;
         }
+        .btn-primary:hover {
+            background: #6beeff; transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(53, 230, 255, 0.25);
+        }
+
+        .btn-outline {
+            background: var(--bg-card); color: var(--text-pure);
+            font-family: var(--font-body); font-weight: 600; font-size: 0.88rem;
+            padding: 11px 20px; border-radius: var(--radius-sm);
+            border: 1px solid var(--border-light); text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            cursor: pointer; transition: all 0.2s ease;
+        }
+        .btn-outline:hover {
+            background: var(--bg-card-hover); border-color: var(--accent-blue); color: var(--accent-blue);
+        }
+
         .btn-link {
-            font-family: var(--font-mono);
-            color: var(--bone);
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            font-weight: 700;
-            border-bottom: 2px solid var(--stone-light);
-            padding-bottom: 4px;
-            transition: all 0.2s;
-            display: inline-block;
-            margin-top: auto;
+            font-family: var(--font-mono); color: var(--text-pure);
+            text-decoration: none; text-transform: uppercase;
+            font-size: 0.78rem; font-weight: 700;
+            display: inline-flex; align-items: center; gap: 8px;
+            margin-top: auto; padding-top: 12px;
+            border-top: 1px solid var(--border-subtle);
+            transition: color 0.2s;
         }
-        .btn-link:hover {
-            color: var(--blue);
-            border-color: var(--blue);
-        }
+        .btn-link:hover { color: var(--accent-blue); }
 
-        /* --- HERO SECTION --- */
+        /* --- 5. HERO SECTION --- */
         .hero {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr; 
-            min-height: 100vh;
-            padding: 140px 40px 40px;
-            border-bottom: 1px solid var(--stone);
-            max-width: 1400px;
-            margin: 0 auto;
-            align-items: center; 
-            gap: 40px;
+            display: grid; grid-template-columns: 1.15fr 0.85fr;
+            min-height: 100vh; padding: 130px 48px 60px;
+            border-bottom: 1px solid var(--border-subtle);
+            max-width: 1360px; margin: 0 auto;
+            align-items: center; gap: 48px;
         }
 
-        .hero-left {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            z-index: 10;
-        }
+        .hero-left { display: flex; flex-direction: column; justify-content: center; z-index: 10; }
 
         .dialogue-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            border: 2px solid var(--stone);
-            padding: 8px 20px;
-            border-radius: 99px;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--bone);
-            width: fit-content;
-            margin-bottom: 32px;
-            background-color: var(--ink-elevated);
+            display: inline-flex; align-items: center; gap: 10px;
+            border: 1px solid var(--border-light); padding: 6px 16px;
+            border-radius: 99px; font-family: var(--font-mono);
+            font-size: 0.78rem; font-weight: 700; color: var(--accent-purple);
+            width: fit-content; margin-bottom: 28px;
+            background: rgba(179, 156, 208, 0.08);
         }
-        .dialogue-pill svg { width: 24px; height: 24px; }
 
         .hero h1 {
             font-family: var(--font-display);
-            font-size: clamp(3rem, 5vw, 5rem); 
-            line-height: 1.05;
-            text-transform: uppercase;
-            letter-spacing: -1px;
+            font-size: clamp(2.8rem, 4.8vw, 4.6rem);
+            font-weight: 800; line-height: 1.06;
+            letter-spacing: -0.02em; color: var(--text-pure);
             margin-bottom: 24px;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            font-size: 1.25rem;
-            color: #a0a0a0;
-            max-width: 540px;
-            margin-bottom: 40px;
+            font-size: 1.1rem; color: var(--text-muted);
+            max-width: 540px; margin-bottom: 36px; line-height: 1.7;
         }
 
+        .hero-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+
         .hero-right {
-            position: relative;
-            border: 1px solid var(--stone);
-            background-color: rgba(13, 15, 20, 0.4);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            width: 100%;
-            aspect-ratio: 1 / 1; 
-            border-radius: 8px;
+            position: relative; border: 1px solid var(--border-subtle);
+            background: radial-gradient(circle at center, rgba(21, 22, 26, 0.8), rgba(10, 10, 12, 0.9));
+            border-radius: var(--radius-lg);
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+            width: 100%; aspect-ratio: 1 / 1;
         }
 
         #planet-canvas {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            cursor: grab;
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0; cursor: grab;
         }
         #planet-canvas:active { cursor: grabbing; }
 
-        /* --- TICKER STRIP --- */
+        /* --- 6. TICKER STRIP --- */
         .ticker {
-            width: 100%;
-            overflow: hidden;
-            border-bottom: 1px solid var(--stone);
-            background-color: var(--blue);
-            color: var(--ink);
-            padding: 14px 0;
-            font-family: var(--font-mono);
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.95rem;
-            white-space: nowrap;
+            width: 100%; overflow: hidden;
+            border-bottom: 1px solid var(--border-subtle);
+            background-color: var(--bg-sidebar);
+            color: var(--text-pure); padding: 14px 0;
+            font-family: var(--font-mono); font-weight: 700;
+            text-transform: uppercase; font-size: 0.82rem; white-space: nowrap;
         }
-        .ticker-content {
-            display: inline-block;
-            animation: marquee 25s linear infinite;
-        }
-        .ticker-item { margin: 0 30px; display: inline-block; }
+        .ticker-content { display: inline-block; animation: marquee 28s linear infinite; }
+        .ticker-item { margin: 0 32px; display: inline-block; color: var(--text-muted); }
+        .ticker-item span { color: var(--accent-blue); margin-right: 8px; }
         @keyframes marquee {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
 
-        /* --- SECTIONS GENERAL --- */
-        section.content-section { 
-            padding: 120px 40px; 
-            border-bottom: 1px solid var(--stone); 
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
+        /* --- 7. CONTENT SECTIONS --- */
+        section.content-section {
+            padding: 100px 48px; border-bottom: 1px solid var(--border-subtle);
+            max-width: 1360px; margin: 0 auto; position: relative;
         }
-        .section-header { margin-bottom: 60px; }
+        .section-header { margin-bottom: 48px; }
         .section-header .tag {
-            font-family: var(--font-mono);
-            color: var(--blue);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-bottom: 12px;
-            display: block;
+            font-family: var(--font-mono); color: var(--accent-blue);
+            font-size: 0.75rem; text-transform: uppercase; font-weight: 700;
+            letter-spacing: 0.08em; margin-bottom: 10px; display: block;
         }
         .section-header h2 {
-            font-family: var(--font-display);
-            font-size: 3rem;
-            text-transform: uppercase;
-            line-height: 1.1;
+            font-family: var(--font-display); font-size: 2.5rem;
+            font-weight: 700; color: var(--text-pure); line-height: 1.15;
         }
 
-        /* --- GRID CARDS --- */
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
 
         .flat-card {
-            background-color: rgba(13, 15, 20, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--stone);
-            padding: 36px 32px;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s, border-color 0.2s, background-color 0.2s;
-            border-radius: 8px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 30px 26px; display: flex; flex-direction: column;
+            transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
         }
         .flat-card:hover {
             transform: translateY(-4px);
-            border-color: var(--blue);
-            background-color: rgba(13, 15, 20, 0.9);
+            border-color: var(--border-light);
+            background-color: var(--bg-card-hover);
         }
 
         .card-meta {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            color: var(--blue);
-            text-transform: uppercase;
-            margin-bottom: 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-family: var(--font-mono); font-size: 0.72rem;
+            color: var(--accent-blue); text-transform: uppercase;
+            margin-bottom: 20px; display: flex;
+            justify-content: space-between; align-items: center; font-weight: 700;
         }
-        
-        .inline-icon {
-            width: 48px;
-            height: 48px;
+
+        /* Custom 2D Artwork Showcase inside Pillar Cards */
+        .pillar-art {
+            width: 96px; height: 96px; border-radius: var(--radius-md);
+            background: #FFFFFF; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; margin-bottom: 20px; border: 1px solid var(--border-light);
         }
+        .pillar-art img {
+            width: 100%; height: 100%; object-fit: contain;
+            transform: scale(1.35); transition: transform 0.25s ease;
+        }
+        .flat-card:hover .pillar-art img { transform: scale(1.48); }
 
         .flat-card h3 {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            margin-bottom: 16px;
-            color: var(--bone);
-            text-transform: uppercase;
+            font-family: var(--font-display); font-size: 1.3rem; font-weight: 700;
+            margin-bottom: 12px; color: var(--text-pure);
         }
         .flat-card p {
-            color: #a0a0a0;
-            font-size: 0.95rem;
-            margin-bottom: 32px;
-            flex-grow: 1;
-            line-height: 1.7;
+            color: var(--text-muted); font-size: 0.9rem;
+            margin-bottom: 24px; flex-grow: 1; line-height: 1.65;
         }
 
-        /* --- TESTIMONIALS --- */
-        .testimonials-wrapper {
-            background-color: var(--bone);
-            width: 100%;
-            border-bottom: 1px solid var(--stone);
+        /* Pillar Accents */
+        .pillar-theory:hover { border-color: var(--accent-purple); }
+        .pillar-theory .card-meta { color: var(--accent-purple); }
+        .pillar-data:hover { border-color: var(--accent-blue); }
+        .pillar-data .card-meta { color: var(--accent-blue); }
+        .pillar-obs:hover { border-color: var(--accent-rose); }
+        .pillar-obs .card-meta { color: var(--accent-rose); }
+
+        /* --- 8. TESTIMONIALS (DARK MODE UNIFIED) --- */
+        .testimonials-section {
+            padding: 90px 48px; max-width: 1360px; margin: 0 auto;
+            border-bottom: 1px solid var(--border-subtle);
         }
-        .testimonials { 
-            color: var(--ink); 
-            border-bottom: none;
-            padding: 80px 40px;
-            max-width: 1400px;
-            margin: 0 auto;
+        .quote-text {
+            font-size: 1rem; color: var(--text-main); font-style: italic;
+            margin-bottom: 20px; line-height: 1.7;
         }
-        .testimonials .flat-card { 
-            background-color: var(--bone); 
-            border: 1px solid var(--stone-light); 
-        }
-        .testimonials .flat-card:hover { 
-            border-color: var(--ink); 
-            transform: translateY(-4px);
-            box-shadow: 6px 6px 0 rgba(0,0,0,0.05);
-        }
-        .testimonials p { color: var(--stone-light); font-size: 1.1rem; font-style: italic; }
-        .testimonials .author {
-            font-family: var(--font-mono);
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: var(--ink);
+        .author {
+            font-family: var(--font-mono); font-weight: 700;
+            text-transform: uppercase; font-size: 0.75rem; color: var(--accent-green);
         }
 
         footer {
-            padding: 40px;
-            display: flex;
-            justify-content: space-between;
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--stone-light);
-            max-width: 1400px;
-            margin: 0 auto;
+            padding: 40px 48px; display: flex; justify-content: space-between;
+            font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);
+            max-width: 1360px; margin: 0 auto;
         }
 
-        /* --- LOGIN MODAL --- */
+        /* --- 9. AUTHENTICATION MODAL --- */
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: rgba(3, 3, 5, 0.8);
+            position: fixed; inset: 0;
+            background: rgba(5, 5, 7, 0.85);
             backdrop-filter: blur(8px);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            z-index: 9999; display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.25s ease; padding: 20px;
         }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
 
         .modal-content {
-            background-color: var(--ink-elevated);
-            border: 1px solid var(--stone);
-            padding: 40px;
-            border-radius: 8px;
-            width: 100%;
-            max-width: 400px;
-            position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-light);
+            padding: 36px; border-radius: var(--radius-lg);
+            width: 100%; max-width: 400px; position: relative;
+            transform: translateY(16px); transition: transform 0.25s ease;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
         }
-
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
 
         .close-btn {
-            position: absolute;
-            top: 15px; right: 15px;
-            background: none;
-            border: none;
-            color: var(--stone-light);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: color 0.2s;
+            position: absolute; top: 18px; right: 18px;
+            background: none; border: none; color: var(--text-muted);
+            font-size: 1.2rem; cursor: pointer; transition: color 0.2s;
         }
+        .close-btn:hover { color: var(--text-pure); }
 
-        .close-btn:hover {
-            color: var(--blue);
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
+        .input-group { margin-bottom: 16px; text-align: left; }
         .input-group label {
-            display: block;
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--bone);
-            margin-bottom: 8px;
-            text-transform: uppercase;
+            display: block; font-family: var(--font-mono); font-size: 0.72rem;
+            color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; font-weight: 700;
         }
-
         .input-group input {
-            width: 100%;
-            padding: 12px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--stone);
-            color: var(--bone);
-            font-family: var(--font-body);
-            border-radius: 4px;
-            transition: border-color 0.2s;
+            width: 100%; padding: 11px 14px; background: var(--bg-sidebar);
+            border: 1px solid var(--border-subtle); color: var(--text-pure);
+            font-family: var(--font-body); font-size: 0.9rem; border-radius: var(--radius-sm);
+            outline: none; transition: border-color 0.2s;
+        }
+        .input-group input:focus { border-color: var(--accent-blue); }
+
+        .auth-toggle {
+            margin-top: 18px; text-align: center; font-size: 0.85rem; color: var(--text-muted);
+        }
+        .auth-toggle span {
+            color: var(--accent-blue); font-weight: 600; cursor: pointer; text-decoration: underline;
+        }
+        .auth-error {
+            color: var(--accent-rose); font-size: 0.8rem; margin-top: 10px; text-align: center; display: none;
         }
 
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--blue);
-        }
-
-        @media (max-width: 1000px) {
-            .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 120px; gap: 60px; }
-            .hero-right { width: 100%; max-width: 600px; margin: 0 auto; aspect-ratio: 1 / 1; }
+        @media (max-width: 1024px) {
+            .hero { grid-template-columns: 1fr; padding-top: 110px; }
+            .hero-right { max-width: 520px; margin: 0 auto; }
             .grid-3, .grid-4 { grid-template-columns: 1fr; }
-            .grid-guide { display: none; }
+            .grid-guide, .nav-center { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Background Layers -->
-    <div class="universe-bg"></div>
-    <div class="nebula-overlay"></div>
+    <!-- Sky & Comets Background -->
+    <div class="sky-background">
+        <div class="comet" style="top: 8%; left: 85%; animation: shooting 9s infinite linear 1s;"></div>
+        <div class="comet" style="top: 45%; left: 95%; animation: shooting 12s infinite linear 5s;"></div>
+    </div>
     <div class="grid-guide"></div>
-
-    <!-- SVG MASCOT TEMPLATE -->
-    <svg style="display: none;">
-        <symbol id="nova-mascot" viewBox="0 0 100 100">
-            <path d="M 50 12 L 61 36 L 87 38 L 67 55 L 73 81 L 50 67 L 27 81 L 33 55 L 13 38 L 39 36 Z"
-                  fill="#fef08a" stroke="#785a46" stroke-width="7" stroke-linejoin="round" stroke-linecap="round" />
-            <g class="nova-eyes-group">
-                <ellipse cx="40" cy="46" rx="3.5" ry="5" fill="#785a46" transform="rotate(-15 40 46)" />
-                <ellipse cx="56" cy="46" rx="3.5" ry="5" fill="#785a46" transform="rotate(-15 56 46)" />
-                <path d="M 43 56 Q 48 62 53 56" stroke="#785a46" stroke-width="3" fill="none" stroke-linecap="round" />
-            </g>
-        </symbol>
-    </svg>
 
     <!-- NAVBAR -->
     <nav>
         <a href="landing.html" class="nav-logo">
-            <svg class="nova-icon"><use href="#nova-mascot"></use></svg>
-            <div class="logo-text">
-                <span class="main">SUPERNOVA</span>
-            </div>
+            <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span class="logo-text">SUPERNOVA GUIDE</span>
         </a>
-        <a href="#" id="login-trigger" class="btn-solid">Student Login</a>
+        <div class="nav-center">
+            <a href="#problems">Rotations</a>
+            <a href="#curriculum">Curriculum</a>
+            <a href="#leagues">Leagues</a>
+            <a href="problems.html">Practice Hub</a>
+            <a href="courses.html">Courses</a>
+        </div>
+        <div class="nav-actions">
+            <button id="login-trigger" class="btn-outline">Student Login</button>
+        </div>
     </nav>
 
     <!-- HERO -->
     <section class="hero">
         <div class="hero-left">
             <div class="dialogue-pill">
-                <svg class="nova-icon" style="width: 24px; height: 24px;"><use href="#nova-mascot"></use></svg>
-                <span>"Per aspera ad astra."</span>
+                <i class="fa-solid fa-sparkles"></i>
+                <span>IOAA PREPARATION ARCHITECTURE · "Per aspera ad astra"</span>
             </div>
             
-            <h1>Excellence in <br>Astronomy & <br><span style="color: var(--blue);">Astrophysics</span></h1>
+            <h1>Excellence in <br>Astronomy &amp; <br><span class="gradient-text">Astrophysics</span></h1>
             
             <p>
-                An open-source platform designed for Olympiad preparation. Master the core disciplines of IOAA through comprehensive problem sets, observational tools, and curated resources.
+                A centralized preparation platform engineered for Astronomy &amp; Astrophysics Olympiads. Master the 12 theoretical modules, data analysis regressions, and observational star mapping.
             </p>
             
             <div class="hero-buttons">
-                <a href="index.html" class="btn-solid">Start Practice</a>
+                <a href="problems.html" class="btn-primary">Enter Practice Hub <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="planetariu.html" class="btn-outline"><i class="fa-solid fa-satellite-dish"></i> Launch Planetarium</a>
             </div>
         </div>
 
@@ -539,16 +430,16 @@
     <!-- TICKER -->
     <section class="ticker">
         <div class="ticker-content">
-            <span class="ticker-item">◈ MULTIPLAYER PLANETARIUM ARENA</span>
-            <span class="ticker-item">◈ REAL-TIME ORBITAL MECHANICS</span>
-            <span class="ticker-item">◈ BLIND MAP SIMULATION</span>
-            <span class="ticker-item">◈ SPECTRAL CLASSIFICATION</span>
-            <span class="ticker-item">◈ DEEP SKY OBJECT TRACKING</span>
-            <span class="ticker-item">◈ MULTIPLAYER PLANETARIUM ARENA</span>
-            <span class="ticker-item">◈ REAL-TIME ORBITAL MECHANICS</span>
-            <span class="ticker-item">◈ BLIND MAP SIMULATION</span>
-            <span class="ticker-item">◈ SPECTRAL CLASSIFICATION</span>
-            <span class="ticker-item">◈ DEEP SKY OBJECT TRACKING</span>
+            <span class="ticker-item"><span>◈</span> 12-MODULE IOAA THEORY SYLLABUS</span>
+            <span class="ticker-item"><span>◈</span> REAL-TIME ORBITAL MECHANICS</span>
+            <span class="ticker-item"><span>◈</span> BLIND STAR MAP SIMULATION</span>
+            <span class="ticker-item"><span>◈</span> DATA REGRESSION &amp; LIGHT CURVES</span>
+            <span class="ticker-item"><span>◈</span> DEEP SKY OBJECT TRACKING</span>
+            <span class="ticker-item"><span>◈</span> 12-MODULE IOAA THEORY SYLLABUS</span>
+            <span class="ticker-item"><span>◈</span> REAL-TIME ORBITAL MECHANICS</span>
+            <span class="ticker-item"><span>◈</span> BLIND STAR MAP SIMULATION</span>
+            <span class="ticker-item"><span>◈</span> DATA REGRESSION &amp; LIGHT CURVES</span>
+            <span class="ticker-item"><span>◈</span> DEEP SKY OBJECT TRACKING</span>
         </div>
     </section>
 
@@ -560,80 +451,71 @@
         </div>
         <div class="grid-3">
             <div class="flat-card">
-                <div class="card-meta"><span>[ Daily // 24H Remaining ]</span></div>
+                <div class="card-meta"><span>[ Daily // 24H Rotation ]</span></div>
                 <h3>Problem of the Day</h3>
-                <p>Keplerian Orbit Shift: A brief academic setup requiring a single-answer analytical derivation.</p>
-                <a href="index.html" class="btn-link">Solve Today's Problem</a>
+                <p>Keplerian Orbit Shift: A focused analytical setup requiring a single-value derivation and orbital energy conservation.</p>
+                <a href="problems.html" class="btn-link">Solve Today's Problem <i class="fa-solid fa-arrow-right"></i></a>
             </div>
             <div class="flat-card">
-                <div class="card-meta"><span>[ Weekly // Advanced Deriv ]</span></div>
+                <div class="card-meta" style="color: var(--accent-purple);"><span>[ Weekly // Advanced Deriv ]</span></div>
                 <h3>Problem of the Week</h3>
-                <p>Accretion Disk Viscosity: Complex derivation sheet requiring rigorous mathematical proof and detailed rubric grading.</p>
-                <a href="index.html" class="btn-link">Open Weekly Challenge</a>
+                <p>Accretion Disk Viscosity: Full derivation sheet requiring rigorous mathematical proof and step-by-step rubric grading.</p>
+                <a href="problems.html" class="btn-link">Open Weekly Challenge <i class="fa-solid fa-arrow-right"></i></a>
             </div>
             <div class="flat-card">
-                <div class="card-meta"><span>[ Monthly // IOAA Grand Round ]</span></div>
+                <div class="card-meta" style="color: var(--accent-green);"><span>[ Monthly // IOAA Grand Round ]</span></div>
                 <h3>Problem of the Month</h3>
-                <p>Dark Matter Profiles: A multi-part Olympiad problem containing real-world datasets, graphing tasks, and theoretical implications.</p>
-                <a href="index.html" class="btn-link">Download Complete Packet</a>
+                <p>NFW Dark Matter Profiles: Multi-part Olympiad problem containing real galactic rotation datasets and plotting tasks.</p>
+                <a href="problems.html" class="btn-link">Open Complete Packet <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
 
-    <!-- 4 COMPETENCY PILLARS -->
+    <!-- 4 COMPETENCY PILLARS (FEATURING CUSTOM 2D ILLUSTRATIONS) -->
     <section id="curriculum" class="content-section">
         <div class="section-header">
             <span class="tag">Curriculum Matrix</span>
             <h2>Core Disciplines</h2>
         </div>
         <div class="grid-4">
-            <div class="flat-card">
-                <div class="card-meta">
-                    <span>01</span>
-                    <svg viewBox="0 0 64 64" class="inline-icon">
-                        <path d="M12 16 C 12 16, 24 12, 32 16 C 40 12, 52 16, 52 16 L 52 52 C 52 52, 40 48, 32 52 C 24 48, 12 52, 12 52 Z" fill="#a2d2ff" stroke="var(--icon-outline)" stroke-width="4" stroke-linejoin="round"/>
-                        <line x1="32" y1="16" x2="32" y2="52" stroke="var(--icon-outline)" stroke-width="4"/>
-                    </svg>
+            <div class="flat-card pillar-theory">
+                <div class="card-meta"><span>Track 01 · 12 Modules</span></div>
+                <div class="pillar-art">
+                    <img src="assets/img/theory/positional_celestial_mechanics_logo.png" alt="Theory Track">
                 </div>
                 <h3>Theory</h3>
-                <p>Comprehensive problem solving in celestial mechanics, astrophysics, thermodynamics, and cosmology.</p>
+                <p>Rigorous problem sets and derivations across celestial mechanics, stellar structure, general relativity, and cosmology.</p>
+                <a href="problems.html" class="btn-link">Explore Theory <i class="fa-solid fa-arrow-right"></i></a>
             </div>
-            <div class="flat-card">
-                <div class="card-meta">
-                    <span>02</span>
-                    <svg viewBox="0 0 64 64" class="inline-icon">
-                        <rect x="10" y="10" width="44" height="44" rx="4" fill="#ffb7b2" stroke="var(--icon-outline)" stroke-width="4" stroke-linejoin="round"/>
-                        <polyline points="18,46 28,30 38,38 48,20" fill="none" stroke="var(--icon-outline)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        <circle cx="48" cy="20" r="3" fill="var(--icon-outline)"/>
-                    </svg>
+
+            <div class="flat-card pillar-data">
+                <div class="card-meta"><span>Track 02 · Data &amp; Plots</span></div>
+                <div class="pillar-art">
+                    <img src="assets/img/data_analysis/methods_plotting_logo.png" alt="Data Analysis">
                 </div>
                 <h3>Data Analysis</h3>
-                <p>Extracting parameters from real datasets, light curves, error analysis, and graph plotting.</p>
+                <p>Extracting physical parameters from real IOAA datasets, photometric light curves, error propagation, and linear regression.</p>
+                <a href="problems.html" class="btn-link">Explore Data Track <i class="fa-solid fa-arrow-right"></i></a>
             </div>
-            <div class="flat-card">
-                <div class="card-meta">
-                    <span>03</span>
-                    <svg viewBox="0 0 64 64" class="inline-icon">
-                        <circle cx="32" cy="32" r="22" fill="#b5e48c" stroke="var(--icon-outline)" stroke-width="4"/>
-                        <path d="M16 20 Q 32 32 48 20 M12 32 Q 32 48 52 32 M16 44 Q 32 56 48 44" fill="none" stroke="var(--icon-outline)" stroke-width="4" stroke-linecap="round"/>
-                    </svg>
+
+            <div class="flat-card pillar-obs">
+                <div class="card-meta"><span>Track 03 · Naked-Eye</span></div>
+                <div class="pillar-art">
+                    <img src="assets/img/observational/blind_map_logo.png" alt="Blind Map">
                 </div>
                 <h3>Blind Map</h3>
-                <p>Naked eye observation techniques, constellation mapping, and star identification without coordinates.</p>
+                <p>Naked-eye observation rounds, constellation boundary recognition, Messier catalog objects, and coordinate estimation.</p>
+                <a href="problems.html" class="btn-link">Practice Blind Maps <i class="fa-solid fa-arrow-right"></i></a>
             </div>
-            <div class="flat-card">
-                <div class="card-meta">
-                    <span>04</span>
-                    <svg viewBox="0 0 64 64" class="inline-icon">
-                        <polygon points="14,46 50,18 54,24 18,52" fill="#e2e2ea" stroke="var(--icon-outline)" stroke-width="4" stroke-linejoin="round"/>
-                        <rect x="10" y="44" width="8" height="12" rx="2" fill="var(--icon-outline)" transform="rotate(-38 14 46)"/>
-                        <line x1="28" y1="44" x2="28" y2="60" stroke="var(--icon-outline)" stroke-width="4" stroke-linecap="round"/>
-                        <line x1="28" y1="50" x2="16" y2="60" stroke="var(--icon-outline)" stroke-width="4" stroke-linecap="round"/>
-                        <line x1="28" y1="50" x2="40" y2="60" stroke="var(--icon-outline)" stroke-width="4" stroke-linecap="round"/>
-                    </svg>
+
+            <div class="flat-card pillar-obs">
+                <div class="card-meta"><span>Track 04 · Instruments</span></div>
+                <div class="pillar-art">
+                    <img src="assets/img/observational/telescope_practice_logo.png" alt="Telescope Practice">
                 </div>
                 <h3>Telescope</h3>
-                <p>Field of view calculations, equatorial mount calibration, and tracking deep-sky objects.</p>
+                <p>Field of view mapping, equatorial mount calibration, polar alignment, setting circles, and deep-sky pointing exercises.</p>
+                <a href="problems.html" class="btn-link">Open Telescope Lab <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
@@ -648,50 +530,54 @@
             <div class="flat-card">
                 <div class="card-meta"><span>Olympiad Simulation</span></div>
                 <h3>Monthly Grand Prix</h3>
-                <p>5 Hours // 4 Comprehensive Tasks. A rigorous league mimicking senior IOAA theoretical rounds. Accumulate points over the season for the global leaderboard.</p>
-                <a href="index.html" class="btn-link">View League Schedule</a>
+                <p>5 Hours // 4 Comprehensive Tasks. A timed simulation mirroring senior IOAA theoretical rounds with global leaderboard points.</p>
+                <a href="index.html" class="btn-link">View League Schedule <i class="fa-solid fa-arrow-right"></i></a>
             </div>
             <div class="flat-card">
-                <div class="card-meta"><span>Sudden Death</span></div>
+                <div class="card-meta" style="color: var(--accent-purple);"><span>Sudden Death</span></div>
                 <h3>Top-16 Knockout Bracket</h3>
-                <p>Qualifier to Sudden Death. Pass the rapid MCQ stage to enter the final 16. Compete in timed head-to-head astrophysics matchups until the Grand Final.</p>
-                <a href="index.html" class="btn-link">Enter Qualifiers</a>
+                <p>Pass the rapid qualification stage to enter the final 16. Compete in head-to-head astrophysics matchups until the Grand Final.</p>
+                <a href="index.html" class="btn-link">Enter Qualifiers <i class="fa-solid fa-arrow-right"></i></a>
             </div>
             <div class="flat-card">
-                <div class="card-meta"><span>Virtual Observatory</span></div>
+                <div class="card-meta" style="color: var(--accent-rose);"><span>Virtual Observatory</span></div>
                 <h3>Live Planetarium Cup</h3>
-                <p>Observational Simulation. Prove your naked-eye navigation. Real-time 3D celestial mapping, blind coordinate tests, and star classifications.</p>
-                <a href="index.html" class="btn-link">Launch Arena</a>
+                <p>Test your observational speed in real-time 3D celestial coordinate mapping, star hopping, and DSO identification.</p>
+                <a href="planetariu.html" class="btn-link">Launch Arena <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
 
     <!-- TESTIMONIALS -->
-    <div class="testimonials-wrapper">
-        <section class="testimonials">
-            <div class="grid-3">
-                <div class="flat-card">
-                    <p>"Supernova's raw dataset problems bridges the gap between textbook physics and IOAA medals."</p>
-                    <div class="author">— IOAA Gold Medalist</div>
-                </div>
-                <div class="flat-card">
-                    <p>"The planetarium engine replicates national team selection tests with unmatched precision."</p>
-                    <div class="author">— National Team Mentor</div>
-                </div>
-                <div class="flat-card">
-                    <p>"The most rigorous IOAA prep archive currently available on the web."</p>
-                    <div class="author">— IAO Winner</div>
-                </div>
+    <section class="testimonials-section">
+        <div class="grid-3">
+            <div class="flat-card">
+                <p class="quote-text">"Supernova's raw dataset problems bridge the gap between textbook physics and IOAA medals."</p>
+                <div class="author">— IOAA Gold Medalist</div>
             </div>
-        </section>
-    </div>
+            <div class="flat-card">
+                <p class="quote-text">"The planetarium engine replicates national team selection tests with unmatched precision."</p>
+                <div class="author">— National Team Mentor</div>
+            </div>
+            <div class="flat-card">
+                <p class="quote-text">"The most structured and rigorous IOAA preparation archive available on the web."</p>
+                <div class="author">— International Olympiad Medalist</div>
+            </div>
+        </div>
+    </section>
 
-    <!-- LOGIN MODAL -->
+    <!-- LOGIN / REGISTER MODAL -->
     <div id="login-modal" class="modal-overlay">
         <div class="modal-content">
-            <button id="close-modal" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
-            <h2 style="margin-bottom: 20px; font-family: var(--font-display); text-transform: uppercase;">Student Access</h2>
+            <button id="close-modal" class="close-btn" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
+            <h2 id="auth-modal-title" style="margin-bottom: 6px; font-family: var(--font-display); color: var(--text-pure);">Student Login</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 22px;">Access your saved progress, handouts, and problem sets.</p>
+            
             <form id="login-form">
+                <div class="input-group" id="name-group" style="display: none;">
+                    <label for="username">Full Name / Handle</label>
+                    <input type="text" id="username" placeholder="Matei B.">
+                </div>
                 <div class="input-group">
                     <label for="email">Email Address</label>
                     <input type="email" id="email" required placeholder="student@supernova.edu">
@@ -700,213 +586,296 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" required placeholder="••••••••">
                 </div>
-                <button type="submit" class="btn-solid" style="width: 100%; justify-content: center; margin-top: 10px;">Login to Platform</button>
+                <button type="submit" id="auth-submit-btn" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 8px;">
+                    Sign In to Platform
+                </button>
+                <p id="auth-error" class="auth-error"></p>
             </form>
+
+            <div class="auth-toggle" id="auth-toggle-box">
+                New to Supernova Guide? <span id="auth-toggle-link">Create an account</span>
+            </div>
         </div>
     </div>
 
     <!-- FOOTER -->
     <footer>
         <div>SUPERNOVA GUIDE © 2026. ALL RIGHTS RESERVED.</div>
-        <div>SYSTEM ACTIVE</div>
+        <div style="color: var(--accent-green);">● SYSTEM ONLINE</div>
     </footer>
 
-    <!-- THREE.JS PLANET SCRIPT & MODAL LOGIC -->
+    <!-- 1. ISOLATED THREE.JS SCRIPT (Fixed Float32Array Syntax Error) -->
     <script>
-        const container = document.getElementById('planet-canvas');
-        const scene = new THREE.Scene();
-        
-        const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
-        camera.position.z = 14; 
-        camera.position.y = 1;
+        (function initPlanetScene() {
+            const container = document.getElementById('planet-canvas');
+            if (!container || typeof THREE === 'undefined') return;
 
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        container.appendChild(renderer.domElement);
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
+            camera.position.set(0, 1, 14);
 
-        const systemGroup = new THREE.Group();
-        scene.add(systemGroup);
-
-        // 1. Planet Body
-        const planetGeo = new THREE.SphereGeometry(2.8, 64, 64);
-        const planetMat = new THREE.MeshStandardMaterial({ 
-            color: 0x1a1c23,
-            roughness: 0.7,
-            metalness: 0.1,
-            flatShading: false
-        });
-        const planet = new THREE.Mesh(planetGeo, planetMat);
-        systemGroup.add(planet);
-
-        // 2. Atmospheric Glow
-        const atmosGeo = new THREE.SphereGeometry(3.0, 64, 64);
-        const atmosMat = new THREE.MeshBasicMaterial({
-            color: 0x35e6ff,
-            transparent: true,
-            opacity: 0.08,
-            blending: THREE.AdditiveBlending,
-            side: THREE.BackSide
-        });
-        const atmosphere = new THREE.Mesh(atmosGeo, atmosMat);
-        systemGroup.add(atmosphere);
-
-        // 3. Single Blue Ring
-        const ringGeo = new THREE.RingGeometry(3.8, 5.8, 64);
-        const ringMat = new THREE.MeshStandardMaterial({ 
-            color: 0x35e6ff, 
-            side: THREE.DoubleSide,
-            transparent: true,
-            opacity: 0.6,
-            roughness: 0.4
-        });
-        const ring = new THREE.Mesh(ringGeo, ringMat);
-        ring.rotation.x = Math.PI / 2;
-        systemGroup.add(ring);
-
-        // 4. Orbiting Moons
-        const moons = [];
-        const moonColors = [0xf4f4f0, 0x35e6ff, 0x5c3a21];
-        const moonRadii = [6.8, 7.8, 8.8];
-        const moonSpeeds = [0.6, 0.4, 0.2];
-
-        for(let i=0; i<3; i++) {
-            const moonGroup = new THREE.Group();
-            const mGeo = new THREE.SphereGeometry(0.12 + Math.random()*0.08, 32, 32);
-            const mMat = new THREE.MeshStandardMaterial({ color: moonColors[i], roughness: 0.8 });
-            const mMesh = new THREE.Mesh(mGeo, mMat);
-            
-            mMesh.position.x = moonRadii[i];
-            moonGroup.add(mMesh);
-            
-            const trailGeo = new THREE.RingGeometry(moonRadii[i] - 0.015, moonRadii[i] + 0.015, 64);
-            const trailMat = new THREE.MeshBasicMaterial({ color: moonColors[i], transparent: true, opacity: 0.15, side: THREE.DoubleSide });
-            const trail = new THREE.Mesh(trailGeo, trailMat);
-            trail.rotation.x = Math.PI / 2;
-            systemGroup.add(trail);
-
-            moonGroup.userData = { speed: moonSpeeds[i] };
-            moons.push(moonGroup);
-            systemGroup.add(moonGroup);
-        }
-
-        // 5. Debris / Dust Swirl
-        const debrisGeo = new THREE.BufferGeometry();
-        const debrisCount = 400;
-        const positions = new Float32Array(debrisCount * 3);
-        
-        for(let i=0; i<debrisCount; i++) {
-            const radius = 6.2 + Math.random() * 4;
-            const theta = Math.random() * Math.PI * 2;
-            positions[i*3] = Math.cos(theta) * radius;     
-            positions[i*3+1] = (Math.random() - 0.5) * 0.4; 
-            positions[i*3+2] = Math.sin(theta) * radius;
-        }
-        debrisGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        const debrisMat = new THREE.PointsMaterial({
-            color: 0x35e6ff,
-            size: 0.04,
-            transparent: true,
-            opacity: 0.6,
-            blending: THREE.AdditiveBlending
-        });
-        const debris = new THREE.Points(debrisGeo, debrisMat);
-        systemGroup.add(debris);
-
-        // Initial Tilt
-        systemGroup.rotation.z = 0.35;
-        systemGroup.rotation.x = 0.25;
-
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-        scene.add(ambientLight);
-
-        const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
-        dirLight.position.set(8, 5, 2);
-        scene.add(dirLight);
-
-        const rimLight = new THREE.PointLight(0x35e6ff, 4, 30); 
-        rimLight.position.set(-8, -4, -4);
-        scene.add(rimLight);
-        
-        const fillLight = new THREE.DirectionalLight(0x3a3f4e, 0.8);
-        fillLight.position.set(-5, 0, 5);
-        scene.add(fillLight);
-
-        // Mouse Interaction
-        let mouseX = 0;
-        let mouseY = 0;
-        let targetX = 0;
-        let targetY = 0;
-
-        container.addEventListener('mousemove', (e) => {
-            const rect = container.getBoundingClientRect();
-            mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-            mouseY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-        });
-
-        window.addEventListener('resize', () => {
-            camera.aspect = container.clientWidth / container.clientHeight;
-            camera.updateProjectionMatrix();
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             renderer.setSize(container.clientWidth, container.clientHeight);
-        });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
 
-        const clock = new THREE.Clock();
+            const systemGroup = new THREE.Group();
+            scene.add(systemGroup);
 
-        function animate() {
-            requestAnimationFrame(animate);
-            const delta = clock.getDelta();
-            const elapsedTime = clock.getElapsedTime();
+            // 1. Planet Body
+            const planetGeo = new THREE.SphereGeometry(2.8, 64, 64);
+            const planetMat = new THREE.MeshStandardMaterial({
+                color: 0x15161A,
+                roughness: 0.65,
+                metalness: 0.15
+            });
+            const planet = new THREE.Mesh(planetGeo, planetMat);
+            systemGroup.add(planet);
 
-            planet.rotation.y += 0.15 * delta;
-            ring.rotation.z -= 0.08 * delta;
-            debris.rotation.y -= 0.04 * delta;
+            // 2. Atmospheric Glow
+            const atmosGeo = new THREE.SphereGeometry(3.0, 64, 64);
+            const atmosMat = new THREE.MeshBasicMaterial({
+                color: 0x35e6ff,
+                transparent: true,
+                opacity: 0.08,
+                blending: THREE.AdditiveBlending,
+                side: THREE.BackSide
+            });
+            const atmosphere = new THREE.Mesh(atmosGeo, atmosMat);
+            systemGroup.add(atmosphere);
 
-            moons.forEach(moon => {
-                moon.rotation.y += moon.userData.speed * delta;
+            // 3. Accretion / Planetary Ring
+            const ringGeo = new THREE.RingGeometry(3.8, 5.8, 64);
+            const ringMat = new THREE.MeshStandardMaterial({
+                color: 0x35e6ff,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.55,
+                roughness: 0.4
+            });
+            const ring = new THREE.Mesh(ringGeo, ringMat);
+            ring.rotation.x = Math.PI / 2;
+            systemGroup.add(ring);
+
+            // 4. Orbiting Moons (Matched to Track Accent Colors)
+            const moons = [];
+            const moonColors = [0xB39CD0, 0x35E6FF, 0xFFC1CC];
+            const moonRadii = [6.8, 7.8, 8.8];
+            const moonSpeeds = [0.6, 0.4, 0.22];
+
+            for (let i = 0; i < 3; i++) {
+                const moonGroup = new THREE.Group();
+                const mGeo = new THREE.SphereGeometry(0.14 + i * 0.03, 32, 32);
+                const mMat = new THREE.MeshStandardMaterial({ color: moonColors[i], roughness: 0.6 });
+                const mMesh = new THREE.Mesh(mGeo, mMat);
+
+                mMesh.position.x = moonRadii[i];
+                moonGroup.add(mMesh);
+
+                const trailGeo = new THREE.RingGeometry(moonRadii[i] - 0.015, moonRadii[i] + 0.015, 64);
+                const trailMat = new THREE.MeshBasicMaterial({
+                    color: moonColors[i],
+                    transparent: true,
+                    opacity: 0.18,
+                    side: THREE.DoubleSide
+                });
+                const trail = new THREE.Mesh(trailGeo, trailMat);
+                trail.rotation.x = Math.PI / 2;
+                systemGroup.add(trail);
+
+                moonGroup.userData = { speed: moonSpeeds[i] };
+                moons.push(moonGroup);
+                systemGroup.add(moonGroup);
+            }
+
+            // 5. Debris Swirl (FIXED SYNTAX: debrisCount * 3)
+            const debrisGeo = new THREE.BufferGeometry();
+            const debrisCount = 400;
+            const positions = new Float32Array(debrisCount * 3);
+
+            for (let i = 0; i < debrisCount; i++) {
+                const radius = 6.2 + Math.random() * 4;
+                const theta = Math.random() * Math.PI * 2;
+                positions[i * 3] = Math.cos(theta) * radius;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 0.4;
+                positions[i * 3 + 2] = Math.sin(theta) * radius;
+            }
+            debrisGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const debrisMat = new THREE.PointsMaterial({
+                color: 0x35e6ff,
+                size: 0.045,
+                transparent: true,
+                opacity: 0.65,
+                blending: THREE.AdditiveBlending
+            });
+            const debris = new THREE.Points(debrisGeo, debrisMat);
+            systemGroup.add(debris);
+
+            // Initial Tilt
+            systemGroup.rotation.z = 0.35;
+            systemGroup.rotation.x = 0.25;
+
+            // Lighting
+            scene.add(new THREE.AmbientLight(0xffffff, 0.25));
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+            dirLight.position.set(8, 5, 2);
+            scene.add(dirLight);
+
+            const rimLight = new THREE.PointLight(0x35e6ff, 4, 30);
+            rimLight.position.set(-8, -4, -4);
+            scene.add(rimLight);
+
+            const fillLight = new THREE.DirectionalLight(0xb39cd0, 0.9);
+            fillLight.position.set(-5, 0, 5);
+            scene.add(fillLight);
+
+            let mouseX = 0, mouseY = 0;
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                mouseY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
             });
 
-            systemGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.15;
+            window.addEventListener('resize', () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
 
-            targetX = mouseX * 0.2;
-            targetY = mouseY * 0.2;
-            
-            systemGroup.rotation.y += 0.05 * (targetX - systemGroup.rotation.y);
-            systemGroup.rotation.x += 0.05 * (targetY - systemGroup.rotation.x) + 0.25 * 0.05;
+            const clock = new THREE.Clock();
+            function animate() {
+                requestAnimationFrame(animate);
+                const delta = clock.getDelta();
+                const elapsedTime = clock.getElapsedTime();
 
-            renderer.render(scene, camera);
+                planet.rotation.y += 0.15 * delta;
+                ring.rotation.z -= 0.08 * delta;
+                debris.rotation.y -= 0.04 * delta;
+
+                moons.forEach(moon => {
+                    moon.rotation.y += moon.userData.speed * delta;
+                });
+
+                systemGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.15;
+
+                const targetX = mouseX * 0.25;
+                const targetY = mouseY * 0.25;
+                systemGroup.rotation.y += 0.05 * (targetX - systemGroup.rotation.y);
+                systemGroup.rotation.x += 0.05 * (targetY + 0.25 - systemGroup.rotation.x);
+
+                renderer.render(scene, camera);
+            }
+            animate();
+        })();
+    </script>
+
+    <!-- 2. MODAL & FIREBASE AUTHENTICATION SCRIPT -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const isConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY";
+        let auth = null;
+        if (isConfigured) {
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
         }
-        animate();
 
-        // --- LOGIN MODAL LOGIC ---
         const loginTrigger = document.getElementById('login-trigger');
         const loginModal = document.getElementById('login-modal');
         const closeModal = document.getElementById('close-modal');
         const loginForm = document.getElementById('login-form');
+        const nameGroup = document.getElementById('name-group');
+        const modalTitle = document.getElementById('auth-modal-title');
+        const submitBtn = document.getElementById('auth-submit-btn');
+        const toggleBox = document.getElementById('auth-toggle-box');
+        const errorEl = document.getElementById('auth-error');
 
-        // Open Modal
+        let isRegisterMode = false;
+
+        // Open & Close Modal
         loginTrigger.addEventListener('click', (e) => {
             e.preventDefault();
+            errorEl.style.display = 'none';
             loginModal.classList.add('active');
         });
 
-        // Close Modal via X button
-        closeModal.addEventListener('click', () => {
-            loginModal.classList.remove('active');
+        closeModal.addEventListener('click', () => loginModal.classList.remove('active'));
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) loginModal.classList.remove('active');
         });
 
-        // Close Modal by clicking overlay backdrop
-        loginModal.addEventListener('click', (e) => {
-            if (e.target === loginModal) {
-                loginModal.classList.remove('active');
+        // Toggle between Sign In and Register
+        toggleBox.addEventListener('click', (e) => {
+            if (e.target.id !== 'auth-toggle-link') return;
+            isRegisterMode = !isRegisterMode;
+            errorEl.style.display = 'none';
+
+            if (isRegisterMode) {
+                modalTitle.textContent = 'Create Account';
+                nameGroup.style.display = 'block';
+                submitBtn.textContent = 'Register & Enter Hub';
+                toggleBox.innerHTML = 'Already have an account? <span id="auth-toggle-link">Sign In</span>';
+            } else {
+                modalTitle.textContent = 'Student Login';
+                nameGroup.style.display = 'none';
+                submitBtn.textContent = 'Sign In to Platform';
+                toggleBox.innerHTML = 'New to Supernova Guide? <span id="auth-toggle-link">Create an account</span>';
             }
         });
 
-        // Redirect to index.html on submit
-        loginForm.addEventListener('submit', (e) => {
+        // Handle Form Submission
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            window.location.href = 'index.html'; 
+            errorEl.style.display = 'none';
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const username = document.getElementById('username').value.trim();
+
+            // Local Dev Fallback if Firebase keys haven't been pasted yet
+            if (!isConfigured) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                if (isRegisterMode) {
+                    const cred = await createUserWithEmailAndPassword(auth, email, password);
+                    if (username) {
+                        await updateProfile(cred.user, { displayName: username });
+                    }
+                } else {
+                    await signInWithEmailAndPassword(auth, email, password);
+                }
+                window.location.href = 'index.html';
+            } catch (err) {
+                errorEl.textContent = err.message.replace('Firebase: ', '');
+                errorEl.style.display = 'block';
+            }
         });
+
+        // Update Navbar button if already logged in
+        if (auth) {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    loginTrigger.textContent = 'Go to Dashboard';
+                    loginTrigger.onclick = (e) => {
+                        e.preventDefault();
+                        window.location.href = 'index.html';
+                    };
+                }
+            });
+        }
     </script>
 </body>
 </html>
