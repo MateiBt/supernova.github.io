@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Courses & Lectures | Supernova Guide</title>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Canonical Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #0A0A0C;
+            --bg-sidebar: #101115;
+            --bg-card: #15161A;
+            --bg-card-hover: #1C1D22;
+            
+            --accent-green: #2BE38A;
+            --accent-blue: #35E6FF;
+            --accent-purple: #B39CD0;
+            --accent-rose: #FFC1CC;
+            
+            --text-pure: #FFFFFF;
+            --text-main: #EDEDED;
+            --text-muted: #8A94A6;
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            
+            --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .sky-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; pointer-events: none; overflow: hidden; background-color: var(--bg-base);
+        }
+
+        .comet {
+            position: absolute; width: 160px; height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent-blue));
+            border-radius: 50%; opacity: 0;
+        }
+        .comet::before {
+            content: ''; position: absolute; top: -2px; right: 0; width: 6px; height: 6px;
+            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px rgba(53, 230, 255, 0.6);
+        }
+        @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 260px; background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+            display: flex; flex-direction: column;
+            padding: 24px 20px; flex-shrink: 0; z-index: 100;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 16px;
+            font-family: var(--font-display); font-size: 1.3rem;
+            font-weight: 700; color: var(--text-pure);
+            margin-bottom: 40px; padding-left: 4px; line-height: 1.2;
+        }
+        .brand img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; }
+        .menu-label {
+            font-family: var(--font-mono); font-size: 0.7rem;
+            color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.05em; margin: 20px 0 10px 8px;
+        }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 12px; border-radius: var(--radius-sm);
+            color: var(--text-muted); text-decoration: none;
+            font-weight: 500; font-size: 0.9rem; transition: all 0.2s ease;
+        }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
+        .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
+        .nav-item.active { background-color: rgba(53, 230, 255, 0.1); color: var(--accent-blue); border-left: 3px solid var(--accent-blue); }
+
+        .sidebar-footer { margin-top: auto; }
+        .mobile-app-promo {
+            background: linear-gradient(135deg, rgba(43, 227, 138, 0.1), rgba(43, 227, 138, 0.02));
+            border: 1px solid rgba(43, 227, 138, 0.2);
+            padding: 16px; border-radius: var(--radius-md); text-align: center;
+        }
+        .mobile-app-promo h4 { color: var(--accent-green); font-size: 0.85rem; margin-bottom: 8px; }
+        .mobile-app-promo p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px; }
+        .btn-promo {
+            background: var(--accent-green); color: var(--bg-base); border: none;
+            width: 100%; padding: 8px; border-radius: 6px; font-weight: 600; cursor: pointer;
+        }
+
+        /* --- MAIN AREA --- */
+        .dashboard-main {
+            flex: 1; overflow-y: auto; padding: 32px 40px;
+            display: flex; flex-direction: column; gap: 28px;
+        }
+
+        .top-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .header-title h1 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; color: var(--text-pure); }
+        .header-title p { color: var(--text-muted); font-size: 0.9rem; max-width: 600px; line-height: 1.5; }
+        
+        .header-actions { display: flex; align-items: center; gap: 16px; }
+        .btn-add-toggle {
+            background: rgba(43, 227, 138, 0.12); color: var(--accent-green);
+            border: 1px solid rgba(43, 227, 138, 0.35); padding: 9px 16px;
+            border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.2s ease;
+        }
+        .btn-add-toggle:hover { background: var(--accent-green); color: var(--bg-base); }
+
+        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border-light); object-fit: cover; }
+        .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
+        .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+        /* --- LINK UPLOADER & LIVE THUMBNAIL PREVIEW PANEL --- */
+        .uploader-panel {
+            background: var(--bg-card); border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg); padding: 24px;
+            display: none; grid-template-columns: 1fr 280px; gap: 24px;
+            align-items: center;
+        }
+        .uploader-panel.open { display: grid; }
+        .uploader-form { display: flex; flex-direction: column; gap: 14px; }
+        .uploader-form h3 { font-family: var(--font-display); font-size: 1.1rem; color: var(--text-pure); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .input-field {
+            background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
+            color: var(--text-pure); padding: 10px 14px; border-radius: var(--radius-sm);
+            font-family: var(--font-body); font-size: 0.85rem; outline: none; width: 100%;
+        }
+        .input-field:focus { border-color: var(--accent-blue); }
+        .live-preview-box {
+            width: 100%; aspect-ratio: 16 / 9; background: var(--bg-sidebar);
+            border: 1px dashed var(--border-light); border-radius: var(--radius-md);
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
+            position: relative; color: var(--text-muted); font-size: 0.8rem; text-align: center;
+        }
+        .live-preview-box img { width: 100%; height: 100%; object-fit: cover; display: none; }
+
+        /* --- FILTER BAR --- */
+        .controls-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 16px; border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 16px;
+        }
+        .filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-btn {
+            background: var(--bg-card); color: var(--text-muted);
+            border: 1px solid var(--border-subtle); padding: 8px 16px;
+            border-radius: 99px; font-size: 0.85rem; font-weight: 500;
+            cursor: pointer; transition: all 0.2s ease;
+        }
+        .filter-btn:hover { color: var(--text-pure); border-color: var(--border-light); }
+        .filter-btn.active { background: var(--accent-blue); color: var(--bg-base); border-color: var(--accent-blue); font-weight: 600; }
+
+        .search-bar {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            padding: 8px 16px; border-radius: 99px; display: flex; align-items: center; gap: 8px;
+            color: var(--text-muted); font-size: 0.85rem; width: 260px;
+        }
+        .search-bar input { background: transparent; border: none; color: var(--text-main); outline: none; width: 100%; }
+
+        /* --- COURSE VIDEO CARDS --- */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .course-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); overflow: hidden;
+            display: flex; flex-direction: column;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+        .course-card:hover { transform: translateY(-4px); border-color: var(--border-light); background: var(--bg-card-hover); }
+
+        .thumbnail-wrapper {
+            position: relative; width: 100%; aspect-ratio: 16 / 9;
+            background: #050507; overflow: hidden; cursor: pointer;
+        }
+        .thumbnail-wrapper img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.3s ease, opacity 0.2s ease;
+        }
+        .course-card:hover .thumbnail-wrapper img { transform: scale(1.05); opacity: 0.85; }
+
+        .play-overlay {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(10, 10, 12, 0.35); opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .course-card:hover .play-overlay { opacity: 1; }
+        .play-circle {
+            width: 54px; height: 54px; border-radius: 50%;
+            background: var(--accent-blue); color: var(--bg-base);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.25rem; box-shadow: 0 8px 24px rgba(53, 230, 255, 0.4);
+        }
+
+        .duration-badge {
+            position: absolute; bottom: 10px; right: 10px;
+            background: rgba(10, 10, 12, 0.85); color: var(--text-pure);
+            font-family: var(--font-mono); font-size: 0.72rem;
+            padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border-subtle);
+        }
+
+        .course-body { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+        .course-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        
+        .track-badge {
+            font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase;
+            padding: 3px 9px; border-radius: 99px; font-weight: 700;
+        }
+        .badge-theory { background: rgba(179, 156, 208, 0.15); color: var(--accent-purple); }
+        .badge-data { background: rgba(53, 230, 255, 0.15); color: var(--accent-blue); }
+        .badge-obs { background: rgba(255, 193, 204, 0.15); color: var(--accent-rose); }
+
+        .source-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
+
+        .course-title {
+            font-family: var(--font-display); font-size: 1.1rem; font-weight: 600;
+            color: var(--text-pure); margin-bottom: 8px; line-height: 1.35;
+        }
+        .course-desc {
+            font-size: 0.85rem; color: var(--text-muted); line-height: 1.55;
+            margin-bottom: 20px; flex-grow: 1;
+        }
+
+        .course-actions { display: flex; gap: 10px; margin-top: auto; }
+        .btn-watch {
+            flex: 1; background: var(--bg-sidebar); color: var(--text-pure);
+            border: 1px solid var(--border-light); padding: 9px 14px;
+            border-radius: var(--radius-sm); font-size: 0.82rem; font-weight: 600;
+            cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+            gap: 8px; text-decoration: none; transition: all 0.2s;
+        }
+        .btn-watch:hover { background: var(--accent-blue); color: var(--bg-base); border-color: var(--accent-blue); }
+        .btn-ext {
+            background: transparent; color: var(--text-muted);
+            border: 1px solid var(--border-subtle); padding: 9px 12px;
+            border-radius: var(--radius-sm); cursor: pointer; text-decoration: none;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .btn-ext:hover { color: var(--text-pure); border-color: var(--border-light); }
+
+        /* --- VIDEO MODAL --- */
+        .video-modal {
+            position: fixed; inset: 0; background: rgba(5, 5, 7, 0.88);
+            backdrop-filter: blur(8px); z-index: 1000;
+            display: none; align-items: center; justify-content: center; padding: 24px;
+        }
+        .video-modal.active { display: flex; }
+        .modal-content {
+            width: 100%; max-width: 960px; background: var(--bg-card);
+            border: 1px solid var(--border-light); border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 20px; border-bottom: 1px solid var(--border-subtle);
+        }
+        .modal-header h4 { font-family: var(--font-display); color: var(--text-pure); }
+        .btn-close-modal { background: none; border: none; color: var(--text-muted); font-size: 1.3rem; cursor: pointer; }
+        .btn-close-modal:hover { color: var(--text-pure); }
+        .modal-iframe-container { width: 100%; aspect-ratio: 16 / 9; background: #000; }
+        .modal-iframe-container iframe { width: 100%; height: 100%; border: none; }
+
+        @media (max-width: 800px) {
+            .sidebar { display: none; }
+            .uploader-panel.open { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sky-background">
+        <div class="comet" style="top: 5%; left: 90%; animation: shooting 8s infinite linear 2s;"></div>
+    </div>
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar">
+        <div class="brand">
+            <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span>SUPERNOVA<br>GUIDE</span>
+        </div>
+        
+        <div class="menu-label">Menu</div>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
+            <li><a href="courses.html" class="nav-item active"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="#" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+        </ul>
+        
+        <div class="menu-label">General</div>
+        <ul class="nav-menu">
+            <li><a href="profile.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
+            <li><a href="landing.html" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <div class="mobile-app-promo">
+                <h4>Join the League</h4>
+                <p>Register for the upcoming IOAA Simulation Grand Prix.</p>
+                <button class="btn-promo">Register Now</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+        
+        <header class="top-header">
+            <div class="header-title">
+                <h1>Video Courses & Lectures</h1>
+                <p>Curated university lectures, Olympiad problem walkthroughs, and observational tutorials with automatic link previewing.</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-add-toggle" id="toggle-uploader-btn">
+                    <i class="fa-solid fa-plus"></i> Add Resource Link
+                </button>
+                <div class="user-profile">
+                    <img id="user-avatar" src="https://ui-avatars.com/api/?name=User&background=35E6FF&color=050507" alt="User" class="avatar">
+                    <div class="user-info">
+                        <h4 id="user-name-display">Loading...</h4>
+                        <p id="user-role-display">Candidate</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- INTERACTIVE LINK UPLOADER WITH AUTO THUMBNAIL PREVIEW -->
+        <section class="uploader-panel" id="uploader-panel">
+            <div class="uploader-form">
+                <h3>Add Video or Course Link</h3>
+                <div class="form-row">
+                    <input type="text" id="res-url" class="input-field" placeholder="Paste YouTube URL (e.g. https://youtu.be/...)">
+                    <input type="text" id="res-title" class="input-field" placeholder="Lecture Title">
+                </div>
+                <div class="form-row">
+                    <select id="res-category" class="input-field">
+                        <option value="theory">Theory Track</option>
+                        <option value="data">Data Analysis</option>
+                        <option value="obs">Observational</option>
+                    </select>
+                    <input type="text" id="res-source" class="input-field" placeholder="Source / Channel (e.g. MIT OCW, IOAA)">
+                </div>
+                <input type="text" id="res-desc" class="input-field" placeholder="Short description of the lecture or resource...">
+                <div style="display:flex; gap:10px;">
+                    <button class="btn-add-toggle" id="save-resource-btn" style="background:var(--accent-green); color:var(--bg-base);">
+                        <i class="fa-solid fa-check"></i> Publish to Grid
+                    </button>
+                </div>
+            </div>
+            <div class="live-preview-box">
+                <span id="preview-placeholder"><i class="fa-brands fa-youtube" style="font-size:1.6rem; display:block; margin-bottom:6px;"></i>Thumbnail Preview</span>
+                <img id="preview-img" alt="Thumbnail Preview">
+            </div>
+        </section>
+
+        <!-- FILTER & SEARCH BAR -->
+        <div class="controls-bar">
+            <div class="filter-pills">
+                <button class="filter-btn active" data-filter="all">All Resources</button>
+                <button class="filter-btn" data-filter="theory">Theory Lectures</button>
+                <button class="filter-btn" data-filter="data">Data Analysis</button>
+                <button class="filter-btn" data-filter="obs">Observational</button>
+            </div>
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="course-search" placeholder="Search lectures...">
+            </div>
+        </div>
+
+        <!-- DYNAMIC COURSES GRID -->
+        <div class="courses-grid" id="courses-grid"></div>
+
+    </main>
+
+    <!-- EMBED VIDEO PLAYER MODAL -->
+    <div class="video-modal" id="video-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modal-title">Lecture Player</h4>
+                <button class="btn-close-modal" id="close-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-iframe-container">
+                <iframe id="modal-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS: YOUTUBE PARSER, GRID RENDERER & FIREBASE AUTH -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, (user) => {
+            const nameDisplay = document.getElementById('user-name-display');
+            const avatarDisplay = document.getElementById('user-avatar');
+            if (user) {
+                const displayName = user.displayName || user.email.split('@')[0];
+                if (nameDisplay) nameDisplay.innerText = displayName;
+                if (avatarDisplay) avatarDisplay.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=35E6FF&color=050507`;
+            } else {
+                if (nameDisplay) nameDisplay.innerText = "Guest";
+            }
+        });
+    </script>
+
+    <script>
+        // Default Curated Courses (Add or edit default links here)
+        const defaultCourses = [
+            {
+                title: "Celestial Sphere & Coordinate Transformations",
+                url: "https://www.youtube.com/watch?v=M82_3yq8c8c",
+                category: "theory",
+                source: "IOAA Prep",
+                duration: "42:15",
+                desc: "Complete derivation of spherical trigonometry identities for horizontal, equatorial, and ecliptic coordinate conversions."
+            },
+            {
+                title: "Orbital Mechanics: Vis-Viva & Hohmann Transfers",
+                url: "https://www.youtube.com/watch?v=Am7EwmxBAW8",
+                category: "theory",
+                source: "MIT OpenCourseWare",
+                duration: "51:20",
+                desc: "Energy conservation in two-body systems, elliptical orbital elements, and delta-v calculations for interplanetary transfers."
+            },
+            {
+                title: "Linear Regression, Residuals & Error Propagation",
+                url: "https://www.youtube.com/watch?v=nk2CQITm_eo",
+                category: "data",
+                source: "Data Track Lab",
+                duration: "28:40",
+                desc: "Step-by-step walkthrough on weighting error bars, linearizing power-law datasets, and plotting residuals for IOAA Data exams."
+            },
+            {
+                title: "Equatorial Mount Polar Alignment & Setting Circles",
+                url: "https://www.youtube.com/watch?v=plx6XXDgf2E",
+                category: "obs",
+                source: "Obs Field Manual",
+                duration: "19:10",
+                desc: "Practical demonstration of balancing an equatorial mount, drift alignment, and dialing in Right Ascension and Declination."
+            }
+        ];
+
+        // Extract 11-char YouTube Video ID from any YT URL format
+        function extractYouTubeId(url) {
+            if (!url) return null;
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        function getThumbnailUrl(url) {
+            const ytId = extractYouTubeId(url);
+            return ytId 
+                ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`
+                : 'assets/img/supernova_logo.png';
+        }
+
+        // Load courses from localStorage + defaults
+        function getCourses() {
+            const saved = localStorage.getItem('supernova_custom_courses');
+            const custom = saved ? JSON.parse(saved) : [];
+            return [...custom, ...defaultCourses];
+        }
+
+        const gridEl = document.getElementById('courses-grid');
+        let activeFilter = 'all';
+        let searchQuery = '';
+
+        function renderCourses() {
+            const list = getCourses().filter(item => {
+                const matchesCat = activeFilter === 'all' || item.category === activeFilter;
+                const matchesSearch = item.title.toLowerCase().includes(searchQuery) || 
+                                      item.desc.toLowerCase().includes(searchQuery) ||
+                                      item.source.toLowerCase().includes(searchQuery);
+                return matchesCat && matchesSearch;
+            });
+
+            const badgeMap = {
+                theory: { cls: 'badge-theory', label: 'Theory' },
+                data: { cls: 'badge-data', label: 'Data Analysis' },
+                obs: { cls: 'badge-obs', label: 'Observational' }
+            };
+
+            gridEl.innerHTML = list.map((item, idx) => {
+                const thumb = getThumbnailUrl(item.url);
+                const badge = badgeMap[item.category] || badgeMap.theory;
+                const ytId = extractYouTubeId(item.url);
+
+                return `
+                    <article class="course-card">
+                        <div class="thumbnail-wrapper" onclick="openVideoModal('${ytId || ''}', '${item.url}', '${item.title.replace(/'/g, "\\'")}')">
+                            <img src="${thumb}" alt="${item.title}" loading="lazy">
+                            <div class="play-overlay">
+                                <div class="play-circle"><i class="fa-solid fa-play"></i></div>
+                            </div>
+                            ${item.duration ? `<span class="duration-badge">${item.duration}</span>` : ''}
+                        </div>
+                        <div class="course-body">
+                            <div class="course-meta">
+                                <span class="track-badge ${badge.cls}">${badge.label}</span>
+                                <span class="source-label">${item.source || 'Resource'}</span>
+                            </div>
+                            <h3 class="course-title">${item.title}</h3>
+                            <p class="course-desc">${item.desc}</p>
+                            <div class="course-actions">
+                                <button class="btn-watch" onclick="openVideoModal('${ytId || ''}', '${item.url}', '${item.title.replace(/'/g, "\\'")}')">
+                                    <i class="fa-solid fa-circle-play"></i> Watch Lecture
+                                </button>
+                                <a href="${item.url}" target="_blank" rel="noopener" class="btn-ext" title="Open original link">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        // Video Modal Player Logic
+        window.openVideoModal = function(ytId, rawUrl, title) {
+            if (!ytId) {
+                window.open(rawUrl, '_blank');
+                return;
+            }
+            const modal = document.getElementById('video-modal');
+            const iframe = document.getElementById('modal-iframe');
+            document.getElementById('modal-title').innerText = title;
+            iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1`;
+            modal.classList.add('active');
+        };
+
+        document.getElementById('close-modal-btn').addEventListener('click', () => {
+            const modal = document.getElementById('video-modal');
+            document.getElementById('modal-iframe').src = '';
+            modal.classList.remove('active');
+        });
+
+        // Live Thumbnail Preview in Uploader Panel
+        const urlInput = document.getElementById('res-url');
+        const previewImg = document.getElementById('preview-img');
+        const previewPlaceholder = document.getElementById('preview-placeholder');
+
+        urlInput.addEventListener('input', () => {
+            const ytId = extractYouTubeId(urlInput.value.trim());
+            if (ytId) {
+                previewImg.src = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+                previewImg.style.display = 'block';
+                previewPlaceholder.style.display = 'none';
+            } else {
+                previewImg.style.display = 'none';
+                previewPlaceholder.style.display = 'block';
+            }
+        });
+
+        // Toggle Uploader Panel
+        document.getElementById('toggle-uploader-btn').addEventListener('click', () => {
+            document.getElementById('uploader-panel').classList.toggle('open');
+        });
+
+        // Save New Link to Grid
+        document.getElementById('save-resource-btn').addEventListener('click', () => {
+            const url = document.getElementById('res-url').value.trim();
+            const title = document.getElementById('res-title').value.trim();
+            const category = document.getElementById('res-category').value;
+            const source = document.getElementById('res-source').value.trim() || 'YouTube Lecture';
+            const desc = document.getElementById('res-desc').value.trim() || 'Supplemental video lecture and walkthrough.';
+
+            if (!url || !title) {
+                alert('Please provide both a valid URL and a Lecture Title.');
+                return;
+            }
+
+            const saved = localStorage.getItem('supernova_custom_courses');
+            const custom = saved ? JSON.parse(saved) : [];
+            custom.unshift({ title, url, category, source, desc });
+            localStorage.setItem('supernova_custom_courses', JSON.stringify(custom));
+
+            document.getElementById('res-url').value = '';
+            document.getElementById('res-title').value = '';
+            document.getElementById('res-source').value = '';
+            document.getElementById('res-desc').value = '';
+            previewImg.style.display = 'none';
+            previewPlaceholder.style.display = 'block';
+            document.getElementById('uploader-panel').classList.remove('open');
+
+            renderCourses();
+        });
+
+        // Filter & Search Listeners
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter = btn.dataset.filter;
+                renderCourses();
+            });
+        });
+
+        document.getElementById('course-search').addEventListener('input', (e) => {
+            searchQuery = e.target.value.toLowerCase();
+            renderCourses();
+        });
+
+        renderCourses();
+    </script>
+</body>
+</html>

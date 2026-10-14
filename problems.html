@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practice Hub | Supernova Guide</title>
+    <title>Curriculum & Practice Hub | Supernova Guide</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -58,7 +58,6 @@
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* CSS Sky Background & Comets */
         .sky-background {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -2; pointer-events: none; overflow: hidden; background-color: var(--bg-base);
@@ -79,35 +78,20 @@
 
         /* --- 3. SIDEBAR --- */
         .sidebar {
-            width: 260px;
-            background-color: var(--bg-sidebar);
+            width: 260px; background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border-subtle);
-            display: flex;
-            flex-direction: column;
-            padding: 24px 20px;
-            flex-shrink: 0;
-            z-index: 100;
+            display: flex; flex-direction: column;
+            padding: 24px 20px; flex-shrink: 0; z-index: 100;
         }
 
         .brand {
-            display: flex; 
-            align-items: center; 
-            gap: 16px;
-            font-family: var(--font-display); 
-            font-size: 1.3rem;
-            font-weight: 700; 
-            color: var(--text-pure);
-            margin-bottom: 40px; 
-            padding-left: 4px;
-            line-height: 1.2;
+            display: flex; align-items: center; gap: 16px;
+            font-family: var(--font-display); font-size: 1.3rem;
+            font-weight: 700; color: var(--text-pure);
+            margin-bottom: 40px; padding-left: 4px; line-height: 1.2;
         }
         
-        .brand img {
-            width: 80px; 
-            height: 80px;
-            border-radius: 50%; 
-            object-fit: cover;
-        }
+        .brand img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; }
 
         .menu-label {
             font-family: var(--font-mono); font-size: 0.7rem;
@@ -147,7 +131,7 @@
 
         .top-header { display: flex; justify-content: space-between; align-items: center; }
         .header-title h1 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; color: var(--text-pure); }
-        .header-title p { color: var(--text-muted); font-size: 0.9rem; max-width: 600px; line-height: 1.5; }
+        .header-title p { color: var(--text-muted); font-size: 0.9rem; max-width: 650px; line-height: 1.5; }
         
         .header-actions { display: flex; align-items: center; gap: 20px; }
         .icon-btn { background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; transition: color 0.2s; }
@@ -158,62 +142,43 @@
         .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
         .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
 
-        /* Dynamic Grid System */
         .grid-layout { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); 
             gap: 24px; 
         }
 
-        /* Section Titles */
         .section-header { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            margin-bottom: -8px; 
-            padding-top: 16px; 
-            border-bottom: 1px solid var(--border-subtle); 
-            padding-bottom: 12px; 
+            display: flex; align-items: center; gap: 12px; 
+            margin-bottom: -8px; padding-top: 16px; 
+            border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px; 
         }
         .section-header h2 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--text-pure); }
         .section-header i { font-size: 1.2rem; }
 
-        /* Module Cards */
+        /* Module Cards & Dual Action Buttons */
         .card {
             background: var(--bg-card); border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column;
-            transition: transform 0.2s ease, border-color 0.2s ease;
-            text-decoration: none; color: inherit;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
         }
         .card:hover { transform: translateY(-4px); border-color: var(--border-light); background: var(--bg-card-hover); }
 
         .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
         
         .module-icon {
-            width: 160px; 
-            height: 160px;
-            border-radius: 16px;
+            width: 160px; height: 160px; border-radius: 16px;
             display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
-            font-size: 3.5rem;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.2s ease;
-            background-color: #FFFFFF;
-            flex-shrink: 0;
+            overflow: hidden; border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.2s ease; background-color: #FFFFFF; flex-shrink: 0;
         }
         
         .module-icon img {
-            width: 100%; 
-            height: 100%; 
-            object-fit: contain;
-            transform: scale(1.4);
-            padding: 0;
-            transition: transform 0.2s ease;
+            width: 100%; height: 100%; object-fit: contain;
+            transform: scale(1.4); transition: transform 0.2s ease;
         }
         
-        .card:hover .module-icon img { 
-            transform: scale(1.5); 
-        }
+        .card:hover .module-icon img { transform: scale(1.5); }
 
         .progress-pill {
             font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
@@ -223,33 +188,50 @@
 
         .card-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--text-pure); margin-bottom: 8px; }
         
-        /* Updated List Styling for Subchapters */
         .module-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; flex-grow: 1; }
         .module-desc ol { margin-left: 20px; margin-top: 8px; }
         .module-desc li { margin-bottom: 6px; padding-left: 4px; }
         
+        .card-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: auto;
+            width: 100%;
+        }
+
         .btn-action {
             background: var(--bg-sidebar); color: var(--text-pure); border: 1px solid var(--border-light);
-            padding: 10px 16px; border-radius: var(--radius-sm); font-weight: 500; font-size: 0.85rem;
+            padding: 10px 12px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.82rem;
             display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
-            text-decoration: none; transition: all 0.2s; margin-top: auto; width: 100%;
+            text-decoration: none; transition: all 0.2s ease;
         }
-        .card:hover .btn-action { background: var(--text-pure); color: var(--bg-base); }
+
+        .btn-handout {
+            background: transparent;
+            color: var(--text-muted);
+            border-color: var(--border-subtle);
+        }
+        .btn-handout:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-pure);
+            border-color: var(--border-light);
+        }
 
         /* Category Accents */
         .accent-theory .module-icon { background: rgba(179, 156, 208, 0.1); }
         .card.accent-theory:hover { border-color: var(--accent-purple); }
-        .card.accent-theory:hover .btn-action { background: var(--accent-purple); color: var(--bg-base); border-color: var(--accent-purple); }
+        .card.accent-theory .btn-practice:hover { background: var(--accent-purple); color: var(--bg-base); border-color: var(--accent-purple); }
         .accent-theory-title { color: var(--accent-purple); }
 
         .accent-data .module-icon { background: rgba(53, 230, 255, 0.1); }
         .card.accent-data:hover { border-color: var(--accent-blue); }
-        .card.accent-data:hover .btn-action { background: var(--accent-blue); color: var(--bg-base); border-color: var(--accent-blue); }
+        .card.accent-data .btn-practice:hover { background: var(--accent-blue); color: var(--bg-base); border-color: var(--accent-blue); }
         .accent-data-title { color: var(--accent-blue); }
 
         .accent-obs .module-icon { background: rgba(255, 193, 204, 0.1); }
         .card.accent-obs:hover { border-color: var(--accent-rose); }
-        .card.accent-obs:hover .btn-action { background: var(--accent-rose); color: var(--bg-base); border-color: var(--accent-rose); }
+        .card.accent-obs .btn-practice:hover { background: var(--accent-rose); color: var(--bg-base); border-color: var(--accent-rose); }
         .accent-obs-title { color: var(--accent-rose); }
 
         @media (max-width: 800px) {
@@ -259,7 +241,6 @@
 </head>
 <body>
 
-    <!-- Sky Background Layer -->
     <div class="sky-background">
         <div class="comet" style="top: 5%; left: 90%; animation: shooting 8s infinite linear 2s;"></div>
     </div>
@@ -275,8 +256,8 @@
         <ul class="nav-menu">
             <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
             <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
-            <li><a href="problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Problems</a></li>
-            <li><a href="handouts.html" class="nav-item"><i class="fa-solid fa-book-atlas"></i> Handouts</a></li>
+            <li><a href="problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
+            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
             <li><a href="#" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
         </ul>
         
@@ -299,11 +280,10 @@
     <!-- MAIN CONTENT -->
     <main class="dashboard-main">
         
-        <!-- Top Header -->
         <header class="top-header">
             <div class="header-title">
-                <h1>Practice Hub</h1>
-                <p>Follow the IOAA curriculum tracks below. Build your theoretical foundation, master data analysis, and train your observational skills.</p>
+                <h1>Curriculum & Practice Hub</h1>
+                <p>Follow the unified IOAA curriculum tracks below. Read theoretical handouts and derivation guides, or jump straight into curated competition problem sets.</p>
             </div>
             <div class="header-actions">
                 <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
@@ -324,12 +304,13 @@
         </div>
         <div class="grid-layout">
             
-            <a href="problems_math.html" class="card accent-theory">
+            <!-- Module 1 -->
+            <div class="card accent-theory">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/theory/positional_celestial_mechanics_logo.png" alt="Positional Astronomy and Celestial Mechanics">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" id="celestial-progress">0/16</span>
                 </div>
                 <h3 class="card-title">1. Positional Astronomy and Celestial Mechanics</h3>
                 <div class="module-desc">
@@ -338,10 +319,14 @@
                         <li>Celestial Mechanics</li>
                     </ol>
                 </div>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/positional_celestial_mechanics.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/positional_celestial_mechanics.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
+                </div>
+            </div>
 
-            <a href="problems_radiation.html" class="card accent-theory">
+            <!-- Module 2 -->
+            <div class="card accent-theory">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/theory/radiation_relativity_logo.png" alt="Radiation Physics and Relativity Fundamentals">
@@ -356,10 +341,14 @@
                         <li>The Interaction of Light and Matter</li>
                     </ol>
                 </div>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/radiation_relativity.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/radiation_relativity.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
+                </div>
+            </div>
 
-            <a href="problems_instrumentation.html" class="card accent-theory">
+            <!-- Module 3 -->
+            <div class="card accent-theory">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/theory/astronomical_instrumentation_logo.png" alt="Astronomical Instrumentation">
@@ -369,13 +358,17 @@
                 <h3 class="card-title">3. Astronomical Instrumentation</h3>
                 <div class="module-desc">
                     <ol>
-                        <li>Telescopes</li>
+                        <li>Telescopes & Detectors</li>
                     </ol>
                 </div>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/astronomical_instrumentation.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/astronomical_instrumentation.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
+                </div>
+            </div>
 
-            <a href="problems_stellar_params.html" class="card accent-theory">
+            <!-- Module 4 -->
+            <div class="card accent-theory">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/theory/stellar_parameters_logo.png" alt="Stellar Parameters and Spectral Classification">
@@ -389,10 +382,14 @@
                         <li>The Classification of Stellar Spectra</li>
                     </ol>
                 </div>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/stellar_parameters.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/stellar_parameters.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
+                </div>
+            </div>
 
-            <a href="problems_stellar_structure.html" class="card accent-theory">
+            <!-- Module 5 -->
+            <div class="card accent-theory">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/theory/stellar_structure_logo.png" alt="Stellar Structure and Atmospheres">
@@ -407,10 +404,14 @@
                         <li>The Interiors of Stars</li>
                     </ol>
                 </div>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/stellar_structure.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/stellar_structure.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
+                </div>
+            </div>
 
-            <a href="problems_ism.html" class="card accent-theory">
+            <!-- Module 6 -->
+            <div class="card accent-theory">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/theory/interstellar_medium_logo.png" alt="Interstellar Medium and Star Formation">
@@ -423,10 +424,14 @@
                         <li>The Interstellar Medium and Star Formation</li>
                     </ol>
                 </div>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/interstellar_medium.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/interstellar_medium.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
+                </div>
+            </div>
 
-            <a href="problems_stellar_evolution.html" class="card accent-theory">
+            <!-- Module 7 -->
+            <div class="card accent-theory">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/theory/stellar_evolution_logo.png" alt="Stellar Evolution">
@@ -441,10 +446,14 @@
                         <li>The Fate of Massive Stars</li>
                     </ol>
                 </div>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/stellar_evolution.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/stellar_evolution.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
+                </div>
+            </div>
 
-            <a href="problems_remnants.html" class="card accent-theory">
+            <!-- Module 8 -->
+            <div class="card accent-theory">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/theory/stellar_remnants_logo.png" alt="Stellar Remnants and General Relativity">
@@ -459,10 +468,14 @@
                         <li>Close Binary Star Systems</li>
                     </ol>
                 </div>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/stellar_remnants.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/stellar_remnants.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
+                </div>
+            </div>
 
-            <a href="problems_planetary.html" class="card accent-theory">
+            <!-- Module 9 -->
+            <div class="card accent-theory">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/theory/planetary_systems_logo.png" alt="Planetary Systems and Formation">
@@ -479,10 +492,14 @@
                         <li>Formation of Planetary Systems</li>
                     </ol>
                 </div>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/planetary_systems.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/planetary_systems.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
+                </div>
+            </div>
 
-            <a href="problems_galactic_structure.html" class="card accent-theory">
+            <!-- Module 10 -->
+            <div class="card accent-theory">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/theory/galactic_structure_logo.png" alt="Galactic Structure">
@@ -496,10 +513,14 @@
                         <li>The Milky Way Galaxy</li>
                     </ol>
                 </div>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/galactic_structure.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/galactic_structure.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
+                </div>
+            </div>
 
-            <a href="problems_galactic_evolution.html" class="card accent-theory">
+            <!-- Module 11 -->
+            <div class="card accent-theory">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/theory/galactic_evolution_logo.png" alt="Galactic Evolution and Active Galaxies">
@@ -513,10 +534,14 @@
                         <li>Active Galaxies</li>
                     </ol>
                 </div>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/galactic_evolution.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/galactic_evolution.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
+                </div>
+            </div>
 
-            <a href="problems_cosmology.html" class="card accent-theory">
+            <!-- Module 12 -->
+            <div class="card accent-theory">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/theory/cosmology_logo.png" alt="Cosmology and the Structure of the Universe">
@@ -531,8 +556,11 @@
                         <li>The Early Universe</li>
                     </ol>
                 </div>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/cosmology.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/cosmology.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
+                </div>
+            </div>
         </div>
 
         <!-- DATA ANALYSIS TRACK -->
@@ -541,7 +569,7 @@
             <h2>Data Analysis Track</h2>
         </div>
         <div class="grid-layout">
-            <a href="problems_data_basics.html" class="card accent-data">
+            <div class="card accent-data">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/data_analysis/methods_plotting_logo.png" alt="Methods & Plotting">
@@ -550,10 +578,13 @@
                 </div>
                 <h3 class="card-title">1. Methods & Plotting</h3>
                 <p class="module-desc">Error propagation, statistical regression, graphing techniques, and plotting calculations.</p>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/data_methods_plotting.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/data_methods_plotting.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
+                </div>
+            </div>
 
-            <a href="problems_data_full.html" class="card accent-data">
+            <div class="card accent-data">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/data_analysis/full_data_sets_logo.png" alt="Full Data Sets">
@@ -562,8 +593,11 @@
                 </div>
                 <h3 class="card-title">2. Full Data Sets</h3>
                 <p class="module-desc">Comprehensive real-world datasets from past IOAA exams. Light curves, spectra, and complex analysis.</p>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/data_full_sets.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/data_full_sets.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
+                </div>
+            </div>
         </div>
 
         <!-- OBSERVATIONAL TRACK -->
@@ -572,7 +606,7 @@
             <h2>Observational Track</h2>
         </div>
         <div class="grid-layout" style="margin-bottom: 60px;">
-            <a href="problems_blind_map.html" class="card accent-obs">
+            <div class="card accent-obs">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/observational/blind_map_logo.png" alt="Blind Map Practice">
@@ -581,10 +615,13 @@
                 </div>
                 <h3 class="card-title">Blind Map Practice</h3>
                 <p class="module-desc">Train for the naked-eye observation round. Star identification, constellation boundaries, deep sky object coordinates without grids.</p>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/obs_blind_map.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/obs_blind_map.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Manual</a>
+                </div>
+            </div>
 
-            <a href="problems_telescope_obs.html" class="card accent-obs">
+            <div class="card accent-obs">
                 <div class="card-header">
                     <div class="module-icon">
                         <img src="assets/img/observational/telescope_practice_logo.png" alt="Telescope Practice">
@@ -593,8 +630,11 @@
                 </div>
                 <h3 class="card-title">Telescope Practice</h3>
                 <p class="module-desc">Practical telescope operations. Equatorial mount calibration, field of view mapping, tracking, and pointing exercises.</p>
-                <div class="btn-action">Start Practice <i class="fa-solid fa-arrow-right"></i></div>
-            </a>
+                <div class="card-actions">
+                    <a href="practice/obs_telescope.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
+                    <a href="handouts/obs_telescope.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Manual</a>
+                </div>
+            </div>
         </div>
 
     </main>
@@ -642,7 +682,6 @@
             ];
             
             let solvedCount = 0;
-            
             celestialIds.forEach(id => {
                 if(localStorage.getItem(id) === 'true' || 
                    localStorage.getItem('solved_' + id) === 'true' || 
