@@ -28,6 +28,7 @@
             --accent-blue: #35E6FF;
             --accent-purple: #B39CD0;
             --accent-rose: #FFC1CC;
+            --accent-gold: #FFCF5C;
             --track-accent: #B39CD0;
             
             --text-pure: #FFFFFF;
@@ -218,9 +219,177 @@
         .filter-input:focus, .filter-select:focus { border-color: var(--track-accent); }
         .filter-select option { background: var(--bg-sidebar); color: var(--text-pure); }
 
-        /* Problem Section & Empty/Ready State */
-        .problem-section { display: flex; flex-direction: column; width: 100%; }
+        /* Problem Section & Cards */
+        .problem-section { display: flex; flex-direction: column; width: 100%; gap: 20px; }
+        #problems-container { display: flex; flex-direction: column; gap: 20px; width: 100%; }
 
+        .problem-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 28px 32px;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+        .problem-card:hover {
+            border-color: var(--border-light);
+        }
+
+        .card-header-badges {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .source-badge {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 6px;
+            background: rgba(53, 230, 255, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(53, 230, 255, 0.25);
+        }
+
+        .diff-badge {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .diff-easy { background: rgba(43, 227, 138, 0.12); color: var(--accent-green); border: 1px solid rgba(43, 227, 138, 0.3); }
+        .diff-medium { background: rgba(255, 207, 92, 0.12); color: var(--accent-gold); border: 1px solid rgba(255, 207, 92, 0.3); }
+        .diff-hard { background: rgba(255, 193, 204, 0.12); color: var(--accent-rose); border: 1px solid rgba(255, 193, 204, 0.3); }
+        .diff-theory { background: rgba(179, 156, 208, 0.12); color: var(--accent-purple); border: 1px solid rgba(179, 156, 208, 0.3); }
+
+        .problem-text {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-main);
+            margin-bottom: 18px;
+        }
+        .problem-text strong:first-child {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--text-pure);
+            margin-bottom: 10px;
+        }
+
+        .solve-btn {
+            background: var(--bg-sidebar);
+            color: var(--text-muted);
+            border: 1px solid var(--border-light);
+            padding: 9px 16px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .solve-btn:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        .solve-btn.solved {
+            background: rgba(43, 227, 138, 0.15);
+            color: var(--accent-green);
+            border-color: var(--accent-green);
+        }
+
+        details {
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 14px;
+        }
+        details summary {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--track-accent);
+            cursor: pointer;
+            user-select: none;
+            list-style: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        details summary::-webkit-details-marker { display: none; }
+        details summary::before {
+            content: '▸';
+            transition: transform 0.2s ease;
+        }
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .solution-box {
+            margin-top: 16px;
+            padding: 20px 24px;
+            background: var(--bg-sidebar);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: var(--text-main);
+        }
+        .solution-box p, .solution-box ul, .solution-box ol { margin-bottom: 12px; }
+        .solution-box ul, .solution-box ol { padding-left: 22px; }
+
+        /* Square Diagram Styling */
+        img.user-diagram, .problem-text img, .solution-box img {
+            display: block;
+            width: 340px;
+            height: 340px;
+            max-width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: contain;
+            background: #101115;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin: 18px auto;
+            cursor: zoom-in;
+        }
+
+        /* Pagination */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .page-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .page-btn:hover, .page-btn.active {
+            background: var(--track-accent);
+            color: var(--bg-base);
+            border-color: var(--track-accent);
+            font-weight: 700;
+        }
+
+        /* Empty / No Results State */
         .empty-module-state {
             background: var(--bg-card);
             border: 1px dashed var(--border-light);
@@ -256,6 +425,25 @@
             line-height: 1.65;
         }
 
+        /* Image Modal */
+        #imageModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            z-index: 3000;
+            padding: 24px;
+        }
+        #imageModal img {
+            max-width: 90vw;
+            max-height: 88vh;
+            object-fit: contain;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+            background: #101115;
+            padding: 12px;
+        }
+
         @media (max-width: 1024px) {
             .layout-wrapper { grid-template-columns: 1fr; }
             .filters-container { position: relative; }
@@ -284,7 +472,7 @@
             <li><a href="../planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
             <li><a href="../problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
             <li><a href="../courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
-            <li><a href="#" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="../analytics.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
         </ul>
         
         <div class="menu-label">General</div>
@@ -324,7 +512,7 @@
                 
                 <div class="filter-group">
                     <label class="filter-label">Search by ID / Topic</label>
-                    <input type="text" id="searchFilter" class="filter-input" placeholder="e.g. IOAA 2024">
+                    <input type="text" id="searchFilter" class="filter-input" placeholder="e.g. USAAAO 2026">
                 </div>
                 
                 <div class="filter-group">
@@ -349,8 +537,14 @@
             </aside>
 
             <div class="problem-section">
+                <div id="noResultsMsg" class="empty-module-state" style="display: none;">
+                    <span class="empty-badge"><i class="fa-solid fa-magnifying-glass"></i> Filter Active</span>
+                    <h2>No Matching Problems Found</h2>
+                    <p>No problems in this module matched your current search or filter criteria. Try resetting the filters on the left.</p>
+                </div>
+
                 <div id="problems-container">
-                    <div class="empty-module-state">
+                    <div class="empty-module-state" id="default-empty-state">
                         <span class="empty-badge"><i class="fa-solid fa-satellite"></i> Problem Archive Indexing</span>
                         <h2 id="empty-title">Problem Set In Calibration</h2>
                         <p>Curated Olympiad problems, LaTeX solutions, and grading rubrics for this module are currently being formatted and verified. Check back shortly or explore the Module Handout.</p>
@@ -364,6 +558,11 @@
             </div>
         </div>
     </main>
+
+    <!-- IMAGE MODAL (Required by window.openImageModal in render_problems.js) -->
+    <div id="imageModal" onclick="window.closeImageModal()">
+        <img id="img01" src="" alt="Enlarged Diagram">
+    </div>
 
     <!-- DYNAMIC MODULE HYDRATION SCRIPT -->
     <script>
@@ -397,11 +596,14 @@
             document.getElementById('mod-eyebrow').textContent = meta.eyebrow;
             document.getElementById('mod-title').textContent = meta.title;
             document.getElementById('mod-desc').textContent = meta.desc;
-            document.getElementById('empty-title').textContent = `${meta.title} — Problem Set Coming Soon`;
+            const emptyTitle = document.getElementById('empty-title');
+            if (emptyTitle) emptyTitle.textContent = `${meta.title} — Problem Set Coming Soon`;
             document.getElementById('mod-handout-link').href = `../handouts/${fileName}.html`;
-            document.getElementById('empty-handout-btn').href = `../handouts/${fileName}.html`;
+            const emptyBtn = document.getElementById('empty-handout-btn');
+            if (emptyBtn) emptyBtn.href = `../handouts/${fileName}.html`;
         })();
     </script>
     <script type="module" src="../js/auth.js"></script>
+    <script type="module" src="../js/render_problems.js"></script>
 </body>
 </html>

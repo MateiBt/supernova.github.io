@@ -1,3 +1,4 @@
+// js/auth.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
@@ -23,21 +24,166 @@ let progressChart = null;
 const COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000;
 
 export const difficultyMap = {
+    // --- USAAAO 2026 (Q1 - Q30) ---
     'q1_usaaao_2026': 'easy',
     'q2_usaaao_2026': 'theory',
+    'q3_usaaao_2026': 'easy',
+    'q4_usaaao_2026': 'medium',
+    'q5_usaaao_2026': 'medium',
+    'q6_usaaao_2026': 'medium',
+    'q7_usaaao_2026': 'easy',
+    'q8_usaaao_2026': 'medium',
     'q9_usaaao_2026': 'easy',
     'q10_usaaao_2026': 'easy',
+    'q11_usaaao_2026': 'medium',
+    'q12_usaaao_2026': 'medium',
+    'q13_usaaao_2026': 'medium',
+    'q14_usaaao_2026': 'theory',
     'q15_usaaao_2026': 'medium',
     'q16_usaaao_2026': 'easy',
+    'q17_usaaao_2026': 'hard',
+    'q18_usaaao_2026': 'easy',
+    'q19_usaaao_2026': 'easy',
+    'q20_usaaao_2026': 'easy',
+    'q21_usaaao_2026': 'medium',
+    'q22_usaaao_2026': 'medium',
+    'q23_usaaao_2026': 'theory',
+    'q24_usaaao_2026': 'medium',
+    'q25_usaaao_2026': 'easy',
+    'q26_usaaao_2026': 'medium',
     'q27_usaaao_2026': 'easy',
+    'q28_usaaao_2026': 'medium',
+    'q29_usaaao_2026': 'medium',
+    'q30_usaaao_2026': 'theory',
+
+    // --- USAAAO 2025 (Q1 - Q30) ---
     'q1_usaaao_2025': 'easy',
+    'q2_3_usaaao_2025': 'medium',
+    'q2-3_usaaao_2025': 'medium',
     'q4_usaaao_2025': 'medium',
     'q5_usaaao_2025': 'easy',
+    'q6_usaaao_2025': 'hard',
+    'q7_usaaao_2025': 'easy',
+    'q8_usaaao_2025': 'theory',
+    'q9_usaaao_2025': 'theory',
+    'q10_usaaao_2025': 'easy',
+    'q11_12_usaaao_2025': 'easy',
     'q11-12_usaaao_2025': 'easy',
     'q13_usaaao_2025': 'easy',
+    'q14_16_usaaao_2025': 'medium',
+    'q14-16_usaaao_2025': 'medium',
+    'q17_usaaao_2025': 'hard',
+    'q18_usaaao_2025': 'medium',
     'q19_usaaao_2025': 'theory',
+    'q20_usaaao_2025': 'hard',
+    'q21_usaaao_2025': 'hard',
+    'q22_usaaao_2025': 'easy',
+    'q23_usaaao_2025': 'easy',
+    'q24_usaaao_2025': 'theory',
+    'q25_usaaao_2025': 'medium',
     'q26_usaaao_2025': 'medium',
+    'q27_usaaao_2025': 'easy',
+    'q28_usaaao_2025': 'easy',
+    'q29_usaaao_2025': 'easy',
+    'q30_usaaao_2025': 'easy',
+
+    // --- USAAAO 2024 (Q1 - Q30) ---
+    'q1_usaaao_2024': 'medium',
+    'q2_usaaao_2024': 'theory',
+    'q3_usaaao_2024': 'easy',
+    'q4_usaaao_2024': 'medium',
+    'q5_usaaao_2024': 'easy',
+    'q6_usaaao_2024': 'medium',
+    'q7_usaaao_2024': 'medium',
+    'q8_usaaao_2024': 'easy',
+    'q9_usaaao_2024': 'easy',
+    'q10_usaaao_2024': 'hard',
+    'q11_12_usaaao_2024': 'hard',
+    'q11-12_usaaao_2024': 'hard',
+    'q13_usaaao_2024': 'medium',
+    'q14_usaaao_2024': 'easy',
+    'q15_usaaao_2024': 'medium',
+    'q16_usaaao_2024': 'easy',
+    'q17_usaaao_2024': 'easy',
+    'q18_19_usaaao_2024': 'medium',
+    'q18-19_usaaao_2024': 'medium',
     'q20_usaaao_2024': 'medium',
+    'q21_usaaao_2024': 'medium',
+    'q22_usaaao_2024': 'easy',
+    'q23_usaaao_2024': 'easy',
+    'q24_usaaao_2024': 'easy',
+    'q25_usaaao_2024': 'easy',
+    'q26_usaaao_2024': 'easy',
+    'q27_usaaao_2024': 'easy',
+    'q28_usaaao_2024': 'hard',
+    'q29_30_usaaao_2024': 'hard',
+    'q29-30_usaaao_2024': 'hard',
+
+    // --- USAAAO 2023 (Q1 - Q30) ---
+    'q1_usaaao_2023': 'easy',
+    'q2_usaaao_2023': 'medium',
+    'q3_usaaao_2023': 'easy',
+    'q4_usaaao_2023': 'easy',
+    'q5_usaaao_2023': 'easy',
+    'q6_usaaao_2023': 'easy',
+    'q7_usaaao_2023': 'theory',
+    'q8_usaaao_2023': 'medium',
+    'q9_usaaao_2023': 'medium',
+    'q10_usaaao_2023': 'medium',
+    'q11_usaaao_2023': 'easy',
+    'q12_usaaao_2023': 'hard',
+    'q13_usaaao_2023': 'easy',
+    'q14_usaaao_2023': 'easy',
+    'q15_usaaao_2023': 'easy',
+    'q16_usaaao_2023': 'medium',
+    'q17_18_usaaao_2023': 'hard',
+    'q17-18_usaaao_2023': 'hard',
+    'q19_usaaao_2023': 'medium',
+    'q20_usaaao_2023': 'theory',
+    'q21_usaaao_2023': 'medium',
+    'q22_usaaao_2023': 'medium',
+    'q23_usaaao_2023': 'medium',
+    'q24_usaaao_2023': 'easy',
+    'q25_usaaao_2023': 'easy',
+    'q26_usaaao_2023': 'medium',
+    'q27_usaaao_2023': 'easy',
+    'q28_usaaao_2023': 'medium',
+    'q29_30_usaaao_2023': 'hard',
+    'q29-30_usaaao_2023': 'hard',
+
+    // --- USAAAO 2022 ---
+    'q1_usaaao_2022': 'easy',
+    'q2_usaaao_2022': 'easy',
+    'q3_usaaao_2022': 'medium',
+    'q4_usaaao_2022': 'medium',
+    'q5_usaaao_2022': 'medium',
+    'q6_usaaao_2022': 'easy',
+    'q7_usaaao_2022': 'easy',
+    'q8_usaaao_2022': 'medium',
+    'q9_usaaao_2022': 'easy',
+    'q10_usaaao_2022': 'medium',
+    'q11_usaaao_2022': 'medium',
+    'q12_usaaao_2022': 'theory',
+    'q13_usaaao_2022': 'easy',
+    'q14_usaaao_2022': 'medium',
+    'q15_usaaao_2022': 'medium',
+    'q16_usaaao_2022': 'medium',
+    'q17_usaaao_2022': 'hard',
+    'q18_usaaao_2022': 'medium',
+    'q19_usaaao_2022': 'easy',
+    'q20_usaaao_2022': 'easy',
+    'q21_usaaao_2022': 'medium',
+    'q22_usaaao_2022': 'medium',
+    'q23_usaaao_2022': 'medium',
+    'q24_usaaao_2022': 'easy',
+    'q25_usaaao_2022': 'easy',
+    'q26_usaaao_2022': 'medium',
+    'q27_usaaao_2022': 'easy',
+    'q28_usaaao_2022': 'medium',
+    'q29_usaaao_2022': 'medium',
+    'q30_usaaao_2022': 'easy',
+
+    // --- Earlier Archives ---
     'q1_usaaao_2018': 'easy',
     'q30_usaaao_2018': 'easy'
 };
@@ -146,7 +292,7 @@ function loadUserProgress(uid) {
         userProgress = parsed.map(item => {
             if (typeof item === 'string') return { id: item, date: new Date().toISOString() };
             if (item.id === 'q1_mech') item.id = 'q1_usaaao_2025';
-            if (item.id === 'q11_12_usaaao_2025') item.id = 'q11-12_usaaao_2025';
+            if (item.id === 'q11-12_usaaao_2025') item.id = 'q11_12_usaaao_2025';
             return item;
         });
         localStorage.setItem(`supernova_progress_${uid}`, JSON.stringify(userProgress));
@@ -197,7 +343,8 @@ window.toggleProblemSolved = function(problemId) {
 
 function updateProblemButtons() {
     userProgress.forEach(item => {
-        const btn = document.getElementById(`btn-${item.id}`);
+        const altId = item.id.replace('-', '_');
+        const btn = document.getElementById(`btn-${item.id}`) || document.getElementById(`btn-${altId}`);
         if (btn) {
             btn.innerHTML = '<i class="fas fa-check-circle"></i> Solved!';
             btn.classList.add('solved');
@@ -587,3 +734,81 @@ export function showToast(m) {
     document.body.appendChild(t);
     setTimeout(() => t.remove(), 3200);
 }
+
+// --- GLOBAL USAAAO DIAGRAM PATH RESOLVER (.png -> .jpeg & ../assets/) + SQUARE STYLER ---
+(function initGlobalDiagramFixer() {
+    const styleEl = document.createElement('style');
+    styleEl.textContent = `
+        img.user-diagram, .problem-text img, .solution-box img {
+            display: block !important;
+            width: 340px !important;
+            height: 340px !important;
+            max-width: 100% !important;
+            aspect-ratio: 1 / 1 !important;
+            object-fit: contain !important;
+            background: #101115 !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            border-radius: 12px !important;
+            padding: 12px !important;
+            margin: 18px auto !important;
+            cursor: zoom-in;
+        }
+    `;
+    document.head.appendChild(styleEl);
+
+    const inSubfolder = /\/(practice|handouts)\//i.test(window.location.pathname);
+
+    function normalizeDiagramImg(img) {
+        if (!img) return;
+        const rawSrc = img.getAttribute('src') || '';
+        if (!rawSrc || rawSrc.startsWith('http') || rawSrc.startsWith('data:')) return;
+
+        let fixedSrc = rawSrc;
+        // 1. Convert USAAAO .png diagram references to .jpeg (matching repo files)
+        if (/USAAAO_\d{4}\/Q[\d-]+_USAAAO_\d{4}\.png$/i.test(fixedSrc)) {
+            fixedSrc = fixedSrc.replace(/\.png$/i, '.jpeg');
+        }
+        // 2. Prefix ../ when inside /practice/ or /handouts/ subfolder
+        if (inSubfolder && fixedSrc.startsWith('assets/')) {
+            fixedSrc = '../' + fixedSrc;
+        }
+        if (fixedSrc !== rawSrc) {
+            img.setAttribute('src', fixedSrc);
+        }
+    }
+
+    // Intercept any remaining 404 image errors and swap .png <-> .jpeg <-> .jpg
+    window.addEventListener('error', (e) => {
+        const img = e.target;
+        if (!img || img.tagName !== 'IMG') return;
+        const src = img.getAttribute('src') || '';
+        const step = parseInt(img.dataset.fallbackStep || '0', 10);
+        if (step >= 3) return;
+        img.dataset.fallbackStep = String(step + 1);
+
+        let nextSrc = src;
+        if (inSubfolder && nextSrc.startsWith('assets/')) {
+            nextSrc = '../' + nextSrc;
+        } else if (/\.png$/i.test(nextSrc)) {
+            nextSrc = nextSrc.replace(/\.png$/i, '.jpeg');
+        } else if (/\.jpeg$/i.test(nextSrc)) {
+            nextSrc = nextSrc.replace(/\.jpeg$/i, '.jpg');
+        }
+        if (nextSrc !== src) img.src = nextSrc;
+    }, true);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('img').forEach(normalizeDiagramImg);
+        const obs = new MutationObserver((mutations) => {
+            mutations.forEach((m) => {
+                m.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1) {
+                        if (node.tagName === 'IMG') normalizeDiagramImg(node);
+                        node.querySelectorAll?.('img').forEach(normalizeDiagramImg);
+                    }
+                });
+            });
+        });
+        obs.observe(document.body, { childList: true, subtree: true });
+    });
+})();

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Positional Astronomy & Celestial Mechanics | Supernova Guide</title>
+    <title>Practice Workspace | Supernova Guide</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -28,6 +28,8 @@
             --accent-blue: #35E6FF;
             --accent-purple: #B39CD0;
             --accent-rose: #FFC1CC;
+            --accent-gold: #FFCF5C;
+            --track-accent: #B39CD0;
             
             --text-pure: #FFFFFF;
             --text-main: #EDEDED;
@@ -66,12 +68,12 @@
         }
         .comet {
             position: absolute; width: 160px; height: 2px;
-            background: linear-gradient(to right, transparent, var(--accent-purple));
+            background: linear-gradient(to right, transparent, var(--track-accent));
             border-radius: 50%; opacity: 0;
         }
         .comet::before {
             content: ''; position: absolute; top: -2px; right: 0; width: 6px; height: 6px;
-            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px rgba(179, 156, 208, 0.6);
+            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px var(--track-accent);
         }
         @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
 
@@ -105,7 +107,7 @@
         }
         .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
         .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
-        .nav-item.active { background-color: rgba(179, 156, 208, 0.12); color: var(--accent-purple); border-left: 3px solid var(--accent-purple); }
+        .nav-item.active { background-color: rgba(255,255,255,0.06); color: var(--track-accent); border-left: 3px solid var(--track-accent); }
 
         .sidebar-footer { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
         .btn-auth {
@@ -113,7 +115,7 @@
             padding: 10px 16px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600;
             transition: all 0.2s ease; font-size: 0.85rem; width: 100%; font-family: var(--font-body);
         }
-        .btn-auth:hover { background: var(--accent-purple); color: var(--bg-base); border-color: var(--accent-purple); }
+        .btn-auth:hover { background: var(--track-accent); color: var(--bg-base); border-color: var(--track-accent); }
 
         /* Main Workspace */
         .dashboard-main {
@@ -141,7 +143,7 @@
         .hero-icon img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.35); }
         .hero-meta .eyebrow {
             font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase;
-            color: var(--accent-purple); letter-spacing: 0.08em; display: block; margin-bottom: 4px;
+            color: var(--track-accent); letter-spacing: 0.08em; display: block; margin-bottom: 4px;
         }
         .hero-meta h1 {
             font-family: var(--font-display); font-size: 1.75rem; font-weight: 700;
@@ -157,9 +159,9 @@
             background: var(--bg-sidebar); color: var(--text-main);
             border: 1px solid var(--border-light); transition: all 0.2s;
         }
-        .btn-nav-pill:hover { border-color: var(--accent-purple); color: var(--text-pure); }
-        .btn-nav-pill.handout-link { background: rgba(179, 156, 208, 0.12); color: var(--accent-purple); border-color: rgba(179, 156, 208, 0.3); }
-        .btn-nav-pill.handout-link:hover { background: var(--accent-purple); color: var(--bg-base); }
+        .btn-nav-pill:hover { border-color: var(--track-accent); color: var(--text-pure); }
+        .btn-nav-pill.handout-link { color: var(--track-accent); border-color: var(--track-accent); }
+        .btn-nav-pill.handout-link:hover { background: var(--track-accent); color: var(--bg-base); }
 
         /* Filters + Problems Layout */
         .layout-wrapper {
@@ -193,7 +195,7 @@
             padding-bottom: 14px;
             font-weight: 600;
         }
-        .filter-header i { color: var(--accent-purple); }
+        .filter-header i { color: var(--track-accent); }
 
         .filter-group { display: flex; flex-direction: column; width: 100%; }
         .filter-label {
@@ -214,117 +216,233 @@
             transition: border-color 0.2s;
             width: 100%;
         }
-        .filter-input:focus, .filter-select:focus { border-color: var(--accent-purple); }
+        .filter-input:focus, .filter-select:focus { border-color: var(--track-accent); }
         .filter-select option { background: var(--bg-sidebar); color: var(--text-pure); }
 
-        .problem-section { display: flex; flex-direction: column; width: 100%; }
-
-        .no-results-msg {
-            text-align: center; color: var(--text-muted);
-            padding: 48px 20px; display: none; width: 100%;
-            background: var(--bg-card); border-radius: var(--radius-lg);
-            border: 1px dashed var(--border-light);
-        }
+        /* Problem Section & Cards */
+        .problem-section { display: flex; flex-direction: column; width: 100%; gap: 20px; }
+        #problems-container { display: flex; flex-direction: column; gap: 20px; width: 100%; }
 
         .problem-card {
             background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            margin-bottom: 24px;
-            padding: 30px;
             border: 1px solid var(--border-subtle);
-            position: relative;
-            transition: border-color 0.2s ease, background 0.2s ease;
+            border-radius: var(--radius-lg);
+            padding: 28px 32px;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
         }
-        .problem-card:hover { border-color: var(--border-light); background: var(--bg-card-hover); }
+        .problem-card:hover {
+            border-color: var(--border-light);
+        }
 
-        .card-header-badges { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+        .card-header-badges {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
 
         .source-badge {
             font-family: var(--font-mono);
-            display: inline-block; padding: 4px 10px; border-radius: 6px;
-            font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-            background: var(--bg-sidebar); color: var(--text-pure);
-            border: 1px solid var(--border-subtle);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 6px;
+            background: rgba(53, 230, 255, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(53, 230, 255, 0.25);
         }
 
         .diff-badge {
             font-family: var(--font-mono);
-            display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px;
-            font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-            border: 1px solid transparent;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        .diff-easy { background: rgba(43, 227, 138, 0.12); color: var(--accent-green); border-color: rgba(43, 227, 138, 0.25); }
-        .diff-medium { background: rgba(53, 230, 255, 0.12); color: var(--accent-blue); border-color: rgba(53, 230, 255, 0.25); }
-        .diff-hard { background: rgba(255, 193, 204, 0.12); color: var(--accent-rose); border-color: rgba(255, 193, 204, 0.3); }
-        .diff-theory { background: rgba(179, 156, 208, 0.12); color: var(--accent-purple); border-color: rgba(179, 156, 208, 0.3); }
+        .diff-easy { background: rgba(43, 227, 138, 0.12); color: var(--accent-green); border: 1px solid rgba(43, 227, 138, 0.3); }
+        .diff-medium { background: rgba(255, 207, 92, 0.12); color: var(--accent-gold); border: 1px solid rgba(255, 207, 92, 0.3); }
+        .diff-hard { background: rgba(255, 193, 204, 0.12); color: var(--accent-rose); border: 1px solid rgba(255, 193, 204, 0.3); }
+        .diff-theory { background: rgba(179, 156, 208, 0.12); color: var(--accent-purple); border: 1px solid rgba(179, 156, 208, 0.3); }
 
-        .problem-text { font-size: 0.96rem; color: var(--text-main); margin-bottom: 24px; line-height: 1.75; }
-        .problem-text strong {
-            font-family: var(--font-display); font-weight: 600; font-size: 1.15rem;
-            color: var(--accent-purple); display: block; margin-bottom: 10px;
+        .problem-text {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-main);
+            margin-bottom: 18px;
+        }
+        .problem-text strong:first-child {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--text-pure);
+            margin-bottom: 10px;
         }
 
         .solve-btn {
-            background: var(--bg-sidebar); border: 1px solid var(--border-light); color: var(--text-pure);
-            padding: 9px 18px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600;
-            transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 8px;
-            font-size: 0.84rem; font-family: var(--font-body);
+            background: var(--bg-sidebar);
+            color: var(--text-muted);
+            border: 1px solid var(--border-light);
+            padding: 9px 16px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        .solve-btn:hover { background: var(--accent-purple); color: var(--bg-base); border-color: var(--accent-purple); }
-        .solve-btn.solved { background: var(--accent-green); color: var(--bg-base); border-color: var(--accent-green); }
+        .solve-btn:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        .solve-btn.solved {
+            background: rgba(43, 227, 138, 0.15);
+            color: var(--accent-green);
+            border-color: var(--accent-green);
+        }
 
-        details { margin-top: 14px; }
-        details summary {
-            cursor: pointer; font-weight: 600; color: var(--text-muted); outline: none; list-style: none;
-            display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; font-size: 0.88rem;
+        details {
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 14px;
         }
-        details summary:hover { color: var(--text-pure); }
-        details summary::before { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.2s; font-size: 0.7rem; }
-        details[open] summary::before { transform: rotate(180deg); }
-        details[open] summary { margin-bottom: 14px; color: var(--accent-purple); }
+        details summary {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--track-accent);
+            cursor: pointer;
+            user-select: none;
+            list-style: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        details summary::-webkit-details-marker { display: none; }
+        details summary::before {
+            content: '▸';
+            transition: transform 0.2s ease;
+        }
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
 
         .solution-box {
-            margin-top: 12px; padding: 24px; background: var(--bg-sidebar);
-            border-radius: var(--radius-md); border: 1px solid var(--border-subtle);
-            border-left: 3px solid var(--accent-purple);
-            font-size: 0.92rem; color: var(--text-main); line-height: 1.7;
+            margin-top: 16px;
+            padding: 20px 24px;
+            background: var(--bg-sidebar);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: var(--text-main);
         }
-        .solution-box strong { color: var(--text-pure); font-weight: 600; }
+        .solution-box p, .solution-box ul, .solution-box ol { margin-bottom: 12px; }
+        .solution-box ul, .solution-box ol { padding-left: 22px; }
 
-        .user-diagram {
-            display: block; max-width: 100%; width: 420px; height: auto; margin: 20px auto;
-            border-radius: var(--radius-md); border: 1px solid var(--border-subtle);
-            cursor: zoom-in; transition: border-color 0.2s; padding: 8px; background: var(--bg-sidebar);
+        /* Square Diagram Styling */
+        img.user-diagram, .problem-text img, .solution-box img {
+            display: block;
+            width: 340px;
+            height: 340px;
+            max-width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: contain;
+            background: #101115;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin: 18px auto;
+            cursor: zoom-in;
         }
-        .user-diagram:hover { border-color: var(--accent-purple); }
 
+        /* Pagination */
         .pagination-container {
-            display: flex; justify-content: center; gap: 8px; margin-top: 32px; margin-bottom: 20px; flex-wrap: wrap;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
         }
         .page-btn {
-            background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-muted);
-            padding: 8px 14px; border-radius: var(--radius-sm); cursor: pointer; transition: 0.2s;
-            font-family: var(--font-mono); font-weight: 700; font-size: 0.82rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        .page-btn:hover { background: var(--bg-card-hover); color: var(--text-pure); border-color: var(--border-light); }
-        .page-btn.active { background: var(--accent-purple); color: var(--bg-base); border-color: var(--accent-purple); }
+        .page-btn:hover, .page-btn.active {
+            background: var(--track-accent);
+            color: var(--bg-base);
+            border-color: var(--track-accent);
+            font-weight: 700;
+        }
 
-        /* Modals */
-        .modal { display: none; position: fixed; z-index: 3000; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(5, 5, 7, 0.9); backdrop-filter: blur(8px); }
-        .modal-content { margin: auto; display: block; width: auto; max-width: 90%; max-height: 90vh; border-radius: var(--radius-md); }
-        .close { position: absolute; top: 20px; right: 35px; color: var(--text-muted); font-size: 40px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .close:hover { color: var(--text-pure); }
+        /* Empty / No Results State */
+        .empty-module-state {
+            background: var(--bg-card);
+            border: 1px dashed var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 56px 32px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+        .empty-badge {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 5px 12px;
+            border-radius: 99px;
+            background: var(--bg-sidebar);
+            color: var(--track-accent);
+            border: 1px solid var(--border-light);
+            font-weight: 700;
+        }
+        .empty-module-state h2 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--text-pure);
+        }
+        .empty-module-state p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            max-width: 520px;
+            line-height: 1.65;
+        }
 
-        .auth-modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(5, 5, 7, 0.88); backdrop-filter: blur(6px); align-items: center; justify-content: center; }
-        .auth-content { background: var(--bg-card); padding: 36px; border-radius: var(--radius-lg); width: 340px; text-align: center; border: 1px solid var(--border-light); position: relative; }
-        .close-btn { position: absolute; right: 20px; top: 15px; color: var(--text-muted); cursor: pointer; font-size: 1.2rem; }
-        .close-btn:hover { color: var(--text-pure); }
-        .auth-input { width: 100%; padding: 11px 14px; margin: 8px 0 14px; background: var(--bg-sidebar); border: 1px solid var(--border-subtle); color: var(--text-pure); border-radius: var(--radius-sm); outline: none; font-family: var(--font-body); }
-        .auth-input:focus { border-color: var(--accent-purple); }
-        .submit-btn { width: 100%; padding: 11px; background: var(--accent-purple); border: none; color: var(--bg-base); font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; }
-        .toggle-text { font-size: 0.85rem; margin-top: 18px; color: var(--text-muted); }
-        .toggle-text span { color: var(--accent-purple); cursor: pointer; text-decoration: underline; }
-        .error-msg { color: var(--accent-rose); font-size: 0.8rem; margin-top: 10px; }
+        /* Image Modal */
+        #imageModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            z-index: 3000;
+            padding: 24px;
+        }
+        #imageModal img {
+            max-width: 90vw;
+            max-height: 88vh;
+            object-fit: contain;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+            background: #101115;
+            padding: 12px;
+        }
 
         @media (max-width: 1024px) {
             .layout-wrapper { grid-template-columns: 1fr; }
@@ -354,7 +472,7 @@
             <li><a href="../planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
             <li><a href="../problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
             <li><a href="../courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
-            <li><a href="#" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="../analytics.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
         </ul>
         
         <div class="menu-label">General</div>
@@ -374,17 +492,17 @@
         <section class="module-hero">
             <div class="hero-left">
                 <div class="hero-icon">
-                    <img src="../assets/img/theory/positional_celestial_mechanics_logo.png" alt="Positional Astronomy and Celestial Mechanics">
+                    <img id="mod-logo" src="../assets/img/theory/positional_celestial_mechanics_logo.png" alt="Module Icon">
                 </div>
                 <div class="hero-meta">
-                    <span class="eyebrow">Theory Track · Module 01</span>
-                    <h1>Positional Astronomy & Celestial Mechanics</h1>
-                    <p>Spherical trigonometry, coordinate transformations, Keplerian orbits, and multi-body dynamics.</p>
+                    <span class="eyebrow" id="mod-eyebrow">Theory Track</span>
+                    <h1 id="mod-title">Practice Workspace</h1>
+                    <p id="mod-desc">Curated IOAA & national Olympiad problem sets with full analytical derivations.</p>
                 </div>
             </div>
             <div class="hero-actions">
                 <a href="../problems.html" class="btn-nav-pill"><i class="fa-solid fa-arrow-left"></i> All Modules</a>
-                <a href="../handouts/positional_celestial_mechanics.html" class="btn-nav-pill handout-link"><i class="fa-solid fa-book-open"></i> Read Module Handout</a>
+                <a id="mod-handout-link" href="../problems.html" class="btn-nav-pill handout-link"><i class="fa-solid fa-book-open"></i> Read Module Handout</a>
             </div>
         </section>
 
@@ -394,7 +512,7 @@
                 
                 <div class="filter-group">
                     <label class="filter-label">Search by ID / Topic</label>
-                    <input type="text" id="searchFilter" class="filter-input" placeholder="e.g. Q1 USAAAO 2025">
+                    <input type="text" id="searchFilter" class="filter-input" placeholder="e.g. USAAAO 2026">
                 </div>
                 
                 <div class="filter-group">
@@ -419,93 +537,72 @@
             </aside>
 
             <div class="problem-section">
-                <div id="noResultsMsg" class="no-results-msg">
-                    <i class="fas fa-satellite-dish" style="font-size: 2rem; margin-bottom: 12px; display:block; color: var(--accent-purple);"></i>
-                    <strong style="color: var(--text-pure); font-size: 1.05rem; display:block; margin-bottom:4px;">No matching problems found.</strong>
-                    Adjust your search query or difficulty filter.
+                <div id="noResultsMsg" class="empty-module-state" style="display: none;">
+                    <span class="empty-badge"><i class="fa-solid fa-magnifying-glass"></i> Filter Active</span>
+                    <h2>No Matching Problems Found</h2>
+                    <p>No problems in this module matched your current search or filter criteria. Try resetting the filters on the left.</p>
                 </div>
 
-                <div id="problems-container"></div>
+                <div id="problems-container">
+                    <div class="empty-module-state" id="default-empty-state">
+                        <span class="empty-badge"><i class="fa-solid fa-satellite"></i> Problem Archive Indexing</span>
+                        <h2 id="empty-title">Problem Set In Calibration</h2>
+                        <p>Curated Olympiad problems, LaTeX solutions, and grading rubrics for this module are currently being formatted and verified. Check back shortly or explore the Module Handout.</p>
+                        <div style="display:flex; gap:12px; margin-top:8px;">
+                            <a href="../problems.html" class="btn-nav-pill"><i class="fa-solid fa-grid-2"></i> Return to Hub</a>
+                            <a id="empty-handout-btn" href="../problems.html" class="btn-nav-pill handout-link"><i class="fa-solid fa-book-open"></i> Open Handout</a>
+                        </div>
+                    </div>
+                </div>
                 <div id="paginationContainer" class="pagination-container"></div>
             </div>
         </div>
     </main>
 
-    <!-- Auth Modal -->
-    <div id="authModal" class="auth-modal">
-        <div class="auth-content">
-            <span class="close-btn"><i class="fas fa-times"></i></span>
-            <h3 id="modalTitle" style="color: var(--text-pure); margin: 0 0 18px 0; font-family: var(--font-display);">Student Login</h3>
-            <form id="authForm">
-                <input type="text" id="usernameInput" class="auth-input" placeholder="Username" style="display:none;">
-                <input type="email" id="emailInput" class="auth-input" placeholder="Academic Email" required>
-                <input type="password" id="passwordInput" class="auth-input" placeholder="Password" required>
-                <button type="submit" id="submitAuthBtn" class="submit-btn">Sign In</button>
-                <p id="authError" class="error-msg"></p>
-            </form>
-            <p class="toggle-text" id="toggleText">New to the platform? <span>Register</span></p>
-        </div>
+    <!-- IMAGE MODAL (Required by window.openImageModal in render_problems.js) -->
+    <div id="imageModal" onclick="window.closeImageModal()">
+        <img id="img01" src="" alt="Enlarged Diagram">
     </div>
 
-    <!-- Image Zoom Modal -->
-    <div id="imageModal" class="modal">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="img01" alt="Diagram Preview">
-    </div>
-
-    <!-- AUTOMATIC USAAAO IMAGE PATH RESOLVER -->
+    <!-- DYNAMIC MODULE HYDRATION SCRIPT -->
     <script>
-        (function initAssetPathResolver() {
-            function resolveDiagramSrc(img) {
-                if (!img || img.dataset.pathResolved === 'true') return;
-                const rawSrc = img.getAttribute('src') || '';
-                if (!rawSrc) return;
+        const MODULE_REGISTRY = {
+            "positional_celestial_mechanics": { eyebrow: "Theory Track · Module 01", title: "Positional Astronomy & Celestial Mechanics", desc: "The Celestial Sphere, spherical trigonometry, and Keplerian orbital mechanics.", logo: "../assets/img/theory/positional_celestial_mechanics_logo.png", accent: "#B39CD0" },
+            "radiation_relativity": { eyebrow: "Theory Track · Module 02", title: "Radiation Physics & Relativity Fundamentals", desc: "Continuous spectrum of light, special relativity, and light-matter interaction.", logo: "../assets/img/theory/radiation_relativity_logo.png", accent: "#B39CD0" },
+            "astronomical_instrumentation": { eyebrow: "Theory Track · Module 03", title: "Astronomical Instrumentation", desc: "Geometric optics, aperture synthesis, resolving power, and CCD detectors.", logo: "../assets/img/theory/astronomical_instrumentation_logo.png", accent: "#B39CD0" },
+            "stellar_parameters": { eyebrow: "Theory Track · Module 04", title: "Stellar Parameters & Spectral Classification", desc: "Binary star systems, stellar radii/masses, and the OBAFGKM spectral sequence.", logo: "../assets/img/theory/stellar_parameters_logo.png", accent: "#B39CD0" },
+            "stellar_structure": { eyebrow: "Theory Track · Module 05", title: "Stellar Structure & Atmospheres", desc: "Hydrostatic equilibrium, radiative transfer, solar physics, and stellar interiors.", logo: "../assets/img/theory/stellar_structure_logo.png", accent: "#B39CD0" },
+            "interstellar_medium": { eyebrow: "Theory Track · Module 06", title: "Interstellar Medium & Star Formation", desc: "Jeans criteria, molecular cloud collapse, extinction, and protostellar jets.", logo: "../assets/img/theory/interstellar_medium_logo.png", accent: "#B39CD0" },
+            "stellar_evolution": { eyebrow: "Theory Track · Module 07", title: "Stellar Evolution", desc: "Main-sequence lifetimes, post-main-sequence branches, pulsation, and supernovae.", logo: "../assets/img/theory/stellar_evolution_logo.png", accent: "#B39CD0" },
+            "stellar_remnants": { eyebrow: "Theory Track · Module 08", title: "Stellar Remnants & General Relativity", desc: "White dwarfs, neutron stars, Schwarzschild black holes, and close binaries.", logo: "../assets/img/theory/stellar_remnants_logo.png", accent: "#B39CD0" },
+            "planetary_systems": { eyebrow: "Theory Track · Module 09", title: "Planetary Systems & Formation", desc: "Solar system dynamics, exoplanet transit/RV detection, and planetary atmospheres.", logo: "../assets/img/theory/planetary_systems_logo.png", accent: "#B39CD0" },
+            "galactic_structure": { eyebrow: "Theory Track · Module 10", title: "Galactic Structure", desc: "The Milky Way morphology, Oort constants, differential rotation, and dark matter halos.", logo: "../assets/img/theory/galactic_structure_logo.png", accent: "#B39CD0" },
+            "galactic_evolution": { eyebrow: "Theory Track · Module 11", title: "Galactic Evolution & Active Galaxies", desc: "Galaxy interactions, supermassive black holes, AGN unified model, and relativistic jets.", logo: "../assets/img/theory/galactic_evolution_logo.png", accent: "#B39CD0" },
+            "cosmology": { eyebrow: "Theory Track · Module 12", title: "Cosmology & Structure of the Universe", desc: "Friedmann equations, Hubble flow, cosmic microwave background, and early universe.", logo: "../assets/img/theory/cosmology_logo.png", accent: "#B39CD0" },
+            "data_methods_plotting": { eyebrow: "Data Analysis Track · Module 01", title: "Methods & Plotting", desc: "Error propagation, weighted linear regression, linearization, and residual plotting.", logo: "../assets/img/data_analysis/methods_plotting_logo.png", accent: "#35E6FF" },
+            "data_full_sets": { eyebrow: "Data Analysis Track · Module 02", title: "Full Data Sets", desc: "Comprehensive real-world datasets from past IOAA exams: light curves and spectra.", logo: "../assets/img/data_analysis/full_data_sets_logo.png", accent: "#35E6FF" },
+            "obs_blind_map": { eyebrow: "Observational Track · Module 01", title: "Blind Map Practice", desc: "Naked-eye star identification, constellation boundaries, and coordinate estimation.", logo: "../assets/img/observational/blind_map_logo.png", accent: "#FFC1CC" },
+            "obs_telescope": { eyebrow: "Observational Track · Module 02", title: "Telescope Practice", desc: "Equatorial mount calibration, polar alignment, FOV mapping, and deep-sky pointing.", logo: "../assets/img/observational/telescope_practice_logo.png", accent: "#FFC1CC" }
+        };
 
-                // Match Qxx_USAAAO_20xx.png (extracts filename and 4-digit year)
-                const usaaaoMatch = rawSrc.match(/(Q[\d-]+_USAAAO_(\d{4})\.(?:png|jpg|jpeg|webp|svg))$/i);
-                if (usaaaoMatch) {
-                    const fileName = usaaaoMatch[1];
-                    const year = usaaaoMatch[2];
-                    const resolved = `../assets/img/USAAAO_${year}/${fileName}`;
-                    if (rawSrc !== resolved) {
-                        img.dataset.pathResolved = 'true';
-                        img.src = resolved;
-                        return;
-                    }
-                }
+        (function hydratePracticePage() {
+            const fileName = window.location.pathname.split('/').pop().replace('.html', '');
+            const meta = MODULE_REGISTRY[fileName];
+            if (!meta) return;
 
-                // Fix root-relative assets/ paths when inside practice/ subfolder
-                if (rawSrc.startsWith('assets/')) {
-                    img.dataset.pathResolved = 'true';
-                    img.src = '../' + rawSrc;
-                }
-            }
-
-            // 1. Intercept 404 image errors in capture phase
-            window.addEventListener('error', (e) => {
-                if (e.target && e.target.tagName === 'IMG') {
-                    resolveDiagramSrc(e.target);
-                }
-            }, true);
-
-            // 2. Proactively rewrite image paths as soon as render_problems.js injects cards
-            const container = document.getElementById('problems-container');
-            if (container) {
-                const observer = new MutationObserver((mutations) => {
-                    mutations.forEach((m) => {
-                        m.addedNodes.forEach((node) => {
-                            if (node.nodeType === 1) {
-                                if (node.tagName === 'IMG') resolveDiagramSrc(node);
-                                node.querySelectorAll?.('img').forEach(resolveDiagramSrc);
-                            }
-                        });
-                    });
-                });
-                observer.observe(container, { childList: true, subtree: true });
-            }
+            document.title = `${meta.title} — Practice | Supernova Guide`;
+            document.documentElement.style.setProperty('--track-accent', meta.accent);
+            document.getElementById('mod-logo').src = meta.logo;
+            document.getElementById('mod-eyebrow').textContent = meta.eyebrow;
+            document.getElementById('mod-title').textContent = meta.title;
+            document.getElementById('mod-desc').textContent = meta.desc;
+            const emptyTitle = document.getElementById('empty-title');
+            if (emptyTitle) emptyTitle.textContent = `${meta.title} — Problem Set Coming Soon`;
+            document.getElementById('mod-handout-link').href = `../handouts/${fileName}.html`;
+            const emptyBtn = document.getElementById('empty-handout-btn');
+            if (emptyBtn) emptyBtn.href = `../handouts/${fileName}.html`;
         })();
     </script>
-
     <script type="module" src="../js/auth.js"></script>
     <script type="module" src="../js/render_problems.js"></script>
 </body>

@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supernova Guide — 30s Instagram Reel Generator (9:16)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-base: #0A0A0C;
+            --bg-sidebar: #101115;
+            --bg-card: #15161A;
+            --accent-green: #2BE38A;
+            --accent-blue: #35E6FF;
+            --accent-purple: #B39CD0;
+            --accent-rose: #FFC1CC;
+            --accent-gold: #FFCF5C;
+            --text-pure: #FFFFFF;
+            --text-muted: #8A94A6;
+            --border-light: rgba(255, 255, 255, 0.15);
+            --font-display: 'Bricolage Grotesque', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg-base);
+            color: var(--text-pure);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            gap: 36px;
+            flex-wrap: wrap;
+        }
+
+        /* 9:16 Phone Preview Frame */
+        .preview-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .canvas-shell {
+            width: 378px;
+            height: 672px;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 2px solid var(--border-light);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.85), 0 0 30px rgba(53, 230, 255, 0.12);
+            background: #0A0A0C;
+            position: relative;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Studio Controls & Teleprompter */
+        .studio-panel {
+            max-width: 540px;
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .studio-header span {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .studio-header h1 {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            margin-top: 4px;
+        }
+
+        .timeline-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-sidebar);
+            border-radius: 99px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .timeline-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue), var(--accent-green));
+            transition: width 0.08s linear;
+        }
+        .time-readout {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .btn-studio {
+            flex: 1;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.86rem;
+            cursor: pointer;
+            border: 1px solid var(--border-light);
+            background: var(--bg-sidebar);
+            color: var(--text-pure);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-studio:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+        .btn-record {
+            background: var(--accent-green);
+            color: var(--bg-base);
+            border-color: var(--accent-green);
+        }
+        .btn-record:hover {
+            background: #52f0a2;
+            color: var(--bg-base);
+        }
+        .btn-record.recording {
+            background: #FF4D6A;
+            border-color: #FF4D6A;
+            color: #FFF;
+        }
+
+        /* Voiceover Teleprompter */
+        .teleprompter {
+            background: var(--bg-sidebar);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .teleprompter-title {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            color: var(--accent-purple);
+            letter-spacing: 0.06em;
+        }
+        .script-block {
+            padding: 10px 12px;
+            border-radius: 8px;
+            border-left: 3px solid transparent;
+            background: rgba(255,255,255,0.02);
+            font-size: 0.86rem;
+            line-height: 1.55;
+            color: var(--text-muted);
+            transition: all 0.25s;
+        }
+        .script-block.active {
+            border-left-color: var(--accent-blue);
+            background: rgba(53, 230, 255, 0.08);
+            color: var(--text-pure);
+        }
+        .script-time {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--accent-blue);
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="preview-wrapper">
+        <div class="canvas-shell">
+            <!-- Full 1080x1920 Vertical HD Canvas -->
+            <canvas id="reelCanvas" width="1080" height="1920"></canvas>
+        </div>
+    </div>
+
+    <div class="studio-panel">
+        <div class="studio-header">
+            <span>9:16 Vertical Motion Graphics Engine · 1080×1920 @ 60FPS</span>
+            <h1>Supernova Guide — 30s Reel Studio</h1>
+        </div>
+
+        <div>
+            <div class="timeline-bar">
+                <div class="timeline-fill" id="timeline-fill"></div>
+            </div>
+            <div class="time-readout" style="margin-top: 6px;">
+                <span id="scene-indicator">SCENE 01: CURRICULUM HUB</span>
+                <span id="time-display">00.0s / 30.0s</span>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn-studio" id="btn-play">
+                <i class="fa-solid fa-rotate-right"></i> Restart Preview
+            </button>
+            <button class="btn-studio btn-record" id="btn-record">
+                <i class="fa-solid fa-circle-dot"></i> Record &amp; Download 30s Video
+            </button>
+        </div>
+
+        <div class="teleprompter">
+            <div class="teleprompter-title"><i class="fa-solid fa-microphone-lines"></i> Synchronized Voiceover Teleprompter</div>
+            
+            <div class="script-block active" id="script-1">
+                <span class="script-time">SCENE 1 (0:00 – 0:10) · THE UNIFIED HUB</span>
+                "Preparing for the Astronomy Olympiad shouldn't mean digging through scattered PDFs. Welcome to Supernova Guide—the centralized astrophysics platform covering all twelve IOAA theoretical modules, data analysis, and observation."
+            </div>
+
+            <div class="script-block" id="script-2">
+                <span class="script-time">SCENE 2 (0:10 – 0:20) · PLANETARIUM &amp; COURSES</span>
+                "Master rigorous LaTeX derivations and interactive quizzes, watch curated university lectures, and train your naked-eye navigation in our real-time Planetarium Arena with ranked ELO matchups."
+            </div>
+
+            <div class="script-block" id="script-3">
+                <span class="script-time">SCENE 3 (0:20 – 0:30) · TELEMETRY &amp; AUTUMN CUP</span>
+                "Track your blind spots with live radar telemetry and our spaced-repetition Mistake Notebook—and register now for the Autumn 2026 Astrophysics Cup. Link in bio."
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('reelCanvas');
+        const ctx = canvas.getContext('2d');
+        const W = 1080;
+        const H = 1920;
+        const DURATION = 30.0;
+
+        // Mathematical Easing Helpers
+        const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+        const easeOutCubic = (x) => 1 - Math.pow(1 - clamp(x, 0, 1), 3);
+        const easeOutBack = (x) => {
+            const c1 = 1.70158, c3 = c1 + 1;
+            const t = clamp(x, 0, 1);
+            return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+        };
+        const prog = (t, start, dur) => clamp((t - start) / dur, 0, 1);
+
+        // Pre-generate deterministic background stars
+        const stars = Array.from({ length: 90 }, (_, i) => ({
+            x: (Math.sin(i * 78.233) * 43758.5453 % 1 + 1) % 1 * W,
+            y: (Math.cos(i * 45.164) * 23421.6312 % 1 + 1) % 1 * H,
+            r: (i % 3) + 1.2,
+            phase: i * 0.7
+        }));
+
+        function roundRect(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.arcTo(x + w, y, x + w, y + h, r);
+            ctx.arcTo(x + w, y + h, x, y + h, r);
+            ctx.arcTo(x, y + h, x, y, r);
+            ctx.arcTo(x, y, x + w, y, r);
+            ctx.closePath();
+        }
+
+        function drawBackground(t) {
+            // Base #0A0A0C
+            ctx.fillStyle = '#0A0A0C';
+            ctx.fillRect(0, 0, W, H);
+
+            // Subtle ambient radial glows
+            const grad1 = ctx.createRadialGradient(W * 0.8, H * 0.2, 20, W * 0.8, H * 0.2, 700);
+            grad1.addColorStop(0, 'rgba(53, 230, 255, 0.08)');
+            grad1.addColorStop(1, 'transparent');
+            ctx.fillStyle = grad1;
+            ctx.fillRect(0, 0, W, H);
+
+            const grad2 = ctx.createRadialGradient(W * 0.2, H * 0.75, 20, W * 0.2, H * 0.75, 700);
+            grad2.addColorStop(0, 'rgba(179, 156, 208, 0.08)');
+            grad2.addColorStop(1, 'transparent');
+            ctx.fillStyle = grad2;
+            ctx.fillRect(0, 0, W, H);
+
+            // Architectural vertical grid lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+            ctx.lineWidth = 2;
+            [180, 540, 900].forEach(gx => {
+                ctx.beginPath();
+                ctx.moveTo(gx, 0);
+                ctx.lineTo(gx, H);
+                ctx.stroke();
+            });
+
+            // Twinkling stars
+            stars.forEach(s => {
+                const alpha = 0.25 + 0.45 * Math.sin(t * 2.5 + s.phase);
+                ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Shooting Comet
+            const cometCycle = (t % 5.0) / 5.0;
+            if (cometCycle < 0.45) {
+                const cp = cometCycle / 0.45;
+                const cx = W * 1.1 - cp * W * 1.3;
+                const cy = H * 0.08 + cp * H * 0.45;
+                const cGrad = ctx.createLinearGradient(cx, cy, cx + 220, cy - 140);
+                cGrad.addColorStop(0, '#35E6FF');
+                cGrad.addColorStop(1, 'transparent');
+                ctx.strokeStyle = cGrad;
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + 220, cy - 140);
+                ctx.stroke();
+
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath();
+                ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Persistent Top Brand Bar
+            roundRect(ctx, 60, 70, W - 120, 96, 20);
+            ctx.fillStyle = 'rgba(16, 17, 21, 0.9)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Brand Planet Icon
+            ctx.save();
+            ctx.translate(122, 118);
+            ctx.fillStyle = '#35E6FF';
+            ctx.beginPath();
+            ctx.arc(0, 0, 22, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#B39CD0';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 34, 10, -0.35, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '800 34px "Bricolage Grotesque", sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('SUPERNOVA GUIDE', 175, 130);
+
+            // Live System Pill
+            roundRect(ctx, W - 340, 94, 250, 48, 24);
+            ctx.fillStyle = 'rgba(43, 227, 138, 0.14)';
+            ctx.fill();
+            ctx.fillStyle = '#2BE38A';
+            ctx.font = '700 22px "Space Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('● IOAA PLATFORM', W - 215, 126);
+        }
+
+        // ============================================================================
+        // SCENE 1 (0.0s - 10.0s): THE HOOK & UNIFIED 16-MODULE CURRICULUM HUB
+        // ============================================================================
+        function drawScene1(t) {
+            const enter = easeOutCubic(prog(t, 0, 0.8));
+            ctx.save();
+            ctx.globalAlpha = enter;
+
+            // Eyebrow Pill
+            roundRect(ctx, 190, 220, W - 380, 56, 28);
+            ctx.fillStyle = 'rgba(179, 156, 208, 0.14)';
+            ctx.fill();
+            ctx.strokeStyle = '#B39CD0';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = '#B39CD0';
+            ctx.font = '700 24px "Space Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('CENTRALIZED OLYMPIAD PREP', W / 2, 256);
+
+            // Main Hook Title
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '800 72px "Bricolage Grotesque", sans-serif';
+            ctx.fillText('Master Every Track', W / 2, 365);
+            ctx.fillStyle = '#35E6FF';
+            ctx.fillText('In One Workspace.', W / 2, 445);
+
+            // 4 Unified Curriculum Cards
+            const cards = [
+                {
+                    track: 'THEORY · 12 MODULES',
+                    title: '1. Positional & Celestial Mech',
+                    sub: 'Spherical trig, Keplerian orbits & N-body dynamics',
+                    accent: '#B39CD0',
+                    badge: '16/16',
+                    type: 'orbit'
+                },
+                {
+                    track: 'DATA ANALYSIS · TRACK 02',
+                    title: 'Methods, Light Curves & Spectra',
+                    sub: 'Error propagation, linear regression & IOAA datasets',
+                    accent: '#35E6FF',
+                    badge: 'PLOTS',
+                    type: 'plot'
+                },
+                {
+                    track: 'OBSERVATIONAL · TRACK 03',
+                    title: 'Blind Star Map Practice',
+                    sub: 'Constellation boundaries & DSO coordinates without grids',
+                    accent: '#FFC1CC',
+                    badge: 'SKY',
+                    type: 'map'
+                },
+                {
+                    track: 'OBSERVATIONAL · TRACK 04',
+                    title: 'Equatorial Telescope Lab',
+                    sub: 'Polar alignment, setting circles & FOV calibration',
+                    accent: '#2BE38A',
+                    badge: 'LAB',
+                    type: 'scope'
+                }
+            ];
+
+            cards.forEach((c, idx) => {
+                const cProg = easeOutBack(prog(t, 0.6 + idx * 0.45, 0.75));
+                if (cProg <= 0) return;
+
+                const cy = 515 + idx * 320 + (1 - cProg) * 120;
+                ctx.save();
+                ctx.globalAlpha = clamp(cProg, 0, 1);
+
+                // Card Base
+                roundRect(ctx, 70, cy, W - 140, 290, 28);
+                ctx.fillStyle = '#15161A';
+                ctx.fill();
+                ctx.strokeStyle = t > 4.5 + idx * 0.8 ? c.accent : 'rgba(255, 255, 255, 0.12)';
+                ctx.lineWidth = t > 4.5 + idx * 0.8 ? 4 : 2;
+                ctx.stroke();
+
+                // Left 2D Illustration Box (#FFFFFF rounded square)
+                roundRect(ctx, 105, cy + 35, 220, 220, 24);
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fill();
+
+                // Draw Vector Illustration inside the white box
+                const ix = 215, iy = cy + 145;
+                ctx.save();
+                if (c.type === 'orbit') {
+                    ctx.strokeStyle = '#3B2854';
+                    ctx.lineWidth = 5;
+                    ctx.beginPath();
+                    ctx.arc(ix, iy, 70, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.ellipse(ix, iy, 85, 36, -0.4, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.fillStyle = '#FF9F43';
+                    ctx.beginPath();
+                    ctx.arc(ix, iy, 22, 0, Math.PI * 2);
+                    ctx.fill();
+                    const ang = t * 2.2;
+                    ctx.fillStyle = '#6C5CE7';
+                    ctx.beginPath();
+                    ctx.arc(ix + Math.cos(ang) * 85, iy + Math.sin(ang) * 36, 11, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (c.type === 'plot') {
+                    ctx.strokeStyle = '#3B2854';
+                    ctx.lineWidth = 5;
+                    ctx.beginPath();
+                    ctx.moveTo(ix - 75, iy - 65);
+                    ctx.lineTo(ix - 75, iy + 65);
+                    ctx.lineTo(ix + 75, iy + 65);
+                    ctx.stroke();
+                    // Sinusoidal light curve
+                    ctx.strokeStyle = '#6C5CE7';
+                    ctx.lineWidth = 5;
+                    ctx.beginPath();
+                    for (let px = -65; px <= 65; px += 5) {
+                        const py = Math.sin((px + t * 40) * 0.06) * 35;
+                        if (px === -65) ctx.moveTo(ix + px, iy + py);
+                        else ctx.lineTo(ix + px, iy + py);
+                    }
+                    ctx.stroke();
+                    // Regression line
+                    ctx.strokeStyle = '#FF9F43';
+                    ctx.setLineDash([8, 6]);
+                    ctx.beginPath();
+                    ctx.moveTo(ix - 65, iy + 45);
+                    ctx.lineTo(ix + 65, iy - 45);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                } else if (c.type === 'map') {
+                    ctx.strokeStyle = '#3B2854';
+                    ctx.lineWidth = 5;
+                    ctx.beginPath();
+                    ctx.arc(ix, iy, 78, 0, Math.PI * 2);
+                    ctx.stroke();
+                    const pts = [[-35,-40],[25,-35],[-10,0],[5,2],[-30,45],[30,40]];
+                    ctx.strokeStyle = '#6C5CE7';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(ix-35, iy-40); ctx.lineTo(ix-10, iy); ctx.lineTo(ix-30, iy+45);
+                    ctx.moveTo(ix+25, iy-35); ctx.lineTo(ix+5, iy+2); ctx.lineTo(ix+30, iy+40);
+                    ctx.stroke();
+                    pts.forEach(([px, py], pi) => {
+                        ctx.fillStyle = pi === 0 ? '#FF9F43' : '#3B2854';
+                        ctx.beginPath();
+                        ctx.arc(ix + px, iy + py, 6, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+                } else if (c.type === 'scope') {
+                    ctx.strokeStyle = '#3B2854';
+                    ctx.lineWidth = 6;
+                    ctx.save();
+                    ctx.translate(ix, iy - 10);
+                    ctx.rotate(-0.45);
+                    roundRect(ctx, -65, -18, 130, 36, 8);
+                    ctx.fillStyle = '#6C5CE7';
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.restore();
+                    ctx.beginPath();
+                    ctx.moveTo(ix, iy + 10); ctx.lineTo(ix - 40, iy + 70);
+                    ctx.moveTo(ix, iy + 10); ctx.lineTo(ix + 40, iy + 70);
+                    ctx.moveTo(ix, iy + 10); ctx.lineTo(ix, iy + 75);
+                    ctx.stroke();
+                }
+                ctx.restore();
+
+                // Right Text & Dual Buttons
+                ctx.textAlign = 'left';
+                ctx.fillStyle = c.accent;
+                ctx.font = '700 21px "Space Mono", monospace';
+                ctx.fillText(c.track, 360, cy + 65);
+
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = '700 33px "Bricolage Grotesque", sans-serif';
+                ctx.fillText(c.title, 360, cy + 112);
+
+                ctx.fillStyle = '#8A94A6';
+                ctx.font = '500 23px "Inter", sans-serif';
+                ctx.fillText(c.sub, 360, cy + 152);
+
+                // Dual Action Buttons: [Practice] and [Handout]
+                const highlightPrac = t > 4.5 + idx * 0.8;
+                roundRect(ctx, 360, cy + 185, 290, 66, 14);
+                ctx.fillStyle = highlightPrac ? c.accent : '#101115';
+                ctx.fill();
+                ctx.strokeStyle = c.accent;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.fillStyle = highlightPrac ? '#0A0A0C' : '#FFFFFF';
+                ctx.font = '700 24px "Inter", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Practice Set →', 505, cy + 227);
+
+                roundRect(ctx, 670, cy + 185, 290, 66, 14);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+                ctx.stroke();
+                ctx.fillStyle = '#EDEDED';
+                ctx.fillText('Read Handout', 815, cy + 227);
+
+                ctx.restore();
+            });
+
+            ctx.restore();
+        }
+
+        // ============================================================================
+        // SCENE 2 (10.0s - 20.0s): 3D PLANETARIUM ARENA & LATEX HANDOUTS / COURSES
+        // ============================================================================
+        function drawScene2(t) {
+            const st = t - 10.0;
+            const enter = easeOutCubic(prog(st, 0, 0.7));
+            ctx.save();
+            ctx.globalAlpha = enter;
+
+            // Header
+            roundRect(ctx, 200, 210, W - 400, 54, 27);
+            ctx.fillStyle = 'rgba(53, 230, 255, 0.14)';
+            ctx.fill();
+            ctx.fillStyle = '#35E6FF';
+            ctx.font = '700 23px "Space Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('OBSERVATORY & LECTURE HUB', W / 2, 245);
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '800 66px "Bricolage Grotesque", sans-serif';
+            ctx.fillText('3D Planetarium Arena', W / 2, 345);
+            ctx.fillStyle = '#FFCF5C';
+            ctx.fillText('& Interactive Handouts', W / 2, 420);
+
+            // 1. Planetarium Observatory Dome Card
+            roundRect(ctx, 70, 470, W - 140, 740, 32);
+            ctx.fillStyle = '#101115';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(53, 230, 255, 0.4)';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Rotating Celestial Coordinate Sphere
+            const cx = W / 2, cy = 810;
+            ctx.save();
+            ctx.strokeStyle = 'rgba(53, 230, 255, 0.18)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 230, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.setLineDash([10, 10]);
+            ctx.beginPath();
+            ctx.arc(cx, cy, 165, st * 0.4, st * 0.4 + Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Constellation Lines (Orion)
+            const orion = [
+                { x: -95, y: -115, name: 'α Ori (Betelgeuse)', col: '#FF9F43', r: 10 },
+                { x: 85, y: -95, name: 'γ Ori (Bellatrix)', col: '#FFFFFF', r: 8 },
+                { x: -30, y: 0, name: 'δ Ori', col: '#35E6FF', r: 6 },
+                { x: 0, y: -5, name: 'ε Ori', col: '#35E6FF', r: 6 },
+                { x: 30, y: -10, name: 'ζ Ori', col: '#35E6FF', r: 6 },
+                { x: -80, y: 120, name: 'κ Ori (Saiph)', col: '#FFFFFF', r: 7 },
+                { x: 95, y: 110, name: 'β Ori (Rigel)', col: '#35E6FF', r: 11 }
+            ];
+
+            ctx.strokeStyle = 'rgba(179, 156, 208, 0.45)';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(cx + orion[0].x, cy + orion[0].y);
+            ctx.lineTo(cx + orion[2].x, cy + orion[2].y);
+            ctx.lineTo(cx + orion[5].x, cy + orion[5].y);
+            ctx.moveTo(cx + orion[1].x, cy + orion[1].y);
+            ctx.lineTo(cx + orion[4].x, cy + orion[4].y);
+            ctx.lineTo(cx + orion[6].x, cy + orion[6].y);
+            ctx.moveTo(cx + orion[2].x, cy + orion[2].y);
+            ctx.lineTo(cx + orion[4].x, cy + orion[4].y);
+            ctx.stroke();
+
+            orion.forEach(stObj => {
+                ctx.fillStyle = stObj.col;
+                ctx.beginPath();
+                ctx.arc(cx + stObj.x, cy + stObj.y, stObj.r, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Animated Target Lock Reticle panning to Betelgeuse -> Rigel
+            const lockT = easeOutCubic(prog(st, 1.0, 2.5));
+            const rx = cx + (-95 * (1 - lockT) + 95 * lockT);
+            const ry = cy + (-115 * (1 - lockT) + 110 * lockT);
+
+            ctx.strokeStyle = '#2BE38A';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(rx, ry, 34, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(rx - 48, ry); ctx.lineTo(rx - 20, ry);
+            ctx.moveTo(rx + 20, ry); ctx.lineTo(rx + 48, ry);
+            ctx.moveTo(rx, ry - 48); ctx.lineTo(rx, ry - 20);
+            ctx.moveTo(rx, ry + 20); ctx.lineTo(rx, ry + 48);
+            ctx.stroke();
+
+            ctx.fillStyle = '#2BE38A';
+            ctx.font = '700 22px "Space Mono", monospace';
+            ctx.textAlign = 'left';
+            ctx.fillText(lockT > 0.7 ? 'TARGET LOCKED: β ORI (RIGEL)' : 'SCANNING: ORION SECTOR', rx - 150, ry - 52);
+            ctx.restore();
+
+            // Live ELO Badge inside Planetarium Card
+            const eloVal = Math.round(1200 + 285 * easeOutCubic(prog(st, 1.2, 3.0)));
+            roundRect(ctx, 110, 505, 360, 74, 16);
+            ctx.fillStyle = 'rgba(255, 207, 92, 0.12)';
+            ctx.fill();
+            ctx.strokeStyle = '#FFCF5C';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = '#FFCF5C';
+            ctx.font = '700 26px "Space Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(`★ ARENA ELO: ${eloVal}`, 290, 552);
+
+            // Streak Badge
+            roundRect(ctx, W - 430, 505, 320, 74, 16);
+            ctx.fillStyle = 'rgba(43, 227, 138, 0.12)';
+            ctx.fill();
+            ctx.strokeStyle = '#2BE38A';
+            ctx.stroke();
+            ctx.fillStyle = '#2BE38A';
+            ctx.fillText('🔥 STREAK: 14x', W - 270, 552);
+
+            // Bottom HUD bar inside Planetarium Card
+            roundRect(ctx, 110, 1100, W - 220, 76, 16);
+            ctx.fillStyle = '#15161A';
+            ctx.fill();
+            ctx.fillStyle = '#EDEDED';
+            ctx.font = '600 24px "Space Mono", monospace';
+            ctx.textAlign = 'left';
+            ctx.fillText('RA: 05h 14m 32s  |  DEC: -08° 12\'  |  MAG: +0.13', 145, 1147);
+
+            // 2. LaTeX Handout & Video Course Card (Slides up below)
+            const card2P = easeOutBack(prog(st, 2.2, 0.9));
+            if (card2P > 0) {
+                const c2y = 1255 + (1 - card2P) * 140;
+                ctx.save();
+                ctx.globalAlpha = clamp(card2P, 0, 1);
+
+                roundRect(ctx, 70, c2y, W - 140, 530, 32);
+                ctx.fillStyle = '#15161A';
+                ctx.fill();
+                ctx.strokeStyle = '#B39CD0';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                ctx.fillStyle = '#B39CD0';
+                ctx.font = '700 22px "Space Mono", monospace';
+                ctx.textAlign = 'left';
+                ctx.fillText('MODULE 10 HANDOUT · THE MILKY WAY & OORT CONSTANTS', 115, c2y + 62);
+
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = '700 38px "Bricolage Grotesque", sans-serif';
+                ctx.fillText('Rigorous Derivations & Video Courses', 115, c2y + 115);
+
+                // Formula Block
+                roundRect(ctx, 115, c2y + 145, W - 230, 135, 18);
+                ctx.fillStyle = '#101115';
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(179, 156, 208, 0.35)';
+                ctx.stroke();
+
+                ctx.fillStyle = '#35E6FF';
+                ctx.font = '700 32px "Space Mono", monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('v_r ≈ A · d · sin(2ℓ)   |   M(r) = V²r / G', W / 2, c2y + 205);
+                ctx.fillStyle = '#8A94A6';
+                ctx.font = '500 21px "Inter", sans-serif';
+                ctx.fillText('Includes 20-Question Interactive Chapter Quiz & Proof Toggles', W / 2, c2y + 252);
+
+                // Video Lecture Preview Strip
+                roundRect(ctx, 115, c2y + 310, W - 230, 175, 20);
+                ctx.fillStyle = '#101115';
+                ctx.fill();
+
+                // Play Circle
+                ctx.fillStyle = '#35E6FF';
+                ctx.beginPath();
+                ctx.arc(210, c2y + 397, 46, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#0A0A0C';
+                ctx.beginPath();
+                ctx.moveTo(198, c2y + 375);
+                ctx.lineTo(232, c2y + 397);
+                ctx.lineTo(198, c2y + 419);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#2BE38A';
+                ctx.font = '700 20px "Space Mono", monospace';
+                ctx.fillText('VIDEO COURSES TAB · AUTO YOUTUBE THUMBNAILS', 285, c2y + 365);
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = '700 30px "Bricolage Grotesque", sans-serif';
+                ctx.fillText('Orbital Mechanics & Vis-Viva Walkthrough', 285, c2y + 408);
+                ctx.fillStyle = '#8A94A6';
+                ctx.font = '500 22px "Inter", sans-serif';
+                ctx.fillText('Embedded 60fps Lecture Player · MIT OCW & IOAA Prep', 285, c2y + 448);
+
+                ctx.restore();
+            }
+
+            ctx.restore();
+        }
+
+        // ============================================================================
+        // SCENE 3 (20.0s - 30.0s): RADAR ANALYTICS, MISTAKE NOTEBOOK & AUTUMN CUP CTA
+        // ============================================================================
+        function drawScene3(t) {
+            const st = t - 20.0;
+            const enter = easeOutCubic(prog(st, 0, 0.7));
+            ctx.save();
+            ctx.globalAlpha = enter;
+
+            // Header
+            roundRect(ctx, 190, 210, W - 380, 54, 27);
+            ctx.fillStyle = 'rgba(43, 227, 138, 0.14)';
+            ctx.fill();
+            ctx.fillStyle = '#2BE38A';
+            ctx.font = '700 23px "Space Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('DIAGNOSTIC TELEMETRY & COMPETITIONS', W / 2, 245);
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '800 64px "Bricolage Grotesque", sans-serif';
+            ctx.fillText('Eliminate Blind Spots.', W / 2, 345);
+            ctx.fillStyle = '#2BE38A';
+            ctx.fillText('Compete Globally.', W / 2, 420);
+
+            // 1. 6-Axis Competency Radar Card
+            roundRect(ctx, 70, 465, W - 140, 540, 28);
+            ctx.fillStyle = '#15161A';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            const rx = 340, ry = 735, maxR = 175;
+            const angles = [-90, -30, 30, 90, 150, 210].map(d => d * Math.PI / 180);
+
+            // Radar Rings
+            [1, 0.66, 0.33].forEach(scale => {
+                ctx.beginPath();
+                angles.forEach((a, i) => {
+                    const px = rx + Math.cos(a) * maxR * scale;
+                    const py = ry + Math.sin(a) * maxR * scale;
+                    if (i === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                });
+                ctx.closePath();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+                ctx.stroke();
+            });
+
+            // Animated Radar Data Polygon
+            const rGrow = easeOutBack(prog(st, 0.5, 1.4));
+            const vals = [0.92, 0.84, 0.78, 0.88, 0.80, 0.75];
+            ctx.beginPath();
+            angles.forEach((a, i) => {
+                const rad = maxR * vals[i] * rGrow;
+                const px = rx + Math.cos(a) * rad;
+                const py = ry + Math.sin(a) * rad;
+                if (i === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            });
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(53, 230, 255, 0.24)';
+            ctx.fill();
+            ctx.strokeStyle = '#35E6FF';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            // Right side of Radar Card: Mistake Notebook Spaced Repetition
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#FFC1CC';
+            ctx.font = '700 21px "Space Mono", monospace';
+            ctx.fillText('SPACED-REPETITION NOTEBOOK', 575, 545);
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '700 34px "Bricolage Grotesque", sans-serif';
+            ctx.fillText('1d → 7d → 30d Mastery', 575, 595);
+
+            const masteredFlip = st > 3.2;
+            roundRect(ctx, 575, 625, 395, 155, 18);
+            ctx.fillStyle = '#101115';
+            ctx.fill();
+            ctx.strokeStyle = masteredFlip ? '#2BE38A' : '#FFC1CC';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            ctx.fillStyle = masteredFlip ? '#2BE38A' : '#FFC1CC';
+            ctx.font = '700 20px "Space Mono", monospace';
+            ctx.fillText(masteredFlip ? '✓ 30d MASTERED' : '● 1d REVIEW QUEUE', 605, 668);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '600 24px "Inter", sans-serif';
+            ctx.fillText('Binary Mass Inclination sin³(i)', 605, 710);
+            ctx.fillStyle = '#8A94A6';
+            ctx.font = '500 20px "Space Mono", monospace';
+            ctx.fillText('P² = 4π²a³ / G(M₁ + M₂)', 605, 750);
+
+            // IAU Constants & Calculators Pill
+            roundRect(ctx, 575, 810, 395, 145, 18);
+            ctx.fillStyle = '#101115';
+            ctx.fill();
+            ctx.strokeStyle = '#B39CD0';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = '#B39CD0';
+            ctx.font = '700 20px "Space Mono", monospace';
+            ctx.fillText('FORMULA & TOOLS VAULT', 605, 852);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '600 24px "Inter", sans-serif';
+            ctx.fillText('IAU Constants & Astro Solvers', 605, 895);
+            ctx.fillStyle = '#35E6FF';
+            ctx.font = '500 20px "Space Mono", monospace';
+            ctx.fillText('Extinction & Kepler Calculators', 605, 932);
+
+            // 2. Featured Autumn 2026 Competition Mega-Card (Climax CTA)
+            const compP = easeOutBack(prog(st, 1.8, 1.0));
+            if (compP > 0) {
+                const cy = 1045 + (1 - compP) * 140;
+                ctx.save();
+                ctx.globalAlpha = clamp(compP, 0, 1);
+
+                roundRect(ctx, 70, cy, W - 140, 740, 32);
+                ctx.fillStyle = '#15161A';
+                ctx.fill();
+                ctx.strokeStyle = '#2BE38A';
+                ctx.lineWidth = 4;
+                ctx.stroke();
+
+                // Season Badge
+                roundRect(ctx, 120, cy + 45, 420, 50, 12);
+                ctx.fillStyle = 'rgba(43, 227, 138, 0.15)';
+                ctx.fill();
+                ctx.fillStyle = '#2BE38A';
+                ctx.font = '700 22px "Space Mono", monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('★ OFFICIAL 3-PHASE MCQ CUP', 330, cy + 78);
+
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = '800 52px "Bricolage Grotesque", sans-serif';
+                ctx.fillText('Supernova Astrophysics Cup', 120, cy + 165);
+
+                ctx.fillStyle = '#FFCF5C';
+                ctx.font = '700 28px "Space Mono", monospace';
+                ctx.fillText('REGISTRATION: 19 OCT 2026 – 01 NOV 2026', 120, cy + 220);
+
+                // 3 Phases Pills
+                const phases = [
+                    { p: 'PHASE 01', name: 'Open Qualifier (30 MCQs)', col: '#35E6FF' },
+                    { p: 'PHASE 02', name: 'Semifinal Cut (20 MCQs)', col: '#B39CD0' },
+                    { p: 'PHASE 03', name: 'Grand Final Sprint (15 MCQs)', col: '#FFCF5C' }
+                ];
+                phases.forEach((ph, pi) => {
+                    const py = cy + 265 + pi * 96;
+                    roundRect(ctx, 120, py, W - 240, 78, 16);
+                    ctx.fillStyle = '#101115';
+                    ctx.fill();
+                    ctx.strokeStyle = ph.col;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+
+                    ctx.fillStyle = ph.col;
+                    ctx.font = '700 23px "Space Mono", monospace';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(ph.p, 155, py + 48);
+
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.font = '600 26px "Inter", sans-serif';
+                    ctx.fillText(ph.name, 340, py + 48);
+                });
+
+                // Pulsing Neon Green CTA Button
+                const pulse = 1 + 0.025 * Math.sin(t * 8);
+                ctx.save();
+                ctx.translate(W / 2, cy + 635);
+                ctx.scale(pulse, pulse);
+                roundRect(ctx, -420, -48, 840, 96, 20);
+                ctx.fillStyle = '#2BE38A';
+                ctx.fill();
+                ctx.fillStyle = '#0A0A0C';
+                ctx.font = '800 34px "Bricolage Grotesque", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('REGISTER NOW · LINK IN BIO →', 0, 12);
+                ctx.restore();
+
+                ctx.restore();
+            }
+
+            ctx.restore();
+        }
+
+        // ============================================================================
+        // MAIN TIMELINE & MEDIARECORDER VIDEO EXPORTER
+        // ============================================================================
+        let startTime = performance.now();
+        let isRecording = false;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+
+        const fillEl = document.getElementById('timeline-fill');
+        const timeEl = document.getElementById('time-display');
+        const sceneEl = document.getElementById('scene-indicator');
+        const s1El = document.getElementById('script-1');
+        const s2El = document.getElementById('script-2');
+        const s3El = document.getElementById('script-3');
+
+        function renderLoop(now) {
+            let elapsed = (now - startTime) / 1000;
+
+            if (elapsed >= DURATION) {
+                if (isRecording && mediaRecorder && mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
+                }
+                startTime = now;
+                elapsed = 0;
+            }
+
+            // Update Studio UI & Teleprompter
+            fillEl.style.width = `${(elapsed / DURATION) * 100}%`;
+            timeEl.textContent = `${elapsed.toFixed(1).padStart(4, '0')}s / 30.0s`;
+
+            s1El.classList.toggle('active', elapsed < 10);
+            s2El.classList.toggle('active', elapsed >= 10 && elapsed < 20);
+            s3El.classList.toggle('active', elapsed >= 20);
+
+            // Render Canvas Frame
+            drawBackground(elapsed);
+            if (elapsed < 10.0) {
+                sceneEl.textContent = 'SCENE 01: UNIFIED CURRICULUM HUB';
+                drawScene1(elapsed);
+            } else if (elapsed < 20.0) {
+                sceneEl.textContent = 'SCENE 02: 3D PLANETARIUM & COURSES';
+                drawScene2(elapsed);
+            } else {
+                sceneEl.textContent = 'SCENE 03: TELEMETRY & AUTUMN 2026 CUP';
+                drawScene3(elapsed);
+            }
+
+            requestAnimationFrame(renderLoop);
+        }
+
+        document.getElementById('btn-play').addEventListener('click', () => {
+            startTime = performance.now();
+        });
+
+        const recBtn = document.getElementById('btn-record');
+        recBtn.addEventListener('click', () => {
+            if (isRecording) return;
+            isRecording = true;
+            recordedChunks = [];
+            startTime = performance.now();
+
+            recBtn.classList.add('recording');
+            recBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Recording 30s Reel (Do Not Switch Tabs)...';
+
+            const stream = canvas.captureStream(60);
+            const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
+                ? 'video/webm;codecs=vp9'
+                : 'video/webm';
+
+            mediaRecorder = new MediaRecorder(stream, {
+                mimeType,
+                videoBitsPerSecond: 12000000 // 12 Mbps crisp 1080p60
+            });
+
+            mediaRecorder.ondataavailable = (e) => {
+                if (e.data && e.data.size > 0) recordedChunks.push(e.data);
+            };
+
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(recordedChunks, { type: mimeType });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'supernova_guide_30s_reel_1080x1920.webm';
+                a.click();
+                URL.revokeObjectURL(url);
+
+                isRecording = false;
+                recBtn.classList.remove('recording');
+                recBtn.innerHTML = '<i class="fa-solid fa-check"></i> Downloaded! Click to Record Again';
+            };
+
+            mediaRecorder.start();
+        });
+
+        // Wait for Google Fonts before starting animation loop
+        document.fonts.ready.then(() => {
+            startTime = performance.now();
+            requestAnimationFrame(renderLoop);
+        });
+    </script>
+</body>
+</html>
