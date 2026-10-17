@@ -24,6 +24,27 @@ let progressChart = null;
 const COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000;
 
 export const difficultyMap = {
+    // --- POTD Rotations (19.10.2026 - 01.11.2026) ---
+    'potd_2026_10_19': 'hard',
+    'potd_2026_10_20': 'hard',
+    'potd_2026_10_21': 'hard',
+    'potd_2026_10_22': 'medium',
+    'potd_2026_10_23': 'easy',
+    'potd_2026_10_24': 'easy',
+    'potd_2026_10_25': 'easy',
+    'potd_2026_10_26': 'medium',
+    'potd_2026_10_27': 'hard',
+    'potd_2026_10_28': 'easy',
+    'potd_2026_10_29': 'medium',
+    'potd_2026_10_30': 'hard',
+    'potd_2026_10_31': 'hard',
+    'potd_2026_11_01': 'easy',
+
+    // --- POTW & POTM Rotations ---
+    'potw_2026_w1': 'hard',
+    'potw_2026_w2': 'hard',
+    'potm_2026_m1': 'hard',
+
     // --- USAAAO 2026 (Q1 - Q30) ---
     'q1_usaaao_2026': 'easy',
     'q2_usaaao_2026': 'theory',
@@ -394,12 +415,16 @@ window.enableEditUsername = () => {
         showToast(`Callsign can only be changed once every 14 days. Remaining: ${formatCooldown(rem)}`);
         return;
     }
+    const viewEl = document.getElementById('viewMode');
     const editEl = document.getElementById('editUserContainer');
+    if (viewEl) viewEl.style.display = 'none';
     if (editEl) editEl.style.display = 'flex';
 };
 
 window.cancelEditUsername = () => {
+    const viewEl = document.getElementById('viewMode');
     const editEl = document.getElementById('editUserContainer');
+    if (viewEl) viewEl.style.display = 'block';
     if (editEl) editEl.style.display = 'none';
 };
 
@@ -764,11 +789,9 @@ export function showToast(m) {
         if (!rawSrc || rawSrc.startsWith('http') || rawSrc.startsWith('data:')) return;
 
         let fixedSrc = rawSrc;
-        // 1. Convert USAAAO .png diagram references to .jpeg (matching repo files)
         if (/USAAAO_\d{4}\/Q[\d-]+_USAAAO_\d{4}\.png$/i.test(fixedSrc)) {
             fixedSrc = fixedSrc.replace(/\.png$/i, '.jpeg');
         }
-        // 2. Prefix ../ when inside /practice/ or /handouts/ subfolder
         if (inSubfolder && fixedSrc.startsWith('assets/')) {
             fixedSrc = '../' + fixedSrc;
         }
@@ -777,7 +800,6 @@ export function showToast(m) {
         }
     }
 
-    // Intercept any remaining 404 image errors and swap .png <-> .jpeg <-> .jpg
     window.addEventListener('error', (e) => {
         const img = e.target;
         if (!img || img.tagName !== 'IMG') return;

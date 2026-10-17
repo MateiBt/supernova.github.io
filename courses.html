@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Courses & Lectures | Supernova Guide</title>
+    <title>Supernova Courses | Supernova Guide</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -24,6 +24,7 @@
             --accent-blue: #35E6FF;
             --accent-purple: #B39CD0;
             --accent-rose: #FFC1CC;
+            --accent-gold: #FFCF5C;
             
             --text-pure: #FFFFFF;
             --text-main: #EDEDED;
@@ -53,7 +54,7 @@
             height: 100vh;
             overflow: hidden;
             -webkit-font-smoothing: antialiased;
-            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .sky-background {
@@ -106,188 +107,224 @@
 
         /* --- MAIN AREA --- */
         .dashboard-main {
-            flex: 1; overflow-y: auto; padding: 32px 40px;
+            flex: 1; overflow-y: auto; padding: 32px 44px 60px;
             display: flex; flex-direction: column; gap: 28px;
         }
 
         .top-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-        .header-title h1 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; color: var(--text-pure); }
-        .header-title p { color: var(--text-muted); font-size: 0.9rem; max-width: 600px; line-height: 1.5; }
+        .header-title h1 { font-family: var(--font-display); font-size: 1.9rem; font-weight: 700; margin-bottom: 4px; color: var(--text-pure); }
+        .header-title p { color: var(--text-muted); font-size: 0.92rem; max-width: 640px; line-height: 1.5; }
         
         .header-actions { display: flex; align-items: center; gap: 16px; }
-        .btn-add-toggle {
-            background: rgba(43, 227, 138, 0.12); color: var(--accent-green);
-            border: 1px solid rgba(43, 227, 138, 0.35); padding: 9px 16px;
-            border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem;
-            cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
-            transition: all 0.2s ease;
+        .utc-pill {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            padding: 8px 16px; border-radius: 99px;
+            font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-main);
         }
-        .btn-add-toggle:hover { background: var(--accent-green); color: var(--bg-base); }
+        .utc-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green);
+        }
 
         .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); text-decoration: none; }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border-light); object-fit: cover; }
         .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
         .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
 
-        /* --- LINK UPLOADER & LIVE THUMBNAIL PREVIEW PANEL --- */
-        .uploader-panel {
-            background: var(--bg-card); border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg); padding: 24px;
-            display: none; grid-template-columns: 1fr 280px; gap: 24px;
+        /* --- SERIES BANNER --- */
+        .series-banner {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-left: 4px solid var(--accent-blue);
+            border-radius: var(--radius-lg);
+            padding: 26px 32px;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
         }
-        .uploader-panel.open { display: grid; }
-        .uploader-form { display: flex; flex-direction: column; gap: 14px; }
-        .uploader-form h3 { font-family: var(--font-display); font-size: 1.1rem; color: var(--text-pure); }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .input-field {
-            background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
-            color: var(--text-pure); padding: 10px 14px; border-radius: var(--radius-sm);
-            font-family: var(--font-body); font-size: 0.85rem; outline: none; width: 100%;
+        .series-banner-left span {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            display: block;
+            margin-bottom: 6px;
         }
-        .input-field:focus { border-color: var(--accent-blue); }
-        .live-preview-box {
-            width: 100%; aspect-ratio: 16 / 9; background: var(--bg-sidebar);
-            border: 1px dashed var(--border-light); border-radius: var(--radius-md);
-            overflow: hidden; display: flex; align-items: center; justify-content: center;
-            position: relative; color: var(--text-muted); font-size: 0.8rem; text-align: center;
+        .series-banner-left h2 {
+            font-family: var(--font-display);
+            font-size: 1.55rem;
+            color: var(--text-pure);
+            margin-bottom: 6px;
         }
-        .live-preview-box img { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .series-banner-left p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            max-width: 620px;
+        }
 
-        /* --- FILTER BAR --- */
-        .controls-bar {
-            display: flex; justify-content: space-between; align-items: center;
-            flex-wrap: wrap; gap: 16px; border-bottom: 1px solid var(--border-subtle);
-            padding-bottom: 16px;
-        }
-        .filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
-        .filter-btn {
-            background: var(--bg-card); color: var(--text-muted);
-            border: 1px solid var(--border-subtle); padding: 8px 16px;
-            border-radius: 99px; font-size: 0.85rem; font-weight: 500;
-            cursor: pointer; transition: all 0.2s ease;
-        }
-        .filter-btn:hover { color: var(--text-pure); border-color: var(--border-light); }
-        .filter-btn.active { background: var(--accent-blue); color: var(--bg-base); border-color: var(--accent-blue); font-weight: 600; }
-
-        .search-bar {
-            background: var(--bg-card); border: 1px solid var(--border-subtle);
-            padding: 8px 16px; border-radius: 99px; display: flex; align-items: center; gap: 8px;
-            color: var(--text-muted); font-size: 0.85rem; width: 260px;
-        }
-        .search-bar input { background: transparent; border: none; color: var(--text-main); outline: none; width: 100%; }
-
-        /* --- COURSE VIDEO CARDS --- */
+        /* --- SUPERNOVA COURSES GRID --- */
         .courses-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 24px;
-            margin-bottom: 60px;
         }
 
         .course-card {
-            background: var(--bg-card); border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg); overflow: hidden;
-            display: flex; flex-direction: column;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 28px 26px;
+            display: flex;
+            flex-direction: column;
             transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
         }
-        .course-card:hover { transform: translateY(-4px); border-color: var(--border-light); background: var(--bg-card-hover); }
-
-        .thumbnail-wrapper {
-            position: relative; width: 100%; aspect-ratio: 16 / 9;
-            background: #050507; overflow: hidden; cursor: pointer;
-        }
-        .thumbnail-wrapper img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.3s ease, opacity 0.2s ease;
-        }
-        .course-card:hover .thumbnail-wrapper img { transform: scale(1.05); opacity: 0.85; }
-
-        .play-overlay {
-            position: absolute; inset: 0;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(10, 10, 12, 0.35); opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        .course-card:hover .play-overlay { opacity: 1; }
-        .play-circle {
-            width: 54px; height: 54px; border-radius: 50%;
-            background: var(--accent-blue); color: var(--bg-base);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.25rem; box-shadow: 0 8px 24px rgba(53, 230, 255, 0.4);
+        .course-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-light);
+            background: var(--bg-card-hover);
         }
 
-        .duration-badge {
-            position: absolute; bottom: 10px; right: 10px;
-            background: rgba(10, 10, 12, 0.85); color: var(--text-pure);
-            font-family: var(--font-mono); font-size: 0.72rem;
-            padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border-subtle);
+        .course-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
-        .course-body { padding: 20px; display: flex; flex-direction: column; flex: 1; }
-        .course-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        
-        .track-badge {
-            font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase;
-            padding: 3px 9px; border-radius: 99px; font-weight: 700;
+        .session-badge {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(53, 230, 255, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(53, 230, 255, 0.25);
         }
-        .badge-theory { background: rgba(179, 156, 208, 0.15); color: var(--accent-purple); }
-        .badge-data { background: rgba(53, 230, 255, 0.15); color: var(--accent-blue); }
-        .badge-obs { background: rgba(255, 193, 204, 0.15); color: var(--accent-rose); }
 
-        .source-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
+        .host-badge {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .host-owner {
+            background: rgba(255, 207, 92, 0.14);
+            color: var(--accent-gold);
+            border: 1px solid rgba(255, 207, 92, 0.4);
+        }
+        .host-admin {
+            background: rgba(179, 156, 208, 0.14);
+            color: var(--accent-purple);
+            border: 1px solid rgba(179, 156, 208, 0.35);
+        }
+
+        .course-date-box {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .course-date-main {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-pure);
+        }
+        .course-time-ut {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--accent-green);
+            font-weight: 700;
+        }
 
         .course-title {
-            font-family: var(--font-display); font-size: 1.1rem; font-weight: 600;
-            color: var(--text-pure); margin-bottom: 8px; line-height: 1.35;
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-pure);
+            margin-bottom: 10px;
+            line-height: 1.3;
         }
         .course-desc {
-            font-size: 0.85rem; color: var(--text-muted); line-height: 1.55;
-            margin-bottom: 20px; flex-grow: 1;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+            margin-bottom: 22px;
+            flex-grow: 1;
         }
 
-        .course-actions { display: flex; gap: 10px; margin-top: auto; }
-        .btn-watch {
-            flex: 1; background: var(--bg-sidebar); color: var(--text-pure);
-            border: 1px solid var(--border-light); padding: 9px 14px;
-            border-radius: var(--radius-sm); font-size: 0.82rem; font-weight: 600;
-            cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
-            gap: 8px; text-decoration: none; transition: all 0.2s;
+        .countdown-strip {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            padding: 9px 14px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .btn-watch:hover { background: var(--accent-blue); color: var(--bg-base); border-color: var(--accent-blue); }
-        .btn-ext {
-            background: transparent; color: var(--text-muted);
-            border: 1px solid var(--border-subtle); padding: 9px 12px;
-            border-radius: var(--radius-sm); cursor: pointer; text-decoration: none;
-            display: inline-flex; align-items: center; justify-content: center;
+        .countdown-strip span:last-child {
+            color: var(--accent-blue);
+            font-weight: 700;
         }
-        .btn-ext:hover { color: var(--text-pure); border-color: var(--border-light); }
 
-        /* --- VIDEO MODAL --- */
-        .video-modal {
-            position: fixed; inset: 0; background: rgba(5, 5, 7, 0.88);
-            backdrop-filter: blur(8px); z-index: 1000;
-            display: none; align-items: center; justify-content: center; padding: 24px;
+        .btn-rsvp {
+            width: 100%;
+            background: var(--bg-sidebar);
+            color: var(--text-pure);
+            border: 1px solid var(--border-light);
+            padding: 11px 16px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        .video-modal.active { display: flex; }
-        .modal-content {
-            width: 100%; max-width: 960px; background: var(--bg-card);
-            border: 1px solid var(--border-light); border-radius: var(--radius-lg);
-            overflow: hidden;
+        .btn-rsvp:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
         }
-        .modal-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 14px 20px; border-bottom: 1px solid var(--border-subtle);
+        .btn-rsvp.reserved {
+            background: rgba(43, 227, 138, 0.14);
+            color: var(--accent-green);
+            border-color: var(--accent-green);
         }
-        .modal-header h4 { font-family: var(--font-display); color: var(--text-pure); }
-        .btn-close-modal { background: none; border: none; color: var(--text-muted); font-size: 1.3rem; cursor: pointer; }
-        .btn-close-modal:hover { color: var(--text-pure); }
-        .modal-iframe-container { width: 100%; aspect-ratio: 16 / 9; background: #000; }
-        .modal-iframe-container iframe { width: 100%; height: 100%; border: none; }
 
+        @media (max-width: 1100px) {
+            .courses-grid { grid-template-columns: 1fr; }
+        }
         @media (max-width: 800px) {
             .sidebar { display: none; }
-            .uploader-panel.open { grid-template-columns: 1fr; }
+            .dashboard-main { padding: 24px 20px; }
         }
     </style>
 </head>
@@ -297,19 +334,20 @@
         <div class="comet" style="top: 5%; left: 90%; animation: shooting 8s infinite linear 2s;"></div>
     </div>
 
-    <!-- UNIFIED SIDEBAR NAVIGATION -->
+    <!-- UNIFIED SIDEBAR NAVIGATION (Redirects to dashboard.html, never index.html) -->
     <aside class="sidebar">
-        <a href="index.html" class="brand">
+        <a href="dashboard.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>
         </a>
         
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
-            <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="rotations.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
             <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
-            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
-            <li><a href="courses.html" class="nav-item active"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="courses.html" class="nav-item active"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
             <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
         </ul>
 
@@ -334,13 +372,14 @@
         
         <header class="top-header">
             <div class="header-title">
-                <h1>Video Courses &amp; Lectures</h1>
-                <p>Curated university lectures, Olympiad problem walkthroughs, and observational tutorials with automatic link previewing.</p>
+                <h1>Supernova Courses</h1>
+                <p>Live sessions held directly by our team. All sessions start at 18:00 UT (6:00 PM UT).</p>
             </div>
             <div class="header-actions">
-                <button class="btn-add-toggle" id="toggle-uploader-btn">
-                    <i class="fa-solid fa-plus"></i> Add Resource Link
-                </button>
+                <div class="utc-pill">
+                    <span class="utc-dot"></span>
+                    <span id="live-utc-clock">UTC: Loading...</span>
+                </div>
                 <a href="profile.html" class="user-profile">
                     <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF" alt="User" class="avatar">
                     <div class="user-info">
@@ -351,262 +390,141 @@
             </div>
         </header>
 
-        <!-- INTERACTIVE LINK UPLOADER WITH AUTO THUMBNAIL PREVIEW -->
-        <section class="uploader-panel" id="uploader-panel">
-            <div class="uploader-form">
-                <h3>Add Video or Course Link</h3>
-                <div class="form-row">
-                    <input type="text" id="res-url" class="input-field" placeholder="Paste YouTube URL (e.g. https://youtu.be/...)">
-                    <input type="text" id="res-title" class="input-field" placeholder="Lecture Title">
-                </div>
-                <div class="form-row">
-                    <select id="res-category" class="input-field">
-                        <option value="theory">Theory Track</option>
-                        <option value="data">Data Analysis</option>
-                        <option value="obs">Observational</option>
-                    </select>
-                    <input type="text" id="res-source" class="input-field" placeholder="Source / Channel (e.g. MIT OCW, IOAA)">
-                </div>
-                <input type="text" id="res-desc" class="input-field" placeholder="Short description of the lecture or resource...">
-                <div style="display:flex; gap:10px;">
-                    <button class="btn-add-toggle" id="save-resource-btn" style="background:var(--accent-green); color:var(--bg-base);">
-                        <i class="fa-solid fa-check"></i> Publish to Grid
-                    </button>
-                </div>
-            </div>
-            <div class="live-preview-box">
-                <span id="preview-placeholder"><i class="fa-brands fa-youtube" style="font-size:1.6rem; display:block; margin-bottom:6px;"></i>Thumbnail Preview</span>
-                <img id="preview-img" alt="Thumbnail Preview">
+        <!-- NOVEMBER 2026 SERIES BANNER -->
+        <section class="series-banner">
+            <div class="series-banner-left">
+                <span>November 2026 Live Series · 18:00 UT</span>
+                <h2>Official Supernova Lectures</h2>
+                <p>Three live sessions taught by Matei, Albert, and Mihai covering celestial mechanics, positional astronomy, and competition problem-solving.</p>
             </div>
         </section>
 
-        <!-- FILTER & SEARCH BAR -->
-        <div class="controls-bar">
-            <div class="filter-pills">
-                <button class="filter-btn active" data-filter="all">All Resources</button>
-                <button class="filter-btn" data-filter="theory">Theory Lectures</button>
-                <button class="filter-btn" data-filter="data">Data Analysis</button>
-                <button class="filter-btn" data-filter="obs">Observational</button>
-            </div>
-            <div class="search-bar">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="course-search" placeholder="Search lectures...">
-            </div>
-        </div>
-
-        <!-- DYNAMIC COURSES GRID -->
-        <div class="courses-grid" id="courses-grid"></div>
+        <!-- 3 OFFICIAL SUPERNOVA COURSES -->
+        <section class="courses-grid" id="supernova-courses-grid"></section>
 
     </main>
 
-    <!-- EMBED VIDEO PLAYER MODAL -->
-    <div class="video-modal" id="video-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 id="modal-title">Lecture Player</h4>
-                <button class="btn-close-modal" id="close-modal-btn"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="modal-iframe-container">
-                <iframe id="modal-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-
-    <!-- CENTRALIZED AUTH HYDRATION (Replaces broken inline config) -->
+    <!-- CENTRALIZED AUTH HYDRATION -->
     <script type="module" src="js/auth.js"></script>
 
-    <!-- YOUTUBE PARSER & COURSES RENDERER -->
+    <!-- SUPERNOVA COURSES SCHEDULE & COUNTDOWN ENGINE -->
     <script>
-        const defaultCourses = [
+        const SUPERNOVA_COURSES = [
             {
-                title: "Celestial Sphere & Coordinate Transformations",
-                url: "https://www.youtube.com/watch?v=M82_3yq8c8c",
-                category: "theory",
-                source: "IOAA Prep",
-                duration: "42:15",
-                desc: "Complete derivation of spherical trigonometry identities for horizontal, equatorial, and ecliptic coordinate conversions."
+                id: "course_matei_2026_11_04",
+                sessionLabel: "Course #01",
+                instructor: "Matei",
+                role: "Owner",
+                roleClass: "host-owner",
+                roleIcon: "fa-crown",
+                dateDisplay: "Wednesday, 4 November 2026",
+                timeDisplay: "18:00 UT (6:00 PM UT)",
+                isoUtc: "2026-11-04T18:00:00Z",
+                title: "Supernova Course I — Matei",
+                desc: "Live session hosted by Matei covering core orbital mechanics, perturbation methods, and problem-solving strategies."
             },
             {
-                title: "Orbital Mechanics: Vis-Viva & Hohmann Transfers",
-                url: "https://www.youtube.com/watch?v=Am7EwmxBAW8",
-                category: "theory",
-                source: "MIT OpenCourseWare",
-                duration: "51:20",
-                desc: "Energy conservation in two-body systems, elliptical orbital elements, and delta-v calculations for interplanetary transfers."
+                id: "course_albert_2026_11_07",
+                sessionLabel: "Course #02",
+                instructor: "Albert",
+                role: "Admin",
+                roleClass: "host-admin",
+                roleIcon: "fa-shield-halved",
+                dateDisplay: "Saturday, 7 November 2026",
+                timeDisplay: "18:00 UT (6:00 PM UT)",
+                isoUtc: "2026-11-07T18:00:00Z",
+                title: "Supernova Course II — Albert",
+                desc: "Live session hosted by Albert focusing on spherical astronomy, binary star systems, and theoretical astrophysics derivations."
             },
             {
-                title: "Linear Regression, Residuals & Error Propagation",
-                url: "https://www.youtube.com/watch?v=nk2CQITm_eo",
-                category: "data",
-                source: "Data Track Lab",
-                duration: "28:40",
-                desc: "Step-by-step walkthrough on weighting error bars, linearizing power-law datasets, and plotting residuals for IOAA Data exams."
-            },
-            {
-                title: "Equatorial Mount Polar Alignment & Setting Circles",
-                url: "https://www.youtube.com/watch?v=plx6XXDgf2E",
-                category: "obs",
-                source: "Obs Field Manual",
-                duration: "19:10",
-                desc: "Practical demonstration of balancing an equatorial mount, drift alignment, and dialing in Right Ascension and Declination."
+                id: "course_mihai_2026_11_08",
+                sessionLabel: "Course #03",
+                instructor: "Mihai",
+                role: "Admin",
+                roleClass: "host-admin",
+                roleIcon: "fa-shield-halved",
+                dateDisplay: "Sunday, 8 November 2026",
+                timeDisplay: "18:00 UT (6:00 PM UT)",
+                isoUtc: "2026-11-08T18:00:00Z",
+                title: "Supernova Course III — Mihai",
+                desc: "Live session hosted by Mihai covering observational astronomy, astrophotography instrumentation, and coordinate transformations."
             }
         ];
 
-        function extractYouTubeId(url) {
-            if (!url) return null;
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : null;
-        }
-
-        function getThumbnailUrl(url) {
-            const ytId = extractYouTubeId(url);
-            return ytId 
-                ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`
-                : 'assets/img/supernova_logo.png';
-        }
-
-        function getCourses() {
-            const saved = localStorage.getItem('supernova_custom_courses');
-            const custom = saved ? JSON.parse(saved) : [];
-            return [...custom, ...defaultCourses];
-        }
-
-        const gridEl = document.getElementById('courses-grid');
-        let activeFilter = 'all';
-        let searchQuery = '';
+        const gridEl = document.getElementById('supernova-courses-grid');
 
         function renderCourses() {
-            const list = getCourses().filter(item => {
-                const matchesCat = activeFilter === 'all' || item.category === activeFilter;
-                const matchesSearch = item.title.toLowerCase().includes(searchQuery) || 
-                                      item.desc.toLowerCase().includes(searchQuery) ||
-                                      item.source.toLowerCase().includes(searchQuery);
-                return matchesCat && matchesSearch;
-            });
-
-            const badgeMap = {
-                theory: { cls: 'badge-theory', label: 'Theory' },
-                data: { cls: 'badge-data', label: 'Data Analysis' },
-                obs: { cls: 'badge-obs', label: 'Observational' }
-            };
-
-            gridEl.innerHTML = list.map((item) => {
-                const thumb = getThumbnailUrl(item.url);
-                const badge = badgeMap[item.category] || badgeMap.theory;
-                const ytId = extractYouTubeId(item.url);
-
+            gridEl.innerHTML = SUPERNOVA_COURSES.map(c => {
+                const isReserved = localStorage.getItem(`rsvp_${c.id}`) === 'true';
                 return `
                     <article class="course-card">
-                        <div class="thumbnail-wrapper" onclick="openVideoModal('${ytId || ''}', '${item.url}', '${item.title.replace(/'/g, "\\'")}')">
-                            <img src="${thumb}" alt="${item.title}" loading="lazy">
-                            <div class="play-overlay">
-                                <div class="play-circle"><i class="fa-solid fa-play"></i></div>
-                            </div>
-                            ${item.duration ? `<span class="duration-badge">${item.duration}</span>` : ''}
+                        <div class="course-card-top">
+                            <span class="session-badge">${c.sessionLabel}</span>
+                            <span class="host-badge ${c.roleClass}">
+                                <i class="fa-solid ${c.roleIcon}"></i> ${c.instructor} (${c.role})
+                            </span>
                         </div>
-                        <div class="course-body">
-                            <div class="course-meta">
-                                <span class="track-badge ${badge.cls}">${badge.label}</span>
-                                <span class="source-label">${item.source || 'Resource'}</span>
-                            </div>
-                            <h3 class="course-title">${item.title}</h3>
-                            <p class="course-desc">${item.desc}</p>
-                            <div class="course-actions">
-                                <button class="btn-watch" onclick="openVideoModal('${ytId || ''}', '${item.url}', '${item.title.replace(/'/g, "\\'")}')">
-                                    <i class="fa-solid fa-circle-play"></i> Watch Lecture
-                                </button>
-                                <a href="${item.url}" target="_blank" rel="noopener" class="btn-ext" title="Open original link">
-                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                </a>
-                            </div>
+
+                        <div class="course-date-box">
+                            <span class="course-date-main"><i class="fa-regular fa-calendar" style="margin-right:6px; color:var(--accent-blue);"></i>${c.dateDisplay}</span>
+                            <span class="course-time-ut">${c.timeDisplay}</span>
                         </div>
+
+                        <h3 class="course-title">${c.title}</h3>
+                        <p class="course-desc">${c.desc}</p>
+
+                        <div class="countdown-strip">
+                            <span>Starts In</span>
+                            <span id="timer-${c.id}">Calculating...</span>
+                        </div>
+
+                        <button class="btn-rsvp ${isReserved ? 'reserved' : ''}" onclick="window.toggleCourseRsvp('${c.id}')">
+                            <i class="fa-solid ${isReserved ? 'fa-check-circle' : 'fa-bell'}"></i>
+                            ${isReserved ? 'Seat Reserved' : 'Reserve Seat'}
+                        </button>
                     </article>
                 `;
             }).join('');
+            updateCountdowns();
         }
 
-        window.openVideoModal = function(ytId, rawUrl, title) {
-            if (!ytId) {
-                window.open(rawUrl, '_blank');
-                return;
+        window.toggleCourseRsvp = function(courseId) {
+            const cur = localStorage.getItem(`rsvp_${courseId}`) === 'true';
+            if (cur) {
+                localStorage.removeItem(`rsvp_${courseId}`);
+            } else {
+                localStorage.setItem(`rsvp_${courseId}`, 'true');
             }
-            const modal = document.getElementById('video-modal');
-            const iframe = document.getElementById('modal-iframe');
-            document.getElementById('modal-title').innerText = title;
-            iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1`;
-            modal.classList.add('active');
+            renderCourses();
         };
 
-        document.getElementById('close-modal-btn').addEventListener('click', () => {
-            const modal = document.getElementById('video-modal');
-            document.getElementById('modal-iframe').src = '';
-            modal.classList.remove('active');
-        });
+        function updateCountdowns() {
+            const now = Date.now();
+            const utcStr = new Date(now).toISOString().replace('T', ' ').substring(0, 19) + ' UT';
+            const clockEl = document.getElementById('live-utc-clock');
+            if (clockEl) clockEl.textContent = utcStr;
 
-        const urlInput = document.getElementById('res-url');
-        const previewImg = document.getElementById('preview-img');
-        const previewPlaceholder = document.getElementById('preview-placeholder');
+            SUPERNOVA_COURSES.forEach(c => {
+                const target = new Date(c.isoUtc).getTime();
+                const diff = target - now;
+                const el = document.getElementById(`timer-${c.id}`);
+                if (!el) return;
 
-        urlInput.addEventListener('input', () => {
-            const ytId = extractYouTubeId(urlInput.value.trim());
-            if (ytId) {
-                previewImg.src = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
-                previewImg.style.display = 'block';
-                previewPlaceholder.style.display = 'none';
-            } else {
-                previewImg.style.display = 'none';
-                previewPlaceholder.style.display = 'block';
-            }
-        });
-
-        document.getElementById('toggle-uploader-btn').addEventListener('click', () => {
-            document.getElementById('uploader-panel').classList.toggle('open');
-        });
-
-        document.getElementById('save-resource-btn').addEventListener('click', () => {
-            const url = document.getElementById('res-url').value.trim();
-            const title = document.getElementById('res-title').value.trim();
-            const category = document.getElementById('res-category').value;
-            const source = document.getElementById('res-source').value.trim() || 'YouTube Lecture';
-            const desc = document.getElementById('res-desc').value.trim() || 'Supplemental video lecture and walkthrough.';
-
-            if (!url || !title) {
-                alert('Please provide both a valid URL and a Lecture Title.');
-                return;
-            }
-
-            const saved = localStorage.getItem('supernova_custom_courses');
-            const custom = saved ? JSON.parse(saved) : [];
-            custom.unshift({ title, url, category, source, desc });
-            localStorage.setItem('supernova_custom_courses', JSON.stringify(custom));
-
-            document.getElementById('res-url').value = '';
-            document.getElementById('res-title').value = '';
-            document.getElementById('res-source').value = '';
-            document.getElementById('res-desc').value = '';
-            previewImg.style.display = 'none';
-            previewPlaceholder.style.display = 'block';
-            document.getElementById('uploader-panel').classList.remove('open');
-
-            renderCourses();
-        });
-
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                activeFilter = btn.dataset.filter;
-                renderCourses();
+                if (diff <= 0) {
+                    el.textContent = "LIVE / COMPLETED";
+                    el.style.color = "var(--accent-green)";
+                } else {
+                    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                    const m = Math.floor((diff / (1000 * 60)) % 60);
+                    const s = Math.floor((diff / 1000) % 60);
+                    el.textContent = `${d}d ${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
+                }
             });
-        });
-
-        document.getElementById('course-search').addEventListener('input', (e) => {
-            searchQuery = e.target.value.toLowerCase();
-            renderCourses();
-        });
+        }
 
         renderCourses();
+        setInterval(updateCountdowns, 1000);
     </script>
 </body>
 </html>

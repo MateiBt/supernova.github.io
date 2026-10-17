@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supernova Guide | Olympiad Astronomy & Astrophysics</title>
+    <title>Supernova Guide | Astronomy Passionates &amp; Olympiad Hub</title>
     
     <!-- Canonical Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,6 +16,14 @@
     <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
+    <!-- MathJax for Featured Exam Problems -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
         :root {
             --bg-base: #0A0A0C;
@@ -27,6 +35,7 @@
             --accent-blue: #35E6FF;
             --accent-purple: #B39CD0;
             --accent-rose: #FFC1CC;
+            --accent-gold: #FFCF5C;
             
             --text-pure: #FFFFFF;
             --text-main: #EDEDED;
@@ -58,8 +67,8 @@
         .sky-background {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -3; pointer-events: none; overflow: hidden;
-            background: radial-gradient(circle at 80% 35%, rgba(53, 230, 255, 0.06), transparent 55%),
-                        radial-gradient(circle at 20% 70%, rgba(179, 156, 208, 0.05), transparent 50%),
+            background: radial-gradient(circle at 78% 38%, rgba(53, 230, 255, 0.08), transparent 58%),
+                        radial-gradient(circle at 22% 70%, rgba(179, 156, 208, 0.06), transparent 52%),
                         var(--bg-base);
         }
 
@@ -80,7 +89,7 @@
 
         .grid-guide {
             position: fixed; top: 0; left: 50%; transform: translateX(-50%);
-            width: 1320px; height: 100vh; z-index: -1; pointer-events: none;
+            width: 1360px; height: 100vh; z-index: -1; pointer-events: none;
             border-left: 1px solid rgba(255, 255, 255, 0.025);
             border-right: 1px solid rgba(255, 255, 255, 0.025);
             display: flex; justify-content: space-evenly;
@@ -89,7 +98,7 @@
             content: ''; width: 1px; height: 100%; background: rgba(255, 255, 255, 0.025);
         }
 
-        /* Navbar */
+        /* Navbar (Strictly In-Page Anchors) */
         nav {
             position: fixed; top: 0; width: 100%;
             background: rgba(16, 17, 21, 0.85);
@@ -110,7 +119,7 @@
             color: var(--text-pure); letter-spacing: 0.5px;
         }
 
-        .nav-center { display: flex; gap: 28px; }
+        .nav-center { display: flex; gap: 32px; }
         .nav-center a {
             color: var(--text-muted); text-decoration: none; font-size: 0.9rem;
             font-weight: 500; transition: color 0.2s;
@@ -122,10 +131,10 @@
         /* Buttons */
         .btn-primary {
             background: var(--accent-blue); color: var(--bg-base);
-            font-family: var(--font-body); font-weight: 700; font-size: 0.88rem;
-            padding: 11px 22px; border-radius: var(--radius-sm);
+            font-family: var(--font-body); font-weight: 700; font-size: 0.92rem;
+            padding: 13px 26px; border-radius: var(--radius-sm);
             border: 1px solid var(--accent-blue); text-decoration: none;
-            display: inline-flex; align-items: center; gap: 8px;
+            display: inline-flex; align-items: center; gap: 10px;
             cursor: pointer; transition: all 0.2s ease;
         }
         .btn-primary:hover {
@@ -147,22 +156,23 @@
 
         .btn-link {
             font-family: var(--font-mono); color: var(--text-pure);
+            background: none; border: none; border-top: 1px solid var(--border-subtle);
             text-decoration: none; text-transform: uppercase;
             font-size: 0.78rem; font-weight: 700;
             display: inline-flex; align-items: center; gap: 8px;
-            margin-top: auto; padding-top: 12px;
-            border-top: 1px solid var(--border-subtle);
-            transition: color 0.2s;
+            margin-top: auto; padding-top: 14px; width: 100%;
+            cursor: pointer; transition: color 0.2s;
         }
         .btn-link:hover { color: var(--accent-blue); }
 
-        /* Hero Section */
+        /* Hero Section with Oversized 3D Planet */
         .hero {
-            display: grid; grid-template-columns: 1.15fr 0.85fr;
-            min-height: 100vh; padding: 130px 48px 60px;
+            display: grid; grid-template-columns: 1fr 1.15fr;
+            min-height: 100vh; padding: 120px 48px 60px;
             border-bottom: 1px solid var(--border-subtle);
-            max-width: 1360px; margin: 0 auto;
-            align-items: center; gap: 48px;
+            max-width: 1420px; margin: 0 auto;
+            align-items: center; gap: 24px;
+            position: relative;
         }
 
         .hero-left { display: flex; flex-direction: column; justify-content: center; z-index: 10; }
@@ -171,41 +181,42 @@
             display: inline-flex; align-items: center; gap: 10px;
             border: 1px solid var(--border-light); padding: 6px 16px;
             border-radius: 99px; font-family: var(--font-mono);
-            font-size: 0.78rem; font-weight: 700; color: var(--accent-purple);
-            width: fit-content; margin-bottom: 28px;
+            font-size: 0.76rem; font-weight: 700; color: var(--accent-purple);
+            width: fit-content; margin-bottom: 26px;
             background: rgba(179, 156, 208, 0.08);
         }
 
         .hero h1 {
             font-family: var(--font-display);
-            font-size: clamp(2.8rem, 4.8vw, 4.6rem);
+            font-size: clamp(2.8rem, 4.6vw, 4.4rem);
             font-weight: 800; line-height: 1.06;
             letter-spacing: -0.02em; color: var(--text-pure);
             margin-bottom: 24px;
         }
         .hero h1 .gradient-text {
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 60%, var(--accent-rose) 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            font-size: 1.1rem; color: var(--text-muted);
-            max-width: 540px; margin-bottom: 36px; line-height: 1.7;
+            font-size: 1.05rem; color: var(--text-muted);
+            max-width: 580px; margin-bottom: 34px; line-height: 1.75;
         }
 
         .hero-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
 
         .hero-right {
-            position: relative; border: 1px solid var(--border-subtle);
-            background: radial-gradient(circle at center, rgba(21, 22, 26, 0.8), rgba(10, 10, 12, 0.9));
-            border-radius: var(--radius-lg);
+            position: relative;
+            width: 100%;
+            height: 680px;
             display: flex; align-items: center; justify-content: center;
-            overflow: hidden; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
-            width: 100%; aspect-ratio: 1 / 1;
+            overflow: visible;
         }
 
         #planet-canvas {
-            width: 100%; height: 100%; position: absolute; top: 0; left: 0; cursor: grab;
+            width: 115%; height: 115%;
+            position: absolute; top: -7.5%; left: -7.5%;
+            cursor: grab;
         }
         #planet-canvas:active { cursor: grabbing; }
 
@@ -231,7 +242,12 @@
             padding: 100px 48px; border-bottom: 1px solid var(--border-subtle);
             max-width: 1360px; margin: 0 auto; position: relative;
         }
-        .section-header { margin-bottom: 48px; }
+        .section-header {
+            margin-bottom: 48px;
+            background-color: var(--bg-base);
+            position: relative;
+            z-index: 10;
+        }
         .section-header .tag {
             font-family: var(--font-mono); color: var(--accent-blue);
             font-size: 0.75rem; text-transform: uppercase; font-weight: 700;
@@ -261,8 +277,19 @@
         .card-meta {
             font-family: var(--font-mono); font-size: 0.72rem;
             color: var(--accent-blue); text-transform: uppercase;
-            margin-bottom: 20px; display: flex;
+            margin-bottom: 16px; display: flex;
             justify-content: space-between; align-items: center; font-weight: 700;
+        }
+
+        .problem-preview-img {
+            width: 100%;
+            height: 210px;
+            object-fit: contain;
+            background: #101115;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            margin-bottom: 18px;
         }
 
         .pillar-art {
@@ -292,23 +319,36 @@
         .pillar-obs:hover { border-color: var(--accent-rose); }
         .pillar-obs .card-meta { color: var(--accent-rose); }
 
-        .testimonials-section {
-            padding: 90px 48px; max-width: 1360px; margin: 0 auto;
+        .metrics-section {
+            padding: 80px 48px; max-width: 1360px; margin: 0 auto;
             border-bottom: 1px solid var(--border-subtle);
         }
-        .quote-text {
-            font-size: 1rem; color: var(--text-main); font-style: italic;
-            margin-bottom: 20px; line-height: 1.7;
+        .metric-number {
+            font-family: var(--font-display);
+            font-size: 2.3rem;
+            font-weight: 800;
+            color: var(--text-pure);
+            line-height: 1.1;
+            margin-bottom: 8px;
         }
-        .author {
-            font-family: var(--font-mono); font-weight: 700;
-            text-transform: uppercase; font-size: 0.75rem; color: var(--accent-green);
+        .metric-label {
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            color: var(--accent-green);
+            letter-spacing: 0.06em;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
 
         footer {
-            padding: 40px 48px; display: flex; justify-content: space-between;
-            font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);
-            max-width: 1360px; margin: 0 auto;
+            padding: 36px 48px;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            max-width: 1360px;
+            margin: 0 auto;
         }
 
         /* Authentication Modal */
@@ -363,7 +403,7 @@
 
         @media (max-width: 1024px) {
             .hero { grid-template-columns: 1fr; padding-top: 110px; }
-            .hero-right { max-width: 520px; margin: 0 auto; }
+            .hero-right { height: 480px; margin: 0 auto; }
             .grid-3, .grid-4 { grid-template-columns: 1fr; }
             .grid-guide, .nav-center { display: none; }
         }
@@ -377,18 +417,17 @@
     </div>
     <div class="grid-guide"></div>
 
-    <!-- NAVBAR -->
+    <!-- NAVBAR (In-page anchors only) -->
     <nav>
-        <a href="landing.html" class="nav-logo">
+        <a href="#top" class="nav-logo">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
             <span class="logo-text">SUPERNOVA GUIDE</span>
         </a>
         <div class="nav-center">
-            <a href="#problems">Rotations</a>
-            <a href="#curriculum">Curriculum</a>
-            <a href="competitions.html">Competitions</a>
-            <a href="problems.html">Practice Hub</a>
-            <a href="courses.html">Courses</a>
+            <a href="#problems">Featured Problems</a>
+            <a href="#disciplines">Tracks &amp; Modules</a>
+            <a href="#seasons">Seasonal Competitions</a>
+            <a href="#community">Our Scope</a>
         </div>
         <div class="nav-actions">
             <button id="login-trigger" class="btn-outline">Student Login</button>
@@ -396,22 +435,21 @@
     </nav>
 
     <!-- HERO -->
-    <section class="hero">
+    <section id="top" class="hero">
         <div class="hero-left">
             <div class="dialogue-pill">
-                <i class="fa-solid fa-sparkles"></i>
-                <span>IOAA PREPARATION ARCHITECTURE · "Per aspera ad astra"</span>
+                <i class="fa-solid fa-compass"></i>
+                <span>ASTRONOMY PASSIONATES TRAINING HUB · "Per aspera ad astra"</span>
             </div>
             
-            <h1>Excellence in <br>Astronomy &amp; <br><span class="gradient-text">Astrophysics</span></h1>
+            <h1>All of Astronomy, <br>Finally in <br><span class="gradient-text">One Place</span></h1>
             
             <p>
-                A centralized preparation platform engineered for Astronomy &amp; Astrophysics Olympiads. Master the 12 theoretical modules, data analysis regressions, and observational star mapping.
+                There are plenty of astronomy guides and handouts out there, but everything is scattered—handouts in one place, problem archives in another, daily challenges and planetarium tools somewhere else. We combined all of them into one community for Olympiad competitors, astrophotographers, and anyone passionate about astronomy.
             </p>
             
             <div class="hero-buttons">
-                <a href="problems.html" class="btn-primary">Enter Practice Hub <i class="fa-solid fa-arrow-right"></i></a>
-                <a href="planetariu.html" class="btn-outline"><i class="fa-solid fa-satellite-dish"></i> Launch Planetarium</a>
+                <button onclick="openLoginModal()" class="btn-primary">Enter Practice Hub <i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>
 
@@ -423,52 +461,60 @@
     <!-- TICKER -->
     <section class="ticker">
         <div class="ticker-content">
-            <span class="ticker-item"><span>◈</span> 12-MODULE IOAA THEORY SYLLABUS</span>
-            <span class="ticker-item"><span>◈</span> REAL-TIME ORBITAL MECHANICS</span>
-            <span class="ticker-item"><span>◈</span> BLIND STAR MAP SIMULATION</span>
-            <span class="ticker-item"><span>◈</span> DATA REGRESSION &amp; LIGHT CURVES</span>
-            <span class="ticker-item"><span>◈</span> DEEP SKY OBJECT TRACKING</span>
-            <span class="ticker-item"><span>◈</span> 12-MODULE IOAA THEORY SYLLABUS</span>
-            <span class="ticker-item"><span>◈</span> REAL-TIME ORBITAL MECHANICS</span>
-            <span class="ticker-item"><span>◈</span> BLIND STAR MAP SIMULATION</span>
-            <span class="ticker-item"><span>◈</span> DATA REGRESSION &amp; LIGHT CURVES</span>
-            <span class="ticker-item"><span>◈</span> DEEP SKY OBJECT TRACKING</span>
+            <span class="ticker-item"><span>◈</span> 12 THEORETICAL SYLLABUS MODULES</span>
+            <span class="ticker-item"><span>◈</span> POTD · POTW · POTM ROTATIONS</span>
+            <span class="ticker-item"><span>◈</span> SEASONAL ASTRONOMY COMPETITIONS</span>
+            <span class="ticker-item"><span>◈</span> ASTROPHOTOGRAPHY &amp; OBSERVATIONAL LABS</span>
+            <span class="ticker-item"><span>◈</span> INTERACTIVE 3D PLANETARIUM</span>
+            <span class="ticker-item"><span>◈</span> 12 THEORETICAL SYLLABUS MODULES</span>
+            <span class="ticker-item"><span>◈</span> POTD · POTW · POTM ROTATIONS</span>
+            <span class="ticker-item"><span>◈</span> SEASONAL ASTRONOMY COMPETITIONS</span>
+            <span class="ticker-item"><span>◈</span> ASTROPHOTOGRAPHY &amp; OBSERVATIONAL LABS</span>
+            <span class="ticker-item"><span>◈</span> INTERACTIVE 3D PLANETARIUM</span>
         </div>
     </section>
 
-    <!-- DAILY CADENCE -->
+    <!-- FEATURED ARCHIVE PROBLEMS (NO SPOILERS, ACTUAL PROBLEM TEXT + FIGURES) -->
     <section id="problems" class="content-section">
         <div class="section-header">
-            <span class="tag">Active Problem Rotations</span>
-            <h2>The Training Ground</h2>
+            <span class="tag">From the Problem Archive</span>
+            <h2>Featured Exam Problems</h2>
         </div>
         <div class="grid-3">
+            <!-- Problem 1 -->
             <div class="flat-card">
-                <div class="card-meta"><span>[ Daily // 24H Rotation ]</span></div>
-                <h3>Problem of the Day</h3>
-                <p>Keplerian Orbit Shift: A focused analytical setup requiring a single-value derivation and orbital energy conservation.</p>
-                <a href="problems.html" class="btn-link">Solve Today's Problem <i class="fa-solid fa-arrow-right"></i></a>
+                <div class="card-meta"><span>USAAAO 2026 · Q10 · Module T1</span></div>
+                <img src="assets/img/USAAAO_2026/Q10_USAAAO_2026.jpeg" alt="Geostationary Satellite Diagram" class="problem-preview-img">
+                <h3>Geostationary Satellite Altitude</h3>
+                <p>A small satellite orbits the Earth so it stays directly above a fixed point on the equator. Using \(5.97 \times 10^{24}\text{ kg}\) for Earth's mass and \(6.37 \times 10^6\text{ m}\) for its radius, how far is the satellite from the surface of the Earth? Assume its mass is \(300\text{ kg}\) and an orbital period of \(86164\text{ s}\).</p>
+                <button onclick="openLoginModal()" class="btn-link">Sign In to Solve <i class="fa-solid fa-arrow-right"></i></button>
             </div>
+
+            <!-- Problem 2 -->
             <div class="flat-card">
-                <div class="card-meta" style="color: var(--accent-purple);"><span>[ Weekly // Advanced Deriv ]</span></div>
-                <h3>Problem of the Week</h3>
-                <p>Accretion Disk Viscosity: Full derivation sheet requiring rigorous mathematical proof and step-by-step rubric grading.</p>
-                <a href="problems.html" class="btn-link">Open Weekly Challenge <i class="fa-solid fa-arrow-right"></i></a>
+                <div class="card-meta" style="color: var(--accent-purple);"><span>USAAAO 2025 · Q26 · Module T1</span></div>
+                <img src="assets/img/USAAAO_2025/Q26_USAAAO_2025.jpeg" alt="Ecliptic Longitude Diagram" class="problem-preview-img">
+                <h3>Ecliptic Longitude &amp; Inclination</h3>
+                <p>Two exoplanets, A and B, have circular orbits around the same central star. Their ascending nodes are located at the same ecliptic longitude, and both planets start there at \(t = 0\). How long will it take for the planets to share an equal ecliptic longitude again, given inclinations \(i_1 = 30^\circ\), \(i_2 = 70^\circ\) and periods \(T_1 = 2\text{ yr}\), \(T_2 = 1\text{ yr}\)?</p>
+                <button onclick="openLoginModal()" class="btn-link">Sign In to Solve <i class="fa-solid fa-arrow-right"></i></button>
             </div>
+
+            <!-- Problem 3 -->
             <div class="flat-card">
-                <div class="card-meta" style="color: var(--accent-green);"><span>[ Monthly // IOAA Grand Round ]</span></div>
-                <h3>Problem of the Month</h3>
-                <p>NFW Dark Matter Profiles: Multi-part Olympiad problem containing real galactic rotation datasets and plotting tasks.</p>
-                <a href="problems.html" class="btn-link">Open Complete Packet <i class="fa-solid fa-arrow-right"></i></a>
+                <div class="card-meta" style="color: var(--accent-green);"><span>USAAAO 2026 · Q27 · Module T1</span></div>
+                <img src="assets/img/USAAAO_2026/Q27_USAAAO_2026.jpeg" alt="Kirkwood Gaps Histogram" class="problem-preview-img">
+                <h3>Kirkwood Gaps &amp; Resonance</h3>
+                <p>When plotting the distribution of asteroids in the asteroid belt by their semi-major axis, we see several regions, known as "Kirkwood gaps," where asteroids' orbits are unstable due to an orbital resonance with Jupiter (\(a = 5.20\text{ AU}\)). What orbital resonance is responsible for the gap marked with the arrow?</p>
+                <button onclick="openLoginModal()" class="btn-link">Sign In to Solve <i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>
     </section>
 
     <!-- 4 COMPETENCY PILLARS -->
-    <section id="curriculum" class="content-section">
+    <section id="disciplines" class="content-section">
         <div class="section-header">
-            <span class="tag">Curriculum Matrix</span>
-            <h2>Core Disciplines</h2>
+            <span class="tag">Everything Under One Roof</span>
+            <h2>Tracks &amp; Modules</h2>
         </div>
         <div class="grid-4">
             <div class="flat-card pillar-theory">
@@ -476,9 +522,9 @@
                 <div class="pillar-art">
                     <img src="assets/img/theory/positional_celestial_mechanics_logo.png" alt="Theory Track">
                 </div>
-                <h3>Theory</h3>
-                <p>Rigorous problem sets and derivations across celestial mechanics, stellar structure, general relativity, and cosmology.</p>
-                <a href="problems.html" class="btn-link">Explore Theory <i class="fa-solid fa-arrow-right"></i></a>
+                <h3>Theory &amp; Handouts</h3>
+                <p>12 structured modules covering celestial mechanics, radiative physics, stellar structure, general relativity, and cosmology—paired with our own handouts.</p>
+                <button onclick="openLoginModal()" class="btn-link">Sign In to Access <i class="fa-solid fa-arrow-right"></i></button>
             </div>
 
             <div class="flat-card pillar-data">
@@ -487,8 +533,8 @@
                     <img src="assets/img/data_analysis/methods_plotting_logo.png" alt="Data Analysis">
                 </div>
                 <h3>Data Analysis</h3>
-                <p>Extracting physical parameters from real IOAA datasets, photometric light curves, error propagation, and linear regression.</p>
-                <a href="problems.html" class="btn-link">Explore Data Track <i class="fa-solid fa-arrow-right"></i></a>
+                <p>Practice plotting, error propagation, linear regression, and working with real light curves and observational datasets.</p>
+                <button onclick="openLoginModal()" class="btn-link">Sign In to Access <i class="fa-solid fa-arrow-right"></i></button>
             </div>
 
             <div class="flat-card pillar-obs">
@@ -496,9 +542,9 @@
                 <div class="pillar-art">
                     <img src="assets/img/observational/blind_map_logo.png" alt="Blind Map">
                 </div>
-                <h3>Blind Map</h3>
-                <p>Naked-eye observation rounds, constellation boundary recognition, Messier catalog objects, and coordinate estimation.</p>
-                <a href="problems.html" class="btn-link">Practice Blind Maps <i class="fa-solid fa-arrow-right"></i></a>
+                <h3>Blind Star Maps</h3>
+                <p>Unlabeled star charts, constellation recognition, deep-sky objects, and coordinate estimation for observational rounds and night-sky sessions.</p>
+                <button onclick="openLoginModal()" class="btn-link">Sign In to Access <i class="fa-solid fa-arrow-right"></i></button>
             </div>
 
             <div class="flat-card pillar-obs">
@@ -506,55 +552,58 @@
                 <div class="pillar-art">
                     <img src="assets/img/observational/telescope_practice_logo.png" alt="Telescope Practice">
                 </div>
-                <h3>Telescope</h3>
-                <p>Field of view mapping, equatorial mount calibration, polar alignment, setting circles, and deep-sky pointing exercises.</p>
-                <a href="problems.html" class="btn-link">Open Telescope Lab <i class="fa-solid fa-arrow-right"></i></a>
+                <h3>Telescopes &amp; Imaging</h3>
+                <p>Optics, equatorial mount alignment, field-of-view calculations, detector plate scales, and practical astrophotography challenges.</p>
+                <button onclick="openLoginModal()" class="btn-link">Sign In to Access <i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>
     </section>
 
-    <!-- COMPETITIVE LEAGUES -->
-    <section id="leagues" class="content-section">
+    <!-- SEASONAL COMPETITIONS & ROTATIONS -->
+    <section id="seasons" class="content-section">
         <div class="section-header">
-            <span class="tag">Ranked Matchmaking</span>
-            <h2>Competitive Leagues</h2>
+            <span class="tag">More Than Once a Year</span>
+            <h2>Seasonal Competitions &amp; Rotations</h2>
         </div>
         <div class="grid-3">
             <div class="flat-card">
-                <div class="card-meta"><span>Season Event #01</span></div>
-                <h3>Autumn 2026 MCQ Cup</h3>
-                <p>3-Phase MCQ Astrophysics Championship. Registration open 19 October – 1 November 2026.</p>
-                <a href="competitions.html" class="btn-link">Register in Competitions <i class="fa-solid fa-arrow-right"></i></a>
+                <div class="card-meta"><span>Seasonal Format · Autumn 2026</span></div>
+                <h3>Seasonal Competitions</h3>
+                <p>Most astronomy competitions only happen once a year. We hold seasonal competitions with varied, engaging formats—starting with our 3-Phase Autumn Cup (19 Oct – 1 Nov 2026).</p>
+                <button onclick="openLoginModal()" class="btn-link">Sign In to Register <i class="fa-solid fa-arrow-right"></i></button>
             </div>
             <div class="flat-card">
-                <div class="card-meta" style="color: var(--accent-purple);"><span>Sudden Death</span></div>
-                <h3>Top-16 Knockout Bracket</h3>
-                <p>Pass the rapid qualification stage to enter the final 16. Compete in head-to-head astrophysics matchups until the Grand Final.</p>
-                <a href="competitions.html" class="btn-link">Enter Qualifiers <i class="fa-solid fa-arrow-right"></i></a>
+                <div class="card-meta" style="color: var(--accent-purple);"><span>1d · 1w · 4w Cycles</span></div>
+                <h3>POTD, POTW &amp; POTM</h3>
+                <p>Fresh problems written by our team on a continuous cycle: a new Problem of the Day every 24 hours, Problem of the Week every 7 days, and Problem of the Month every 4 weeks.</p>
+                <button onclick="openLoginModal()" class="btn-link">Sign In to View Rotations <i class="fa-solid fa-arrow-right"></i></button>
             </div>
             <div class="flat-card">
-                <div class="card-meta" style="color: var(--accent-rose);"><span>Virtual Observatory</span></div>
-                <h3>Live Planetarium Cup</h3>
-                <p>Test your observational speed in real-time 3D celestial coordinate mapping, star hopping, and DSO identification.</p>
-                <a href="planetariu.html" class="btn-link">Launch Arena <i class="fa-solid fa-arrow-right"></i></a>
+                <div class="card-meta" style="color: var(--accent-rose);"><span>Live Sessions · Nov 2026</span></div>
+                <h3>Supernova Live Courses</h3>
+                <p>Interactive lectures held directly by our team—covering celestial mechanics, observational astronomy, and competition problem-solving.</p>
+                <button onclick="openLoginModal()" class="btn-link">Sign In for Course Schedule <i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>
     </section>
 
-    <!-- TESTIMONIALS -->
-    <section class="testimonials-section">
+    <!-- COMMUNITY & SCOPE -->
+    <section id="community" class="metrics-section">
         <div class="grid-3">
             <div class="flat-card">
-                <p class="quote-text">"Supernova's raw dataset problems bridge the gap between textbook physics and IOAA medals."</p>
-                <div class="author">— IOAA Gold Medalist</div>
+                <div class="metric-label">Unified Archive</div>
+                <div class="metric-number">Handouts + Problems</div>
+                <p style="margin-bottom: 0;">Instead of jumping between ten different websites, keep your theory handouts, past Olympiad papers, mistake notebook, and formula tools in one workspace.</p>
             </div>
             <div class="flat-card">
-                <p class="quote-text">"The planetarium engine replicates national team selection tests with unmatched precision."</p>
-                <div class="author">— National Team Mentor</div>
+                <div class="metric-label" style="color: var(--accent-blue);">Active Community</div>
+                <div class="metric-number">Olympiads &amp; Beyond</div>
+                <p style="margin-bottom: 0;">Built for both competitive Olympiad students and general astronomy enthusiasts—from theoretical astrophysics to astrophotography and skywatching.</p>
             </div>
             <div class="flat-card">
-                <p class="quote-text">"The most structured and rigorous IOAA preparation archive available on the web."</p>
-                <div class="author">— International Olympiad Medalist</div>
+                <div class="metric-label" style="color: var(--accent-purple);">Year-Round Events</div>
+                <div class="metric-number">Seasonal Cups</div>
+                <p style="margin-bottom: 0;">Frequent, creative competition formats every season so you don't have to wait a full year to test yourself against other astronomy passionates.</p>
             </div>
         </div>
     </section>
@@ -564,7 +613,7 @@
         <div class="modal-content">
             <button id="close-modal" class="close-btn" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
             <h2 id="auth-modal-title" style="margin-bottom: 6px; font-family: var(--font-display); color: var(--text-pure);">Student Login</h2>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 22px;">Access your saved progress, handouts, and problem sets.</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 22px;">Sign in to enter the dashboard, practice hub, planetarium, and seasonal competitions.</p>
             
             <form id="login-form">
                 <div class="input-group" id="name-group" style="display: none;">
@@ -591,21 +640,20 @@
         </div>
     </div>
 
-    <!-- FOOTER -->
+    <!-- FOOTER (Clean, no external page tabs) -->
     <footer>
-        <div>SUPERNOVA GUIDE © 2026. ALL RIGHTS RESERVED.</div>
-        <div style="color: var(--accent-green);">● SYSTEM ONLINE</div>
+        <div>SUPERNOVA GUIDE &copy; 2026 · BUILT FOR ASTRONOMY PASSIONATES</div>
     </footer>
 
-    <!-- 1. THREE.JS 3D PLANET SCENE -->
+    <!-- 1. THREE.JS LARGE PLANET SCENE WITH MULTI-COLOR GRADIENT RING -->
     <script>
         (function initPlanetScene() {
             const container = document.getElementById('planet-canvas');
             if (!container || typeof THREE === 'undefined') return;
 
             const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
-            camera.position.set(0, 1, 14);
+            const camera = new THREE.PerspectiveCamera(42, container.clientWidth / container.clientHeight, 0.1, 100);
+            camera.position.set(0, 1.4, 12.2);
 
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             renderer.setSize(container.clientWidth, container.clientHeight);
@@ -615,57 +663,92 @@
             const systemGroup = new THREE.Group();
             scene.add(systemGroup);
 
-            const planetGeo = new THREE.SphereGeometry(2.8, 64, 64);
+            // 1. Large Planet Sphere
+            const planetGeo = new THREE.SphereGeometry(3.2, 64, 64);
             const planetMat = new THREE.MeshStandardMaterial({
-                color: 0x15161A,
-                roughness: 0.65,
-                metalness: 0.15
+                color: 0x161820,
+                roughness: 0.55,
+                metalness: 0.25
             });
             const planet = new THREE.Mesh(planetGeo, planetMat);
             systemGroup.add(planet);
 
-            const atmosGeo = new THREE.SphereGeometry(3.0, 64, 64);
+            // 2. Atmospheric Rim Glow
+            const atmosGeo = new THREE.SphereGeometry(3.42, 64, 64);
             const atmosMat = new THREE.MeshBasicMaterial({
                 color: 0x35e6ff,
                 transparent: true,
-                opacity: 0.08,
+                opacity: 0.12,
                 blending: THREE.AdditiveBlending,
                 side: THREE.BackSide
             });
             const atmosphere = new THREE.Mesh(atmosGeo, atmosMat);
             systemGroup.add(atmosphere);
 
-            const ringGeo = new THREE.RingGeometry(3.8, 5.8, 64);
-            const ringMat = new THREE.MeshStandardMaterial({
-                color: 0x35e6ff,
+            // 3. Procedural Multi-Color Gradient Ring (Cyan -> Purple -> Rose with Cassini Division)
+            function createGradientRingTexture() {
+                const canvas = document.createElement('canvas');
+                canvas.width = 512;
+                canvas.height = 64;
+                const ctx = canvas.getContext('2d');
+                const grad = ctx.createLinearGradient(0, 0, 512, 0);
+                grad.addColorStop(0.00, 'rgba(53, 230, 255, 0.0)');
+                grad.addColorStop(0.08, 'rgba(53, 230, 255, 0.85)');
+                grad.addColorStop(0.38, 'rgba(179, 156, 208, 0.90)');
+                grad.addColorStop(0.56, 'rgba(10, 10, 12, 0.12)'); // Cassini gap
+                grad.addColorStop(0.64, 'rgba(179, 156, 208, 0.80)');
+                grad.addColorStop(0.88, 'rgba(255, 193, 204, 0.75)');
+                grad.addColorStop(1.00, 'rgba(255, 193, 204, 0.0)');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, 512, 64);
+                const tex = new THREE.CanvasTexture(canvas);
+                tex.needsUpdate = true;
+                return tex;
+            }
+
+            const innerR = 4.2, outerR = 7.6;
+            const ringGeo = new THREE.RingGeometry(innerR, outerR, 128);
+            // Map UVs radially from innerR (u=0) to outerR (u=1) so the gradient wraps around the ring
+            const pos = ringGeo.attributes.position;
+            const uvs = ringGeo.attributes.uv;
+            const v3 = new THREE.Vector3();
+            for (let i = 0; i < pos.count; i++) {
+                v3.fromBufferAttribute(pos, i);
+                const r = v3.length();
+                const u = (r - innerR) / (outerR - innerR);
+                uvs.setXY(i, u, 0.5);
+            }
+
+            const ringMat = new THREE.MeshBasicMaterial({
+                map: createGradientRingTexture(),
                 side: THREE.DoubleSide,
                 transparent: true,
-                opacity: 0.55,
-                roughness: 0.4
+                opacity: 0.92
             });
             const ring = new THREE.Mesh(ringGeo, ringMat);
             ring.rotation.x = Math.PI / 2;
             systemGroup.add(ring);
 
+            // 4. Orbiting Moons
             const moons = [];
             const moonColors = [0xB39CD0, 0x35E6FF, 0xFFC1CC];
-            const moonRadii = [6.8, 7.8, 8.8];
+            const moonRadii = [8.1, 9.0, 9.9];
             const moonSpeeds = [0.6, 0.4, 0.22];
 
             for (let i = 0; i < 3; i++) {
                 const moonGroup = new THREE.Group();
-                const mGeo = new THREE.SphereGeometry(0.14 + i * 0.03, 32, 32);
-                const mMat = new THREE.MeshStandardMaterial({ color: moonColors[i], roughness: 0.6 });
+                const mGeo = new THREE.SphereGeometry(0.16 + i * 0.03, 32, 32);
+                const mMat = new THREE.MeshStandardMaterial({ color: moonColors[i], roughness: 0.5 });
                 const mMesh = new THREE.Mesh(mGeo, mMat);
 
                 mMesh.position.x = moonRadii[i];
                 moonGroup.add(mMesh);
 
-                const trailGeo = new THREE.RingGeometry(moonRadii[i] - 0.015, moonRadii[i] + 0.015, 64);
+                const trailGeo = new THREE.RingGeometry(moonRadii[i] - 0.018, moonRadii[i] + 0.018, 96);
                 const trailMat = new THREE.MeshBasicMaterial({
                     color: moonColors[i],
                     transparent: true,
-                    opacity: 0.18,
+                    opacity: 0.22,
                     side: THREE.DoubleSide
                 });
                 const trail = new THREE.Mesh(trailGeo, trailMat);
@@ -677,49 +760,49 @@
                 systemGroup.add(moonGroup);
             }
 
+            // 5. Particle Debris Belt
             const debrisGeo = new THREE.BufferGeometry();
-            const debrisCount = 400;
+            const debrisCount = 550;
             const positions = new Float32Array(debrisCount * 3);
 
             for (let i = 0; i < debrisCount; i++) {
-                const radius = 6.2 + Math.random() * 4;
+                const radius = 4.4 + Math.random() * 5.2;
                 const theta = Math.random() * Math.PI * 2;
                 positions[i * 3] = Math.cos(theta) * radius;
-                positions[i * 3 + 1] = (Math.random() - 0.5) * 0.4;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 0.35;
                 positions[i * 3 + 2] = Math.sin(theta) * radius;
             }
             debrisGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
             const debrisMat = new THREE.PointsMaterial({
                 color: 0x35e6ff,
-                size: 0.045,
+                size: 0.05,
                 transparent: true,
-                opacity: 0.65,
+                opacity: 0.7,
                 blending: THREE.AdditiveBlending
             });
             const debris = new THREE.Points(debrisGeo, debrisMat);
             systemGroup.add(debris);
 
-            systemGroup.rotation.z = 0.35;
-            systemGroup.rotation.x = 0.25;
+            systemGroup.rotation.z = 0.38;
+            systemGroup.rotation.x = 0.32;
 
-            scene.add(new THREE.AmbientLight(0xffffff, 0.25));
-            const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
-            dirLight.position.set(8, 5, 2);
+            scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1.6);
+            dirLight.position.set(8, 5, 4);
             scene.add(dirLight);
 
-            const rimLight = new THREE.PointLight(0x35e6ff, 4, 30);
+            const rimLight = new THREE.PointLight(0x35e6ff, 4.5, 35);
             rimLight.position.set(-8, -4, -4);
             scene.add(rimLight);
 
-            const fillLight = new THREE.DirectionalLight(0xb39cd0, 0.9);
-            fillLight.position.set(-5, 0, 5);
+            const fillLight = new THREE.DirectionalLight(0xb39cd0, 1.1);
+            fillLight.position.set(-5, 2, 6);
             scene.add(fillLight);
 
             let mouseX = 0, mouseY = 0;
-            container.addEventListener('mousemove', (e) => {
-                const rect = container.getBoundingClientRect();
-                mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-                mouseY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+            window.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+                mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
             });
 
             window.addEventListener('resize', () => {
@@ -747,7 +830,7 @@
                 const targetX = mouseX * 0.25;
                 const targetY = mouseY * 0.25;
                 systemGroup.rotation.y += 0.05 * (targetX - systemGroup.rotation.y);
-                systemGroup.rotation.x += 0.05 * (targetY + 0.25 - systemGroup.rotation.x);
+                systemGroup.rotation.x += 0.05 * (targetY + 0.32 - systemGroup.rotation.x);
 
                 renderer.render(scene, camera);
             }
@@ -755,7 +838,7 @@
         })();
     </script>
 
-    <!-- 2. REAL FIREBASE AUTHENTICATION & IMMEDIATE REDIRECT TO INDEX.HTML -->
+    <!-- 2. AUTHENTICATION & AUTOMATIC REDIRECT FOR LOGGED-IN USERS -->
     <script type="module">
         import { auth } from "./js/auth.js";
         import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -772,25 +855,21 @@
 
         let isRegisterMode = false;
 
+        window.openLoginModal = function() {
+            errorEl.style.display = 'none';
+            loginModal.classList.add('active');
+        };
+
+        // If already logged in, redirect away from landing page immediately
         onAuthStateChanged(auth, (user) => {
-            if (user && loginTrigger) {
-                const name = user.displayName || user.email.split('@')[0];
-                loginTrigger.innerHTML = `<i class="fa-solid fa-border-all"></i> Dashboard (${name})`;
-                loginTrigger.onclick = (e) => {
-                    e.preventDefault();
-                    window.location.href = 'index.html';
-                };
+            if (user) {
+                window.location.replace('dashboard.html');
             }
         });
 
         loginTrigger.addEventListener('click', (e) => {
-            if (auth.currentUser) {
-                window.location.href = 'index.html';
-                return;
-            }
             e.preventDefault();
-            errorEl.style.display = 'none';
-            loginModal.classList.add('active');
+            window.openLoginModal();
         });
 
         closeModal.addEventListener('click', () => loginModal.classList.remove('active'));
@@ -834,7 +913,7 @@
                 } else {
                     await signInWithEmailAndPassword(auth, email, password);
                 }
-                window.location.href = 'index.html';
+                window.location.replace('dashboard.html');
             } catch (err) {
                 errorEl.textContent = err.message.replace('Firebase: ', '');
                 errorEl.style.display = 'block';
