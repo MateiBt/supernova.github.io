@@ -16,7 +16,7 @@
     <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-    <!-- MathJax for Featured Exam Problems -->
+    <!-- MathJax -->
     <script>
         window.MathJax = {
             tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
@@ -165,7 +165,7 @@
         }
         .btn-link:hover { color: var(--accent-blue); }
 
-        /* Hero Section with Oversized 3D Planet */
+        /* Hero Section */
         .hero {
             display: grid; grid-template-columns: 1fr 1.15fr;
             min-height: 100vh; padding: 120px 48px 60px;
@@ -365,7 +365,7 @@
             background-color: var(--bg-card);
             border: 1px solid var(--border-light);
             padding: 36px; border-radius: var(--radius-lg);
-            width: 100%; max-width: 400px; position: relative;
+            width: 100%; max-width: 410px; position: relative;
             transform: translateY(16px); transition: transform 0.25s ease;
             box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
         }
@@ -391,6 +391,50 @@
         }
         .input-group input:focus { border-color: var(--accent-blue); }
 
+        /* Password Eye Wrapper */
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .password-wrapper input {
+            padding-right: 42px;
+        }
+        .btn-eye-toggle {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            cursor: pointer;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+        .btn-eye-toggle:hover {
+            color: var(--accent-blue);
+        }
+
+        .forgot-pass-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: -8px;
+            margin-bottom: 14px;
+        }
+        .btn-forgot-pass {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+        .btn-forgot-pass:hover {
+            color: var(--accent-blue);
+        }
+
         .auth-toggle {
             margin-top: 18px; text-align: center; font-size: 0.85rem; color: var(--text-muted);
         }
@@ -399,6 +443,9 @@
         }
         .auth-error {
             color: var(--accent-rose); font-size: 0.8rem; margin-top: 10px; text-align: center; display: none;
+        }
+        .auth-success {
+            color: var(--accent-green); font-size: 0.8rem; margin-top: 10px; text-align: center; display: none;
         }
 
         @media (max-width: 1024px) {
@@ -581,7 +628,7 @@
             <div class="flat-card">
                 <div class="card-meta" style="color: var(--accent-rose);"><span>Live Sessions · Nov 2026</span></div>
                 <h3>Supernova Live Courses</h3>
-                <p>Interactive lectures held directly by our team—covering celestial mechanics, observational astronomy, and competition problem-solving.</p>
+                <p>Interactive lectures held directly by Matei, Albert, and Mihai—covering celestial mechanics, observational astronomy, and competition problem-solving.</p>
                 <button onclick="openLoginModal()" class="btn-link">Sign In for Course Schedule <i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>
@@ -608,7 +655,7 @@
         </div>
     </section>
 
-    <!-- LOGIN / REGISTER MODAL -->
+    <!-- LOGIN / REGISTER / RESET PASSWORD MODAL -->
     <div id="login-modal" class="modal-overlay">
         <div class="modal-content">
             <button id="close-modal" class="close-btn" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
@@ -626,12 +673,21 @@
                 </div>
                 <div class="input-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" required placeholder="••••••••">
+                    <div class="password-wrapper">
+                        <input type="password" id="password" required placeholder="••••••••">
+                        <button type="button" id="toggle-password-vis" class="btn-eye-toggle" title="Show / Hide Password" aria-label="Toggle password visibility">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
                 </div>
-                <button type="submit" id="auth-submit-btn" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 8px;">
+                <div class="forgot-pass-row" id="forgot-pass-row">
+                    <button type="button" id="reset-pass-btn" class="btn-forgot-pass">Forgot password? Reset it</button>
+                </div>
+                <button type="submit" id="auth-submit-btn" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 4px;">
                     Sign In to Platform
                 </button>
                 <p id="auth-error" class="auth-error"></p>
+                <p id="auth-success" class="auth-success"></p>
             </form>
 
             <div class="auth-toggle" id="auth-toggle-box">
@@ -640,7 +696,7 @@
         </div>
     </div>
 
-    <!-- FOOTER (Clean, no external page tabs) -->
+    <!-- FOOTER -->
     <footer>
         <div>SUPERNOVA GUIDE &copy; 2026 · BUILT FOR ASTRONOMY PASSIONATES</div>
     </footer>
@@ -663,7 +719,6 @@
             const systemGroup = new THREE.Group();
             scene.add(systemGroup);
 
-            // 1. Large Planet Sphere
             const planetGeo = new THREE.SphereGeometry(3.2, 64, 64);
             const planetMat = new THREE.MeshStandardMaterial({
                 color: 0x161820,
@@ -673,7 +728,6 @@
             const planet = new THREE.Mesh(planetGeo, planetMat);
             systemGroup.add(planet);
 
-            // 2. Atmospheric Rim Glow
             const atmosGeo = new THREE.SphereGeometry(3.42, 64, 64);
             const atmosMat = new THREE.MeshBasicMaterial({
                 color: 0x35e6ff,
@@ -685,7 +739,6 @@
             const atmosphere = new THREE.Mesh(atmosGeo, atmosMat);
             systemGroup.add(atmosphere);
 
-            // 3. Procedural Multi-Color Gradient Ring (Cyan -> Purple -> Rose with Cassini Division)
             function createGradientRingTexture() {
                 const canvas = document.createElement('canvas');
                 canvas.width = 512;
@@ -695,7 +748,7 @@
                 grad.addColorStop(0.00, 'rgba(53, 230, 255, 0.0)');
                 grad.addColorStop(0.08, 'rgba(53, 230, 255, 0.85)');
                 grad.addColorStop(0.38, 'rgba(179, 156, 208, 0.90)');
-                grad.addColorStop(0.56, 'rgba(10, 10, 12, 0.12)'); // Cassini gap
+                grad.addColorStop(0.56, 'rgba(10, 10, 12, 0.12)');
                 grad.addColorStop(0.64, 'rgba(179, 156, 208, 0.80)');
                 grad.addColorStop(0.88, 'rgba(255, 193, 204, 0.75)');
                 grad.addColorStop(1.00, 'rgba(255, 193, 204, 0.0)');
@@ -708,7 +761,6 @@
 
             const innerR = 4.2, outerR = 7.6;
             const ringGeo = new THREE.RingGeometry(innerR, outerR, 128);
-            // Map UVs radially from innerR (u=0) to outerR (u=1) so the gradient wraps around the ring
             const pos = ringGeo.attributes.position;
             const uvs = ringGeo.attributes.uv;
             const v3 = new THREE.Vector3();
@@ -729,7 +781,6 @@
             ring.rotation.x = Math.PI / 2;
             systemGroup.add(ring);
 
-            // 4. Orbiting Moons
             const moons = [];
             const moonColors = [0xB39CD0, 0x35E6FF, 0xFFC1CC];
             const moonRadii = [8.1, 9.0, 9.9];
@@ -760,7 +811,6 @@
                 systemGroup.add(moonGroup);
             }
 
-            // 5. Particle Debris Belt
             const debrisGeo = new THREE.BufferGeometry();
             const debrisCount = 550;
             const positions = new Float32Array(debrisCount * 3);
@@ -838,32 +888,73 @@
         })();
     </script>
 
-    <!-- 2. AUTHENTICATION & AUTOMATIC REDIRECT FOR LOGGED-IN USERS -->
+    <!-- 2. AUTHENTICATION, SHOW PASSWORD EYE & RESET PASSWORD -->
     <script type="module">
         import { auth } from "./js/auth.js";
-        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import {
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            updateProfile,
+            sendPasswordResetEmail,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const loginTrigger = document.getElementById('login-trigger');
         const loginModal = document.getElementById('login-modal');
         const closeModal = document.getElementById('close-modal');
         const loginForm = document.getElementById('login-form');
         const nameGroup = document.getElementById('name-group');
+        const forgotPassRow = document.getElementById('forgot-pass-row');
+        const resetPassBtn = document.getElementById('reset-pass-btn');
+        const togglePassBtn = document.getElementById('toggle-password-vis');
+        const passInput = document.getElementById('password');
         const modalTitle = document.getElementById('auth-modal-title');
         const submitBtn = document.getElementById('auth-submit-btn');
         const toggleBox = document.getElementById('auth-toggle-box');
         const errorEl = document.getElementById('auth-error');
+        const successEl = document.getElementById('auth-success');
 
         let isRegisterMode = false;
 
         window.openLoginModal = function() {
             errorEl.style.display = 'none';
+            successEl.style.display = 'none';
             loginModal.classList.add('active');
         };
 
-        // If already logged in, redirect away from landing page immediately
+        // Redirect logged-in users to dashboard.html
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 window.location.replace('dashboard.html');
+            }
+        });
+
+        // Show / Hide Password Eye Toggle
+        togglePassBtn.addEventListener('click', () => {
+            const isHidden = passInput.type === 'password';
+            passInput.type = isHidden ? 'text' : 'password';
+            togglePassBtn.innerHTML = isHidden
+                ? '<i class="fa-solid fa-eye-slash"></i>'
+                : '<i class="fa-solid fa-eye"></i>';
+        });
+
+        // Reset Password Handler
+        resetPassBtn.addEventListener('click', async () => {
+            errorEl.style.display = 'none';
+            successEl.style.display = 'none';
+            const email = document.getElementById('email').value.trim();
+            if (!email) {
+                errorEl.textContent = 'Enter your email address above first, then click "Forgot password? Reset it".';
+                errorEl.style.display = 'block';
+                return;
+            }
+            try {
+                await sendPasswordResetEmail(auth, email);
+                successEl.textContent = `Password reset link sent to ${email}. Check your inbox!`;
+                successEl.style.display = 'block';
+            } catch (err) {
+                errorEl.textContent = err.message.replace('Firebase: ', '');
+                errorEl.style.display = 'block';
             }
         });
 
@@ -881,15 +972,18 @@
             if (e.target.id !== 'auth-toggle-link') return;
             isRegisterMode = !isRegisterMode;
             errorEl.style.display = 'none';
+            successEl.style.display = 'none';
 
             if (isRegisterMode) {
                 modalTitle.textContent = 'Create Account';
                 nameGroup.style.display = 'block';
+                forgotPassRow.style.display = 'none';
                 submitBtn.textContent = 'Register & Enter Dashboard';
                 toggleBox.innerHTML = 'Already have an account? <span id="auth-toggle-link">Sign In</span>';
             } else {
                 modalTitle.textContent = 'Student Login';
                 nameGroup.style.display = 'none';
+                forgotPassRow.style.display = 'flex';
                 submitBtn.textContent = 'Sign In to Platform';
                 toggleBox.innerHTML = 'New to Supernova Guide? <span id="auth-toggle-link">Create an account</span>';
             }
@@ -898,10 +992,11 @@
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             errorEl.style.display = 'none';
+            successEl.style.display = 'none';
             submitBtn.disabled = true;
 
             const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
+            const password = passInput.value;
             const username = document.getElementById('username').value.trim();
 
             try {

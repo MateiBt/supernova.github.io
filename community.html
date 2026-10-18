@@ -24,6 +24,7 @@
             --accent-blue: #35E6FF;
             --accent-purple: #B39CD0;
             --accent-rose: #FFC1CC;
+            --accent-gold: #FFCF5C;
             --discord-color: #5865F2;
             
             --text-pure: #FFFFFF;
@@ -48,7 +49,22 @@
             overflow: hidden; -webkit-font-smoothing: antialiased;
         }
 
-        /* --- SIDEBAR --- */
+        .sky-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; pointer-events: none; overflow: hidden; background-color: var(--bg-base);
+        }
+        .comet {
+            position: absolute; width: 160px; height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent-blue));
+            border-radius: 50%; opacity: 0;
+        }
+        .comet::before {
+            content: ''; position: absolute; top: -2px; right: 0; width: 6px; height: 6px;
+            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px rgba(53, 230, 255, 0.6);
+        }
+        @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
+
+        /* --- UNIFIED SIDEBAR --- */
         .sidebar {
             width: 260px; background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border-subtle);
@@ -79,70 +95,159 @@
         /* --- MAIN AREA --- */
         .dashboard-main {
             flex: 1; overflow-y: auto; padding: 32px 44px 60px;
-            display: flex; flex-direction: column; gap: 32px;
+            display: flex; flex-direction: column; gap: 28px;
         }
 
         .top-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-        .header-title h1 { font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--text-pure); margin-bottom: 4px; }
-        .header-title p { color: var(--text-muted); font-size: 0.9rem; }
+        .header-title h1 { font-family: var(--font-display); font-size: 1.9rem; font-weight: 700; color: var(--text-pure); margin-bottom: 4px; }
+        .header-title p { color: var(--text-muted); font-size: 0.92rem; max-width: 650px; }
 
-        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); }
+        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); text-decoration: none; }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border-light); object-fit: cover; }
         .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
         .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
 
-        .community-card {
-            background: var(--bg-card); border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg); padding: 48px 40px;
-            max-width: 680px; margin: 20px auto; text-align: center;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+        /* Discord Hero Banner */
+        .discord-hero {
+            background: linear-gradient(135deg, rgba(88, 101, 242, 0.16) 0%, rgba(21, 22, 26, 0.95) 65%);
+            border: 1px solid rgba(88, 101, 242, 0.4);
+            border-radius: var(--radius-lg);
+            padding: 32px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 28px;
         }
-        .community-card h2 {
-            font-family: var(--font-display); font-size: 2rem; font-weight: 800;
-            color: var(--text-pure); margin-bottom: 16px;
+        .discord-hero-left { max-width: 640px; }
+        .discord-tag {
+            font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase;
+            color: #8ea1e1; font-weight: 700; letter-spacing: 0.08em; display: block; margin-bottom: 8px;
         }
-        .community-text {
-            font-size: 0.98rem; line-height: 1.75; color: var(--text-muted); margin-bottom: 32px;
+        .discord-hero-left h2 {
+            font-family: var(--font-display); font-size: 1.85rem; color: var(--text-pure); margin-bottom: 10px;
+        }
+        .discord-hero-left p {
+            color: var(--text-main); font-size: 0.94rem; line-height: 1.65; margin-bottom: 18px;
+        }
+        .channel-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+        .channel-pill {
+            font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-pure);
+            background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-light);
+            padding: 5px 12px; border-radius: 6px;
         }
 
         .btn-discord {
             background: var(--discord-color); color: var(--text-pure);
-            padding: 14px 32px; text-decoration: none; font-size: 0.95rem;
+            padding: 14px 28px; text-decoration: none; font-size: 0.95rem;
             border-radius: var(--radius-sm); display: inline-flex;
             align-items: center; justify-content: center; gap: 12px;
-            font-weight: 700; transition: all 0.2s;
+            font-weight: 700; transition: all 0.2s; flex-shrink: 0;
         }
-        .btn-discord:hover { background: #4752C4; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(88, 101, 242, 0.35); }
+        .btn-discord:hover { background: #4752C4; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(88, 101, 242, 0.4); }
 
-        .contact-info {
-            margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--border-subtle);
+        /* Core Team Grid */
+        .section-heading {
+            font-family: var(--font-display); font-size: 1.35rem; color: var(--text-pure);
+            display: flex; align-items: center; justify-content: space-between;
         }
-        .contact-info p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; }
-        .contact-email {
-            font-family: var(--font-mono); color: var(--accent-blue); font-size: 0.95rem;
-            font-weight: 700; display: inline-block; padding: 10px 20px;
-            background: var(--bg-sidebar); border-radius: var(--radius-sm);
-            border: 1px solid var(--border-light); user-select: all;
+        .team-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+        }
+        .team-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 24px 26px;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .team-top {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .team-name {
+            font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--text-pure);
+        }
+        .role-badge {
+            font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+            padding: 4px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .role-owner { background: rgba(255, 207, 92, 0.14); color: var(--accent-gold); border: 1px solid rgba(255, 207, 92, 0.4); }
+        .role-admin { background: rgba(179, 156, 208, 0.14); color: var(--accent-purple); border: 1px solid rgba(179, 156, 208, 0.35); }
+        .team-bio { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+        .team-meta {
+            font-family: var(--font-mono); font-size: 0.74rem; color: var(--accent-blue);
+            margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border-subtle);
         }
 
-        @media (max-width: 800px) { .sidebar { display: none; } .dashboard-main { padding: 24px 20px; } }
+        /* Community Board & Post Composer */
+        .board-layout {
+            display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start;
+        }
+        .feed-column { display: flex; flex-direction: column; gap: 16px; }
+        .post-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 22px 26px;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .post-meta {
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+        }
+        .post-tag {
+            font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+            padding: 3px 9px; border-radius: 6px; text-transform: uppercase;
+            background: rgba(53, 230, 255, 0.1); color: var(--accent-blue);
+        }
+        .post-title { font-family: var(--font-display); font-size: 1.15rem; color: var(--text-pure); }
+        .post-body { font-size: 0.9rem; color: var(--text-main); line-height: 1.65; }
+
+        .composer-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg); padding: 24px;
+            display: flex; flex-direction: column; gap: 14px;
+            position: sticky; top: 0;
+        }
+        .composer-card h3 { font-family: var(--font-display); font-size: 1.15rem; color: var(--text-pure); }
+        .input-field {
+            background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
+            color: var(--text-pure); padding: 10px 14px; border-radius: var(--radius-sm);
+            font-family: var(--font-body); font-size: 0.86rem; outline: none; width: 100%;
+        }
+        .input-field:focus { border-color: var(--accent-blue); }
+        .btn-post {
+            background: var(--accent-blue); color: var(--bg-base);
+            border: none; padding: 11px 16px; border-radius: var(--radius-sm);
+            font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .btn-post:hover { background: #6beeff; }
+
+        @media (max-width: 1100px) {
+            .team-grid, .board-layout { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 800px) {
+            .sidebar { display: none; }
+            .dashboard-main { padding: 24px 20px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- UNIFIED SIDEBAR -->
+    <div class="sky-background">
+        <div class="comet" style="top: 8%; left: 88%; animation: shooting 9s infinite linear 2s;"></div>
+    </div>
+
+    <!-- UNIFIED SIDEBAR (Links to dashboard.html, never index.html) -->
     <aside class="sidebar">
-        <a href="index.html" class="brand">
+        <a href="dashboard.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>
         </a>
         
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
-            <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="rotations.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
             <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
-            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
-            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
             <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
         </ul>
 
@@ -166,36 +271,193 @@
     <main class="dashboard-main">
         <header class="top-header">
             <div class="header-title">
-                <h1>Community &amp; Peer Discussion</h1>
-                <p>Collaborate on Olympiad derivations, observational star-hopping, and data analysis reductions.</p>
+                <h1>Community &amp; Collaboration Hub</h1>
+                <p>Where Olympiad competitors, astrophotographers, and astronomy enthusiasts discuss problems, share sky captures, and prepare for seasonal cups.</p>
             </div>
-            <div class="user-profile">
+            <a href="profile.html" class="user-profile">
                 <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF" alt="User" class="avatar">
                 <div class="user-info">
                     <h4 id="user-name-display">Loading...</h4>
                     <p id="user-role-display">Authenticating</p>
                 </div>
-            </div>
+            </a>
         </header>
 
-        <div class="community-card">
-            <h2>Join the Supernova Crew</h2>
-            <p class="community-text">
-                Stuck on a celestial mechanics derivation? Need help reducing a light curve, or spotted an erratum in a problem set?<br><br>
-                Join our official Discord server to discuss problems with national finalists, IOAA medalists, and astronomy students worldwide.
-            </p>
-            
-            <a href="https://discord.gg/Ab7kt6xZ" target="_blank" rel="noopener" class="btn-discord">
-                <i class="fab fa-discord"></i> Join Official Discord Server
-            </a>
-            
-            <div class="contact-info">
-                <p>For official inquiries, bug reports, or problem submissions:</p>
-                <div class="contact-email">contact@supernovaguide.dev</div>
+        <!-- DISCORD SERVER BANNER -->
+        <section class="discord-hero">
+            <div class="discord-hero-left">
+                <span class="discord-tag">Official Discord Community</span>
+                <h2>Join the Supernova Server</h2>
+                <p>
+                    Whether you're stuck on a POTD/POTW derivation, want feedback on a deep-sky astrophotography exposure, or are teaming up for our seasonal competitions, our Discord server is where everything happens live.
+                </p>
+                <div class="channel-pills">
+                    <span class="channel-pill"># potd-potw-discussions</span>
+                    <span class="channel-pill"># astrophotography-showcase</span>
+                    <span class="channel-pill"># seasonal-competitions</span>
+                    <span class="channel-pill"># errata-and-submissions</span>
+                </div>
             </div>
+            <a href="https://discord.gg/Ab7kt6xZ" target="_blank" rel="noopener" class="btn-discord">
+                <i class="fab fa-discord"></i> Join Discord Server
+            </a>
+        </section>
+
+        <!-- CORE TEAM -->
+        <div class="section-heading">
+            <span>The Supernova Team</span>
         </div>
+        <section class="team-grid">
+            <div class="team-card">
+                <div class="team-top">
+                    <span class="team-name">Matei</span>
+                    <span class="role-badge role-owner"><i class="fa-solid fa-crown"></i> Owner</span>
+                </div>
+                <p class="team-bio">
+                    Platform founder, POTM author, and celestial mechanics lead. Built Supernova Guide to bring scattered handouts, problem archives, and seasonal competitions into one place.
+                </p>
+                <div class="team-meta">Live Course: 4 Nov 2026 · 18:00 UT</div>
+            </div>
+
+            <div class="team-card">
+                <div class="team-top">
+                    <span class="team-name">Albert</span>
+                    <span class="role-badge role-admin"><i class="fa-solid fa-shield-halved"></i> Admin</span>
+                </div>
+                <p class="team-bio">
+                    POTD &amp; POTW problem writer specializing in spectroscopic binaries, positional astronomy with refraction, gravitational lensing, and non-collinear solar sail equilibria.
+                </p>
+                <div class="team-meta">Live Course: 7 Nov 2026 · 18:00 UT</div>
+            </div>
+
+            <div class="team-card">
+                <div class="team-top">
+                    <span class="team-name">Mihai</span>
+                    <span class="role-badge role-admin"><i class="fa-solid fa-shield-halved"></i> Admin</span>
+                </div>
+                <p class="team-bio">
+                    Astrophotography &amp; observational lead, POTD/POTW author (*Comet 3I/ATLAS Exposure Time*, *A Morning Comet*, *Planets and Coordinates*).
+                </p>
+                <div class="team-meta">Live Course: 8 Nov 2026 · 18:00 UT</div>
+            </div>
+        </section>
+
+        <!-- COMMUNITY DISCUSSION BOARD & SUBMISSION COMPOSER -->
+        <div class="section-heading">
+            <span>Community Announcements &amp; Discussion Board</span>
+        </div>
+        <section class="board-layout">
+            <div class="feed-column" id="community-feed"></div>
+
+            <aside class="composer-card">
+                <h3>Post to Community Board</h3>
+                <p style="font-size:0.82rem; color:var(--text-muted);">
+                    Share a question on a problem, log an astrophotography setup, or submit an erratum.
+                </p>
+                <select id="post-category" class="input-field">
+                    <option value="Problem Discussion">Problem Discussion</option>
+                    <option value="Astrophotography">Astrophotography Log</option>
+                    <option value="Errata / Submission">Errata / Problem Submission</option>
+                </select>
+                <input type="text" id="post-title" class="input-field" placeholder="Thread Title">
+                <textarea id="post-body" class="input-field" rows="4" placeholder="Write your question, observation log, or note..."></textarea>
+                <button class="btn-post" id="submit-post-btn">
+                    <i class="fa-solid fa-paper-plane"></i> Publish Post
+                </button>
+                <div style="border-top:1px solid var(--border-subtle); padding-top:12px; font-size:0.8rem; color:var(--text-muted);">
+                    Direct email for problem submissions &amp; inquiries:<br>
+                    <strong style="font-family:var(--font-mono); color:var(--accent-blue); user-select:all;">contact@supernovaguide.dev</strong>
+                </div>
+            </aside>
+        </section>
     </main>
 
     <script type="module" src="js/auth.js"></script>
+    <script>
+        const DEFAULT_POSTS = [
+            {
+                author: "Matei",
+                role: "Owner",
+                category: "Seasonal Competition",
+                date: "Oct 2026",
+                title: "Welcome to the Autumn 2026 Cycle (POTD, POTW, POTM & 3-Phase MCQ Cup)",
+                body: "On 19.10.2026 at 00:00 UT we kick off our daily, weekly, and monthly problem rotations alongside registration for the Autumn 2026 3-Phase MCQ Cup. Our live Supernova Courses follow on November 4, 7, and 8 at 18:00 UT."
+            },
+            {
+                author: "Mihai",
+                role: "Admin",
+                category: "Astrophotography",
+                date: "Oct 2026",
+                title: "Imaging Interstellar Comet 3I/ATLAS with an ASI2600MC Pro (200mm f/5)",
+                body: "For Day 4 of POTD, you'll use an actual frame of 3I/ATLAS captured on a 200mm f/5 Newtonian with 3.76 μm pixels and two background asteroids (1737 Severny & 3906 Chao) to extract the exposure time directly from the plate scale and trail lengths."
+            },
+            {
+                author: "Albert",
+                role: "Admin",
+                category: "Problem Discussion",
+                date: "Oct 2026",
+                title: "Common Trap in Spectroscopic Binaries: Inclination & Eccentricity",
+                body: "When working through Day 3's POTD ('The Eccentric Binary'), remember that assuming a circular edge-on orbit underestimates the total system mass by sin³(i) / (1 - e²)^(3/2)—nearly 25% for e = 0.30 and i = 60°."
+            }
+        ];
+
+        const FEED_KEY = 'supernova_community_posts';
+
+        function getPosts() {
+            const raw = localStorage.getItem(FEED_KEY);
+            if (!raw) {
+                localStorage.setItem(FEED_KEY, JSON.stringify(DEFAULT_POSTS));
+                return DEFAULT_POSTS;
+            }
+            return JSON.parse(raw);
+        }
+
+        function renderFeed() {
+            const list = getPosts();
+            const feedEl = document.getElementById('community-feed');
+            feedEl.innerHTML = list.map(p => {
+                const isOwner = p.role === 'Owner';
+                const isAdmin = p.role === 'Admin';
+                const badgeCls = isOwner ? 'role-badge role-owner' : (isAdmin ? 'role-badge role-admin' : 'post-tag');
+                return `
+                    <article class="post-card">
+                        <div class="post-meta">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <span class="post-tag">${p.category}</span>
+                                <span class="${badgeCls}">${p.author} (${p.role})</span>
+                            </div>
+                            <span style="font-family:var(--font-mono); font-size:0.74rem; color:var(--text-muted);">${p.date}</span>
+                        </div>
+                        <h3 class="post-title">${p.title}</h3>
+                        <p class="post-body">${p.body}</p>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        document.getElementById('submit-post-btn').addEventListener('click', () => {
+            const cat = document.getElementById('post-category').value;
+            const title = document.getElementById('post-title').value.trim();
+            const body = document.getElementById('post-body').value.trim();
+            if (!title || !body) return alert('Please enter both a title and message.');
+
+            const author = document.getElementById('user-name-display')?.innerText || 'Member';
+            const posts = getPosts();
+            posts.unshift({
+                author,
+                role: 'Member',
+                category: cat,
+                date: 'Just now',
+                title,
+                body
+            });
+            localStorage.setItem(FEED_KEY, JSON.stringify(posts));
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-body').value = '';
+            renderFeed();
+        });
+
+        renderFeed();
+    </script>
 </body>
 </html>

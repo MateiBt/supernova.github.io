@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curriculum & Practice Hub | Supernova Guide</title>
+    <title>Study &amp; Practice Hub | Supernova Guide</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -137,7 +137,10 @@
         .section-header { 
             display: flex; align-items: center; gap: 12px; 
             margin-bottom: -8px; padding-top: 16px; 
-            border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px; 
+            border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;
+            background-color: var(--bg-base);
+            position: relative;
+            z-index: 10;
         }
         .section-header h2 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--text-pure); }
         .section-header i { font-size: 1.2rem; }
@@ -167,9 +170,9 @@
         .card:hover .module-icon img { transform: scale(1.5); }
 
         .progress-pill {
-            font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
+            font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted);
             background: var(--bg-sidebar); padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-subtle);
-            font-weight: bold;
+            font-weight: 700;
         }
 
         .card-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--text-pure); margin-bottom: 8px; }
@@ -231,19 +234,20 @@
         <div class="comet" style="top: 5%; left: 90%; animation: shooting 8s infinite linear 2s;"></div>
     </div>
 
-    <!-- UNIFIED SIDEBAR NAVIGATION -->
+    <!-- UNIFIED SIDEBAR NAVIGATION (Links to dashboard.html, never index.html) -->
     <aside class="sidebar">
-        <a href="index.html" class="brand">
+        <a href="dashboard.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>
         </a>
         
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
-            <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="rotations.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
             <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
-            <li><a href="problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
-            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
             <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
         </ul>
 
@@ -268,8 +272,8 @@
         
         <header class="top-header">
             <div class="header-title">
-                <h1>Curriculum &amp; Practice Hub</h1>
-                <p>Follow the unified IOAA curriculum tracks below. Read theoretical handouts and derivation guides, or jump straight into curated competition problem sets.</p>
+                <h1>Study &amp; Practice Hub</h1>
+                <p>All 16 modules in one place. Open the handout for any module to read the theory and derivations, or open Practice to solve indexed Olympiad problems.</p>
             </div>
             <div class="header-actions">
                 <a href="profile.html" class="user-profile">
@@ -285,7 +289,7 @@
         <!-- THEORY TRACK -->
         <div class="section-header">
             <i class="fa-solid fa-book-open accent-theory-title"></i>
-            <h2>Theory Track</h2>
+            <h2>Theory Track (12 Modules)</h2>
         </div>
         <div class="grid-layout">
             
@@ -295,7 +299,7 @@
                     <div class="module-icon">
                         <img src="assets/img/theory/positional_celestial_mechanics_logo.png" alt="Positional Astronomy and Celestial Mechanics">
                     </div>
-                    <span class="progress-pill" id="celestial-progress">0/16</span>
+                    <span class="progress-pill" data-module-pill="T1">0/0</span>
                 </div>
                 <h3 class="card-title">1. Positional Astronomy and Celestial Mechanics</h3>
                 <div class="module-desc">
@@ -316,7 +320,7 @@
                     <div class="module-icon">
                         <img src="assets/img/theory/radiation_relativity_logo.png" alt="Radiation Physics and Relativity Fundamentals">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="T2">0/0</span>
                 </div>
                 <h3 class="card-title">2. Radiation Physics and Relativity Fundamentals</h3>
                 <div class="module-desc">
@@ -338,7 +342,7 @@
                     <div class="module-icon">
                         <img src="assets/img/theory/astronomical_instrumentation_logo.png" alt="Astronomical Instrumentation">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="T3">0/0</span>
                 </div>
                 <h3 class="card-title">3. Astronomical Instrumentation</h3>
                 <div class="module-desc">
@@ -358,7 +362,7 @@
                     <div class="module-icon">
                         <img src="assets/img/theory/stellar_parameters_logo.png" alt="Stellar Parameters and Spectral Classification">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="T4">0/0</span>
                 </div>
                 <h3 class="card-title">4. Stellar Parameters and Spectral Classification</h3>
                 <div class="module-desc">
@@ -379,7 +383,7 @@
                     <div class="module-icon">
                         <img src="assets/img/theory/stellar_structure_logo.png" alt="Stellar Structure and Atmospheres">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="T5">0/0</span>
                 </div>
                 <h3 class="card-title">5. Stellar Structure and Atmospheres</h3>
                 <div class="module-desc">
@@ -401,7 +405,7 @@
                     <div class="module-icon">
                         <img src="assets/img/theory/interstellar_medium_logo.png" alt="Interstellar Medium and Star Formation">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="T6">0/0</span>
                 </div>
                 <h3 class="card-title">6. Interstellar Medium and Star Formation</h3>
                 <div class="module-desc">
@@ -421,7 +425,7 @@
                     <div class="module-icon">
                         <img src="assets/img/theory/stellar_evolution_logo.png" alt="Stellar Evolution">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="T7">0/0</span>
                 </div>
                 <h3 class="card-title">7. Stellar Evolution</h3>
                 <div class="module-desc">
@@ -443,7 +447,7 @@
                     <div class="module-icon">
                         <img src="assets/img/theory/stellar_remnants_logo.png" alt="Stellar Remnants and General Relativity">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="T8">0/0</span>
                 </div>
                 <h3 class="card-title">8. Stellar Remnants and General Relativity</h3>
                 <div class="module-desc">
@@ -465,7 +469,7 @@
                     <div class="module-icon">
                         <img src="assets/img/theory/planetary_systems_logo.png" alt="Planetary Systems and Formation">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="T9">0/0</span>
                 </div>
                 <h3 class="card-title">9. Planetary Systems and Formation</h3>
                 <div class="module-desc">
@@ -489,7 +493,7 @@
                     <div class="module-icon">
                         <img src="assets/img/theory/galactic_structure_logo.png" alt="Galactic Structure">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="T10">0/0</span>
                 </div>
                 <h3 class="card-title">10. Galactic Structure</h3>
                 <div class="module-desc">
@@ -510,7 +514,7 @@
                     <div class="module-icon">
                         <img src="assets/img/theory/galactic_evolution_logo.png" alt="Galactic Evolution and Active Galaxies">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="T11">0/0</span>
                 </div>
                 <h3 class="card-title">11. Galactic Evolution and Active Galaxies</h3>
                 <div class="module-desc">
@@ -531,7 +535,7 @@
                     <div class="module-icon">
                         <img src="assets/img/theory/cosmology_logo.png" alt="Cosmology and the Structure of the Universe">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="T12">0/0</span>
                 </div>
                 <h3 class="card-title">12. Cosmology and the Structure of the Universe</h3>
                 <div class="module-desc">
@@ -559,10 +563,10 @@
                     <div class="module-icon">
                         <img src="assets/img/data_analysis/methods_plotting_logo.png" alt="Methods & Plotting">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="D1">0/0</span>
                 </div>
                 <h3 class="card-title">1. Methods &amp; Plotting</h3>
-                <p class="module-desc">Error propagation, statistical regression, graphing techniques, and plotting calculations.</p>
+                <p class="module-desc">Error propagation, linear regression, log-log plots, and extracting physical constants from graphs.</p>
                 <div class="card-actions">
                     <a href="practice/data_methods_plotting.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
                     <a href="handouts/data_methods_plotting.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
@@ -574,10 +578,10 @@
                     <div class="module-icon">
                         <img src="assets/img/data_analysis/full_data_sets_logo.png" alt="Full Data Sets">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="D2">0/0</span>
                 </div>
                 <h3 class="card-title">2. Full Data Sets</h3>
-                <p class="module-desc">Comprehensive real-world datasets from past IOAA exams. Light curves, spectra, and complex analysis.</p>
+                <p class="module-desc">End-to-end observational datasets from past IOAA exams: light curves, radial velocity curves, and spectra.</p>
                 <div class="card-actions">
                     <a href="practice/data_full_sets.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
                     <a href="handouts/data_full_sets.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Handout</a>
@@ -596,10 +600,10 @@
                     <div class="module-icon">
                         <img src="assets/img/observational/blind_map_logo.png" alt="Blind Map Practice">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="O1">0/0</span>
                 </div>
-                <h3 class="card-title">Blind Map Practice</h3>
-                <p class="module-desc">Train for the naked-eye observation round. Star identification, constellation boundaries, deep sky object coordinates without grids.</p>
+                <h3 class="card-title">1. Blind Map Practice</h3>
+                <p class="module-desc">Naked-eye star charts, missing bright star identification, ecliptic/equator/meridian lines, and estimating observer latitude and time.</p>
                 <div class="card-actions">
                     <a href="practice/obs_blind_map.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
                     <a href="handouts/obs_blind_map.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Manual</a>
@@ -611,10 +615,10 @@
                     <div class="module-icon">
                         <img src="assets/img/observational/telescope_practice_logo.png" alt="Telescope Practice">
                     </div>
-                    <span class="progress-pill">0/0</span>
+                    <span class="progress-pill" data-module-pill="O2">0/0</span>
                 </div>
-                <h3 class="card-title">Telescope Practice</h3>
-                <p class="module-desc">Practical telescope operations. Equatorial mount calibration, field of view mapping, tracking, and pointing exercises.</p>
+                <h3 class="card-title">2. Telescope Practice</h3>
+                <p class="module-desc">Practical telescope optics, equatorial mount alignment, field-of-view magnification matching, and CCD astrometry.</p>
                 <div class="card-actions">
                     <a href="practice/obs_telescope.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
                     <a href="handouts/obs_telescope.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Manual</a>
@@ -624,39 +628,49 @@
 
     </main>
 
-    <!-- CENTRALIZED AUTH & PROGRESS HYDRATION -->
+    <!-- CENTRALIZED AUTH & LIVE 16-MODULE PROGRESS HYDRATION -->
     <script type="module" src="js/auth.js"></script>
-    <script>
-        function syncCelestialBadge() {
-            const celestialIds = [
-                'q1_usaaao_2018', 'q30_usaaao_2018', 'q1_usaaao_2025', 'q4_usaaao_2025', 
-                'q5_usaaao_2025', 'q11-12_usaaao_2025', 'q13_usaaao_2025', 'q19_usaaao_2025', 
-                'q26_usaaao_2025', 'q1_usaaao_2026', 'q2_usaaao_2026', 'q9_usaaao_2026', 
-                'q10_usaaao_2026', 'q15_usaaao_2026', 'q16_usaaao_2026', 'q27_usaaao_2026'
-            ];
-            
-            let solvedCount = 0;
-            const solvedArrayStr = localStorage.getItem('solvedProblems');
-            if (solvedArrayStr) {
-                try {
-                    const solvedArray = JSON.parse(solvedArrayStr);
-                    solvedCount = celestialIds.filter(id => solvedArray.includes(id)).length;
-                } catch(e) {}
-            }
+    <script type="module">
+        import { usaaao_2026 } from './js/data/usaaao_2026.js';
+        import { usaaao_2025 } from './js/data/usaaao_2025.js';
+        import { usaaao_2024 } from './js/data/usaaao_2024.js';
+        import { usaaao_2023 } from './js/data/usaaao_2023.js';
+        import { usaaao_2022 } from './js/data/usaaao_2022.js';
 
-            const progressElement = document.getElementById('celestial-progress');
-            if (progressElement) {
-                progressElement.textContent = `${solvedCount}/16`;
-                if (solvedCount === 16) {
-                    progressElement.style.color = 'var(--bg-base)';
-                    progressElement.style.borderColor = 'var(--accent-purple)';
-                    progressElement.style.background = 'var(--accent-purple)';
+        const allProblems = [
+            ...usaaao_2026,
+            ...usaaao_2025,
+            ...usaaao_2024,
+            ...usaaao_2023,
+            ...usaaao_2022
+        ];
+
+        function syncAllModuleBadges() {
+            let solvedArr = [];
+            try {
+                solvedArr = JSON.parse(localStorage.getItem('solvedProblems') || '[]');
+            } catch (e) {}
+
+            document.querySelectorAll('[data-module-pill]').forEach(pill => {
+                const modCode = pill.getAttribute('data-module-pill');
+                const modProblems = allProblems.filter(p => (p.module || 'T1') === modCode);
+                const solvedInMod = modProblems.filter(p =>
+                    localStorage.getItem(`solved_${p.uniqueId}`) === 'true' ||
+                    solvedArr.includes(p.uniqueId) ||
+                    solvedArr.includes(p.uniqueId.replace('_', '-'))
+                ).length;
+
+                pill.textContent = `${solvedInMod}/${modProblems.length}`;
+                if (modProblems.length > 0 && solvedInMod === modProblems.length) {
+                    pill.style.color = 'var(--bg-base)';
+                    pill.style.borderColor = 'var(--accent-green)';
+                    pill.style.background = 'var(--accent-green)';
                 }
-            }
+            });
         }
 
-        window.addEventListener('userDataLoaded', syncCelestialBadge);
-        document.addEventListener('DOMContentLoaded', syncCelestialBadge);
+        window.addEventListener('userDataLoaded', syncAllModuleBadges);
+        document.addEventListener('DOMContentLoaded', syncAllModuleBadges);
     </script>
 </body>
 </html>

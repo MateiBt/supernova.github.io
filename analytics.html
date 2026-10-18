@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Performance Analytics | Supernova Guide</title>
-    
+    <title>Diagnostic Analytics | Supernova Guide</title>
+
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Canonical Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,23 +19,19 @@
             --bg-sidebar: #101115;
             --bg-card: #15161A;
             --bg-card-hover: #1C1D22;
-            
             --accent-green: #2BE38A;
             --accent-blue: #35E6FF;
             --accent-purple: #B39CD0;
             --accent-rose: #FFC1CC;
             --accent-gold: #FFCF5C;
-            
             --text-pure: #FFFFFF;
             --text-main: #EDEDED;
             --text-muted: #8A94A6;
-            
             --border-subtle: rgba(255, 255, 255, 0.08);
             --border-light: rgba(255, 255, 255, 0.15);
             --radius-lg: 16px;
             --radius-md: 12px;
             --radius-sm: 8px;
-            
             --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
             --font-body: 'Inter', sans-serif;
             --font-mono: 'Space Mono', monospace;
@@ -43,12 +39,31 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            background-color: var(--bg-base); color: var(--text-main);
-            font-family: var(--font-body); display: flex; height: 100vh;
-            overflow: hidden; -webkit-font-smoothing: antialiased;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- SIDEBAR --- */
+        .sky-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; pointer-events: none; overflow: hidden; background-color: var(--bg-base);
+        }
+        .comet {
+            position: absolute; width: 160px; height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent-blue));
+            border-radius: 50%; opacity: 0;
+        }
+        .comet::before {
+            content: ''; position: absolute; top: -2px; right: 0; width: 6px; height: 6px;
+            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px rgba(53, 230, 255, 0.6);
+        }
+        @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
+
+        /* --- UNIFIED SIDEBAR --- */
         .sidebar {
             width: 260px; background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border-subtle);
@@ -83,94 +98,129 @@
         }
 
         .top-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-        .header-title h1 { font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--text-pure); margin-bottom: 4px; }
+        .header-title h1 { font-family: var(--font-display); font-size: 1.9rem; font-weight: 700; color: var(--text-pure); margin-bottom: 4px; }
         .header-title p { color: var(--text-muted); font-size: 0.9rem; }
 
-        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); }
+        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); text-decoration: none; }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border-light); object-fit: cover; }
         .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
         .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
 
-        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        /* KPI Strip */
+        .kpi-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+        }
         .kpi-card {
             background: var(--bg-card); border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg); padding: 22px 24px;
             display: flex; flex-direction: column; gap: 6px;
         }
-        .kpi-label {
-            font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase;
-            color: var(--text-muted); letter-spacing: 0.05em; display: flex; justify-content: space-between;
+        .kpi-tag {
+            font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase;
+            color: var(--text-muted); font-weight: 700; letter-spacing: 0.06em;
         }
-        .kpi-val { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--text-pure); }
-        .kpi-sub { font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); }
+        .kpi-val {
+            font-family: var(--font-display); font-size: 2.1rem; font-weight: 800; color: var(--text-pure);
+        }
+        .kpi-sub { font-size: 0.8rem; color: var(--text-muted); }
 
-        .analytics-split { display: grid; grid-template-columns: 1fr 1.25fr; gap: 24px; }
+        /* 2-Column Analytics Split */
+        .analytics-split {
+            display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 24px; align-items: stretch;
+        }
         .panel-card {
             background: var(--bg-card); border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg); padding: 28px;
-            display: flex; flex-direction: column; gap: 20px;
+            border-radius: var(--radius-lg); padding: 26px 28px;
+            display: flex; flex-direction: column; gap: 18px;
         }
         .panel-header {
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--border-subtle); padding-bottom: 14px;
         }
-        .panel-header h3 {
-            font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--text-pure);
-            display: flex; align-items: center; gap: 10px;
+        .panel-header h2 {
+            font-family: var(--font-display); font-size: 1.25rem; color: var(--text-pure);
         }
-        .panel-tag {
+        .panel-badge {
             font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-blue);
-            background: rgba(53, 230, 255, 0.1); padding: 4px 10px; border-radius: 6px;
+            background: rgba(53, 230, 255, 0.1); padding: 4px 10px; border-radius: 6px; font-weight: 700;
         }
 
-        .radar-box { display: flex; align-items: center; justify-content: center; padding: 10px 0; }
-        .radar-svg { width: 100%; max-width: 360px; height: auto; overflow: visible; }
+        /* Radar SVG Container */
+        .radar-box {
+            display: flex; align-items: center; justify-content: center;
+            padding: 10px 0; min-height: 310px;
+        }
+        .radar-svg { width: 100%; max-width: 390px; height: auto; overflow: visible; }
 
-        .telemetry-list { display: flex; flex-direction: column; gap: 16px; }
-        .telemetry-item { display: flex; flex-direction: column; gap: 6px; }
-        .telemetry-top { display: flex; justify-content: space-between; font-size: 0.85rem; }
-        .telemetry-top strong { color: var(--text-pure); font-weight: 600; }
-        .telemetry-top span { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); }
-        .bar-track {
+        /* Difficulty & Trap Bars */
+        .stat-bar-list { display: flex; flex-direction: column; gap: 14px; }
+        .stat-bar-row { display: flex; flex-direction: column; gap: 6px; }
+        .stat-bar-label {
+            display: flex; justify-content: space-between;
+            font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-main);
+        }
+        .stat-bar-track {
             width: 100%; height: 8px; background: var(--bg-sidebar);
             border-radius: 99px; overflow: hidden; border: 1px solid var(--border-subtle);
         }
-        .bar-fill { height: 100%; border-radius: 99px; transition: width 0.5s ease; }
+        .stat-bar-fill {
+            height: 100%; border-radius: 99px; transition: width 0.6s ease;
+        }
 
-        .syllabus-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-        .mod-stat-box {
+        /* 16-Module Mastery Grid */
+        .module-mastery-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+        }
+        .mod-progress-item {
             background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm); padding: 14px;
+            border-radius: var(--radius-md); padding: 14px 18px;
             display: flex; flex-direction: column; gap: 8px;
+            text-decoration: none; color: inherit; transition: border-color 0.2s;
         }
-        .mod-stat-head {
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 0.82rem; font-weight: 600; color: var(--text-pure);
+        .mod-progress-item:hover { border-color: var(--border-light); }
+        .mod-top {
+            display: flex; justify-content: space-between; align-items: center; gap: 8px;
         }
-        .mod-stat-head span { font-family: var(--font-mono); font-size: 0.74rem; color: var(--accent-purple); }
+        .mod-code {
+            font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--accent-purple);
+        }
+        .mod-count {
+            font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-muted);
+        }
+        .mod-name {
+            font-weight: 600; font-size: 0.88rem; color: var(--text-pure);
+        }
 
         @media (max-width: 1100px) {
             .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-            .analytics-split, .syllabus-grid { grid-template-columns: 1fr; }
+            .analytics-split, .module-mastery-grid { grid-template-columns: 1fr; }
         }
-        @media (max-width: 800px) { .sidebar { display: none; } .dashboard-main { padding: 24px 20px; } }
+        @media (max-width: 800px) {
+            .sidebar { display: none; }
+            .dashboard-main { padding: 24px 20px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- UNIFIED SIDEBAR -->
+    <div class="sky-background">
+        <div class="comet" style="top: 8%; left: 88%; animation: shooting 9s infinite linear 2s;"></div>
+    </div>
+
+    <!-- UNIFIED SIDEBAR (Links to dashboard.html, never index.html) -->
     <aside class="sidebar">
-        <a href="index.html" class="brand">
+        <a href="dashboard.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>
         </a>
         
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
-            <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="rotations.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
             <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
-            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
-            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
             <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
         </ul>
 
@@ -192,234 +242,319 @@
 
     <!-- MAIN CONTENT -->
     <main class="dashboard-main">
-        
         <header class="top-header">
             <div class="header-title">
-                <h1>Live Diagnostic Telemetry</h1>
-                <p>100% real-time metrics computed directly from your solved problems, difficulty weights, and logged mistake notebook.</p>
+                <h1>Progress &amp; Diagnostic Analytics</h1>
+                <p>Live statistics computed directly from your solved problems, active module progress, and mistake notebook.</p>
             </div>
-            <div class="user-profile">
+            <a href="profile.html" class="user-profile">
                 <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF" alt="User" class="avatar">
                 <div class="user-info">
                     <h4 id="user-name-display">Loading...</h4>
                     <p id="user-role-display">Authenticating</p>
                 </div>
-            </div>
+            </a>
         </header>
 
-        <!-- REAL-DATA KPI STRIP -->
+        <!-- KPI STRIP -->
         <section class="kpi-grid">
             <div class="kpi-card">
-                <div class="kpi-label"><span>Verified Solved</span> <i class="fa-solid fa-check-double" style="color:var(--accent-purple);"></i></div>
-                <div class="kpi-val" id="kpi-solved">0 / 16</div>
-                <div class="kpi-sub" id="kpi-solved-pct">0% Module 01 Completion</div>
+                <span class="kpi-tag">Total Problems Solved</span>
+                <div class="kpi-val" id="kpi-solved">0 / 0</div>
+                <span class="kpi-sub" id="kpi-completion-pct">0% of indexed archive</span>
             </div>
             <div class="kpi-card">
-                <div class="kpi-label"><span>Current Rank Tier</span> <i class="fa-solid fa-medal" style="color:var(--accent-gold);"></i></div>
-                <div class="kpi-val" id="kpi-rank" style="color:var(--accent-gold); font-size:1.55rem;">Novice Observer</div>
-                <div class="kpi-sub" id="kpi-points">0 Weighted Points</div>
+                <span class="kpi-tag" style="color:var(--accent-purple);">Current Rank</span>
+                <div class="kpi-val" id="kpi-rank" style="font-size:1.55rem; padding-top:6px;">Novice Observer</div>
+                <span class="kpi-sub" id="kpi-next-rank">5 solved to Cadet</span>
             </div>
             <div class="kpi-card">
-                <div class="kpi-label"><span>Review Mastery</span> <i class="fa-solid fa-brain" style="color:var(--accent-green);"></i></div>
-                <div class="kpi-val" id="kpi-mastered">0%</div>
-                <div class="kpi-sub" id="kpi-mastered-sub">0 / 0 Notebook Traps Mastered</div>
+                <span class="kpi-tag" style="color:var(--accent-green);">Active Study Streak</span>
+                <div class="kpi-val" id="kpi-streak">0 Days</div>
+                <span class="kpi-sub">Consecutive days with solved problems</span>
             </div>
             <div class="kpi-card">
-                <div class="kpi-label"><span>Active Blind Spots</span> <i class="fa-solid fa-triangle-exclamation" style="color:var(--accent-rose);"></i></div>
-                <div class="kpi-val" id="kpi-mistakes">0</div>
-                <div class="kpi-sub"><a href="notebook.html" style="color:var(--accent-rose); text-decoration:none;">Open Mistake Notebook &rarr;</a></div>
+                <span class="kpi-tag" style="color:var(--accent-rose);">Logged Notebook Traps</span>
+                <div class="kpi-val" id="kpi-traps">0</div>
+                <span class="kpi-sub" id="kpi-traps-sub">0 in 1d review queue</span>
             </div>
         </section>
 
-        <!-- DYNAMIC SVG RADAR & REAL MISTAKE DISTRIBUTION -->
+        <!-- RADAR + DIFFICULTY / MISTAKE BREAKDOWN -->
         <section class="analytics-split">
+            <!-- 6-Axis Competency Radar -->
             <div class="panel-card">
                 <div class="panel-header">
-                    <h3><i class="fa-solid fa-compass-drafting" style="color:var(--accent-blue);"></i> Live Competency Radar</h3>
-                    <span class="panel-tag">Real-Time Polygon</span>
+                    <h2>6-Axis Syllabus Coverage Radar</h2>
+                    <span class="panel-badge">Live Bank Telemetry</span>
                 </div>
                 <div class="radar-box">
-                    <svg class="radar-svg" viewBox="0 0 320 280">
-                        <!-- Reference Hexagons (100%, 66%, 33%) -->
-                        <polygon points="160,30 255,85 255,195 160,250 65,195 65,85" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-                        <polygon points="160,67 223,103 223,177 160,213 97,177 97,103" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-                        <polygon points="160,103 192,122 192,158 160,177 128,158 128,122" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
-                        <!-- Axes -->
-                        <line x1="160" y1="30" x2="160" y2="250" stroke="rgba(255,255,255,0.08)"/>
-                        <line x1="65" y1="85" x2="255" y2="195" stroke="rgba(255,255,255,0.08)"/>
-                        <line x1="255" y1="85" x2="65" y2="195" stroke="rgba(255,255,255,0.08)"/>
-                        <!-- Dynamic Data Polygon -->
-                        <polygon id="dynamic-radar-poly" points="160,140 160,140 160,140 160,140 160,140 160,140" fill="rgba(53, 230, 255, 0.2)" stroke="#35E6FF" stroke-width="2.5"/>
-                        <!-- Dynamic Axis Labels -->
-                        <text id="lbl-axis-0" x="160" y="18" text-anchor="middle" fill="#EDEDED" font-family="Space Mono" font-size="9.5">EASY SPEED (0%)</text>
-                        <text id="lbl-axis-1" x="262" y="85" text-anchor="start" fill="#EDEDED" font-family="Space Mono" font-size="9.5">MEDIUM ANALYTICAL (0%)</text>
-                        <text id="lbl-axis-2" x="262" y="200" text-anchor="start" fill="#EDEDED" font-family="Space Mono" font-size="9.5">THEORY DERIV (0%)</text>
-                        <text id="lbl-axis-3" x="160" y="268" text-anchor="middle" fill="#EDEDED" font-family="Space Mono" font-size="9.5">MODULE 01 (0%)</text>
-                        <text id="lbl-axis-4" x="58" y="200" text-anchor="end" fill="#EDEDED" font-family="Space Mono" font-size="9.5">TRAP MASTERY (0%)</text>
-                        <text id="lbl-axis-5" x="58" y="85" text-anchor="end" fill="#EDEDED" font-family="Space Mono" font-size="9.5">CONSISTENCY (0%)</text>
-                    </svg>
+                    <svg viewBox="0 0 360 300" class="radar-svg" id="radar-svg"></svg>
                 </div>
+                <p style="font-size:0.8rem; color:var(--text-muted); text-align:center;">
+                    Each vertex represents the percentage of problems you have solved in that discipline relative to the total indexed problems.
+                </p>
             </div>
 
-            <!-- Real Mistake Category Telemetry -->
+            <!-- Difficulty & Mistake Diagnostics -->
             <div class="panel-card">
                 <div class="panel-header">
-                    <h3><i class="fa-solid fa-bug-slash" style="color:var(--accent-rose);"></i> Logged Mistake Distribution (From Notebook)</h3>
-                    <span class="panel-tag" style="color:var(--accent-rose); background:rgba(255,193,204,0.12);">Live Sync</span>
-                </div>
-                <div class="telemetry-list">
-                    <div class="telemetry-item">
-                        <div class="telemetry-top">
-                            <strong>1. Physical Assumption Traps</strong>
-                            <span id="err-trap-txt">0 logged (0%)</span>
-                        </div>
-                        <div class="bar-track"><div class="bar-fill" id="err-trap-bar" style="width: 0%; background: var(--accent-rose);"></div></div>
-                    </div>
-
-                    <div class="telemetry-item">
-                        <div class="telemetry-top">
-                            <strong>2. Algebraic &amp; Trigonometric Sign Slips</strong>
-                            <span id="err-alg-txt">0 logged (0%)</span>
-                        </div>
-                        <div class="bar-track"><div class="bar-fill" id="err-alg-bar" style="width: 0%; background: var(--accent-purple);"></div></div>
-                    </div>
-
-                    <div class="telemetry-item">
-                        <div class="telemetry-top">
-                            <strong>3. Dimensional &amp; Unit Conversion Errors</strong>
-                            <span id="err-unit-txt">0 logged (0%)</span>
-                        </div>
-                        <div class="bar-track"><div class="bar-fill" id="err-unit-bar" style="width: 0%; background: var(--accent-blue);"></div></div>
-                    </div>
+                    <h2>Difficulty &amp; Error Root-Cause Breakdown</h2>
+                    <span class="panel-badge" style="color:var(--accent-purple); background:rgba(179,156,208,0.12);">Real-Time</span>
                 </div>
 
-                <div style="margin-top:auto; padding:14px 16px; background:var(--bg-sidebar); border-radius:var(--radius-sm); border-left:3px solid var(--accent-blue); font-size:0.84rem; color:var(--text-muted);" id="advisor-note">
-                    Log your derivation mistakes in the <strong>Mistake Notebook</strong> tab to populate real-time error distribution telemetry.
+                <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">
+                    Solved by Difficulty Tier
                 </div>
+                <div class="stat-bar-list" id="difficulty-bars"></div>
+
+                <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; margin-top:8px;">
+                    Mistake Notebook Root Causes (<a href="notebook.html" style="color:var(--accent-rose);">Open Notebook</a>)
+                </div>
+                <div class="stat-bar-list" id="mistake-bars"></div>
             </div>
         </section>
 
-        <!-- 12-MODULE SYLLABUS MATRIX -->
+        <!-- ALL 16 MODULES LIVE PROGRESS -->
         <section class="panel-card">
             <div class="panel-header">
-                <h3><i class="fa-solid fa-layer-group" style="color:var(--accent-purple);"></i> IOAA 12-Module Syllabus Coverage</h3>
-                <span class="panel-tag">Real Problem Counts</span>
+                <h2>Module-by-Module Completion (All 16 Tracks)</h2>
+                <span class="panel-badge" id="modules-summary-badge">16 Modules</span>
             </div>
-            <div class="syllabus-grid">
-                <div class="mod-stat-box">
-                    <div class="mod-stat-head"><strong>01. Positional &amp; Celestial Mech</strong> <span id="mod1-pct">0 / 16 (0%)</span></div>
-                    <div class="bar-track"><div class="bar-fill" id="mod1-bar" style="width:0%; background:var(--accent-purple);"></div></div>
-                </div>
-                <div class="mod-stat-box"><div class="mod-stat-head"><strong>02. Radiation &amp; Relativity</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
-                <div class="mod-stat-box"><div class="mod-stat-head"><strong>03. Instrumentation</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
-                <div class="mod-stat-box"><div class="mod-stat-head"><strong>04. Stellar Parameters</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
-                <div class="mod-stat-box"><div class="mod-stat-head"><strong>05. Stellar Structure</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
-                <div class="mod-stat-box"><div class="mod-stat-head"><strong>06. ISM &amp; Star Formation</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
-                <div class="mod-stat-box"><div class="mod-stat-head"><strong>07. Stellar Evolution</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
-                <div class="mod-stat-box"><div class="mod-stat-head"><strong>08. Remnants &amp; Gen. Relativity</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
-                <div class="mod-stat-box"><div class="mod-stat-head"><strong>09. Planetary Systems</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
-                <div class="mod-stat-box"><div class="mod-stat-head"><strong>10. Galactic Structure</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
-                <div class="mod-stat-box"><div class="mod-stat-head"><strong>11. Galactic Evolution &amp; AGN</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
-                <div class="mod-stat-box"><div class="mod-stat-head"><strong>12. Cosmology</strong> <span>0 / 0</span></div><div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div></div>
-            </div>
+            <div class="module-mastery-grid" id="module-mastery-grid"></div>
         </section>
-
     </main>
 
+    <script type="module" src="js/auth.js"></script>
     <script type="module">
-        import { difficultyMap, getRankForCount } from './js/auth.js';
+        import { difficultyMap, RANKS, getRankForCount } from './js/auth.js';
+        import { usaaao_2026 } from './js/data/usaaao_2026.js';
+        import { usaaao_2025 } from './js/data/usaaao_2025.js';
+        import { usaaao_2024 } from './js/data/usaaao_2024.js';
+        import { usaaao_2023 } from './js/data/usaaao_2023.js';
+        import { usaaao_2022 } from './js/data/usaaao_2022.js';
 
-        const celestialIds = [
-            'q1_usaaao_2018', 'q30_usaaao_2018', 'q1_usaaao_2025', 'q4_usaaao_2025', 
-            'q5_usaaao_2025', 'q11-12_usaaao_2025', 'q13_usaaao_2025', 'q19_usaaao_2025', 
-            'q26_usaaao_2025', 'q1_usaaao_2026', 'q2_usaaao_2026', 'q9_usaaao_2026', 
-            'q10_usaaao_2026', 'q15_usaaao_2026', 'q16_usaaao_2026', 'q27_usaaao_2026'
+        const MODULES_LIST = [
+            { code: 'T1', name: 'Positional & Celestial Mechanics', file: 'positional_celestial_mechanics.html', color: '#B39CD0' },
+            { code: 'T2', name: 'Radiation Physics & Relativity', file: 'radiation_relativity.html', color: '#B39CD0' },
+            { code: 'T3', name: 'Astronomical Instrumentation', file: 'astronomical_instrumentation.html', color: '#B39CD0' },
+            { code: 'T4', name: 'Stellar Parameters & Spectra', file: 'stellar_parameters.html', color: '#B39CD0' },
+            { code: 'T5', name: 'Stellar Structure & Atmospheres', file: 'stellar_structure.html', color: '#B39CD0' },
+            { code: 'T6', name: 'Interstellar Medium & Star Formation', file: 'interstellar_medium.html', color: '#B39CD0' },
+            { code: 'T7', name: 'Stellar Evolution', file: 'stellar_evolution.html', color: '#B39CD0' },
+            { code: 'T8', name: 'Stellar Remnants & GR', file: 'stellar_remnants.html', color: '#B39CD0' },
+            { code: 'T9', name: 'Planetary Systems & Exoplanets', file: 'planetary_systems.html', color: '#B39CD0' },
+            { code: 'T10', name: 'Galactic Structure', file: 'galactic_structure.html', color: '#B39CD0' },
+            { code: 'T11', name: 'Galactic Evolution & AGN', file: 'galactic_evolution.html', color: '#B39CD0' },
+            { code: 'T12', name: 'Cosmology & Universe Structure', file: 'cosmology.html', color: '#B39CD0' },
+            { code: 'D1', name: 'Data Analysis: Methods & Plotting', file: 'data_methods_plotting.html', color: '#35E6FF' },
+            { code: 'D2', name: 'Data Analysis: Full Data Sets', file: 'data_full_sets.html', color: '#35E6FF' },
+            { code: 'O1', name: 'Observational: Blind Map Practice', file: 'obs_blind_map.html', color: '#FFC1CC' },
+            { code: 'O2', name: 'Observational: Telescope Practice', file: 'obs_telescope.html', color: '#FFC1CC' }
         ];
 
-        function computeRealAnalytics() {
-            const solvedRaw = localStorage.getItem('solvedProblems');
-            const solvedArr = solvedRaw ? JSON.parse(solvedRaw) : [];
-            const validSolved = celestialIds.filter(id => solvedArr.includes(id));
-            const solvedCount = validSolved.length;
-            const mod1Pct = Math.round((solvedCount / 16) * 100);
+        const allBankProblems = [
+            ...usaaao_2026,
+            ...usaaao_2025,
+            ...usaaao_2024,
+            ...usaaao_2023,
+            ...usaaao_2022
+        ];
 
-            // Totals in difficultyMap for Module 1
-            const totalEasy = 11, totalMedium = 3, totalTheory = 2;
-            let sEasy = 0, sMed = 0, sTheory = 0;
-            validSolved.forEach(id => {
-                const d = difficultyMap[id];
-                if (d === 'easy') sEasy++;
-                else if (d === 'medium') sMed++;
-                else if (d === 'theory') sTheory++;
+        function getSolvedSet() {
+            const set = new Set();
+            try {
+                const arr = JSON.parse(localStorage.getItem('solvedProblems') || '[]');
+                arr.forEach(id => {
+                    set.add(id);
+                    set.add(id.replace('-', '_'));
+                });
+            } catch (e) {}
+            allBankProblems.forEach(p => {
+                if (localStorage.getItem(`solved_${p.uniqueId}`) === 'true') {
+                    set.add(p.uniqueId);
+                }
             });
-
-            const easyPct = Math.round((sEasy / totalEasy) * 100);
-            const medPct = Math.round((sMed / totalMedium) * 100);
-            const theoryPct = Math.round((sTheory / totalTheory) * 100);
-            const weightedPts = (sEasy * 3) + (sMed * 6) + (sTheory * 8);
-
-            // Mistake Notebook Real Telemetry
-            const mistakesRaw = localStorage.getItem('supernova_mistake_notebook');
-            const mistakes = mistakesRaw ? JSON.parse(mistakesRaw) : [];
-            const totalMistakes = mistakes.length;
-            const masteredMistakes = mistakes.filter(m => m.stage === '30d Mastered').length;
-            const masteryPct = totalMistakes > 0 ? Math.round((masteredMistakes / totalMistakes) * 100) : 0;
-
-            let cTrap = 0, cAlg = 0, cUnit = 0;
-            mistakes.forEach(m => {
-                if (m.category === 'Physical Trap') cTrap++;
-                else if (m.category === 'Algebraic / Sign') cAlg++;
-                else if (m.category === 'Unit Mismatch') cUnit++;
-            });
-
-            const pTrap = totalMistakes > 0 ? Math.round((cTrap / totalMistakes) * 100) : 0;
-            const pAlg = totalMistakes > 0 ? Math.round((cAlg / totalMistakes) * 100) : 0;
-            const pUnit = totalMistakes > 0 ? Math.round((cUnit / totalMistakes) * 100) : 0;
-
-            // Update KPI Cards
-            document.getElementById('kpi-solved').textContent = `${solvedCount} / 16`;
-            document.getElementById('kpi-solved-pct').textContent = `${mod1Pct}% Module 01 Completion`;
-            document.getElementById('kpi-rank').textContent = getRankForCount(solvedCount);
-            document.getElementById('kpi-points').textContent = `${weightedPts} Weighted Points Earned`;
-            document.getElementById('kpi-mastered').textContent = `${masteryPct}%`;
-            document.getElementById('kpi-mastered-sub').textContent = `${masteredMistakes} / ${totalMistakes} Traps Mastered`;
-            document.getElementById('kpi-mistakes').textContent = totalMistakes;
-
-            // Update Module 1 Bar
-            document.getElementById('mod1-pct').textContent = `${solvedCount} / 16 (${mod1Pct}%)`;
-            document.getElementById('mod1-bar').style.width = `${mod1Pct}%`;
-
-            // Update Mistake Bars
-            document.getElementById('err-trap-txt').textContent = `${cTrap} logged (${pTrap}%)`;
-            document.getElementById('err-trap-bar').style.width = `${pTrap}%`;
-            document.getElementById('err-alg-txt').textContent = `${cAlg} logged (${pAlg}%)`;
-            document.getElementById('err-alg-bar').style.width = `${pAlg}%`;
-            document.getElementById('err-unit-txt').textContent = `${cUnit} logged (${pUnit}%)`;
-            document.getElementById('err-unit-bar').style.width = `${pUnit}%`;
-
-            // Compute 6-Axis Radar Polygon Coordinates (Center: 160, 140; Max Radius: 110)
-            const consistencyPct = solvedCount > 0 ? Math.min(100, solvedCount * 10) : 0;
-            const axesValues = [easyPct, medPct, theoryPct, mod1Pct, masteryPct, consistencyPct];
-            const angles = [-90, -30, 30, 90, 150, 210].map(deg => deg * Math.PI / 180);
-
-            const polyPoints = axesValues.map((val, idx) => {
-                const r = Math.max(8, (val / 100) * 110); // Minimum 8px radius so polygon center is visible
-                const x = (160 + r * Math.cos(angles[idx])).toFixed(1);
-                const y = (140 + r * Math.sin(angles[idx])).toFixed(1);
-                return `${x},${y}`;
-            }).join(' ');
-
-            document.getElementById('dynamic-radar-poly').setAttribute('points', polyPoints);
-            document.getElementById('lbl-axis-0').textContent = `EASY SPEED (${easyPct}%)`;
-            document.getElementById('lbl-axis-1').textContent = `MEDIUM ANALYTICAL (${medPct}%)`;
-            document.getElementById('lbl-axis-2').textContent = `THEORY DERIV (${theoryPct}%)`;
-            document.getElementById('lbl-axis-3').textContent = `MODULE 01 (${mod1Pct}%)`;
-            document.getElementById('lbl-axis-4').textContent = `TRAP MASTERY (${masteryPct}%)`;
-            document.getElementById('lbl-axis-5').textContent = `CONSISTENCY (${consistencyPct}%)`;
+            return set;
         }
 
-        window.addEventListener('userDataLoaded', computeRealAnalytics);
-        document.addEventListener('DOMContentLoaded', computeRealAnalytics);
+        function computeStreak() {
+            const uid = localStorage.getItem('supernova_last_uid');
+            if (!uid) return 0;
+            try {
+                const prog = JSON.parse(localStorage.getItem(`supernova_progress_${uid}`) || '[]');
+                if (!prog.length) return 0;
+                const dates = [...new Set(prog.map(item => {
+                    const d = new Date(item.date);
+                    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                }))].sort((a, b) => new Date(b) - new Date(a));
+
+                let current = new Date();
+                current.setHours(0, 0, 0, 0);
+                let last = new Date(dates[0]);
+                last.setHours(0, 0, 0, 0);
+                if (Math.round((current - last) / 86400000) > 1) return 0;
+
+                let streak = 1;
+                for (let i = 0; i < dates.length - 1; i++) {
+                    let d1 = new Date(dates[i]), d2 = new Date(dates[i + 1]);
+                    d1.setHours(0, 0, 0, 0); d2.setHours(0, 0, 0, 0);
+                    if (Math.round((d1 - d2) / 86400000) === 1) streak++;
+                    else break;
+                }
+                return streak;
+            } catch (e) {
+                return 0;
+            }
+        }
+
+        function renderAnalytics() {
+            const solvedSet = getSolvedSet();
+            const totalBank = allBankProblems.length;
+            const solvedCount = allBankProblems.filter(p => solvedSet.has(p.uniqueId)).length;
+            const pct = totalBank > 0 ? Math.round((solvedCount / totalBank) * 100) : 0;
+
+            // 1. Update KPIs
+            document.getElementById('kpi-solved').textContent = `${solvedCount} / ${totalBank}`;
+            document.getElementById('kpi-completion-pct').textContent = `${pct}% of indexed archive solved`;
+
+            const rankName = getRankForCount(solvedCount);
+            document.getElementById('kpi-rank').textContent = rankName;
+            const nextRankObj = RANKS.find(r => r.req > solvedCount);
+            document.getElementById('kpi-next-rank').textContent = nextRankObj
+                ? `${nextRankObj.req - solvedCount} more solved to ${nextRankObj.name}`
+                : 'Maximum Rank Achieved';
+
+            const streak = computeStreak();
+            document.getElementById('kpi-streak').textContent = `${streak} ${streak === 1 ? 'Day' : 'Days'}`;
+
+            // Mistake Notebook Telemetry
+            let mistakes = [];
+            try {
+                mistakes = JSON.parse(localStorage.getItem('supernova_mistake_notebook') || '[]');
+            } catch (e) {}
+            const due1d = mistakes.filter(m => m.stage === '1d Review').length;
+            document.getElementById('kpi-traps').textContent = mistakes.length;
+            document.getElementById('kpi-traps-sub').textContent = `${due1d} in 1d review queue`;
+
+            // 2. Render Difficulty Bars
+            const diffTiers = [
+                { key: 'easy', label: 'Easy (Score 1–4)', color: 'var(--accent-green)' },
+                { key: 'medium', label: 'Medium (Score 5–7)', color: 'var(--accent-gold)' },
+                { key: 'hard', label: 'Hard (Score 8–10)', color: 'var(--accent-rose)' },
+                { key: 'theory', label: 'Theory (Conceptual)', color: 'var(--accent-purple)' }
+            ];
+            document.getElementById('difficulty-bars').innerHTML = diffTiers.map(t => {
+                const tot = allBankProblems.filter(p => p.difficultyClass === t.key).length;
+                const slv = allBankProblems.filter(p => p.difficultyClass === t.key && solvedSet.has(p.uniqueId)).length;
+                const w = tot > 0 ? Math.round((slv / tot) * 100) : 0;
+                return `
+                    <div class="stat-bar-row">
+                        <div class="stat-bar-label">
+                            <span>${t.label}</span>
+                            <span>${slv} / ${tot} (${w}%)</span>
+                        </div>
+                        <div class="stat-bar-track">
+                            <div class="stat-bar-fill" style="width:${w}%; background:${t.color};"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // 3. Render Mistake Root-Cause Bars
+            const trapCats = [
+                { key: 'Physical Trap', label: 'Physical Assumption Traps', color: 'var(--accent-rose)' },
+                { key: 'Algebraic / Sign', label: 'Algebraic / Sign Slips', color: 'var(--accent-blue)' },
+                { key: 'Unit Mismatch', label: 'Dimensional / Unit Mismatches', color: 'var(--accent-gold)' }
+            ];
+            const totalTraps = Math.max(1, mistakes.length);
+            document.getElementById('mistake-bars').innerHTML = trapCats.map(c => {
+                const cnt = mistakes.filter(m => m.category === c.key).length;
+                const w = mistakes.length > 0 ? Math.round((cnt / totalTraps) * 100) : 0;
+                return `
+                    <div class="stat-bar-row">
+                        <div class="stat-bar-label">
+                            <span>${c.label}</span>
+                            <span>${cnt} logged (${w}%)</span>
+                        </div>
+                        <div class="stat-bar-track">
+                            <div class="stat-bar-fill" style="width:${w}%; background:${c.color};"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // 4. Render 6-Axis SVG Radar Chart
+            const radarAxes = [
+                { label: 'Positional & Mech', codes: ['T1'] },
+                { label: 'Radiation & Rel', codes: ['T2', 'T8'] },
+                { label: 'Stellar Physics', codes: ['T4', 'T5', 'T6', 'T7'] },
+                { label: 'Planetary & Exo', codes: ['T9'] },
+                { label: 'Galaxies & Cosmo', codes: ['T10', 'T11', 'T12'] },
+                { label: 'Data & Obs', codes: ['T3', 'D1', 'D2', 'O1', 'O2'] }
+            ];
+            const cx = 180, cy = 150, maxR = 105;
+            let gridPolygons = '';
+            [0.25, 0.5, 0.75, 1.0].forEach(level => {
+                const pts = radarAxes.map((_, i) => {
+                    const ang = (Math.PI * 2 * i) / radarAxes.length - Math.PI / 2;
+                    return `${cx + maxR * level * Math.cos(ang)},${cy + maxR * level * Math.sin(ang)}`;
+                }).join(' ');
+                gridPolygons += `<polygon points="${pts}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>`;
+            });
+
+            let axisLines = '', axisLabels = '', dataPts = [];
+            radarAxes.forEach((ax, i) => {
+                const ang = (Math.PI * 2 * i) / radarAxes.length - Math.PI / 2;
+                const xEnd = cx + maxR * Math.cos(ang);
+                const yEnd = cy + maxR * Math.sin(ang);
+                axisLines += `<line x1="${cx}" y1="${cy}" x2="${xEnd}" y2="${yEnd}" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>`;
+
+                const tot = allBankProblems.filter(p => ax.codes.includes(p.module || 'T1')).length;
+                const slv = allBankProblems.filter(p => ax.codes.includes(p.module || 'T1') && solvedSet.has(p.uniqueId)).length;
+                const ratio = tot > 0 ? Math.max(0.08, slv / tot) : 0.08;
+                const px = cx + maxR * ratio * Math.cos(ang);
+                const py = cy + maxR * ratio * Math.sin(ang);
+                dataPts.push(`${px},${py}`);
+
+                const lx = cx + (maxR + 28) * Math.cos(ang);
+                const ly = cy + (maxR + 20) * Math.sin(ang);
+                axisLabels += `<text x="${lx}" y="${ly}" fill="#E2E8F0" font-family="Space Mono, monospace" font-size="9.5" text-anchor="middle" dominant-baseline="middle">${ax.label} (${slv}/${tot})</text>`;
+            });
+
+            document.getElementById('radar-svg').innerHTML = `
+                ${gridPolygons}
+                ${axisLines}
+                <polygon points="${dataPts.join(' ')}" fill="rgba(53, 230, 255, 0.22)" stroke="#35E6FF" stroke-width="2.2"/>
+                ${dataPts.map(pt => {
+                    const [x, y] = pt.split(',');
+                    return `<circle cx="${x}" cy="${y}" r="4" fill="#35E6FF"/>`;
+                }).join('')}
+                ${axisLabels}
+            `;
+
+            // 5. Render 16-Module Mastery Grid
+            document.getElementById('module-mastery-grid').innerHTML = MODULES_LIST.map(m => {
+                const tot = allBankProblems.filter(p => (p.module || 'T1') === m.code).length;
+                const slv = allBankProblems.filter(p => (p.module || 'T1') === m.code && solvedSet.has(p.uniqueId)).length;
+                const w = tot > 0 ? Math.round((slv / tot) * 100) : 0;
+                return `
+                    <a href="practice/${m.file}" class="mod-progress-item">
+                        <div class="mod-top">
+                            <span class="mod-code" style="color:${m.color};">${m.code}</span>
+                            <span class="mod-count">${slv} / ${tot} Solved (${w}%)</span>
+                        </div>
+                        <div class="mod-name">${m.name}</div>
+                        <div class="stat-bar-track">
+                            <div class="stat-bar-fill" style="width:${w}%; background:${m.color};"></div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', renderAnalytics);
+        window.addEventListener('userDataLoaded', renderAnalytics);
     </script>
 </body>
 </html>

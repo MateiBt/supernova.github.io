@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings & Profile | Supernova Guide</title>
+    <title>Settings &amp; Profile | Supernova Guide</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -150,7 +150,7 @@
         .edit-trigger:hover { color: var(--accent-blue); }
         .email-display { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); }
 
-        /* Explicit Settings Controls Box */
+        /* Account Customization Box */
         .settings-card-inner {
             background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
             border-radius: var(--radius-md); padding: 16px; text-align: left;
@@ -317,19 +317,20 @@
         <div class="comet" style="top: 8%; left: 88%; animation: shooting 9s infinite linear 1s;"></div>
     </div>
 
-    <!-- UNIFIED SIDEBAR -->
+    <!-- UNIFIED SIDEBAR (Links to dashboard.html, never index.html) -->
     <aside class="sidebar">
-        <a href="index.html" class="brand">
+        <a href="dashboard.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>
         </a>
         
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
-            <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="rotations.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
             <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
-            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
-            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
             <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
         </ul>
 
@@ -354,12 +355,12 @@
         
         <header class="top-header">
             <div class="header-title">
-                <h1>Candidate Settings &amp; Profile</h1>
-                <p>Configure your display callsign, profile avatar (14-day cooldown policy), and inspect your progression ladder.</p>
+                <h1>Settings &amp; Profile</h1>
+                <p>Update your username or profile picture (once every 14 days), check your rank progression, and review your solved problem history.</p>
             </div>
             <div class="header-actions">
                 <button id="loginBtn" onclick="openAuthModal()" class="filter-btn" style="padding: 9px 16px; color: var(--accent-blue); border-color: var(--accent-blue); display: none;">
-                    <i class="fa-solid fa-right-to-bracket"></i> Student Login
+                    <i class="fa-solid fa-right-to-bracket"></i> Sign In
                 </button>
                 <button id="logoutBtn" class="filter-btn" style="padding: 9px 16px; color: var(--accent-rose); border-color: rgba(255,193,204,0.3); display: none;">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
@@ -389,13 +390,13 @@
 
                 <div class="user-identity" id="viewMode">
                     <h2 class="username">
-                        <span id="profileUsername">Guest Candidate</span>
-                        <i class="fa-solid fa-pen edit-trigger" onclick="enableEditUsername()" title="Edit Callsign"></i>
+                        <span id="profileUsername">Guest</span>
+                        <i class="fa-solid fa-pen edit-trigger" onclick="enableEditUsername()" title="Edit Username"></i>
                     </h2>
                     <p class="email-display" id="profileEmail">Sign in to sync your profile</p>
                 </div>
 
-                <!-- Explicit Account Modification Panel -->
+                <!-- Account Customization Panel -->
                 <div class="settings-card-inner">
                     <h4><i class="fa-solid fa-sliders"></i> Profile Customization</h4>
                     <div class="settings-btn-row">
@@ -408,7 +409,7 @@
                     </div>
 
                     <div id="editUserContainer">
-                        <input type="text" id="newUsernameInput" class="modern-input" placeholder="New Callsign...">
+                        <input type="text" id="newUsernameInput" class="modern-input" placeholder="New username...">
                         <button onclick="saveNewUsername()" class="action-btn" title="Save"><i class="fa-solid fa-check"></i></button>
                         <button onclick="cancelEditUsername()" class="action-btn" title="Cancel"><i class="fa-solid fa-xmark"></i></button>
                     </div>
@@ -433,7 +434,7 @@
                 </div>
 
                 <div class="progression-section">
-                    <p class="progression-title">Advancement Ladder</p>
+                    <p class="progression-title">Rank Ladder</p>
                     <div class="rank-list-container">
                         <ul class="rank-list">
                             <li class="rank-item" id="rank-0"><div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-eye"></i><span>Novice Observer</span></div><span class="rank-req">0</span></li>
@@ -469,7 +470,7 @@
                     <div class="stat-card">
                         <div class="stat-icon-small" style="color: var(--accent-purple);"><i class="fa-solid fa-shield-halved"></i></div>
                         <span class="stat-value">14 Days</span>
-                        <span class="stat-label">Profile Change Lockout</span>
+                        <span class="stat-label">Name &amp; Avatar Cooldown</span>
                     </div>
                 </div>
 
@@ -494,7 +495,7 @@
 
                 <div class="chart-widget">
                     <div class="widget-header">
-                        <h3 class="widget-title"><i class="fa-solid fa-chart-line" style="color:var(--accent-blue);"></i> Solved Problems Velocity</h3>
+                        <h3 class="widget-title"><i class="fa-solid fa-chart-line" style="color:var(--accent-blue);"></i> Solved Problems Over Time</h3>
                         <div class="time-filters">
                             <button class="filter-btn active" id="btn-week" onclick="updateChart('week')">7 Days</button>
                             <button class="filter-btn" id="btn-month" onclick="updateChart('month')">30 Days</button>
@@ -506,7 +507,7 @@
                     </div>
 
                     <div class="activity-section">
-                        <p class="activity-title">Verified Solution Timestamps</p>
+                        <p class="activity-title">Recent Activity</p>
                         <div id="activityLogList"></div>
                     </div>
                 </div>
@@ -521,8 +522,8 @@
             <span onclick="closeModal()" class="close-btn"><i class="fas fa-times"></i></span>
             <h3 id="modalTitle" style="color: var(--text-pure); margin: 0 0 18px 0; font-family: var(--font-display);">Student Login</h3>
             <form id="authForm">
-                <input type="text" id="usernameInput" class="auth-input" placeholder="Callsign / Username" style="display:none;">
-                <input type="email" id="emailInput" class="auth-input" placeholder="Academic Email" required>
+                <input type="text" id="usernameInput" class="auth-input" placeholder="Username" style="display:none;">
+                <input type="email" id="emailInput" class="auth-input" placeholder="Email Address" required>
                 <input type="password" id="passwordInput" class="auth-input" placeholder="Password" required>
                 <button type="submit" id="submitAuthBtn" class="submit-btn">Sign In</button>
                 <p id="authError" class="error-msg"></p>

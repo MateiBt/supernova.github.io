@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planetarium Arena | Supernova Guide</title>
+    <title>3D Planetarium | Supernova Guide</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. UNIFIED DESIGN TOKENS (GAMIFIED OBSERVATORY HUD) --- */
+        /* --- 1. UNIFIED DESIGN TOKENS --- */
         :root {
             --bg-base:          #0A0A0C;
             --bg-sidebar:       #101115;
@@ -36,7 +36,7 @@
             --success:          #2BE38A;
             --danger:           #FF4D6A;
 
-            /* Gamified Rank Accents */
+            /* Medal Accents */
             --gold:             #FFCF5C;
             --gold-glow:        rgba(255, 207, 92, 0.4);
             --silver:           #DBE4F0;
@@ -86,7 +86,7 @@
             display: flex; justify-content: space-between; align-items: center;
             padding: 16px 36px; z-index: 1000;
             background: linear-gradient(to bottom, rgba(10, 10, 12, 0.9), transparent);
-            pointer-events: none; /* Allows clicking stars through empty nav space */
+            pointer-events: none;
         }
 
         .nav-logo {
@@ -131,19 +131,18 @@
             display: inline-flex; align-items: center; gap: 8px;
         }
         .btn-exit:hover {
-            color: var(--danger);
-            border-color: var(--danger);
-            background: rgba(255, 77, 106, 0.12);
+            color: var(--cyan);
+            border-color: var(--cyan);
+            background: var(--cyan-soft);
         }
 
-        /* --- 3. CELESTIAL ASTROMETRY BACKDROP (REPLACES CARTOON ROCKETS) --- */
+        /* --- 3. CELESTIAL ASTROMETRY BACKDROP --- */
         .observatory-bg {
             position: absolute; inset: 0;
             background: radial-gradient(circle at 50% 50%, rgba(53, 230, 255, 0.05) 0%, rgba(179, 156, 208, 0.03) 35%, var(--bg-base) 80%);
             z-index: -1; overflow: hidden; pointer-events: none;
         }
 
-        /* Rotating Celestial Coordinate Rings */
         .celestial-reticle {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -524,7 +523,7 @@
         }
         .lobby-btn-row { display: flex; gap: 10px; margin-bottom: 14px; }
 
-        /* --- 6. IN-GAME TACTICAL HUD & TELEMETRY CARDS --- */
+        /* --- 6. IN-GAME HUD & TARGET INSPECTOR --- */
         .hud-input {
             width: 100%; background: var(--bg-sidebar);
             border: 1px solid var(--edge-light); border-radius: var(--radius-sm);
@@ -610,7 +609,6 @@
             background: rgba(255, 77, 106, 0.08); display: block;
         }
 
-        /* Free Roam Inspector & Live Standings Floating Cards */
         #free-roam-card {
             position: absolute; right: 28px; top: 86px; width: 280px;
             background: var(--bg-glass); border: 1px solid var(--edge-cyan);
@@ -671,20 +669,20 @@
 </head>
 <body>
 
-    <!-- Top Navigation -->
+    <!-- Top Navigation (Redirects to dashboard.html, never index.html) -->
     <nav>
-        <a href="index.html" class="nav-logo">
+        <a href="dashboard.html" class="nav-logo">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
             <div class="logo-text">
                 <span class="main">SUPERNOVA GUIDE</span>
-                <span class="sub">Planetarium Observatory</span>
+                <span class="sub">3D Planetarium</span>
             </div>
         </a>
         <div class="nav-actions">
             <button class="btn-exit" onclick="window.location.href='problems.html'">
                 <i class="fa-solid fa-book-open"></i> Practice Hub
             </button>
-            <button class="btn-exit" onclick="window.location.href='index.html'">
+            <button class="btn-exit" onclick="window.location.href='dashboard.html'">
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
             </button>
         </div>
@@ -692,7 +690,7 @@
 
     <!-- Match Overlays -->
     <div id="vs-overlay">
-        <h2>Match Initializing</h2>
+        <h2>Match Starting</h2>
         <div id="vs-players-list"></div>
     </div>
 
@@ -714,7 +712,7 @@
                 <h4 style="color:var(--text-hi); margin-bottom:10px; font-size:0.75rem; font-family: var(--font-mono); text-transform: uppercase;">Constellation Leaderboard</h4>
                 <ul id="practice-lb-list" class="lb-list"></ul>
             </div>
-            <button id="btn-close-practice" class="btn-launch" style="margin-top: 24px;">Return to Control Panel</button>
+            <button id="btn-close-practice" class="btn-launch" style="margin-top: 24px;">Back to Planetarium Menu</button>
         </div>
     </div>
 
@@ -730,8 +728,8 @@
 
         <div class="modal-content" id="config-forms" style="display: flex;">
             <div class="modal-header">
-                <h2 class="modal-title"><i class="fa-solid fa-satellite-dish"></i> Planetarium Control Panel</h2>
-                <p class="modal-desc" id="auth-status-text">Checking authentication protocols...</p>
+                <h2 class="modal-title"><i class="fa-solid fa-satellite-dish"></i> 3D Planetarium</h2>
+                <p class="modal-desc" id="auth-status-text">Loading profile...</p>
             </div>
             
             <div class="main-tabs">
@@ -746,21 +744,21 @@
             <!-- TAB 1: OVERVIEW -->
             <div id="tab-welcome" class="tab-content active">
                 <div class="desc-panel" style="max-width: 820px; margin: 0 auto;">
-                    <h3 class="desc-title" id="desc-title">3D Celestial Sphere &amp; Observational Simulator</h3>
+                    <h3 class="desc-title" id="desc-title">3D Sky Simulator &amp; Observational Training</h3>
                     <div class="desc-content" id="desc-content">
-                        <p>Train for the IOAA Observational Round on an interactive 3D celestial sphere built from real astronomical catalog coordinates. Identify bright navigation stars, estimate visual magnitudes, and locate Messier/Caldwell Deep Sky Objects without coordinate grids.</p>
-                        <p><b> Controls &amp; Navigation:</b></p>
+                        <p>Practice for observational rounds or learn the night sky on a 3D celestial sphere built from real star and deep-sky catalogs. Identify navigation stars, estimate apparent magnitudes, and find Messier and Caldwell objects without coordinate grids.</p>
+                        <p><b>Controls:</b></p>
                         <ul>
-                            <li><b>Panning:</b> Left-click and drag across the sky to rotate the celestial sphere.</li>
-                            <li><b>Optical Zoom:</b> Scroll wheel to adjust Field of View (FOV) and inspect dense star fields.</li>
-                            <li><b>Target Lock:</b> Click directly on any star or Deep Sky Object to lock the reticle.</li>
+                            <li><b>Pan:</b> Left-click and drag to rotate the sky.</li>
+                            <li><b>Zoom:</b> Scroll wheel to change your Field of View (FOV) and inspect dense star fields.</li>
+                            <li><b>Select:</b> Click directly on any star or Deep Sky Object to lock onto it.</li>
                         </ul>
-                        <p><b>Simulation Modes:</b></p>
+                        <p><b>Modes:</b></p>
                         <ul>
-                            <li><b>Singleplayer:</b> Timed 5, 15, or 30-minute drills across Name Identification, Spectral/Object Classification, Target Pinpointing, and Magnitude Estimation.</li>
-                            <li><b>Arena (1v1 &amp; Ranked ELO):</b> Compete locally, against calibrated AI bots, or in live online rooms.</li>
-                            <li><b>Tournaments:</b> Multi-player Elimination, Classic Brackets, or the 36-competitor Champions Cup.</li>
-                            <li><b>Constellations:</b> Speed-run individual IAU constellations to earn Bronze, Silver, and Gold completion medals.</li>
+                            <li><b>Singleplayer:</b> Timed 5, 15, or 30-minute runs (or unlimited Free Roam) across Name Identification, Object Classification, Target Pinpointing, and Magnitude Estimation.</li>
+                            <li><b>Arena (1v1 &amp; Ranked ELO):</b> Play locally, against AI bots, or in live online rooms.</li>
+                            <li><b>Tournaments:</b> Elimination survival, knockout brackets, or the 36-player Champions Cup.</li>
+                            <li><b>Constellations:</b> Speed-run individual IAU constellations to earn Bronze, Silver, and Gold medals.</li>
                         </ul>
                     </div>
                 </div>
@@ -771,7 +769,7 @@
                 <div class="split-grid">
                     <div>
                         <div class="config-group" id="mode-group">
-                            <span class="config-label">1. Select Gamemode</span>
+                            <span class="config-label">1. Select Mode</span>
                             <div class="option-grid" id="mode-grid">
                                 <button class="opt-btn selected" data-mode="name">Identify Name</button>
                                 <button class="opt-btn" data-mode="type">Classify Type</button>
@@ -811,7 +809,7 @@
                             </div>
                         </div>
                         
-                        <button class="btn-launch" id="btn-launch-single" disabled>Launch Singleplayer Session</button>
+                        <button class="btn-launch" id="btn-launch-single" disabled>Start Singleplayer</button>
                     </div>
                 </div>
             </div>
@@ -946,7 +944,7 @@
                                 <ul class="lb-list" id="tourney-players-list" style="max-height: 170px; overflow-y: auto; border: 1px solid var(--edge); border-radius: var(--radius-sm); padding: 8px; background: var(--bg-sidebar);"></ul>
                             </div>
                             
-                            <button class="btn-launch" id="btn-launch-tourney" disabled>Initialize Tournament</button>
+                            <button class="btn-launch" id="btn-launch-tourney" disabled>Start Tournament</button>
                         </div>
                     </div>
                 </div>
@@ -958,7 +956,7 @@
                     <div id="tourney-view-container" style="min-height: 250px; background: var(--bg-card); border: 1px solid var(--edge); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px; overflow-x: auto; font-family: var(--font-mono); font-size: 0.85rem;"></div>
                     
                     <div style="text-align: center; display: flex; justify-content: center; gap: 14px;">
-                        <button class="opt-btn" id="btn-abort-tourney" style="border-color: var(--danger); color: var(--danger); width: 200px;">Abort Tournament</button>
+                        <button class="opt-btn" id="btn-abort-tourney" style="border-color: var(--danger); color: var(--danger); width: 200px;">End Tournament</button>
                         <button class="btn-launch" id="btn-next-tourney-match" style="max-width: 280px; margin-top: 0;">Play Next Match</button>
                     </div>
                 </div>
@@ -967,10 +965,10 @@
             <!-- TAB 5: CONSTELLATIONS PRACTICE -->
             <div id="tab-practice" class="tab-content">
                 <p style="font-size: 0.92rem; color: var(--text-low); margin: 0 auto 22px; line-height: 1.6; text-align: center; max-width: 760px;">
-                    Select an IAU constellation to drill strictly on its named navigation stars. Identify every member star as fast as possible to earn Bronze, Silver, and Gold completion medals.
+                    Pick an IAU constellation to practice its bright stars. Identify every member star as fast as possible to earn Bronze, Silver, and Gold completion medals.
                 </p>
                 <ul class="learning-list" id="learning-constellations-list"></ul>
-                <button class="btn-launch" id="btn-launch-practice" disabled style="max-width: 380px; margin: 28px auto 0; display: block;">Start Constellation Drill</button>
+                <button class="btn-launch" id="btn-launch-practice" disabled style="max-width: 380px; margin: 28px auto 0; display: block;">Start Constellation Run</button>
             </div>
 
             <!-- TAB 6: LEADERBOARDS & RECORDS -->
@@ -978,7 +976,7 @@
                 <div class="three-col-grid" style="margin-bottom: 24px;">
                     <div class="lb-section">
                         <div class="lb-title title-personal"><span><i class="fa-solid fa-medal"></i> <span id="pb-user-name">Personal</span> Bests</span></div>
-                        <ul class="lb-list" id="personal-records-list"><li class="empty-msg">Syncing records...</li></ul>
+                        <ul class="lb-list" id="personal-records-list"><li class="empty-msg">Loading records...</li></ul>
                     </div>
 
                     <div class="lb-section" id="public-leaderboard-section">
@@ -1046,7 +1044,7 @@
     <div class="hud-container" id="hud-container">
         <div class="hud-panel">
             <div class="hud-header">
-                <div class="hud-instruction" id="hud-instruction">Awaiting target parameters...</div>
+                <div class="hud-instruction" id="hud-instruction">Select a target on the sphere...</div>
                 <div class="hud-stats">
                     <span title="Timer"><i class="fa-regular fa-clock"></i> <b id="timer-display">00:00</b></span>
                     <span title="Score / Round"><i class="fa-solid fa-crosshairs"></i> <b id="score-display">0</b></span>
@@ -1058,13 +1056,13 @@
                     <i class="fa-solid fa-fire"></i> Streak: <span id="streak-display">0</span>
                 </div>
                 <div class="form-graph-container">
-                    <div class="form-graph-title" id="form-graph-title">Live Telemetry</div>
+                    <div class="form-graph-title" id="form-graph-title">Recent Accuracy</div>
                     <canvas id="form-graph" width="100" height="20"></canvas>
                 </div>
             </div>
 
             <div class="hud-input-group" id="input-group-name">
-                <input type="text" id="input-name" class="hud-input" autocomplete="off" spellcheck="false" placeholder="Enter star or DSO designation...">
+                <input type="text" id="input-name" class="hud-input" autocomplete="off" spellcheck="false" placeholder="Enter star or DSO name...">
             </div>
 
             <div class="hud-input-group" id="input-group-type" style="flex-direction: column;">
@@ -1079,8 +1077,8 @@
             <div class="hud-feedback" id="hud-feedback"></div>
 
             <div class="hud-controls">
-                <button class="btn-hud btn-end" id="btn-end" title="Abort Session"><i class="fa-solid fa-power-off"></i></button>
-                <button class="btn-hud btn-check" id="btn-check">Submit Observation</button>
+                <button class="btn-hud btn-end" id="btn-end" title="End Session"><i class="fa-solid fa-power-off"></i></button>
+                <button class="btn-hud btn-check" id="btn-check">Submit Answer</button>
             </div>
         </div>
     </div>
@@ -1102,7 +1100,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     
-    <!-- Safe Tab Switching Function (Works via click or programmatic call) -->
+    <!-- Safe Tab Switching Function -->
     <script>
         function switchTab(tabId, btnEl) {
             document.querySelectorAll('.tab-content').forEach(tab => {

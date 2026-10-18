@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Competitions Hub | Supernova Guide</title>
+    <title>Seasonal Competitions | Supernova Guide</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,7 +14,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- MathJax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
         :root {
@@ -48,7 +53,6 @@
         html { scroll-behavior: smooth; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulseDot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.25); } }
 
         body {
             background-color: var(--bg-base);
@@ -120,16 +124,15 @@
         .header-title p { color: var(--text-muted); font-size: 0.9rem; max-width: 650px; }
 
         .header-actions { display: flex; align-items: center; gap: 16px; }
-        .live-counter-pill {
-            background: var(--bg-card); border: 1px solid rgba(43, 227, 138, 0.35);
-            padding: 9px 16px; border-radius: 99px;
-            display: flex; align-items: center; gap: 10px;
-            font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-pure);
+        .utc-pill {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            padding: 8px 16px; border-radius: 99px;
+            display: inline-flex; align-items: center; gap: 10px;
+            font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-main);
         }
-        .pulse-dot {
+        .utc-dot {
             width: 8px; height: 8px; border-radius: 50%;
             background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green);
-            animation: pulseDot 1.8s infinite;
         }
 
         .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); text-decoration: none; }
@@ -137,7 +140,7 @@
         .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
         .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
 
-        /* --- FEATURED COMPETITION MEGA-CARD --- */
+        /* --- FEATURED COMPETITION CARD --- */
         .comp-mega-card {
             background: linear-gradient(160deg, rgba(21, 22, 26, 0.98) 0%, rgba(16, 17, 21, 0.98) 100%);
             border: 1px solid var(--border-light);
@@ -148,7 +151,6 @@
             flex-direction: column;
             gap: 32px;
             box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
-            position: relative;
         }
 
         .comp-top-bar {
@@ -171,7 +173,7 @@
             font-family: var(--font-display); font-size: 2.1rem; font-weight: 800;
             color: var(--text-pure); margin-bottom: 8px; line-height: 1.15;
         }
-        .comp-subtitle { color: var(--text-muted); font-size: 0.95rem; max-width: 680px; line-height: 1.6; }
+        .comp-subtitle { color: var(--text-muted); font-size: 0.95rem; max-width: 680px; line-height: 1.65; }
 
         .countdown-box {
             background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
@@ -197,7 +199,7 @@
             background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
             border-radius: var(--radius-md); padding: 22px;
             display: flex; flex-direction: column; gap: 10px;
-            position: relative; transition: border-color 0.2s;
+            transition: border-color 0.2s;
         }
         .phase-card:hover { border-color: var(--border-light); }
         .phase-num {
@@ -207,7 +209,7 @@
         .phase-card h3 {
             font-family: var(--font-display); font-size: 1.2rem; color: var(--text-pure);
         }
-        .phase-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; flex-grow: 1; }
+        .phase-card p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; flex-grow: 1; }
         .phase-meta {
             font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-main);
             padding-top: 10px; border-top: 1px solid var(--border-subtle);
@@ -296,19 +298,20 @@
         <div class="comet" style="top: 10%; left: 85%; animation: shooting 9s infinite linear 1s;"></div>
     </div>
 
-    <!-- UNIFIED SIDEBAR NAVIGATION (With External Library included) -->
+    <!-- UNIFIED SIDEBAR NAVIGATION (Redirects to dashboard.html, never index.html) -->
     <aside class="sidebar">
-        <a href="index.html" class="brand">
+        <a href="dashboard.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>
         </a>
         
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
-            <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="rotations.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
             <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
-            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
-            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
             <li><a href="competitions.html" class="nav-item active"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
         </ul>
 
@@ -333,13 +336,13 @@
         
         <header class="top-header">
             <div class="header-title">
-                <h1>Competitions &amp; Tournaments</h1>
-                <p>Register for official Supernova Guide astrophysics competitions, test your speed on timed mock exams, and qualify through multi-phase brackets.</p>
+                <h1>Seasonal Competitions</h1>
+                <p>Most astronomy competitions only happen once a year. We organize seasonal cups with varied formats so you can test yourself regularly.</p>
             </div>
             <div class="header-actions">
-                <div class="live-counter-pill">
-                    <span class="pulse-dot"></span>
-                    <span><strong id="participant-count">148</strong> Registered</span>
+                <div class="utc-pill">
+                    <span class="utc-dot"></span>
+                    <span id="live-utc-clock">UTC: Loading...</span>
                 </div>
                 <a href="profile.html" class="user-profile">
                     <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF" alt="User" class="avatar">
@@ -356,20 +359,20 @@
             <div class="comp-top-bar">
                 <div>
                     <div class="comp-badges">
-                        <span class="c-badge badge-green"><i class="fa-solid fa-bolt"></i> Official Season Event #01</span>
+                        <span class="c-badge badge-green"><i class="fa-solid fa-bolt"></i> Autumn 2026 Season</span>
                         <span class="c-badge badge-purple">3-Phase MCQ Format</span>
-                        <span class="c-badge badge-gold">Global Leaderboard &amp; Certificates</span>
+                        <span class="c-badge badge-gold">Written by Matei, Albert &amp; Mihai</span>
                     </div>
-                    <h2 class="comp-title">Supernova Astrophysics Cup — Autumn 2026</h2>
+                    <h2 class="comp-title">Supernova Autumn Cup 2026</h2>
                     <p class="comp-subtitle">
-                        A fast-paced, three-stage Multiple Choice Question (MCQ) championship testing physical intuition, order-of-magnitude estimation, celestial mechanics, and data interpretation under strict time pressure.
+                        Our first seasonal competition: a three-phase Multiple Choice Question (MCQ) event covering positional astronomy, orbital mechanics, stellar astrophysics, and observational data analysis.
                     </p>
                 </div>
 
                 <div class="countdown-box">
                     <span class="countdown-label" id="countdown-phase-label">Registration Opens In</span>
                     <div class="countdown-digits" id="countdown-timer">--d : --h : --m : --s</div>
-                    <div class="countdown-dates">Window: 19 Oct 2026 – 01 Nov 2026</div>
+                    <div class="countdown-dates">Window: 19 Oct 2026 – 01 Nov 2026 (UT)</div>
                 </div>
             </div>
 
@@ -378,7 +381,7 @@
                 <div class="phase-card">
                     <span class="phase-num">Phase 01 · Open Qualifier</span>
                     <h3>Foundational &amp; Speed Round</h3>
-                    <p>Open to all registered candidates. High-tempo conceptual and quantitative MCQs across spherical astronomy, Keplerian orbits, and radiation laws.</p>
+                    <p>Open to everyone who registers between 19 October and 1 November. Covers spherical coordinates, Keplerian orbits, radiation laws, and telescope optics.</p>
                     <div class="phase-meta">
                         <span>Format: 30 MCQs</span>
                         <span>Cutoff: Top 50% Advance</span>
@@ -386,22 +389,22 @@
                 </div>
 
                 <div class="phase-card">
-                    <span class="phase-num" style="color: var(--accent-purple);">Phase 02 · Semifinal Elimination</span>
-                    <h3>Analytical &amp; Multi-Step Round</h3>
-                    <p>Intermediate-to-advanced theoretical traps, binary mass functions, stellar structure scaling relations, and negative-marking precision penalties.</p>
+                    <span class="phase-num" style="color: var(--accent-purple);">Phase 02 · Semifinal</span>
+                    <h3>Multi-Step Analytical Round</h3>
+                    <p>Longer calculations involving eccentric binaries, interstellar extinction, stellar structure scaling relations, and observational coordinates.</p>
                     <div class="phase-meta">
                         <span>Format: 20 MCQs</span>
-                        <span>Cutoff: Top 32 Finalists</span>
+                        <span>Cutoff: Top 32 Advance</span>
                     </div>
                 </div>
 
                 <div class="phase-card">
-                    <span class="phase-num" style="color: var(--accent-gold);">Phase 03 · Grand Final</span>
-                    <h3>Championship Sprint</h3>
-                    <p>Olympiad-level synthesis problems, light-curve/spectral graph reading MCQs, and relativistic astrophysics under live tie-breaker timing.</p>
+                    <span class="phase-num" style="color: var(--accent-gold);">Phase 03 · Final Round</span>
+                    <h3>Olympiad Synthesis Round</h3>
+                    <p>Hard multi-concept problems, light-curve and spectral plot reading, and perturbation mechanics to decide the Autumn Cup standings.</p>
                     <div class="phase-meta">
                         <span>Format: 15 Hard MCQs</span>
-                        <span>Medals: Gold / Silver / Bronze</span>
+                        <span>Awards: Gold / Silver / Bronze</span>
                     </div>
                 </div>
             </div>
@@ -409,26 +412,26 @@
             <!-- RULES & MOCK EXAM SPLIT -->
             <div class="comp-details-grid">
                 <div class="rules-panel">
-                    <div class="panel-heading"><i class="fa-solid fa-scale-balanced" style="color: var(--accent-green);"></i> Competition Rules &amp; Specifications</div>
+                    <div class="panel-heading"><i class="fa-solid fa-scale-balanced" style="color: var(--accent-green);"></i> Format &amp; Rules</div>
                     <ul class="rules-list">
-                        <li><i class="fa-solid fa-check"></i> <div><strong>Registration Window:</strong> Entries open on <strong>19 October 2026 (00:00 UTC)</strong> and close strictly on <strong>1 November 2026 (23:59 UTC)</strong>.</div></li>
-                        <li><i class="fa-solid fa-check"></i> <div><strong>Scoring System:</strong> Correct answers award $+4\text{ pts}$; blank responses award $0\text{ pts}$; incorrect choices incur a $-1\text{ pt}$ guessing penalty in Phases 2 and 3.</div></li>
-                        <li><i class="fa-solid fa-check"></i> <div><strong>Permitted Materials:</strong> Standard scientific calculator (e.g., Canon F-715SG / Casio fx-991) and the official Supernova IAU Constants Sheet.</div></li>
-                        <li><i class="fa-solid fa-check"></i> <div><strong>Anti-Cheat Telemetry:</strong> Full-screen browser enforcement and randomized question/parameter seeds per candidate.</div></li>
+                        <li><i class="fa-solid fa-check"></i> <div><strong>Registration Window:</strong> Registration opens on <strong>19 October 2026 (00:00 UT)</strong> and closes on <strong>1 November 2026 (23:59 UT)</strong>.</div></li>
+                        <li><i class="fa-solid fa-check"></i> <div><strong>Scoring:</strong> Correct answers award \(+4\text{ pts}\), blank answers award \(0\text{ pts}\), and wrong answers deduct \(-1\text{ pt}\) in Phases 2 and 3.</div></li>
+                        <li><i class="fa-solid fa-check"></i> <div><strong>Allowed Tools:</strong> Scientific calculator and our Formula &amp; Constants sheet (`tools.html`).</div></li>
+                        <li><i class="fa-solid fa-check"></i> <div><strong>Post-Round Solutions:</strong> Full step-by-step LaTeX derivations and discussions are published in the Community Hub and Discord after each phase.</div></li>
                     </ul>
                 </div>
 
                 <div class="mock-panel">
-                    <div class="panel-heading"><i class="fa-solid fa-vial" style="color: var(--accent-blue);"></i> Warm-Up Mock MCQ Exam</div>
+                    <div class="panel-heading"><i class="fa-solid fa-vial" style="color: var(--accent-blue);"></i> 3-Question Warm-Up Mock</div>
                     <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 18px;">
-                        Familiarize yourself with the MCQ testing interface before Phase 1 begins. Launch our 3-question diagnostic mini-mock covering Celestial Mechanics, Extinction, and Black Hole Accretion.
+                        Try a quick 3-question warm-up set to test the MCQ interface before Phase 1 starts—covering dust extinction, Hohmann transfers, and galactic rotation curves.
                     </p>
                     <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 18px; font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-main);">
-                        <div>• Sample Size: 3 Calibrated Olympiad MCQs</div>
-                        <div>• Instant Solution Feedback</div>
+                        <div>• 3 Practice Olympiad MCQs</div>
+                        <div>• Instant LaTeX Solution Breakdown</div>
                     </div>
                     <button class="btn-comp btn-mock" style="width: 100%; justify-content: center;" id="open-mock-btn">
-                        <i class="fa-solid fa-play"></i> Launch Sample Mock Exam
+                        <i class="fa-solid fa-play"></i> Open 3-Question Warm-Up
                     </button>
                 </div>
             </div>
@@ -436,7 +439,7 @@
             <!-- FOOTER CTA -->
             <div class="comp-footer">
                 <div class="reg-status-info" id="candidate-ticket-display">
-                    Status: <strong>Pre-Registration Open</strong> · Reserve your candidate bib now for 19 October.
+                    Status: <strong>Registration Window: 19 Oct – 1 Nov 2026</strong> · Click to generate your candidate ID.
                 </div>
                 <div class="btn-group">
                     <button class="btn-comp btn-register" id="register-comp-btn">
@@ -452,12 +455,12 @@
     <div class="modal-overlay" id="mock-modal">
         <div class="mock-modal-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; border-bottom:1px solid var(--border-subtle); padding-bottom:12px;">
-                <span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--accent-blue); font-weight:700;">MOCK INTERFACE PREVIEW · QUESTION <span id="mock-q-idx">1</span>/3</span>
+                <span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--accent-blue); font-weight:700;">WARM-UP MOCK · QUESTION <span id="mock-q-idx">1</span>/3</span>
                 <button id="close-mock-btn" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div id="mock-q-text" style="font-size:1rem; color:var(--text-pure); line-height:1.6; margin-bottom:16px;"></div>
+            <div id="mock-q-text" style="font-size:1rem; color:var(--text-pure); line-height:1.65; margin-bottom:16px;"></div>
             <div id="mock-options-box"></div>
-            <div id="mock-explanation" style="display:none; margin-top:16px; padding:14px; background:var(--bg-sidebar); border-left:3px solid var(--accent-blue); border-radius:6px; font-size:0.85rem; color:var(--text-muted); line-height:1.6;"></div>
+            <div id="mock-explanation" style="display:none; margin-top:16px; padding:14px; background:var(--bg-sidebar); border-left:3px solid var(--accent-blue); border-radius:6px; font-size:0.88rem; color:var(--text-main); line-height:1.65;"></div>
             <div style="display:flex; justify-content:space-between; margin-top:22px;">
                 <button class="btn-comp btn-mock" id="mock-prev-btn" style="padding:8px 16px; font-size:0.8rem;">Previous</button>
                 <button class="btn-comp btn-mock" id="mock-next-btn" style="padding:8px 16px; font-size:0.8rem;">Next Question</button>
@@ -472,6 +475,10 @@
 
         function updateCountdown() {
             const now = Date.now();
+            const utcStr = new Date(now).toISOString().replace('T', ' ').substring(0, 19) + ' UT';
+            const clockEl = document.getElementById('live-utc-clock');
+            if (clockEl) clockEl.textContent = utcStr;
+
             const labelEl = document.getElementById('countdown-phase-label');
             const timerEl = document.getElementById('countdown-timer');
 
@@ -501,16 +508,14 @@
 
         const REG_KEY = 'supernova_comp_autumn2026_bib';
         const regBtn = document.getElementById('register-comp-btn');
-        const countEl = document.getElementById('participant-count');
         const ticketEl = document.getElementById('candidate-ticket-display');
 
         function syncRegistrationUI() {
             const savedBib = localStorage.getItem(REG_KEY);
             if (savedBib) {
-                countEl.textContent = '149';
                 regBtn.classList.add('registered');
                 regBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Registered (${savedBib})`;
-                ticketEl.innerHTML = `Candidate Bib Assigned: <strong>${savedBib}</strong> · You are enrolled for Phase 1.`;
+                ticketEl.innerHTML = `Candidate ID Assigned: <strong>${savedBib}</strong> · Enrolled for Phase 1.`;
             }
         }
 
@@ -524,22 +529,22 @@
 
         const MOCK_QUESTIONS = [
             {
-                q: "1. A star has an apparent V-band magnitude m_V = 11.0 and absolute magnitude M_V = +1.0. If interstellar dust along the line of sight introduces an extinction of A_V = 2.0 mag, what is the true distance d to the star?",
-                opts: ["A) 400 pc", "B) 630 pc", "C) 1000 pc", "D) 2510 pc"],
+                q: "1. A star has an apparent V-band magnitude \\(m_V = 11.0\\) and absolute magnitude \\(M_V = +1.0\\). If interstellar dust along the line of sight introduces an extinction of \\(A_V = 2.0\\text{ mag}\\), what is the true distance \\(d\\) to the star?",
+                opts: ["(a) \\(400\\text{ pc}\\)", "(b) \\(630\\text{ pc}\\)", "(c) \\(1000\\text{ pc}\\)", "(d) \\(2510\\text{ pc}\\)"],
                 correct: 0,
-                exp: "Using m_V - M_V = 5 log10(d / 10 pc) + A_V => 11.0 - 1.0 - 2.0 = 8.0 = 5 log10(d/10). Thus d = 10 * 10^(8/5) = 398.1 pc ≈ 400 pc."
+                exp: "From the extinction-corrected distance modulus \\(m_V - M_V - A_V = 5\\log_{10}(d / 10\\text{ pc})\\), we have \\(11.0 - 1.0 - 2.0 = 8.0 = 5\\log_{10}(d/10)\\). Thus \\(d = 10 \\times 10^{8/5} \\approx 398.1\\text{ pc} \\approx 400\\text{ pc}\\)."
             },
             {
-                q: "2. A satellite in a circular low-Earth orbit of radius r_1 is transferred to a coplanar circular orbit of radius r_2 = 4 r_1 via a Hohmann transfer ellipse. What is the ratio of the semi-major axis of the transfer orbit to r_1?",
-                opts: ["A) 2.0", "B) 2.5", "C) 3.0", "D) 4.0"],
+                q: "2. A satellite in a circular low-Earth orbit of radius \\(r_1\\) is transferred to a coplanar circular orbit of radius \\(r_2 = 4r_1\\) via a Hohmann transfer ellipse. What is the ratio of the semi-major axis of the transfer orbit to \\(r_1\\)?",
+                opts: ["(a) \\(2.0\\)", "(b) \\(2.5\\)", "(c) \\(3.0\\)", "(d) \\(4.0\\)"],
                 correct: 1,
-                exp: "The semi-major axis of a Hohmann transfer ellipse connecting circular orbits r_1 and r_2 is a_trans = (r_1 + r_2) / 2 = (1 + 4)/2 r_1 = 2.5 r_1."
+                exp: "The semi-major axis of a Hohmann transfer ellipse connecting circular orbits \\(r_1\\) and \\(r_2\\) is \\(a_{\\text{trans}} = \\frac{r_1 + r_2}{2} = \\frac{1 + 4}{2}r_1 = 2.5\\,r_1\\)."
             },
             {
-                q: "3. For a spherically symmetric galaxy exhibiting a strictly flat rotation curve V(r) = V_0 = const, how does the total enclosed mass M(r) scale with galactocentric radius r?",
-                opts: ["A) M(r) ∝ r^(-1/2)", "B) M(r) = const", "C) M(r) ∝ r", "D) M(r) ∝ r^2"],
+                q: "3. For a spherically symmetric galaxy exhibiting a flat rotation curve \\(V(r) = V_0 = \\text{const}\\), how does the total enclosed mass \\(M(r)\\) scale with galactocentric radius \\(r\\)?",
+                opts: ["(a) \\(M(r) \\propto r^{-1/2}\\)", "(b) \\(M(r) = \\text{const}\\)", "(c) \\(M(r) \\propto r\\)", "(d) \\(M(r) \\propto r^2\\)"],
                 correct: 2,
-                exp: "Equating centripetal and gravitational acceleration: V_0^2 / r = G M(r) / r^2 => M(r) = (V_0^2 / G) r ∝ r."
+                exp: "Equating centripetal and gravitational acceleration gives \\(\\frac{V_0^2}{r} = \\frac{G M(r)}{r^2} \\implies M(r) = \\frac{V_0^2}{G}r \\propto r\\)."
             }
         ];
 
@@ -553,11 +558,14 @@
         function renderMockQ() {
             const item = MOCK_QUESTIONS[curMock];
             qIdxEl.textContent = curMock + 1;
-            qTextEl.textContent = item.q;
+            qTextEl.innerHTML = item.q;
             expBox.style.display = 'none';
             optsBox.innerHTML = item.opts.map((opt, i) => `
                 <div class="mock-option" onclick="checkMockOpt(this, ${i})">${opt}</div>
             `).join('');
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([mockModal]).catch(() => {});
+            }
         }
 
         window.checkMockOpt = function(el, idx) {
@@ -568,8 +576,11 @@
                 if (i === item.correct) node.classList.add('correct');
                 else if (i === idx) node.classList.add('wrong');
             });
-            expBox.textContent = item.exp;
+            expBox.innerHTML = item.exp;
             expBox.style.display = 'block';
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([expBox]).catch(() => {});
+            }
         };
 
         document.getElementById('open-mock-btn').addEventListener('click', () => {

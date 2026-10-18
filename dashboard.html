@@ -161,8 +161,17 @@
             font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
             text-transform: uppercase; letter-spacing: 0.06em;
         }
-        .feature-banner h3 { font-family: var(--font-display); font-size: 1.3rem; color: var(--text-pure); margin-bottom: 6px; }
+        .feature-banner h3 { font-family: var(--font-display); font-size: 1.25rem; color: var(--text-pure); margin-bottom: 6px; }
         .feature-banner p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.55; }
+
+        .rotation-mini-list {
+            display: flex; flex-direction: column; gap: 8px; margin-top: 10px;
+        }
+        .rotation-mini-item {
+            font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle);
+            padding: 7px 10px; border-radius: 6px; display: flex; justify-content: space-between; gap: 8px;
+        }
 
         .btn-action {
             background: var(--bg-card); color: var(--text-pure); border: 1px solid var(--border-light);
@@ -269,8 +278,8 @@
     <main class="dashboard-main">
         <header class="top-header">
             <div class="header-title">
-                <h1>Candidate Dashboard</h1>
-                <p>Your active progress across the problem archive, POTD/POTW/POTM rotations, and seasonal events.</p>
+                <h1>Dashboard</h1>
+                <p>Your solved problem progress, daily/weekly/monthly rotations, and upcoming live courses.</p>
             </div>
             <div class="header-actions">
                 <div class="utc-pill">
@@ -328,29 +337,35 @@
                 <div class="kpi-trend trend-blue"><a href="rotations.html" style="color: var(--accent-blue); text-decoration: none;">Open POTD · POTW · POTM &rarr;</a></div>
             </div>
 
-            <!-- Dual Feature Hub: Rotations + 3D Planetarium -->
+            <!-- Dual Feature Hub: Rotations + Live Supernova Courses -->
             <div class="card col-8" style="justify-content: space-between;">
                 <div class="card-header" style="margin-bottom: 14px;">
-                    <h3 class="card-title">Active Training Arenas</h3>
-                    <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-blue);">[ LIVE MODULES ]</span>
+                    <h3 class="card-title">Problem Rotations &amp; Live Courses</h3>
+                    <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-blue);">19 OCT – NOV 2026</span>
                 </div>
                 <div class="feature-split">
                     <div class="feature-banner">
                         <div>
-                            <span class="feature-tag" style="color: var(--accent-blue);">[ 1D · 1W · 4W CYCLES ]</span>
+                            <span class="feature-tag" style="color: var(--accent-blue);">1D · 1W · 4W CYCLES</span>
                             <h3 style="margin-top: 6px;">POTD, POTW &amp; POTM</h3>
-                            <p id="dash-potd-summary">Work through the daily, weekly, and monthly problem rotations written by Albert, Mihai, and Matei.</p>
+                            <p>Automated daily, weekly, and monthly problems written by Albert, Mihai, and Matei starting 19.10.2026 at 00:00 UT.</p>
+                            <div class="rotation-mini-list" id="dash-rotation-preview"></div>
                         </div>
                         <a href="rotations.html" class="btn-action">Open Rotations <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
 
                     <div class="feature-banner">
                         <div>
-                            <span class="feature-tag" style="color: var(--accent-rose);">[ OBSERVATIONAL LAB ]</span>
-                            <h3 style="margin-top: 6px;">3D Sky Planetarium</h3>
-                            <p>Practice coordinate grids, star-hopping, constellation boundaries, and deep-sky object identification in real time.</p>
+                            <span class="feature-tag" style="color: var(--accent-gold);">18:00 UT · LIVE LECTURES</span>
+                            <h3 style="margin-top: 6px;">Supernova Courses</h3>
+                            <p>Three live sessions taught directly by our team after the Autumn Cup registration window:</p>
+                            <div class="rotation-mini-list">
+                                <div class="rotation-mini-item"><span>04 Nov · 18:00 UT</span><strong style="color:var(--accent-gold);">Matei (Owner)</strong></div>
+                                <div class="rotation-mini-item"><span>07 Nov · 18:00 UT</span><strong style="color:var(--accent-purple);">Albert (Admin)</strong></div>
+                                <div class="rotation-mini-item"><span>08 Nov · 18:00 UT</span><strong style="color:var(--accent-purple);">Mihai (Admin)</strong></div>
+                            </div>
                         </div>
-                        <a href="planetariu.html" class="btn-action">Launch Planetarium <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="courses.html" class="btn-action">View Course Schedule <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -359,7 +374,7 @@
             <div class="card col-4">
                 <div class="card-header">
                     <h3 class="card-title">Track Coverage</h3>
-                    <a href="analytics.html" style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-blue); text-decoration: none;">Full Telemetry &rarr;</a>
+                    <a href="analytics.html" style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-blue); text-decoration: none;">Full Analytics &rarr;</a>
                 </div>
                 <div class="progress-list">
                     <div class="progress-item">
@@ -384,7 +399,7 @@
             <!-- Recommended Unsolved Problems (Pulled from Real Problem Bank) -->
             <div class="card col-8">
                 <div class="card-header">
-                    <h3 class="card-title">Recommended Unsolved Problems</h3>
+                    <h3 class="card-title">Next Unsolved Problems in Archive</h3>
                     <a href="problems.html" class="btn-sm"><i class="fa-solid fa-layer-group"></i> All 16 Modules</a>
                 </div>
                 <div class="task-list" id="recommended-tasks-container"></div>
@@ -394,7 +409,7 @@
             <div class="card col-4">
                 <div class="card-header">
                     <h3 class="card-title">Archive Completion</h3>
-                    <a href="profile.html" style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); text-decoration: none;">History &rarr;</a>
+                    <a href="profile.html" style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); text-decoration: none;">Profile &amp; Rank &rarr;</a>
                 </div>
                 <div class="donut-container">
                     <div class="donut-chart" id="donut-graphic">
@@ -421,7 +436,7 @@
         import { usaaao_2024 } from './js/data/usaaao_2024.js';
         import { usaaao_2023 } from './js/data/usaaao_2023.js';
         import { usaaao_2022 } from './js/data/usaaao_2022.js';
-        import { EPOCH_UTC, CYCLE_MS } from './js/data/rotations_data.js';
+        import { EPOCH_UTC, CYCLE_MS, potdProblems, potwProblems, potmProblems } from './js/data/rotations_data.js';
 
         const MODULE_TO_FILE = {
             'T1': 'practice/positional_celestial_mechanics.html',
@@ -450,7 +465,6 @@
             ...usaaao_2022
         ];
 
-        // Redirect unauthenticated visitors to index.html (landing page)
         onAuthStateChanged(auth, (user) => {
             if (!user) {
                 window.location.replace('index.html');
@@ -471,13 +485,32 @@
                    solvedArr.includes(id.replace('_', '-'));
         }
 
+        function renderRotationPreview() {
+            const now = Date.now();
+            const dIdx = now < EPOCH_UTC ? 0 : Math.min(potdProblems.length - 1, Math.floor((now - EPOCH_UTC) / CYCLE_MS.potd));
+            const wIdx = now < EPOCH_UTC ? 0 : Math.min(potwProblems.length - 1, Math.floor((now - EPOCH_UTC) / CYCLE_MS.potw));
+            const mIdx = now < EPOCH_UTC ? 0 : Math.min(potmProblems.length - 1, Math.floor((now - EPOCH_UTC) / CYCLE_MS.potm));
+
+            const curD = potdProblems[dIdx];
+            const curW = potwProblems[wIdx];
+            const curM = potmProblems[mIdx];
+
+            const previewBox = document.getElementById('dash-rotation-preview');
+            if (previewBox && curD && curW && curM) {
+                previewBox.innerHTML = `
+                    <div class="rotation-mini-item"><span>POTD: ${curD.title}</span><strong style="color:var(--accent-blue);">${curD.author}</strong></div>
+                    <div class="rotation-mini-item"><span>POTW: ${curW.title}</span><strong style="color:var(--accent-purple);">${curW.author}</strong></div>
+                    <div class="rotation-mini-item"><span>POTM: ${curM.title}</span><strong style="color:var(--accent-gold);">${curM.author}</strong></div>
+                `;
+            }
+        }
+
         function hydrateDashboard() {
             let solvedArr = [];
             try {
                 solvedArr = JSON.parse(localStorage.getItem('solvedProblems') || '[]');
             } catch (e) {}
 
-            // Count total solved across archive + local solved_* keys
             const solvedSet = new Set(solvedArr);
             allProblems.forEach(p => {
                 if (localStorage.getItem(`solved_${p.uniqueId}`) === 'true') {
@@ -486,10 +519,9 @@
             });
 
             const totalBank = allProblems.length;
-            const totalSolved = solvedSet.size;
+            const totalSolved = allProblems.filter(p => solvedSet.has(p.uniqueId) || solvedSet.has(p.uniqueId.replace('_', '-'))).length;
             const pct = totalBank > 0 ? Math.round((totalSolved / totalBank) * 100) : 0;
 
-            // 1. Update Rank & Solved KPIs
             const rankName = getRankForCount(totalSolved);
             const nextRankObj = RANKS.find(r => r.req > totalSolved) || RANKS[RANKS.length - 1];
             document.getElementById('dash-rank-display').textContent = rankName;
@@ -500,7 +532,6 @@
             document.getElementById('problems-solved-display').textContent = totalSolved;
             document.getElementById('dash-total-bank-label').innerHTML = `<i class="fa-solid fa-database"></i> Out of ${totalBank} indexed problems`;
 
-            // 2. Compute Active Streak from user progress
             const uid = localStorage.getItem('supernova_last_uid');
             let streak = 0;
             if (uid) {
@@ -527,13 +558,11 @@
             }
             document.getElementById('streak-display').textContent = streak;
 
-            // 3. Update Donut Chart
             document.getElementById('donut-percentage').textContent = `${pct}%`;
             document.getElementById('donut-solved').textContent = totalSolved;
             document.getElementById('donut-pending').textContent = Math.max(0, totalBank - totalSolved);
             document.getElementById('donut-graphic').style.background = `conic-gradient(var(--accent-green) 0% ${pct}%, var(--bg-sidebar) ${pct}% 100%)`;
 
-            // 4. Update Track Coverage Bars
             const groups = {
                 mech: allProblems.filter(p => (p.module || 'T1') === 'T1'),
                 astro: allProblems.filter(p => ['T2','T3','T4','T5','T6','T7','T8','T9'].includes(p.module)),
@@ -552,7 +581,6 @@
             setBar('cosmo', groups.cosmo);
             setBar('obs', groups.obs);
 
-            // 5. Populate Recommended Unsolved Problems (Top 3 Unsolved)
             const unsolved = allProblems.filter(p => !isSolved(p.uniqueId, solvedArr)).slice(0, 3);
             const recContainer = document.getElementById('recommended-tasks-container');
             recContainer.innerHTML = unsolved.map(p => {
@@ -572,6 +600,8 @@
                     </div>
                 `;
             }).join('');
+
+            renderRotationPreview();
         }
 
         function updateClocks() {

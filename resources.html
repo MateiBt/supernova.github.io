@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>External Library & Catalogs | Supernova Guide</title>
+    <title>External Library &amp; Catalogs | Supernova Guide</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -41,13 +41,32 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
         body {
             background-color: var(--bg-base); color: var(--text-main);
             font-family: var(--font-body); display: flex; height: 100vh;
             overflow: hidden; -webkit-font-smoothing: antialiased;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* --- SIDEBAR --- */
+        .sky-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; pointer-events: none; overflow: hidden; background-color: var(--bg-base);
+        }
+        .comet {
+            position: absolute; width: 160px; height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent-blue));
+            border-radius: 50%; opacity: 0;
+        }
+        .comet::before {
+            content: ''; position: absolute; top: -2px; right: 0; width: 6px; height: 6px;
+            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px rgba(53, 230, 255, 0.6);
+        }
+        @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
+
+        /* --- UNIFIED SIDEBAR --- */
         .sidebar {
             width: 260px; background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border-subtle);
@@ -85,7 +104,7 @@
         .header-title h1 { font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--text-pure); margin-bottom: 4px; }
         .header-title p { color: var(--text-muted); font-size: 0.9rem; }
 
-        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); }
+        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); text-decoration: none; }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border-light); object-fit: cover; }
         .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
         .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
@@ -136,19 +155,24 @@
 </head>
 <body>
 
-    <!-- UNIFIED SIDEBAR -->
+    <div class="sky-background">
+        <div class="comet" style="top: 10%; left: 88%; animation: shooting 9s infinite linear 1.5s;"></div>
+    </div>
+
+    <!-- UNIFIED SIDEBAR (Links to dashboard.html, never index.html) -->
     <aside class="sidebar">
-        <a href="index.html" class="brand">
+        <a href="dashboard.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>
         </a>
         
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
-            <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="rotations.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
             <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
-            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
-            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
             <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
         </ul>
 
@@ -172,69 +196,78 @@
     <main class="dashboard-main">
         <header class="top-header">
             <div class="header-title">
-                <h1>External Library &amp; Astronomical Databases</h1>
-                <p>Standard reference textbooks, astronomical catalogs, andlecture decks for IOAA preparation.</p>
+                <h1>External Library &amp; Databases</h1>
+                <p>The books, catalogs, astrophotography planners, and slide decks we actually use when studying and preparing problems.</p>
             </div>
-            <div class="user-profile">
+            <a href="profile.html" class="user-profile">
                 <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF" alt="User" class="avatar">
                 <div class="user-info">
                     <h4 id="user-name-display">Loading...</h4>
                     <p id="user-role-display">Authenticating</p>
                 </div>
-            </div>
+            </a>
         </header>
 
+        <!-- SECTION 1: TEXTBOOKS -->
         <section class="catalog-section">
             <div class="catalog-sidebar">
-                <i class="fa-solid fa-book-journal-whills"></i>
-                <h2>Textbooks &amp; Literature</h2>
-                <p>Core academic textbooks and problem compilations required for IOAA theoretical mastery.</p>
+                <i class="fa-solid fa-book-bookmark"></i>
+                <h2>Core Textbooks</h2>
+                <p>The standard books for Olympiad theory, spherical trigonometry, and astrophysics derivations.</p>
             </div>
             <div class="catalog-content">
                 <div class="resource-row">
                     <div class="resource-info">
                         <h3>An Introduction to Modern Astrophysics</h3>
                         <span class="author">Bradley W. Carroll &amp; Dale A. Ostlie</span>
-                        <p>The "Big Orange Book" (BOB). The definitive reference textbook for stellar structure, spectra, galaxies, and cosmology.</p>
+                        <p>The "Big Orange Book" (BOB). The go-to reference for binary star systems, stellar atmospheres and interiors, galactic dynamics, and cosmology.</p>
                     </div>
                 </div>
                 <div class="resource-row">
                     <div class="resource-info">
                         <h3>Fundamental Astronomy</h3>
                         <span class="author">Hannu Karttunen et al.</span>
-                        <p>Essential coverage of spherical trigonometry, coordinate transformations, time systems, and celestial mechanics.</p>
+                        <p>Best concise reference for spherical trigonometry, coordinate transformations, magnitudes, radiation physics, and celestial mechanics.</p>
+                    </div>
+                </div>
+                <div class="resource-row">
+                    <div class="resource-info">
+                        <h3>Astronomy: Principles and Practice</h3>
+                        <span class="author">A. E. Roy &amp; D. Clarke</span>
+                        <p>Essential for positional astronomy, timekeeping (sidereal/solar time, equation of time), atmospheric refraction, and telescope optics.</p>
                     </div>
                 </div>
                 <div class="resource-row">
                     <div class="resource-info">
                         <h3>A Problem Book in Astronomy &amp; Astrophysics</h3>
                         <span class="author">Aniket Sule</span>
-                        <p>Official compilation of past International Olympiad on Astronomy and Astrophysics (IOAA) problems and solutions.</p>
+                        <p>Compilation of past International Olympiad on Astronomy and Astrophysics (IOAA) Theory, Data Analysis, and Observational problems.</p>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- SECTION 2: DATABASES, PLANETARIUM & ASTROPHOTOGRAPHY -->
         <section class="catalog-section">
             <div class="catalog-sidebar">
                 <i class="fa-solid fa-database"></i>
-                <h2>Databases &amp; Software</h2>
-                <p>Professional astronomical archives and sky simulation software for Data Analysis and Observation.</p>
+                <h2>Catalogs &amp; Imaging Tools</h2>
+                <p>Astronomical archives, sky simulation software, and astrophotography target planners.</p>
             </div>
             <div class="catalog-content">
                 <div class="resource-row">
                     <div class="resource-info">
                         <h3>SIMBAD Astronomical Database</h3>
                         <span class="author">CDS, Strasbourg</span>
-                        <p>Reference database for cross-identifications, astrometry, and photometric measurements of celestial objects.</p>
+                        <p>Look up coordinates, spectral types, proper motions, redshifts, and photometry for stars, clusters, and galaxies.</p>
                     </div>
-                    <a href="https://simbad.cds.unistra.fr/simbad/" target="_blank" rel="noopener" class="action-btn">Open Archive <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    <a href="https://simbad.cds.unistra.fr/simbad/" target="_blank" rel="noopener" class="action-btn">Open SIMBAD <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                 </div>
                 <div class="resource-row">
                     <div class="resource-info">
                         <h3>NASA Exoplanet Archive</h3>
                         <span class="author">Caltech / NASA</span>
-                        <p>Public astronomical exoplanet catalog and time-series service for transit light curves and radial velocities.</p>
+                        <p>Real transit light curves, radial velocity datasets, and planetary system parameters used in data analysis problems.</p>
                     </div>
                     <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener" class="action-btn">Open Archive <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                 </div>
@@ -242,28 +275,37 @@
                     <div class="resource-info">
                         <h3>Stellarium</h3>
                         <span class="author">Open Source Planetarium</span>
-                        <p>Desktop planetarium software used in official IOAA observational and planetarium rounds.</p>
+                        <p>Desktop planetarium software used in observational rounds and for planning night-sky sessions.</p>
                     </div>
                     <a href="https://stellarium.org/" target="_blank" rel="noopener" class="action-btn">Download <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                </div>
+                <div class="resource-row">
+                    <div class="resource-info">
+                        <h3>Telescopius &amp; AstroBin</h3>
+                        <span class="author">Astrophotography Planning &amp; Plate Scale</span>
+                        <p>Frame deep-sky targets with your exact telescope focal length and camera sensor pixel size, check altitude curves, and browse community captures.</p>
+                    </div>
+                    <a href="https://telescopius.com/" target="_blank" rel="noopener" class="action-btn">Open Telescopius <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                 </div>
             </div>
         </section>
 
+        <!-- SECTION 3: SUPERNOVA PRESENTATIONS -->
         <section class="catalog-section">
             <div class="catalog-sidebar">
                 <i class="fa-solid fa-chalkboard-user"></i>
-                <h2>Supernova Presentations</h2>
-                <p>Original lecture slides and presentations authored for community training.</p>
+                <h2>Supernova Slides</h2>
+                <p>Original lecture presentations created by our team for community training.</p>
             </div>
             <div class="catalog-content">
                 <div class="resource-row">
                     <div class="resource-info">
                         <h3>The Milky Way Galaxy</h3>
-                        <span class="author">Matei Butnaru</span>
-                        <p>Comprehensive lecture covering star counting, galactic morphology, Oort kinematics, rotation curves, and Sgr A*.</p>
+                        <span class="author">Matei Butnaru (Owner)</span>
+                        <p>Presentation covering star counts, interstellar extinction, Galactic morphology, Oort constants, differential rotation curves, and Sgr A*.</p>
                     </div>
                     <a href="https://docs.google.com/presentation/d/1mfhvZIdFAWgnM3DNMrjuIKPTvMjPXQ2l/edit?usp=sharing&ouid=100339198335506729107&rtpof=true&sd=true" target="_blank" rel="noopener" class="action-btn download">
-                        <i class="fa-solid fa-download"></i> Open Presentation
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Presentation
                     </a>
                 </div>
             </div>

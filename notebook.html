@@ -14,6 +14,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
+        };
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
 
     <style>
@@ -140,14 +145,16 @@
         .input-field:focus { border-color: var(--accent-rose); }
 
         .filter-bar {
-            display: flex; gap: 8px; flex-wrap: wrap;
+            display: flex; gap: 10px; flex-wrap: wrap;
             border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px;
         }
         .filter-pill {
             background: var(--bg-card); color: var(--text-muted);
             border: 1px solid var(--border-subtle); padding: 7px 15px;
             border-radius: 99px; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+            transition: all 0.2s;
         }
+        .filter-pill:hover { color: var(--text-pure); border-color: var(--border-light); }
         .filter-pill.active { background: var(--accent-rose); color: var(--bg-base); border-color: var(--accent-rose); }
 
         .mistakes-list { display: flex; flex-direction: column; gap: 18px; }
@@ -179,7 +186,7 @@
             padding: 14px 18px; border-radius: 6px; font-size: 0.9rem; color: var(--text-main); line-height: 1.65;
         }
 
-        .m-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }
+        .m-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; flex-wrap: wrap; }
         .btn-small {
             background: var(--bg-sidebar); color: var(--text-pure);
             border: 1px solid var(--border-light); padding: 7px 14px;
@@ -198,19 +205,20 @@
         <div class="comet" style="top: 10%; left: 88%; animation: shooting 9s infinite linear 1s;"></div>
     </div>
 
-    <!-- UNIFIED SIDEBAR (With External Library included) -->
+    <!-- UNIFIED SIDEBAR (Links to dashboard.html, never index.html) -->
     <aside class="sidebar">
-        <a href="index.html" class="brand">
+        <a href="dashboard.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>
         </a>
         
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
-            <li><a href="index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="rotations.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
             <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
-            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
-            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
             <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
         </ul>
 
@@ -235,12 +243,12 @@
         
         <header class="top-header">
             <div class="header-title">
-                <h1>Spaced-Repetition Mistake Notebook</h1>
-                <p>Log conceptual traps, omitted physical corrections, and algebraic slips. Review them on a 1d &rarr; 7d &rarr; 30d spaced schedule before competitions.</p>
+                <h1>Mistake Notebook</h1>
+                <p>Keep track of the traps that cost you points—missing factors of \(\sin^3 i\), sign errors in spherical trig, or unit slips—and review them on a 1d &rarr; 7d &rarr; 30d cycle.</p>
             </div>
             <div class="header-actions">
                 <button class="btn-new-entry" id="toggle-entry-btn">
-                    <i class="fa-solid fa-plus"></i> Log New Mistake
+                    <i class="fa-solid fa-plus"></i> Add Mistake
                 </button>
                 <a href="profile.html" class="user-profile">
                     <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF" alt="User" class="avatar">
@@ -254,38 +262,48 @@
 
         <!-- ADD MISTAKE PANEL -->
         <section class="entry-creator" id="entry-creator">
-            <h3 style="font-family:var(--font-display); color:var(--text-pure);">Log Olympiad Trap or Derivation Error</h3>
+            <h3 style="font-family:var(--font-display); color:var(--text-pure);">Log a Mistake or Trap</h3>
             <div class="form-row">
-                <input type="text" id="m-title-inp" class="input-field" placeholder="Problem ID / Concept Title (e.g. Binary Mass Function)">
+                <input type="text" id="m-title-inp" class="input-field" placeholder="Problem ID / Topic (e.g. USAAAO 2025 Q26 or Binary Mass)">
                 <select id="m-mod-inp" class="input-field">
-                    <option value="Module 01 · Celestial Mech">Module 01 · Celestial Mech</option>
-                    <option value="Module 02 · Radiation & Rel">Module 02 · Radiation &amp; Rel</option>
-                    <option value="Module 04 · Stellar Params">Module 04 · Stellar Params</option>
-                    <option value="Module 10 · Galactic Struct">Module 10 · Galactic Struct</option>
-                    <option value="Module 12 · Cosmology">Module 12 · Cosmology</option>
-                    <option value="Data Analysis Track">Data Analysis Track</option>
+                    <option value="T1 · Positional & Celestial Mech">T1 · Positional &amp; Celestial Mech</option>
+                    <option value="T2 · Radiation & Relativity">T2 · Radiation &amp; Relativity</option>
+                    <option value="T3 · Instrumentation">T3 · Instrumentation</option>
+                    <option value="T4 · Stellar Parameters">T4 · Stellar Parameters</option>
+                    <option value="T5 · Stellar Structure">T5 · Stellar Structure</option>
+                    <option value="T6 · ISM & Star Formation">T6 · ISM &amp; Star Formation</option>
+                    <option value="T7 · Stellar Evolution">T7 · Stellar Evolution</option>
+                    <option value="T8 · Remnants & GR">T8 · Remnants &amp; GR</option>
+                    <option value="T9 · Planetary Systems">T9 · Planetary Systems</option>
+                    <option value="T10 · Galactic Structure">T10 · Galactic Structure</option>
+                    <option value="T11 · Galactic Evolution & AGN">T11 · Galactic Evolution &amp; AGN</option>
+                    <option value="T12 · Cosmology">T12 · Cosmology</option>
+                    <option value="D1 · Methods & Plotting">D1 · Methods &amp; Plotting</option>
+                    <option value="D2 · Full Data Sets">D2 · Full Data Sets</option>
+                    <option value="O1 · Blind Map">O1 · Blind Map</option>
+                    <option value="O2 · Telescope Practice">O2 · Telescope Practice</option>
                 </select>
                 <select id="m-cat-inp" class="input-field">
                     <option value="Physical Trap">Physical Assumption Trap</option>
                     <option value="Algebraic / Sign">Algebraic / Sign Slip</option>
-                    <option value="Unit Mismatch">Dimensional / Unit Error</option>
+                    <option value="Unit Mismatch">Dimensional / Unit Mismatch</option>
                 </select>
             </div>
-            <input type="text" id="m-flaw-inp" class="input-field" placeholder="What went wrong? (Supports LaTeX e.g. \(A_V\))">
-            <input type="text" id="m-fix-inp" class="input-field" placeholder="Rigorous Fix / Correct Formula (e.g. Always include \(\sin^3 i\) in spectroscopic binaries)">
+            <input type="text" id="m-flaw-inp" class="input-field" placeholder="What went wrong? (LaTeX supported, e.g. Forgot extinction \(A_V\))">
+            <input type="text" id="m-fix-inp" class="input-field" placeholder="How to fix it next time (e.g. Always include \(\sin^3 i\) in spectroscopic binary mass)">
             <div>
                 <button class="btn-new-entry" id="save-mistake-btn" style="background:var(--accent-green); border-color:var(--accent-green);">
-                    <i class="fa-solid fa-check"></i> Save to Vault
+                    <i class="fa-solid fa-check"></i> Save Entry
                 </button>
             </div>
         </section>
 
         <!-- FILTER PILLS -->
         <div class="filter-bar">
-            <button class="filter-pill active" data-filter="all">All Logged Traps</button>
-            <button class="filter-pill" data-filter="1d Review">1d Review Queue</button>
-            <button class="filter-pill" data-filter="7d Review">7d Review Queue</button>
-            <button class="filter-pill" data-filter="30d Mastered">30d Mastered</button>
+            <button class="filter-pill active" data-filter="all" id="pill-all">All Entries</button>
+            <button class="filter-pill" data-filter="1d Review" id="pill-1d">1d Review Queue</button>
+            <button class="filter-pill" data-filter="7d Review" id="pill-7d">7d Review Queue</button>
+            <button class="filter-pill" data-filter="30d Mastered" id="pill-30d">30d Mastered</button>
         </div>
 
         <!-- MISTAKE CARDS -->
@@ -299,29 +317,29 @@
             {
                 id: "m1",
                 title: "Neglecting Reduced Mass in Two-Body Keplerian Orbits",
-                module: "Module 01 · Celestial Mech",
+                module: "T1 · Positional & Celestial Mech",
                 category: "Physical Trap",
                 stage: "1d Review",
-                flaw: "Used \\(M_1\\) instead of total system mass \\((M_1 + M_2)\\) in Kepler's Third Law for a close binary with comparable component masses.",
-                fix: "Always write the exact two-body relation: \\[ P^2 = \\frac{4\\pi^2 a^3}{G(M_1 + M_2)} \\] where \\(a = a_1 + a_2\\) is the relative semi-major axis."
+                flaw: "Used \\(M_1\\) instead of total system mass \\((M_1 + M_2)\\) in Kepler's Third Law for a binary with comparable component masses.",
+                fix: "Always write the two-body relation with total mass: \\[ P^2 = \\frac{4\\pi^2 a^3}{G(M_1 + M_2)} \\] where \\(a = a_1 + a_2\\) is the relative semi-major axis."
             },
             {
                 id: "m2",
                 title: "Iterative Extinction in Photometric Parallax",
-                module: "Module 10 · Galactic Struct",
+                module: "T10 · Galactic Structure",
                 category: "Physical Trap",
                 stage: "7d Review",
                 flaw: "Computed naive distance \\(d' = 10^{(m - M + 5)/5}\\) without accounting for linear dust extinction \\(A_V = k \\cdot d\\).",
-                fix: "Solve the transcendental relation iteratively: \\[ d = d' \\cdot 10^{-k d / 5} \\] Ignoring \\(k \\approx 1\\text{ mag kpc}^{-1}\\) overestimates distances by up to 100% in the Galactic disk."
+                fix: "Solve the transcendental relation iteratively: \\[ d = d' \\cdot 10^{-k d / 5} \\] Ignoring \\(k \\approx 1\\text{ mag kpc}^{-1}\\) overestimates distances in the Galactic disk."
             },
             {
                 id: "m3",
                 title: "Zenith Distance vs. Altitude in Atmospheric Refraction & Airmass",
-                module: "Module 01 · Celestial Mech",
+                module: "T1 · Positional & Celestial Mech",
                 category: "Algebraic / Sign",
                 stage: "1d Review",
                 flaw: "Substituted altitude \\(h\\) instead of zenith distance \\(z = 90^\\circ - h\\) into the plane-parallel airmass formula \\(X = \\sec z\\).",
-                fix: "Verify angle definition before evaluating trigonometric functions: \\(X = \\sec z = \\frac{1}{\\cos(90^\\circ - h)} = \\frac{1}{\\sin h}\\)."
+                fix: "Check which angle is given before evaluating trig functions: \\(X = \\sec z = \\frac{1}{\\cos(90^\\circ - h)} = \\frac{1}{\\sin h}\\)."
             }
         ];
 
@@ -337,9 +355,30 @@
             return JSON.parse(raw);
         }
 
+        function updateFilterCounts(allItems) {
+            const c1 = allItems.filter(m => m.stage === '1d Review').length;
+            const c7 = allItems.filter(m => m.stage === '7d Review').length;
+            const c30 = allItems.filter(m => m.stage === '30d Mastered').length;
+            document.getElementById('pill-all').textContent = `All Entries (${allItems.length})`;
+            document.getElementById('pill-1d').textContent = `1d Review (${c1})`;
+            document.getElementById('pill-7d').textContent = `7d Review (${c7})`;
+            document.getElementById('pill-30d').textContent = `30d Mastered (${c30})`;
+        }
+
         function renderMistakes() {
-            const list = getMistakes().filter(m => activeFilter === 'all' || m.stage === activeFilter);
+            const allItems = getMistakes();
+            updateFilterCounts(allItems);
+            const list = allItems.filter(m => activeFilter === 'all' || m.stage === activeFilter);
             const container = document.getElementById('mistakes-list');
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div class="mistake-card" style="text-align:center; padding:42px; color:var(--text-muted);">
+                        No entries in this queue right now.
+                    </div>
+                `;
+                return;
+            }
 
             container.innerHTML = list.map(m => `
                 <article class="mistake-card">
@@ -351,20 +390,27 @@
                         </div>
                     </div>
                     <h3 class="m-title">${m.title}</h3>
-                    <div class="m-flaw"><strong>Error / Trap:</strong> ${m.flaw}</div>
-                    <div class="m-fix"><strong>Rigorous Fix:</strong> ${m.fix}</div>
+                    <div class="m-flaw"><strong>What Went Wrong:</strong> ${m.flaw}</div>
+                    <div class="m-fix"><strong>Fix:</strong> ${m.fix}</div>
                     <div class="m-actions">
+                        ${m.stage !== '1d Review' ? `
+                            <button class="btn-small" onclick="resetStage('${m.id}')" title="Reset to 1d Queue">
+                                <i class="fa-solid fa-rotate-left"></i> Reset to 1d
+                            </button>
+                        ` : ''}
                         <button class="btn-small" onclick="advanceStage('${m.id}')">
-                            <i class="fa-solid fa-forward-step"></i> Mark Reviewed (Advance Interval)
+                            <i class="fa-solid fa-forward-step"></i> Mark Reviewed (Next Queue)
                         </button>
-                        <button class="btn-small" onclick="deleteMistake('${m.id}')" style="color:var(--text-muted);">
+                        <button class="btn-small" onclick="deleteMistake('${m.id}')" style="color:var(--text-muted);" title="Delete Entry">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
                 </article>
             `).join('');
 
-            if (window.MathJax) MathJax.typesetPromise([container]);
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([container]).catch(() => {});
+            }
         }
 
         window.advanceStage = function(id) {
@@ -374,6 +420,15 @@
                     const nextIdx = Math.min(order.length - 1, order.indexOf(m.stage) + 1);
                     m.stage = order[nextIdx];
                 }
+                return m;
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+            renderMistakes();
+        };
+
+        window.resetStage = function(id) {
+            const items = getMistakes().map(m => {
+                if (m.id === id) m.stage = "1d Review";
                 return m;
             });
             localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
@@ -397,7 +452,7 @@
             const flaw = document.getElementById('m-flaw-inp').value.trim();
             const fix = document.getElementById('m-fix-inp').value.trim();
 
-            if (!title || !flaw || !fix) return alert('Please fill in the title, error description, and rigorous fix.');
+            if (!title || !flaw || !fix) return alert('Please fill in the title, what went wrong, and the fix.');
 
             const items = getMistakes();
             items.unshift({ id: 'm_' + Date.now(), title, module, category, stage: '1d Review', flaw, fix });
