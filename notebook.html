@@ -16,7 +16,11 @@
     <!-- MathJax -->
     <script>
         window.MathJax = {
-            tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']],
+                displayMath: [['$$', '$$'], ['[', ']']],
+                processEscapes: true
+            }
         };
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
@@ -57,7 +61,7 @@
             background-color: var(--bg-base); color: var(--text-main);
             font-family: var(--font-body); display: flex; height: 100vh;
             overflow: hidden; -webkit-font-smoothing: antialiased;
-            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .sky-background {
@@ -106,14 +110,14 @@
         /* --- MAIN AREA --- */
         .dashboard-main {
             flex: 1; overflow-y: auto; padding: 32px 44px 60px;
-            display: flex; flex-direction: column; gap: 28px;
+            display: flex; flex-direction: column; gap: 24px;
         }
 
         .top-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
         .header-title h1 { font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--text-pure); margin-bottom: 4px; }
         .header-title p { color: var(--text-muted); font-size: 0.9rem; max-width: 640px; }
 
-        .header-actions { display: flex; align-items: center; gap: 16px; }
+        .header-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
         .btn-new-entry {
             background: var(--accent-rose); color: var(--bg-base);
             border: 1px solid var(--accent-rose); padding: 10px 18px;
@@ -123,10 +127,66 @@
         }
         .btn-new-entry:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 193, 204, 0.25); }
 
+        .btn-guide-toggle {
+            background: var(--bg-card); color: var(--text-main);
+            border: 1px solid var(--border-light); padding: 10px 16px;
+            border-radius: var(--radius-sm); font-weight: 600; font-size: 0.84rem;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-guide-toggle:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+
         .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); text-decoration: none; }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border-light); object-fit: cover; }
         .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
         .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+        /* Tutorial / How-To Panel */
+        .tutorial-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-left: 3px solid var(--accent-blue);
+            border-radius: var(--radius-lg);
+            padding: 24px 28px;
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .tutorial-panel.open { display: flex; }
+        .tutorial-header {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .tutorial-header h3 {
+            font-family: var(--font-display); font-size: 1.2rem; color: var(--text-pure);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .tutorial-steps {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+        }
+        .tutorial-step {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .step-num {
+            font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+            color: var(--accent-blue); text-transform: uppercase;
+        }
+        .tutorial-step h4 {
+            font-family: var(--font-display); font-size: 0.98rem; color: var(--text-pure);
+        }
+        .tutorial-step p {
+            font-size: 0.83rem; color: var(--text-muted); line-height: 1.55;
+        }
+        .tutorial-step code {
+            font-family: var(--font-mono); font-size: 0.76rem;
+            background: rgba(255, 255, 255, 0.06); color: var(--accent-rose);
+            padding: 2px 5px; border-radius: 4px;
+        }
 
         /* Entry Creator Panel */
         .entry-creator {
@@ -136,13 +196,19 @@
             display: none; flex-direction: column; gap: 14px;
         }
         .entry-creator.open { display: flex; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+        .form-row { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 12px; }
+        .field-group { display: flex; flex-direction: column; gap: 6px; }
+        .field-label {
+            font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);
+            text-transform: uppercase; font-weight: 700;
+        }
         .input-field {
             background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
             color: var(--text-pure); padding: 10px 14px; border-radius: var(--radius-sm);
             font-family: var(--font-body); font-size: 0.86rem; outline: none; width: 100%;
         }
         .input-field:focus { border-color: var(--accent-rose); }
+        textarea.input-field { resize: vertical; min-height: 70px; line-height: 1.5; }
 
         .filter-bar {
             display: flex; gap: 10px; flex-wrap: wrap;
@@ -195,7 +261,26 @@
         }
         .btn-small:hover { border-color: var(--accent-green); color: var(--accent-green); }
 
-        @media (max-width: 900px) { .form-row { grid-template-columns: 1fr; } }
+        .empty-notebook-box {
+            background: var(--bg-card);
+            border: 1px dashed var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 44px 28px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .empty-notebook-box h3 {
+            font-family: var(--font-display); font-size: 1.35rem; color: var(--text-pure);
+        }
+        .empty-notebook-box p {
+            color: var(--text-muted); font-size: 0.9rem; max-width: 500px; line-height: 1.6;
+        }
+
+        @media (max-width: 1100px) { .tutorial-steps { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 900px) { .form-row, .tutorial-steps { grid-template-columns: 1fr; } }
         @media (max-width: 800px) { .sidebar { display: none; } .dashboard-main { padding: 24px 20px; } }
     </style>
 </head>
@@ -205,7 +290,7 @@
         <div class="comet" style="top: 10%; left: 88%; animation: shooting 9s infinite linear 1s;"></div>
     </div>
 
-    <!-- UNIFIED SIDEBAR (Links to dashboard.html, never index.html) -->
+    <!-- UNIFIED SIDEBAR -->
     <aside class="sidebar">
         <a href="dashboard.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
@@ -215,7 +300,7 @@
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
             <li><a href="dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
-            <li><a href="rotations.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
+            <li><a href="challenges.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
             <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
             <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
             <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
@@ -244,66 +329,122 @@
         <header class="top-header">
             <div class="header-title">
                 <h1>Mistake Notebook</h1>
-                <p>Keep track of the traps that cost you points—missing factors of \(\sin^3 i\), sign errors in spherical trig, or unit slips—and review them on a 1d &rarr; 7d &rarr; 30d cycle.</p>
+                <p>Write down the problems and concepts that tripped you up so you don't repeat the same mistakes in competitions.</p>
             </div>
             <div class="header-actions">
+                <button class="btn-guide-toggle" id="toggle-guide-btn">
+                    <i class="fa-regular fa-circle-question"></i> How it Works
+                </button>
                 <button class="btn-new-entry" id="toggle-entry-btn">
-                    <i class="fa-solid fa-plus"></i> Add Mistake
+                    <i class="fa-solid fa-plus"></i> Add Note
                 </button>
                 <a href="profile.html" class="user-profile">
                     <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF" alt="User" class="avatar">
                     <div class="user-info">
-                        <h4 id="user-name-display">Loading...</h4>
-                        <p id="user-role-display">Authenticating</p>
+                        <h4 id="user-name-display">Guest</h4>
+                        <p id="user-role-display">Novice Observer</p>
                     </div>
                 </a>
             </div>
         </header>
 
+        <!-- HOW TO USE THE MISTAKE NOTEBOOK (TUTORIAL) -->
+        <section class="tutorial-panel" id="tutorial-panel">
+            <div class="tutorial-header">
+                <h3><i class="fa-solid fa-lightbulb" style="color:var(--accent-blue);"></i> How to Create &amp; Use a Mistake Note</h3>
+                <button onclick="document.getElementById('tutorial-panel').classList.remove('open')" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="tutorial-steps">
+                <div class="tutorial-step">
+                    <span class="step-num">Step 01 · Title &amp; Module</span>
+                    <h4>Tag the Problem</h4>
+                    <p>Click <strong>+ Add Note</strong> and write the problem ID or concept name (e.g., <em>USAAAO 2025 Q26</em> or <em>Transit Impact Parameter</em>), then pick which of the 16 modules it belongs to.</p>
+                </div>
+                <div class="tutorial-step">
+                    <span class="step-num">Step 02 · Error Type</span>
+                    <h4>Pick the Cause</h4>
+                    <p>Choose whether it was a <strong>Physical Trap</strong> (wrong assumption), a <strong>Math / Sign Slip</strong>, or a <strong>Unit Error</strong>. This updates the breakdown bars on your Analytics page.</p>
+                </div>
+                <div class="tutorial-step">
+                    <span class="step-num">Step 03 · LaTeX Support</span>
+                    <h4>Write the Correction</h4>
+                    <p>Write what went wrong and how to solve it properly. You can type math using LaTeX between <code>\(...\)</code> for inline math or <code>$$...$$</code> for equations.</p>
+                </div>
+                <div class="tutorial-step">
+                    <span class="step-num">Step 04 · Review Queues</span>
+                    <h4>1d &rarr; 7d &rarr; 30d</h4>
+                    <p>New notes start in <strong>1d Review</strong>. Once you review a note, click <strong>Advance Queue</strong> to move it to <strong>7d Review</strong> and then <strong>30d</strong>.</p>
+                </div>
+            </div>
+        </section>
+
         <!-- ADD MISTAKE PANEL -->
         <section class="entry-creator" id="entry-creator">
-            <h3 style="font-family:var(--font-display); color:var(--text-pure);">Log a Mistake or Trap</h3>
+            <h3 style="font-family:var(--font-display); color:var(--text-pure);">New Mistake Note</h3>
             <div class="form-row">
-                <input type="text" id="m-title-inp" class="input-field" placeholder="Problem ID / Topic (e.g. USAAAO 2025 Q26 or Binary Mass)">
-                <select id="m-mod-inp" class="input-field">
-                    <option value="T1 · Positional & Celestial Mech">T1 · Positional &amp; Celestial Mech</option>
-                    <option value="T2 · Radiation & Relativity">T2 · Radiation &amp; Relativity</option>
-                    <option value="T3 · Instrumentation">T3 · Instrumentation</option>
-                    <option value="T4 · Stellar Parameters">T4 · Stellar Parameters</option>
-                    <option value="T5 · Stellar Structure">T5 · Stellar Structure</option>
-                    <option value="T6 · ISM & Star Formation">T6 · ISM &amp; Star Formation</option>
-                    <option value="T7 · Stellar Evolution">T7 · Stellar Evolution</option>
-                    <option value="T8 · Remnants & GR">T8 · Remnants &amp; GR</option>
-                    <option value="T9 · Planetary Systems">T9 · Planetary Systems</option>
-                    <option value="T10 · Galactic Structure">T10 · Galactic Structure</option>
-                    <option value="T11 · Galactic Evolution & AGN">T11 · Galactic Evolution &amp; AGN</option>
-                    <option value="T12 · Cosmology">T12 · Cosmology</option>
-                    <option value="D1 · Methods & Plotting">D1 · Methods &amp; Plotting</option>
-                    <option value="D2 · Full Data Sets">D2 · Full Data Sets</option>
-                    <option value="O1 · Blind Map">O1 · Blind Map</option>
-                    <option value="O2 · Telescope Practice">O2 · Telescope Practice</option>
-                </select>
-                <select id="m-cat-inp" class="input-field">
-                    <option value="Physical Trap">Physical Assumption Trap</option>
-                    <option value="Algebraic / Sign">Algebraic / Sign Slip</option>
-                    <option value="Unit Mismatch">Dimensional / Unit Mismatch</option>
-                </select>
+                <div class="field-group">
+                    <label class="field-label">Problem / Topic Title</label>
+                    <input type="text" id="m-title-inp" class="input-field" placeholder="e.g. USAAAO 2024 Q10 — Observing M52">
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Module</label>
+                    <select id="m-mod-inp" class="input-field">
+                        <option value="T1 · Positional & Celestial Mech">T1 · Positional &amp; Celestial Mech</option>
+                        <option value="T2 · Radiation & Relativity">T2 · Radiation &amp; Relativity</option>
+                        <option value="T3 · Instrumentation">T3 · Instrumentation</option>
+                        <option value="T4 · Stellar Parameters">T4 · Stellar Parameters</option>
+                        <option value="T5 · Stellar Structure">T5 · Stellar Structure</option>
+                        <option value="T6 · ISM & Star Formation">T6 · ISM &amp; Star Formation</option>
+                        <option value="T7 · Stellar Evolution">T7 · Stellar Evolution</option>
+                        <option value="T8 · Remnants & GR">T8 · Remnants &amp; GR</option>
+                        <option value="T9 · Planetary Systems">T9 · Planetary Systems</option>
+                        <option value="T10 · Galactic Structure">T10 · Galactic Structure</option>
+                        <option value="T11 · Galactic Evolution & AGN">T11 · Galactic Evolution &amp; AGN</option>
+                        <option value="T12 · Cosmology">T12 · Cosmology</option>
+                        <option value="D1 · Methods & Plotting">D1 · Methods &amp; Plotting</option>
+                        <option value="D2 · Full Data Sets">D2 · Full Data Sets</option>
+                        <option value="O1 · Blind Map">O1 · Blind Map</option>
+                        <option value="O2 · Telescope Practice">O2 · Telescope Practice</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Type of Mistake</label>
+                    <select id="m-cat-inp" class="input-field">
+                        <option value="Physical Trap">Physical Trap (Wrong Assumption)</option>
+                        <option value="Algebraic / Sign">Math / Sign Slip</option>
+                        <option value="Unit Mismatch">Unit / Constant Error</option>
+                    </select>
+                </div>
             </div>
-            <input type="text" id="m-flaw-inp" class="input-field" placeholder="What went wrong? (LaTeX supported, e.g. Forgot extinction \(A_V\))">
-            <input type="text" id="m-fix-inp" class="input-field" placeholder="How to fix it next time (e.g. Always include \(\sin^3 i\) in spectroscopic binary mass)">
-            <div>
+
+            <div class="field-group">
+                <label class="field-label">What Went Wrong (Supports LaTeX like \(\sin\delta\))</label>
+                <textarea id="m-flaw-inp" class="input-field" placeholder="Describe the mistake you made..."></textarea>
+            </div>
+
+            <div class="field-group">
+                <label class="field-label">How to Do It Right (Correct Formula / Takeaway)</label>
+                <textarea id="m-fix-inp" class="input-field" placeholder="Write the correct step or formula to remember..."></textarea>
+            </div>
+
+            <div style="display:flex; gap:10px;">
                 <button class="btn-new-entry" id="save-mistake-btn" style="background:var(--accent-green); border-color:var(--accent-green);">
-                    <i class="fa-solid fa-check"></i> Save Entry
+                    <i class="fa-solid fa-check"></i> Save Note
+                </button>
+                <button class="btn-guide-toggle" onclick="document.getElementById('entry-creator').classList.remove('open')">
+                    Cancel
                 </button>
             </div>
         </section>
 
         <!-- FILTER PILLS -->
         <div class="filter-bar">
-            <button class="filter-pill active" data-filter="all" id="pill-all">All Entries</button>
-            <button class="filter-pill" data-filter="1d Review" id="pill-1d">1d Review Queue</button>
-            <button class="filter-pill" data-filter="7d Review" id="pill-7d">7d Review Queue</button>
-            <button class="filter-pill" data-filter="30d Mastered" id="pill-30d">30d Mastered</button>
+            <button class="filter-pill active" data-filter="all" id="pill-all">All Notes (0)</button>
+            <button class="filter-pill" data-filter="1d Review" id="pill-1d">1d Review (0)</button>
+            <button class="filter-pill" data-filter="7d Review" id="pill-7d">7d Review (0)</button>
+            <button class="filter-pill" data-filter="30d Mastered" id="pill-30d">30d Queue (0)</button>
         </div>
 
         <!-- MISTAKE CARDS -->
@@ -313,68 +454,67 @@
 
     <script type="module" src="js/auth.js"></script>
     <script>
-        const DEFAULT_MISTAKES = [
-            {
-                id: "m1",
-                title: "Neglecting Reduced Mass in Two-Body Keplerian Orbits",
-                module: "T1 · Positional & Celestial Mech",
-                category: "Physical Trap",
-                stage: "1d Review",
-                flaw: "Used \\(M_1\\) instead of total system mass \\((M_1 + M_2)\\) in Kepler's Third Law for a binary with comparable component masses.",
-                fix: "Always write the two-body relation with total mass: \\[ P^2 = \\frac{4\\pi^2 a^3}{G(M_1 + M_2)} \\] where \\(a = a_1 + a_2\\) is the relative semi-major axis."
-            },
-            {
-                id: "m2",
-                title: "Iterative Extinction in Photometric Parallax",
-                module: "T10 · Galactic Structure",
-                category: "Physical Trap",
-                stage: "7d Review",
-                flaw: "Computed naive distance \\(d' = 10^{(m - M + 5)/5}\\) without accounting for linear dust extinction \\(A_V = k \\cdot d\\).",
-                fix: "Solve the transcendental relation iteratively: \\[ d = d' \\cdot 10^{-k d / 5} \\] Ignoring \\(k \\approx 1\\text{ mag kpc}^{-1}\\) overestimates distances in the Galactic disk."
-            },
-            {
-                id: "m3",
-                title: "Zenith Distance vs. Altitude in Atmospheric Refraction & Airmass",
-                module: "T1 · Positional & Celestial Mech",
-                category: "Algebraic / Sign",
-                stage: "1d Review",
-                flaw: "Substituted altitude \\(h\\) instead of zenith distance \\(z = 90^\\circ - h\\) into the plane-parallel airmass formula \\(X = \\sec z\\).",
-                fix: "Check which angle is given before evaluating trig functions: \\(X = \\sec z = \\frac{1}{\\cos(90^\\circ - h)} = \\frac{1}{\\sin h}\\)."
-            }
-        ];
-
         const STORAGE_KEY = 'supernova_mistake_notebook';
         let activeFilter = 'all';
 
+        // Automatically remove the old m1, m2, m3 placeholder items if they were saved in localStorage earlier
         function getMistakes() {
             const raw = localStorage.getItem(STORAGE_KEY);
-            if (!raw) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_MISTAKES));
-                return DEFAULT_MISTAKES;
+            if (!raw) return [];
+            try {
+                const parsed = JSON.parse(raw);
+                const cleaned = parsed.filter(m => !['m1', 'm2', 'm3'].includes(m.id));
+                if (cleaned.length !== parsed.length) {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned));
+                }
+                return cleaned;
+            } catch (e) {
+                return [];
             }
-            return JSON.parse(raw);
         }
 
         function updateFilterCounts(allItems) {
             const c1 = allItems.filter(m => m.stage === '1d Review').length;
             const c7 = allItems.filter(m => m.stage === '7d Review').length;
             const c30 = allItems.filter(m => m.stage === '30d Mastered').length;
-            document.getElementById('pill-all').textContent = `All Entries (${allItems.length})`;
+            document.getElementById('pill-all').textContent = `All Notes (${allItems.length})`;
             document.getElementById('pill-1d').textContent = `1d Review (${c1})`;
             document.getElementById('pill-7d').textContent = `7d Review (${c7})`;
-            document.getElementById('pill-30d').textContent = `30d Mastered (${c30})`;
+            document.getElementById('pill-30d').textContent = `30d Queue (${c30})`;
         }
 
         function renderMistakes() {
             const allItems = getMistakes();
             updateFilterCounts(allItems);
+
+            // Auto-open the tutorial guide if the user has 0 notes so they see how it works
+            const tutorialEl = document.getElementById('tutorial-panel');
+            if (allItems.length === 0 && tutorialEl && !tutorialEl.dataset.initialized) {
+                tutorialEl.classList.add('open');
+                tutorialEl.dataset.initialized = 'true';
+            }
+
             const list = allItems.filter(m => activeFilter === 'all' || m.stage === activeFilter);
             const container = document.getElementById('mistakes-list');
 
+            if (allItems.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-notebook-box">
+                        <i class="fa-solid fa-book-open" style="font-size:1.8rem; color:var(--accent-rose);"></i>
+                        <h3>Your Mistake Notebook is Empty</h3>
+                        <p>Whenever you miss a problem in Study &amp; Practice or POTD/POTW/POTM, click <strong>+ Add Note</strong> above to save what went wrong and how to solve it.</p>
+                        <button class="btn-new-entry" onclick="document.getElementById('entry-creator').classList.add('open')" style="margin-top:6px;">
+                            <i class="fa-solid fa-plus"></i> Create Your First Note
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
             if (list.length === 0) {
                 container.innerHTML = `
-                    <div class="mistake-card" style="text-align:center; padding:42px; color:var(--text-muted);">
-                        No entries in this queue right now.
+                    <div class="empty-notebook-box" style="padding:32px;">
+                        <p>No notes in the <strong>${activeFilter}</strong> queue right now.</p>
                     </div>
                 `;
                 return;
@@ -390,19 +530,21 @@
                         </div>
                     </div>
                     <h3 class="m-title">${m.title}</h3>
-                    <div class="m-flaw"><strong>What Went Wrong:</strong> ${m.flaw}</div>
-                    <div class="m-fix"><strong>Fix:</strong> ${m.fix}</div>
+                    <div class="m-flaw"><strong>What went wrong:</strong> ${m.flaw}</div>
+                    <div class="m-fix"><strong>How to do it right:</strong> ${m.fix}</div>
                     <div class="m-actions">
                         ${m.stage !== '1d Review' ? `
-                            <button class="btn-small" onclick="resetStage('${m.id}')" title="Reset to 1d Queue">
+                            <button class="btn-small" onclick="resetStage('${m.id}')" title="Move back to 1d Review">
                                 <i class="fa-solid fa-rotate-left"></i> Reset to 1d
                             </button>
                         ` : ''}
-                        <button class="btn-small" onclick="advanceStage('${m.id}')">
-                            <i class="fa-solid fa-forward-step"></i> Mark Reviewed (Next Queue)
-                        </button>
-                        <button class="btn-small" onclick="deleteMistake('${m.id}')" style="color:var(--text-muted);" title="Delete Entry">
-                            <i class="fa-solid fa-trash"></i>
+                        ${m.stage !== '30d Mastered' ? `
+                            <button class="btn-small" onclick="advanceStage('${m.id}')">
+                                <i class="fa-solid fa-forward-step"></i> Advance Queue
+                            </button>
+                        ` : ''}
+                        <button class="btn-small" onclick="deleteMistake('${m.id}')" style="color:var(--text-muted);" title="Delete Note">
+                            <i class="fa-solid fa-trash"></i> Delete
                         </button>
                     </div>
                 </article>
@@ -445,6 +587,10 @@
             document.getElementById('entry-creator').classList.toggle('open');
         });
 
+        document.getElementById('toggle-guide-btn').addEventListener('click', () => {
+            document.getElementById('tutorial-panel').classList.toggle('open');
+        });
+
         document.getElementById('save-mistake-btn').addEventListener('click', () => {
             const title = document.getElementById('m-title-inp').value.trim();
             const module = document.getElementById('m-mod-inp').value;
@@ -452,7 +598,10 @@
             const flaw = document.getElementById('m-flaw-inp').value.trim();
             const fix = document.getElementById('m-fix-inp').value.trim();
 
-            if (!title || !flaw || !fix) return alert('Please fill in the title, what went wrong, and the fix.');
+            if (!title || !flaw || !fix) {
+                alert('Please fill in the title, what went wrong, and how to do it right.');
+                return;
+            }
 
             const items = getMistakes();
             items.unshift({ id: 'm_' + Date.now(), title, module, category, stage: '1d Review', flaw, fix });

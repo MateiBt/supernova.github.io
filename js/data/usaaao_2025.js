@@ -9,7 +9,7 @@ export const usaaao_2025 = [
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "2/10",
+        difficultyText: "1.2 / 10.0",
         title: "Escape from Deimos",
         description: `Imagine you are on Deimos right now and you want to escape Mars because you are bored. If Deimos is currently at 23,460 km away from the center of Mars and its speed is currently around 1.35 km/s, how much more speed do you and Deimos need to escape Mars? The mass of Mars is 6.39 × 10<sup>23</sup> kg.<br><br>
 (a) 557 m/s <br>
@@ -44,9 +44,9 @@ export const usaaao_2025 = [
         year: 2025,
         module: "T2",
         moduleName: "Radiation Physics and Relativity Fundamentals",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.2 / 10.0",
         title: "Gas Giant Radiative Cooling & Thermal Evolution",
         description: `Suppose a spherical gas giant has radius \\(R\\), temperature \\(T\\), uniform density and composition, and fixed volumetric heat capacity.<br><br>
 <strong>2.</strong> Assuming heat leaves solely through blackbody radiation, calculate how the planet's cooling rate \\(-dT/dt\\) depends on \\(R\\) and \\(T\\).<br>
@@ -81,9 +81,9 @@ export const usaaao_2025 = [
         year: 2025,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.3 / 10.0",
         title: "Hohmann Transfer Coefficient",
         description: `Suppose a rocket around a star of mass \\(M\\) wishes to execute an orbital transfer from a circular orbit with radius \\(R\\) to a larger one with that of radius \\(8R\\). One common way to do this is known as a Hohmann transfer, which has an intermediate elliptical orbit. This process requires two burns, with total delta-v \\(\\Delta v = k \\sqrt{\\frac{GM}{R}}\\) for some \\(k\\). Assuming instantaneous burns, compute \\(k\\).<br><br>
 (a) \\( 1 - \\frac{1}{2\\sqrt{2}} \\) <br>
@@ -124,7 +124,7 @@ export const usaaao_2025 = [
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "2/10",
+        difficultyText: "1.1 / 10.0",
         title: "Eccentricity from Semi-latus Rectum",
         description: `It may be useful to know the <em>semi-latus rectum</em> of an ellipse is the distance between one of its foci and the point on the ellipse immediately above or below it. Consider a highly eccentric planet with a semi-latus rectum that is nearly a hundred times smaller than its semi-major axis. What is its eccentricity?<br><br>
 (a) 0.99 <br>
@@ -149,9 +149,9 @@ export const usaaao_2025 = [
         year: 2025,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "hard",
-        icon: "fire",
-        difficultyText: "7/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.8 / 10.0",
         title: "Galileo's Satellite Celestial Equator",
         description: `Galileo the Tyrant has conquered the Earth. In his madness, he launched many bright satellites into space because he thought that the celestial equator should be visible from Earth, and not just be an imaginary line. These satellites all orbit around Earth \\(3R_E\\) from the surface, where \\(R_E\\) is the radius of Earth. However, there was a major mistake made in the plan — the satellites now orbit in a circle on Earth's orbital plane instead of directly above the equator. Nevertheless, Galileo still forces all astronomers to use these satellites as the new Celestial Equator. They must calculate the declination for any star by finding the angle to the satellite at the same Right Ascension. What is the maximum absolute difference between the new declination and the old declination of bodies throughout the sky experienced by astronomers around the Earth? (Choose the closest value.)<br><br>
 (a) \\(38^\\circ\\) <br>
@@ -180,7 +180,7 @@ export const usaaao_2025 = [
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "4/10",
+        difficultyText: "1.8 / 10.0",
         title: "Geodesic Distance: Boston to Mumbai",
         description: `What is the geodesic distance between Boston (\\(42^\\circ 21' 37''\\text{ N}\\), \\(71^\\circ 3' 28''\\text{ W}\\)) and Mumbai (\\(19^\\circ 04' 34''\\text{ N}\\), \\(72^\\circ 52' 39''\\text{ E}\\))? Assume that the Earth is perfectly spherical.<br><br>
 (a) 2250 km <br>
@@ -217,9 +217,11 @@ export const usaaao_2025 = [
         difficultyText: "THEORY",
         title: "Spectral Line Broadening Mechanisms",
         description: `Which of the following statements are correct regarding spectral broadening?<br><br>
-• <strong>P:</strong> In the limit of zero temperature, spectral lines have infinitesimally narrow linewidth.<br>
-• <strong>Q:</strong> Consider two hypothetical spectral lines: line I has central frequency \\(f_0\\) and full width at half maximum (FWHM) \\(w \\ll f_0\\) with only homogeneous broadening; line II has identical central frequency and FWHM but only has inhomogeneous broadening. Let \\(P_{\\text{I, II}}(f)\\Delta f\\) denote the probability of measuring frequency \\(f\\) for each line within some bandwidth \\(\\Delta f \\ll w\\). Then, \\(P_{\\text{I}}(2f_0)\\Delta f < P_{\\text{II}}(2f_0)\\Delta f\\).<br>
-• <strong>R:</strong> The same spectral line of two ideal gases, one with temperature \\(T\\) and the other with temperature \\(2T\\), are probed. The gases are otherwise identical. The linewidth of the hotter gas under thermal Doppler broadening is twice that of the cooler gas.<br><br>
+- <strong>P:</strong> In the limit of zero temperature, spectral lines have infinitesimally narrow linewidth.<br>
+- <strong>Q:</strong> Consider two hypothetical spectral lines: line I has central frequency 
+\\(f_0\\) and full width at half maximum (FWHM) \\(w \\ll f_0\\) with only homogeneous broadening; line II has identical central frequency and FWHM but only has inhomogeneous broadening. Let \\(P_{\\text{I, II}}(f)\\Delta f\\) denote the probability of measuring frequency \\(f\\) for each line within some bandwidth \\(\\Delta f \\ll w\\). Then, \\(P_{\\text{I}}(2f_0)\\Delta f < P_{\\text{II}}(2f_0)\\Delta f\\).<br>
+- <strong>R:</strong> The same spectral line of two ideal gases, one with temperature 
+\\(T\\) and the other with temperature \\(2T\\), are probed. The gases are otherwise identical. The linewidth of the hotter gas under thermal Doppler broadening is twice that of the cooler gas.<br><br>
 (a) None <br>
 (b) P only <br>
 (c) Q only <br>
@@ -246,9 +248,9 @@ export const usaaao_2025 = [
         difficultyText: "THEORY",
         title: "Main-Sequence Star Cluster Properties",
         description: `Which of the following statements are true about a cluster of main sequence stars:<br><br>
-• <strong>A:</strong> For two star clusters of the same total mass, the one with the larger number of stars will be brighter as measured by luminosity per unit mass.<br>
-• <strong>B:</strong> The main-sequence turnoff point for star clusters is at higher temperatures if they are older.<br>
-• <strong>C:</strong> The main-sequence turnoff point for star clusters is at lower luminosities if they are older.<br><br>
+- <strong>A:</strong> For two star clusters of the same total mass, the one with the larger number of stars will be brighter as measured by luminosity per unit mass.<br>
+- <strong>B:</strong> The main-sequence turnoff point for star clusters is at higher temperatures if they are older.<br>
+- <strong>C:</strong> The main-sequence turnoff point for star clusters is at lower luminosities if they are older.<br><br>
 Assume the mass-luminosity relationship \\(L \\propto M^{3.5}\\) for main-sequence stars.<br><br>
 (a) A and C <br>
 (b) A only <br>
@@ -273,12 +275,13 @@ Assume the mass-luminosity relationship \\(L \\propto M^{3.5}\\) for main-sequen
         moduleName: "Blind Map Practice",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.5 / 10.0",
         title: "Sky Map Principal Great Circles",
         description: `On an all-sky northern hemisphere star chart, three reference curves are drawn:<br>
-• <strong>Line 1:</strong> A straight vertical line passing through the zenith (center of the chart), Polaris, and the North and South horizon points.<br>
-• <strong>Line 2:</strong> A curved arc passing north of Orion through Taurus and Gemini.<br>
-• <strong>Line 3:</strong> A curved arc intersecting the exact East and West horizon points and passing directly through Orion's Belt (Mintaka, \\(\\delta \\approx 0^\\circ\\)).<br><br>
+- <strong>Line 1:</strong> A straight vertical line passing through the zenith (center of the chart), Polaris, and the North and South horizon points.<br>
+- <strong>Line 2:</strong> A curved arc passing north of Orion through Taurus and Gemini.<br>
+- <strong>Line 3:</strong> A curved arc intersecting the exact East and West horizon points and passing directly through Orion's Belt (Mintaka, 
+\\(\\delta \\approx 0^\\circ\\)).<br><br>
 Match each imaginary line (1, 2, 3) to its label:<br><br>
 (a) 1 - Ecliptic; 2 - Celestial Equator; 3 - Local Meridian <br>
 (b) 1 - Local Meridian; 2 - Ecliptic; 3 - Galactic Equator <br>
@@ -303,7 +306,7 @@ Match each imaginary line (1, 2, 3) to its label:<br><br>
         moduleName: "Methods & Plotting",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.4 / 10.0",
         title: "Log-Log Plots & Kepler's Third Law",
         description: `An astronomer was studying the exoplanets orbiting a star with a mass of \\(10M_\\odot\\). The astronomer decided to draw a \\(\\log T\\) vs. \\(\\log a\\) plot for the exoplanet orbits, where \\(T\\) corresponds to the period in years and \\(a\\) corresponds to the semi-major axis in AU. Note that \\(\\log\\) represents the base 10 logarithm.<br><br>
 <strong>11.</strong> What would be the slope of the best fit line to this plot?<br>
@@ -342,7 +345,7 @@ Match each imaginary line (1, 2, 3) to its label:<br><br>
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "4/10",
+        difficultyText: "1.8 / 10.0",
         title: "Triple System Kepler's Law",
         description: `A recently observed exosolar system consists of a star, a planet, and the planet's satellite. The satellite has a revolution period of 100 minutes around the planet, and the planet has a 90 day revolution period around the star. The satellite approaches the surface of the planet to a minimum height of 1000 km and recedes to a maximum height of 7000 km. The radius of the planet is 3000 km. If the ratio of the mass of the star to the mass of the planet is \\(1 \\times 10^5\\), what is the semi-major axis of the planet's revolution around the star? Assume that the mass of the satellite is much smaller than the mass of the planet.<br><br>
 (a) \\( 1.86 \\times 10^7 \\) km <br>
@@ -373,9 +376,9 @@ Match each imaginary line (1, 2, 3) to its label:<br><br>
         year: 2025,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.5 / 10.0",
         title: "Rotating Space Station Artificial Gravity & Coriolis Dynamics",
         description: `A cylindrical space station rotating about its primary axis could create artificial "spin gravity," allowing people to live on the inner surface of the cylinder.<br><br>
 <strong>14.</strong> For such a station with a radius of \\(50\\text{ m}\\), what rotational period is needed for inhabitants to experience spin gravity equal to Earth's gravity \\(g = 9.81\\text{ m/s}^2\\)?<br>
@@ -402,13 +405,14 @@ Match each imaginary line (1, 2, 3) to its label:<br><br>
         year: 2025,
         module: "T5",
         moduleName: "Stellar Structure and Atmospheres",
-        difficultyClass: "hard",
-        icon: "fire",
-        difficultyText: "7/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.9 / 10.0",
         title: "Radiative vs. Conductive Stellar Core Radius",
         description: `Consider a giant star with radius \\(R\\). The core has temperature \\(T_c\\) and the surface has temperature \\(T_s \\ll T_c\\). Given \\(R, T_c,\\) and \\(T_s\\), Alice and Bob estimate the core's radius in two different ways, both assuming that the star is in thermal equilibrium:<br>
-• <strong>Alice:</strong> The core radiates energy.<br>
-• <strong>Bob:</strong> The inside of the star conducts heat with constant uniform thermal conductivity \\(\\kappa\\) such that \\(\\kappa \\gg \\frac{R\\sigma T_s^4}{T_c}\\).<br><br>
+- <strong>Alice:</strong> The core radiates energy.<br>
+- <strong>Bob:</strong> The inside of the star conducts heat with constant uniform thermal conductivity 
+\\(\\kappa\\) such that \\(\\kappa \\gg \\frac{R\\sigma T_s^4}{T_c}\\).<br><br>
 Let \\(R_A\\) and \\(R_B\\) be the core radii estimated by Alice and Bob. Which of the following is the ratio \\(R_A / R_B\\) proportional to?<br><br>
 (a) \\( T_s / T_c \\) <br>
 (b) \\( T_s^2 / T_c^2 \\) <br>
@@ -439,9 +443,9 @@ Let \\(R_A\\) and \\(R_B\\) be the core radii estimated by Alice and Bob. Which 
         year: 2025,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.6 / 10.0",
         title: "Sunrise and Sunset Shadow Azimuths",
         description: `Connor is stranded on an island and wishes to determine his latitude, but he only wakes up at sunrise and sunset. He constructs a vertical stick in the ground. On some day, he measures the angle between the shadows made at sunrise and sunset as \\(105^\\circ\\). Which of the following intervals of latitudes could Connor be in?<br><br>
 (a) \\((0^\\circ\\text{ N}, 10^\\circ\\text{ N})\\) <br>
@@ -505,9 +509,9 @@ Let \\(R_A\\) and \\(R_B\\) be the core radii estimated by Alice and Bob. Which 
         year: 2025,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "hard",
-        icon: "fire",
-        difficultyText: "7/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.7 / 10.0",
         title: "Celestial Navigation & Equation of Time",
         description: `Just before dawn of the summer solstice, Christopher the sailor begins sailing due West from \\(50^\\circ\\text{ N } 5^\\circ\\text{ W}\\). His watch is set to UTC. On seeing his 91st sunrise at sea, his watch reads 3:00am. What is his longitude? (The equation of time, in the convention solar time minus mean time, is \\(-3\\text{ minutes}\\) on the summer solstice and \\(8\\text{ minutes}\\) on the autumnal equinox.)<br><br>
 (a) \\(43^\\circ\\text{ W}\\) <br>
@@ -533,9 +537,9 @@ Let \\(R_A\\) and \\(R_B\\) be the core radii estimated by Alice and Bob. Which 
         year: 2025,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "hard",
-        icon: "fire",
-        difficultyText: "7/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "3.1 / 10.0",
         title: "Vertical Alignment of Rigel and Betelgeuse",
         description: `What is the largest range of latitudes for which, at some time during the day, the line between Rigel (\\(\\alpha_R = 5^{\\text{h}}14^{\\text{m}}32^{\\text{s}}, \\delta_R = -8^\\circ 12' 5.9''\\)) and Betelgeuse (\\(\\alpha_B = 5^{\\text{h}}56^{\\text{m}}33^{\\text{s}}, \\delta_B = 7^\\circ 24' 40.3''\\)) appears vertical? Answer to within 5 degree accuracy.<br><br>
 (a) \\(-15^\\circ < \\phi < 15^\\circ\\) <br>
@@ -569,7 +573,7 @@ Let \\(R_A\\) and \\(R_B\\) be the core radii estimated by Alice and Bob. Which 
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.5 / 10.0",
         title: "Maximum Evening Visibility of Venus",
         description: `Observed from the equator, what is the maximum duration over which Venus can be observed (continuously) after sunset? Assume that the orbits of Venus and Earth are circular of radius \\(0.723\\text{ AU}\\) and \\(1\\text{ AU}\\) and lie on the ecliptic plane.<br><br>
 (a) \\(2^{\\text{h}}50^{\\text{m}}\\) <br>
@@ -594,7 +598,7 @@ Let \\(R_A\\) and \\(R_B\\) be the core radii estimated by Alice and Bob. Which 
         moduleName: "Radiation Physics and Relativity Fundamentals",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.3 / 10.0",
         title: "Solar Irradiance Variation (Perihelion vs. Aphelion)",
         description: `The Earth orbits the Sun with orbital eccentricity \\(e = 0.0167\\). What percent more total solar irradiance does the Earth receive at perihelion compared to aphelion?<br><br>
 (a) 0.028% <br>
@@ -644,9 +648,9 @@ Let \\(R_A\\) and \\(R_B\\) be the core radii estimated by Alice and Bob. Which 
         year: 2025,
         module: "T4",
         moduleName: "Stellar Parameters and Spectral Classification",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.3 / 10.0",
         title: "Stellar Effective Temperature from CCD Image Size",
         description: `Evan uses a telescope of focal distance \\(f = 1000\\text{ mm}\\) to observe a star known to have a parallax \\(p = 50\\text{ mas}\\). Observing the CCD of the telescope, Evan notices that the star has a diameter \\(D = 0.1\\ \\mu\\text{m}\\). Furthermore, he measures its apparent magnitude to be \\(m = 1\\). What is the approximate temperature of this star? Please neglect atmospheric seeing in your calculations.<br><br>
 (a) 3000 K <br>
@@ -674,9 +678,9 @@ Let \\(R_A\\) and \\(R_B\\) be the core radii estimated by Alice and Bob. Which 
         year: 2025,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.7 / 10.0",
         title: "Ecliptic Longitude & Orbital Inclination",
         description: `Two exoplanets, A and B, have circular orbits around the same central star. Suppose that the ascending nodes of the orbits are located at the same ecliptic longitude, defined analogously as the one for the solar system, and that both planets are at that point in the beginning. How long will it take for the planets to have an equal, common ecliptic longitude again, knowing that the inclinations of their orbits are \\(i_1 = 30^\\circ\\) and \\(i_2 = 70^\\circ\\), and that their periods are \\(T_1 = 2 \\text{ yr}\\) and \\(T_2 = 1 \\text{ yr}\\)?<br><br>
 (a) 42 days <br>
@@ -707,7 +711,7 @@ Let \\(R_A\\) and \\(R_B\\) be the core radii estimated by Alice and Bob. Which 
         moduleName: "Cosmology and the Structure of the Universe",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.4 / 10.0",
         title: "Matter-Dominated Friedmann Scale Factor",
         description: `Cosmologists consider three possible universes: universes dominated by baryonic matter (i.e. ordinary matter), universes dominated by radiation, and universes dominated by dark energy. An equation written by Alexander Friedmann implies that for a matter-dominated universe, the Hubble parameter is proportional to the square root of that universe's matter density. In a matter-dominated universe, how does the size of the universe evolve with time \\(t\\)?<br><br>
 (a) constant <br>
@@ -732,7 +736,7 @@ Let \\(R_A\\) and \\(R_B\\) be the core radii estimated by Alice and Bob. Which 
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "2/10",
+        difficultyText: "1.2 / 10.0",
         title: "Tropical Year Drift Without Leap Days",
         description: `Suppose leap days were removed from the calendar, so that each calendar year has exactly 365 days. In the first year of this calendar change, summer solstice is on June 21st. After 100 years of this calendar, what is the date of summer solstice?<br><br>
 (a) May 28th <br>
@@ -756,7 +760,7 @@ Let \\(R_A\\) and \\(R_B\\) be the core radii estimated by Alice and Bob. Which 
         moduleName: "Planetary Systems and Formation",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.4 / 10.0",
         title: "Exoplanet Transit Depth Radius Ratio",
         description: `It is observed that a planet orbiting a star increases the observed magnitude of the system by 0.005 when it transits across the star. Assuming that the system is viewed edge-on and is orthogonal to the line of sight, determine the radius of the planet \\(R_p\\) in terms of the radius of the star \\(R\\).<br><br>
 (a) \\(0.056R\\) <br>
@@ -783,7 +787,7 @@ Let \\(R_A\\) and \\(R_B\\) be the core radii estimated by Alice and Bob. Which 
         moduleName: "Astronomical Instrumentation",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "1/10",
+        difficultyText: "1.0 / 10.0",
         title: "Telescope Focal Ratio",
         description: `What is the focal ratio of a telescope with \\(1.2\\text{ m}\\) in focal length and \\(12\\text{ cm}\\) in aperture?<br><br>
 (a) \\(f/1000\\) <br>

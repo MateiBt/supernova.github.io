@@ -9,7 +9,7 @@ export const usaaao_2026 = [
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.3 / 10.0",
         title: "Circular Orbit Kinematics",
         description: `A planet moves in a circular orbit in a fixed plane with angular velocity \\(\\omega\\), and let \\(\\hat{n}\\) be a unit vector perpendicular to the orbital plane. Let the planet's velocity vector as a function of time be given by
 $$ \\vec{v}(t) = v_0(\\cos(\\omega t)\\hat{i} + \\sin(\\omega t)\\hat{j}) $$
@@ -76,7 +76,7 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         moduleName: "Galactic Structure",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "2/10",
+        difficultyText: "1.1 / 10.0",
         title: "Flat Galactic Rotation Curve",
         description: `Astronomers in the United States observe a spiral galaxy and measure its rotation curve. They find that beyond a radius \\(r_0\\), the orbital speed of stars remains approximately constant at \\(v_0\\). Which of the following conclusions is most accurate?<br><br>
 (a) The mass density of the galaxy must decrease faster than \\(1/r^2\\) <br>
@@ -100,9 +100,9 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         year: 2026,
         module: "O1",
         moduleName: "Blind Map Practice",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.0 / 10.0",
         title: "Stranded Island: Latitude Estimation",
         description: `You are stranded on a remote island somewhere on Earth, at an unknown date and time (in the \\(21^{\\text{st}}\\) century). You look up and see the night sky (where the center of the chart is the zenith, the boundary is the horizon, and the illuminated side of the Moon is on the left). Which of the following is the best estimate of your latitude?<br><br>
 (a) \\(40^\\circ\\text{ N}\\) <br>
@@ -128,9 +128,9 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         year: 2026,
         module: "O1",
         moduleName: "Blind Map Practice",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.6 / 10.0",
         title: "Stranded Island: Month Estimation",
         description: `Using the same night sky map from Question 4 (where the illuminated side of the crescent Moon is on the left), which of the following is the best estimate of the month of the year?<br><br>
 (a) January <br>
@@ -156,9 +156,9 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         year: 2026,
         module: "O1",
         moduleName: "Blind Map Practice",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.4 / 10.0",
         title: "Stranded Island: Local Solar Time",
         description: `Using the same night sky map from Questions 4 and 5, which of the following is the best estimate of the time of day (relative to local solar noon)?<br><br>
 (a) 8:00 PM <br>
@@ -183,7 +183,7 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         moduleName: "Stellar Remnants and General Relativity",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.5 / 10.0",
         title: "Hawking Radiation Power Scaling",
         description: `One of Stephen Hawking's most famous predictions was the existence of Hawking radiation. Specifically, black holes act like thermal blackbodies and thus must emit blackbody radiation. According to Hawking, a black hole radiates a blackbody spectrum with peak wavelength \\(\\lambda_{\\text{max}}\\) proportional to its Schwarzschild radius \\(R_s\\). Treat the surface of the blackbody as being at the black hole's event horizon. According to the laws of thermodynamics and blackbody radiation, under this model, how does the power \\(P\\) radiated by a black hole scale with its mass \\(M\\)?<br><br>
 (a) \\(P \\propto M^{-5}\\) <br>
@@ -208,9 +208,9 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         year: 2026,
         module: "T8",
         moduleName: "Stellar Remnants and General Relativity",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "1.8 / 10.0",
         title: "Black Hole Mass Evaporation Curve",
         description: `Next, interpret the radiated power \\(P\\) from Question 7 as a gradual loss of the black hole's intrinsic mass-energy \\(E = Mc^2\\). Consider the graph of the black hole's mass versus time. Which of the following best describes the shape of the resulting graph?<br><br>
 (a) Increasing and concave up <br>
@@ -236,7 +236,7 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "1/10",
+        difficultyText: "1.0 / 10.0",
         title: "Asteroid Orbital Period",
         description: `The asteroid Pallas orbits the Sun with a semi-major axis of 2.77 AU. What is its orbital period around the Sun in years?<br><br>
 (a) \\( (2.77)^{1/2} \\)<br>
@@ -263,7 +263,7 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.4 / 10.0",
         title: "Geostationary Satellite Altitude",
         description: `A small satellite orbits the Earth so it stays directly above a fixed point on the equator. Using \\(5.97 \\times 10^{24}\\) kg for Earth's mass and \\(6.37 \\times 10^6\\) m for its radius, how far is the satellite from the surface of the Earth? Assume its mass is 300 kg and an orbital period of 86164 s. (Find the distance above the Earth's surface, not orbital radius.)<br><br>
 (a) \\( 3.58 \\times 10^6 \\) m <br>
@@ -299,9 +299,9 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         year: 2026,
         module: "O1",
         moduleName: "Blind Map Practice",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.2 / 10.0",
         title: "Erased Bright Stars on Sky Map",
         description: `Four bright stars were erased from the sky map. All of these stars have magnitudes lower than 3.0. Select the alternative with the four stars that were erased from the sky map.<br><br>
 (a) \\(\\alpha\\) And, \\(\\alpha\\) CrB, \\(\\beta\\) Her, and \\(\\alpha\\) PsA <br>
@@ -326,9 +326,9 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         year: 2026,
         module: "T9",
         moduleName: "Planetary Systems and Formation",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.5 / 10.0",
         title: "Extraterrestrial Transit of Jupiter",
         description: `An extraterrestrial form of life from a distant planetary system observed a transit of Jupiter across the Sun. The transit was central, which means that the center of Jupiter's disk intersected with the center of the Sun's disk throughout the transit. Neglecting the effect of limb darkening, which of the light curves could correspond to the transit of Jupiter seen by the extraterrestrial? (The x-axis corresponds to time difference in hours from mid-transit, and the y-axis corresponds to the apparent bolometric magnitude of the star.)<br><br>
 (a) Baseline \\(m \\approx 9.740\\), transit depth \\(\\Delta m \\approx 0.011\\), total duration \\(\\approx 32.6\\text{ h}\\) (from \\(-16.3\\text{ h}\\) to \\(+16.3\\text{ h}\\)) <br>
@@ -360,9 +360,9 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         year: 2026,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.4 / 10.0",
         title: "Minimum Angular Separation of Algol and the Sun",
         description: `What is the smallest angular separation between Algol (\\(\\beta\\) Per) and the Sun throughout the year? Algol's declination is \\(+40^\\circ 57'\\) and its right ascension is \\(3^{\\text{h}}08^{\\text{min}}\\).<br><br>
 (a) \\(11^\\circ 49'\\) <br>
@@ -421,9 +421,9 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         year: 2026,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "1.9 / 10.0",
         title: "Lunar Recession",
         description: `Lunar laser ranging experiments show that, due to tidal effects, the semi-major axis of the Moon's orbit increases by around 38 mm per year. Assuming that the recession rate is constant, by approximately how much does this recession increase the Moon's sidereal orbital period each year? The mass of the Moon is \\(7.3 \\times 10^{22}\\) kg. <em>Hint: \\((1 + x)^\\beta \\approx 1 + \\beta x\\) for \\(|x| \\ll 1\\).</em><br><br>
 (a) \\( 230 \\ \\mu\\text{s} \\) <br>
@@ -458,7 +458,7 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "4/10",
+        difficultyText: "1.7 / 10.0",
         title: "Synodic Lunar Month on Exoplanet",
         description: `Kepler-22b is an exoplanet discovered by transiting with an orbital period of 290 days. Suppose it has a mass of \\(4.84 \\times 10^{25}\\) kg and a moon similar to Earth's, with a prograde orbit near the ecliptic plane of the Kepler-22 system and a semi-major axis of \\(7.70 \\times 10^8\\) m. What is the length of a synodic lunar month, i.e., the time between successive full moons, for an observer on Kepler-22b? You can neglect the mass of the moon.<br><br>
 (a) 25.0 days <br>
@@ -483,9 +483,9 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         year: 2026,
         module: "T7",
         moduleName: "Stellar Evolution",
-        difficultyClass: "hard",
-        icon: "fire",
-        difficultyText: "8/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.8 / 10.0",
         title: "Dynamical Friction and Virialized Star Cluster",
         description: `A quickly-moving black hole passes through the center of a large star cluster. While the black hole does not experience any direct collisions with any stars in the cluster or significantly disrupt any stellar atmospheres, the black hole imparts a fraction of its momentum to several stars in the cluster close to the black hole's trajectory. Some time passes, and due to complex multi-body interactions, the additional energy and momentum get distributed over the entire star cluster. After a sufficiently long time, which of the following statements are likely TRUE regarding the system (compared to before the black hole event), assuming no further perturbations occur?<br><br>
 (I) The average peak blackbody emission wavelength among stars in the cluster decreases significantly.<br>
@@ -514,7 +514,7 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         moduleName: "Cosmology and the Structure of the Universe",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "2/10",
+        difficultyText: "1.0 / 10.0",
         title: "CMB Temperature at Galaxy MoM-z14",
         description: `The most distant known galaxy, MoM-z14, was recently observed by the James Webb Space Telescope and has a redshift of \\(z = 14.44\\). If the current cosmic microwave background (CMB) temperature is \\(2.725\\text{ K}\\), what was the CMB temperature at MoM-z14?<br><br>
 (a) \\(0.1887\\text{ K}\\) <br>
@@ -539,7 +539,7 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
         moduleName: "Stellar Structure and Atmospheres",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.5 / 10.0",
         title: "Stellar Density Profile Integration",
         description: `Assume a spherical star has a density profile described by the equation below:
 $$ \\rho(r) = \\left(1 - \\frac{r^3}{R^3}\\right)\\rho_c \\qquad 0 \\le r \\le R $$
@@ -568,7 +568,7 @@ Find \\(\\rho_c\\) in terms of the total mass, \\(M\\), and the radius of the st
         moduleName: "Stellar Evolution",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "2/10",
+        difficultyText: "1.0 / 10.0",
         title: "Early Universe Main-Sequence Stars",
         description: `Some stars formed in the early universe are still observable today. If an observer observed one and it is still in the main sequence phase, what would most likely be its mass?<br><br>
 (a) \\(< 2\\ M_\\odot\\) <br>
@@ -589,9 +589,9 @@ Find \\(\\rho_c\\) in terms of the total mass, \\(M\\), and the radius of the st
         year: 2026,
         module: "T10",
         moduleName: "Galactic Structure",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "1.6 / 10.0",
         title: "Inner Galactic Rotation Curve Power Law",
         description: `Consider orbital radii within the most luminous part of the galactic disk, at around \\(r \\le 5000\\text{ ly}\\). Let \\(M(r)\\) be the total mass (of all forms) enclosed within a distance \\(r\\) from the galactic center. Approximating the rotation curve by the low-radius best fit (dot-dash) straight line through the origin, we can infer that \\(M(r)\\) is roughly proportional to \\(r^n\\) for some value of \\(n\\) (over small \\(r\\)). In light of the value of \\(n\\), and for \\(r \\le 5000\\text{ ly}\\), which of the following hypotheses is MOST consistent with the data?<br><br>
 (a) Near the galactic center, the mass is concentrated in and is nearly uniform over the 2D galactic plane. <br>
@@ -613,9 +613,9 @@ Find \\(\\rho_c\\) in terms of the total mass, \\(M\\), and the radius of the st
         year: 2026,
         module: "T10",
         moduleName: "Galactic Structure",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "1.6 / 10.0",
         title: "Dark-to-Baryonic Enclosed Mass Ratio",
         description: `For larger values of \\(r\\), the discrepancy between the observed and expected rotation curves becomes significant. Assume that the expected rotation curve (dashed gray) is calculated from all baryonic matter, while the observed rotation curve (solid white) is due to the combination of baryonic matter and dark matter. Within a radius of \\(r = 40,000\\text{ ly}\\) from the galactic center, according to the graph (where \\(v_{\\text{obs}} \\approx 130\\text{ km s}^{-1}\\) and \\(v_{\\text{bary}} \\approx 38\\text{ km s}^{-1}\\)), which of the following is closest to the ratio between the dark matter mass and the baryonic matter mass enclosed?<br><br>
 (a) 2 <br>
@@ -671,9 +671,9 @@ Which of the above are TRUE?<br><br>
         year: 2026,
         module: "T12",
         moduleName: "Cosmology and the Structure of the Universe",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.3 / 10.0",
         title: "Chained Supernova Redshifts",
         description: `Suppose the Honeyhive galaxy and the Gold Leaf galaxy are diametrically opposite when viewed from the Earth, and the following sequence of events happens:<br>
 1. A type Ia supernova happens in the Honeyhive galaxy.<br>
@@ -704,12 +704,12 @@ If the alien astronomers measure the redshift of the Milky Way supernova to be \
         moduleName: "Radiation Physics and Relativity Fundamentals",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "2/10",
+        difficultyText: "1.1 / 10.0",
         title: "Hydrogen Spectral Lines Ordering",
         description: `The Balmer-\\(\\alpha\\), H-I, and Lyman-\\(\\alpha\\) lines are important spectral lines in astronomy, all from hydrogen:<br>
-• The Balmer-\\(\\alpha\\) line occurs when an electron goes from \\(n = 3\\) to \\(n = 2\\).<br>
-• The H-I line occurs from an electron in the \\(1s\\) shell undergoing a spin-flip transition between two hyperfine levels.<br>
-• The Lyman-\\(\\alpha\\) line occurs when an electron goes from \\(n = 2\\) to \\(n = 1\\).<br><br>
+- The Balmer-\\(\\alpha\\) line occurs when an electron goes from \\(n = 3\\) to \\(n = 2\\).<br>
+- The H-I line occurs from an electron in the \\(1s\\) shell undergoing a spin-flip transition between two hyperfine levels.<br>
+- The Lyman-\\(\\alpha\\) line occurs when an electron goes from \\(n = 2\\) to \\(n = 1\\).<br><br>
 Order these lines from the shortest to longest wavelength.<br><br>
 (a) Balmer-\\(\\alpha\\), H-I, Lyman-\\(\\alpha\\) <br>
 (b) H-I, Balmer-\\(\\alpha\\), Lyman-\\(\\alpha\\) <br>
@@ -733,9 +733,9 @@ Order these lines from the shortest to longest wavelength.<br><br>
         year: 2026,
         module: "T4",
         moduleName: "Stellar Parameters and Spectral Classification",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.5 / 10.0",
         title: "Eclipsing Binary Temperature Ratio",
         description: `Star X and star Y form an eclipsing binary system, where star X is larger, and fully blocks star Y during an eclipse. During the primary eclipse, the apparent magnitude of the binary system increases by 0.200, and during the secondary eclipse, the apparent magnitude only increases by 0.100. If \\(T_X\\) is the surface temperature of star X and \\(T_Y\\) is the surface temperature of star Y, which of the following is a possible value of \\(T_X / T_Y\\)? Ignore limb darkening.<br><br>
 (a) 0.679 <br>
@@ -763,7 +763,7 @@ Order these lines from the shortest to longest wavelength.<br><br>
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "1/10",
+        difficultyText: "1.5 / 10.0",
         title: "Kirkwood Gaps and Orbital Resonance",
         description: `When plotting the distribution of asteroids in the asteroid belt by their semi-major axis, we can see several regions, known as "Kirkwood gaps," where asteroids' orbits are unstable due to an orbital resonance with Jupiter (\\(a = 5.20\\) AU). What orbital resonance is responsible for the gap marked with the arrow?<br><br>
 <img src="assets/img/USAAAO_2026/Q27_USAAAO_2026.png" alt="Kirkwood Gaps Histogram" style="max-width: 100%; border-radius: 2px; margin: 15px 0;"><br>
@@ -792,15 +792,15 @@ Order these lines from the shortest to longest wavelength.<br><br>
         year: 2026,
         module: "T7",
         moduleName: "Stellar Evolution",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "1.6 / 10.0",
         title: "Globular Cluster Gaia DR3 CMD Regions",
         description: `An HR diagram (Color-Magnitude Diagram) for a globular cluster from Gaia DR3 data plots Absolute \\(G\\) Magnitude (from \\(-2\\) at the top to \\(+6\\) at the bottom) versus \\(\\text{BP} - \\text{RP}\\) color (from \\(-0.5\\) to \\(2.0\\)), with four labeled regions:<br>
-• Region A: \\(M_G \\approx 1\\text{--}2\\), \\(\\text{BP}-\\text{RP} \\approx 0.0\\)<br>
-• Region B: \\(M_G \\approx 4\\text{--}5\\), \\(\\text{BP}-\\text{RP} \\approx 0.8\\)<br>
-• Region C: \\(M_G \\approx 2\\text{--}3\\), \\(\\text{BP}-\\text{RP} \\approx 1.1\\)<br>
-• Region D: \\(M_G \\approx -2\\), \\(\\text{BP}-\\text{RP} \\approx 1.6\\)<br><br>
+- Region A: \\(M_G \\approx 1\\text{--}2\\), \\(\\text{BP}-\\text{RP} \\approx 0.0\\)<br>
+- Region B: \\(M_G \\approx 4\\text{--}5\\), \\(\\text{BP}-\\text{RP} \\approx 0.8\\)<br>
+- Region C: \\(M_G \\approx 2\\text{--}3\\), \\(\\text{BP}-\\text{RP} \\approx 1.1\\)<br>
+- Region D: \\(M_G \\approx -2\\), \\(\\text{BP}-\\text{RP} \\approx 1.6\\)<br><br>
 1) Identify the region where stars undergo hydrogen burning in their cores. 2) Identify the region where stars experience the Helium flash.<br><br>
 (a) 1. Region A; 2. Region B <br>
 (b) 1. Region A; 2. Region C <br>
@@ -824,9 +824,9 @@ Order these lines from the shortest to longest wavelength.<br><br>
         year: 2026,
         module: "T2",
         moduleName: "Radiation Physics and Relativity Fundamentals",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.7 / 10.0",
         title: "Solar vs. CMB Photon Flux Ratio",
         description: `Which of the following is closest to the ratio of the number of photons from the Sun that strike the Earth each second to the number of photons from the Cosmic Microwave Background that strike the Earth each second? (Assume the Cosmic Microwave Background to be a uniform and isotropic blackbody signal at \\(T_c \\approx 2.725\\text{ K}\\). As a hint, you may approximate all photons from a given source as being at the peak emission energy.)<br><br>
 (a) \\(5 \\times 10^4\\) <br>
@@ -861,8 +861,8 @@ Order these lines from the shortest to longest wavelength.<br><br>
         difficultyText: "THEORY",
         title: "Spiral vs. Elliptical Galaxy Populations",
         description: `Consider two galaxies:<br>
-• Galaxy S is a spiral galaxy with blue spiral arms.<br>
-• Galaxy E is an elliptical galaxy with no blue stars, only red stars.<br><br>
+- Galaxy S is a spiral galaxy with blue spiral arms.<br>
+- Galaxy E is an elliptical galaxy with no blue stars, only red stars.<br><br>
 Which of the following statements are likely TRUE?<br>
 (I) We can find planetary nebulae in both galaxies.<br>
 (II) Galaxy S is likely to have ongoing star formation.<br>

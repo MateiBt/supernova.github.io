@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POTD · POTW · POTM | Supernova Guide</title>
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Canonical Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --bg-base: #0A0A0C;
+            --bg-sidebar: #101115;
+            --bg-card: #15161A;
+            --bg-card-hover: #1C1D22;
+            --accent-green: #2BE38A;
+            --accent-blue: #35E6FF;
+            --accent-purple: #B39CD0;
+            --accent-rose: #FFC1CC;
+            --accent-gold: #FFCF5C;
+            --discord-color: #5865F2;
+            --text-pure: #FFFFFF;
+            --text-main: #EDEDED;
+            --text-muted: #8A94A6;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .sky-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; pointer-events: none; overflow: hidden; background-color: var(--bg-base);
+        }
+        .comet {
+            position: absolute; width: 160px; height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent-blue));
+            border-radius: 50%; opacity: 0;
+        }
+        .comet::before {
+            content: ''; position: absolute; top: -2px; right: 0; width: 6px; height: 6px;
+            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px rgba(53, 230, 255, 0.6);
+        }
+        @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
+
+        /* --- UNIFIED SIDEBAR --- */
+        .sidebar {
+            width: 260px; background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+            display: flex; flex-direction: column;
+            padding: 24px 20px; flex-shrink: 0; z-index: 100; overflow-y: auto;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 16px;
+            font-family: var(--font-display); font-size: 1.3rem;
+            font-weight: 700; color: var(--text-pure);
+            margin-bottom: 32px; padding-left: 4px; line-height: 1.2;
+            text-decoration: none;
+        }
+        .brand img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+        .menu-label {
+            font-family: var(--font-mono); font-size: 0.68rem;
+            color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.05em; margin: 18px 0 8px 8px;
+        }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 9px 12px; border-radius: var(--radius-sm);
+            color: var(--text-muted); text-decoration: none;
+            font-weight: 500; font-size: 0.88rem; transition: all 0.2s ease;
+        }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.05rem; }
+        .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
+        .nav-item.active {
+            background-color: rgba(53, 230, 255, 0.12);
+            color: var(--accent-blue);
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        /* --- MAIN WORKSPACE --- */
+        .dashboard-main {
+            flex: 1; overflow-y: auto; padding: 28px 44px 70px;
+            display: flex; flex-direction: column; gap: 22px;
+        }
+
+        .top-header {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 16px;
+        }
+        .header-title h1 { font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--text-pure); margin-bottom: 2px; }
+        .header-title p { color: var(--text-muted); font-size: 0.9rem; }
+
+        .header-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .timer-pill {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: var(--bg-card); border: 1px solid var(--border-light);
+            padding: 8px 16px; border-radius: 99px;
+            font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-pure);
+        }
+        .timer-pill span.lbl { color: var(--accent-blue); font-weight: 700; text-transform: uppercase; }
+
+        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-subtle); text-decoration: none; }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border-light); object-fit: cover; }
+        .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
+        .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+        /* Mode Switcher Bar */
+        .mode-tabs {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+        }
+        .tab-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tab-card:hover { background: var(--bg-card-hover); border-color: var(--border-light); }
+        .tab-card.active {
+            border-color: var(--accent-blue);
+            background: rgba(53, 230, 255, 0.07);
+        }
+        .tab-card h3 {
+            font-family: var(--font-display); font-size: 1.12rem; color: var(--text-pure);
+        }
+        .tab-card .tab-tag {
+            font-family: var(--font-mono); font-size: 0.7rem;
+            text-transform: uppercase; color: var(--accent-blue);
+            font-weight: 700;
+        }
+
+        /* Full-Screen Active Problem Card */
+        .problem-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 34px 38px;
+            min-height: 62vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-header-badges {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 12px;
+            margin-bottom: 22px; padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .badge-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+        .source-badge {
+            font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700;
+            padding: 5px 12px; border-radius: 6px;
+            background: rgba(53, 230, 255, 0.1); color: var(--accent-blue);
+            border: 1px solid rgba(53, 230, 255, 0.25);
+        }
+        .author-badge {
+            font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700;
+            padding: 5px 12px; border-radius: 6px;
+            background: rgba(179, 156, 208, 0.14); color: var(--accent-purple);
+            border: 1px solid rgba(179, 156, 208, 0.35);
+        }
+        .points-badge {
+            font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700;
+            padding: 5px 12px; border-radius: 6px;
+            background: rgba(43, 227, 138, 0.12); color: var(--accent-green);
+            border: 1px solid rgba(43, 227, 138, 0.28);
+        }
+        .diff-badge {
+            font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700;
+            padding: 5px 12px; border-radius: 6px;
+            background: rgba(255, 207, 92, 0.12); color: var(--accent-gold);
+            border: 1px solid rgba(255, 207, 92, 0.3);
+        }
+
+        .problem-title {
+            font-family: var(--font-display); font-size: 1.75rem;
+            color: var(--text-pure); margin-bottom: 16px; line-height: 1.25;
+        }
+        .problem-body {
+            font-size: 0.97rem; line-height: 1.78; color: var(--text-main);
+            margin-bottom: 24px;
+        }
+        .problem-body p { margin-bottom: 14px; }
+        .problem-body h3 {
+            font-family: var(--font-display); font-size: 1.25rem;
+            color: var(--accent-blue); margin: 26px 0 12px;
+            padding-bottom: 6px; border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .task-box {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-subtle);
+            border-left: 3px solid var(--accent-purple);
+            border-radius: var(--radius-md);
+            padding: 18px 22px;
+            margin-bottom: 16px;
+        }
+        .task-box-header {
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: var(--font-display); font-weight: 700; font-size: 1.05rem;
+            color: var(--text-pure); margin-bottom: 10px;
+        }
+        .task-pts {
+            font-family: var(--font-mono); font-size: 0.74rem;
+            color: var(--accent-gold); background: rgba(255, 207, 92, 0.12);
+            padding: 3px 9px; border-radius: 6px;
+        }
+
+        /* Discord Submission Footer Bar */
+        .submission-bar {
+            margin-top: auto;
+            padding-top: 22px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .submission-note {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+        .submission-note strong {
+            color: var(--text-pure);
+        }
+        .btn-discord-submit {
+            background: var(--discord-color);
+            color: var(--text-pure);
+            text-decoration: none;
+            padding: 11px 20px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .btn-discord-submit:hover {
+            background: #4752C4;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(88, 101, 242, 0.35);
+        }
+
+        /* --- EMBEDDED CHIMERA FLASH SIMULATOR STYLES --- */
+        .sim-wrapper {
+            margin-top: 16px;
+            margin-bottom: 24px;
+            background: #0b0f17;
+            border: 1px solid #23314f;
+            border-radius: var(--radius-lg);
+            padding: 22px;
+        }
+        .sim-header {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 12px;
+            border-bottom: 1px solid #23314f; padding-bottom: 14px; margin-bottom: 16px;
+        }
+        .sim-badge {
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid #38bdf8;
+            color: #38bdf8;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-weight: 700;
+        }
+        .sim-grid-top {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;
+        }
+        .sim-card {
+            background: #131b2e; border: 1px solid #23314f;
+            border-radius: 10px; padding: 14px;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .sim-card-header {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.8rem; font-weight: 700; color: #8ea0c0;
+            text-transform: uppercase; font-family: var(--font-mono);
+        }
+        .sim-canvas {
+            width: 100%; height: 340px; background: #070b12;
+            border-radius: 6px; border: 1px solid #1c2842; display: block;
+        }
+        .sim-controls-grid {
+            display: grid; grid-template-columns: 1.25fr 1fr; gap: 16px;
+        }
+        .sim-slider-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px; }
+        .sim-slider-label { display: flex; justify-content: space-between; align-items: center; font-size: 0.84rem; }
+        .sim-slider-val { font-family: var(--font-mono); color: #38bdf8; font-weight: 700; }
+        .sim-num-input {
+            background: #080d16; border: 1px solid #314674; color: #38bdf8;
+            font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700;
+            padding: 3px 8px; border-radius: 4px; width: 110px; text-align: right;
+        }
+        .sim-btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+        .sim-btn {
+            background: #1d2a47; color: #e6edf7; border: 1px solid #314674;
+            border-radius: 6px; padding: 7px 12px; font-size: 0.78rem;
+            font-weight: 600; cursor: pointer; transition: 0.15s ease;
+        }
+        .sim-btn:hover { background: #293c66; border-color: #38bdf8; }
+        .sim-telemetry-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .sim-stat-box { background: #090e18; border: 1px solid #1d2942; border-radius: 6px; padding: 8px 10px; }
+        .sim-stat-label { font-size: 0.68rem; color: #8ea0c0; text-transform: uppercase; font-family: var(--font-mono); }
+        .sim-stat-num { font-family: var(--font-mono); font-size: 0.94rem; font-weight: 700; color: #fff; margin-top: 2px; }
+        .sim-tape-box {
+            background: #090e18; border: 1px solid #1d2942; border-radius: 6px;
+            padding: 10px; font-family: var(--font-mono); font-size: 0.84rem;
+            overflow-x: auto; white-space: nowrap;
+        }
+        .sym-0 { color: #38bdf8; font-weight: bold; }
+        .sym-1 { color: #f59e0b; font-weight: bold; }
+        .sym-2 { color: #f43f5e; font-weight: bold; }
+
+        /* Past Problems Archive Section (Bottom Only, Zero Future Spoilers) */
+        .past-problems-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px 30px;
+            margin-top: 8px;
+        }
+        .past-problems-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border-subtle);
+        }
+        .past-problems-header h2 {
+            font-family: var(--font-display); font-size: 1.25rem; color: var(--text-pure);
+        }
+        .past-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 16px; border-radius: var(--radius-sm);
+            border-bottom: 1px solid var(--border-subtle);
+            cursor: pointer; transition: background 0.2s; gap: 12px; flex-wrap: wrap;
+        }
+        .past-row:hover { background: var(--bg-card-hover); }
+        .past-row:last-child { border-bottom: none; }
+
+        #imageModal {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.88); z-index: 3000;
+            align-items: center; justify-content: center; padding: 24px;
+        }
+        #imageModal img {
+            max-width: 90vw; max-height: 88vh; object-fit: contain;
+            border-radius: var(--radius-md); border: 1px solid var(--border-light);
+        }
+
+        @media (max-width: 1024px) {
+            .sim-grid-top, .sim-controls-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .mode-tabs { grid-template-columns: 1fr; }
+            .dashboard-main { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sky-background">
+        <div class="comet" style="top: 8%; left: 88%; animation: shooting 9s infinite linear 1s;"></div>
+    </div>
+
+    <!-- UNIFIED 3-SECTION SIDEBAR -->
+    <aside class="sidebar">
+        <a href="dashboard.html" class="brand">
+            <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span>SUPERNOVA<br>GUIDE</span>
+        </a>
+
+        <div class="menu-label">Menu</div>
+        <ul class="nav-menu">
+            <li><a href="dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="challenges.html" class="nav-item active"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
+            <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
+            <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
+        </ul>
+
+        <div class="menu-label">Tools &amp; Analytics</div>
+        <ul class="nav-menu">
+            <li><a href="analytics.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="tools.html" class="nav-item"><i class="fa-solid fa-calculator"></i> Formula &amp; Tools</a></li>
+            <li><a href="notebook.html" class="nav-item"><i class="fa-solid fa-book-open"></i> Mistake Notebook</a></li>
+            <li><a href="resources.html" class="nav-item"><i class="fa-solid fa-book-atlas"></i> External Library</a></li>
+        </ul>
+
+        <div class="menu-label">General</div>
+        <ul class="nav-menu">
+            <li><a href="profile.html" class="nav-item" id="profileLink"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
+            <li><a href="#" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+        <header class="top-header">
+            <div class="header-title">
+                <h1>POTD · POTW · POTM</h1>
+                <p>Daily, weekly, and monthly 10-point problems by Albert, Mihai, and Matei. Submit your solutions on Discord.</p>
+            </div>
+            <div class="header-actions">
+                <div class="timer-pill">
+                    <span class="lbl" id="next-timer-label">Next POTD In:</span>
+                    <span id="next-timer-val">00d 00h 00m 00s</span>
+                </div>
+                <a href="profile.html" class="user-profile">
+                    <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF" alt="Avatar" class="avatar">
+                    <div class="user-info">
+                        <h4 id="user-name-display">Guest</h4>
+                        <p id="user-role-display">Novice Observer</p>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <!-- MODE SWITCHER -->
+        <div class="mode-tabs">
+            <button class="tab-card active" id="tab-potd" onclick="window.switchChallengeTab('potd')">
+                <div>
+                    <span class="tab-tag">Daily · 10.0 Pts</span>
+                    <h3>Problem of the Day</h3>
+                </div>
+                <i class="fa-solid fa-sun" style="color:var(--accent-blue); font-size:1.2rem;"></i>
+            </button>
+            <button class="tab-card" id="tab-potw" onclick="window.switchChallengeTab('potw')">
+                <div>
+                    <span class="tab-tag" style="color:var(--accent-purple);">Weekly · 10.0 Pts</span>
+                    <h3>Problem of the Week</h3>
+                </div>
+                <i class="fa-solid fa-calendar-week" style="color:var(--accent-purple); font-size:1.2rem;"></i>
+            </button>
+            <button class="tab-card" id="tab-potm" onclick="window.switchChallengeTab('potm')">
+                <div>
+                    <span class="tab-tag" style="color:var(--accent-green);">Monthly · 10.0 Pts + Sim</span>
+                    <h3>Problem of the Month</h3>
+                </div>
+                <i class="fa-solid fa-award" style="color:var(--accent-green); font-size:1.2rem;"></i>
+            </button>
+        </div>
+
+        <!-- MAIN ACTIVE PROBLEM WORKSPACE -->
+        <div id="active-problem-workspace"></div>
+
+        <!-- PAST PROBLEMS ARCHIVE (BOTTOM OF PAGE, ZERO FUTURE SPOILERS) -->
+        <section class="past-problems-section">
+            <div class="past-problems-header">
+                <h2 id="past-problems-title">Past Problems</h2>
+                <button id="btn-back-to-live" class="btn-discord-submit" style="display:none; padding:6px 14px; font-size:0.75rem; background:var(--bg-sidebar); border:1px solid var(--border-light);" onclick="window.returnToLiveProblem()">
+                    <i class="fa-solid fa-bolt"></i> Back to Current Active Problem
+                </button>
+            </div>
+            <div id="past-problems-list"></div>
+        </section>
+    </main>
+
+    <!-- IMAGE MODAL -->
+    <div id="imageModal" onclick="this.style.display='none'">
+        <img id="img01" src="" alt="Enlarged Diagram">
+    </div>
+
+    <script type="module" src="js/auth.js"></script>
+    <script type="module">
+        import { EPOCH_UTC, CYCLE_MS, potdProblems, potwProblems, potmProblems } from './js/data/rotations_data.js';
+
+        let currentMode = 'potd';
+        let viewingPastIdx = null;
+        let simAnimationId = null;
+
+        if (window.location.hash === '#potw') currentMode = 'potw';
+        if (window.location.hash === '#potm') currentMode = 'potm';
+
+        function getDataset(mode) {
+            if (mode === 'potw') return potwProblems;
+            if (mode === 'potm') return potmProblems;
+            return potdProblems;
+        }
+
+        function getLiveIndex(mode) {
+            const list = getDataset(mode);
+            const now = Date.now();
+            if (now < EPOCH_UTC) return 0;
+            const elapsedIdx = Math.floor((now - EPOCH_UTC) / CYCLE_MS[mode]);
+            return Math.min(Math.max(0, elapsedIdx), list.length - 1);
+        }
+
+        function renderWorkspace() {
+            if (simAnimationId) {
+                cancelAnimationFrame(simAnimationId);
+                simAnimationId = null;
+            }
+
+            const list = getDataset(currentMode);
+            const liveIdx = getLiveIndex(currentMode);
+            const displayIdx = viewingPastIdx !== null ? viewingPastIdx : liveIdx;
+            const prob = list[displayIdx];
+
+            document.querySelectorAll('.tab-card').forEach(el => el.classList.remove('active'));
+            document.getElementById(`tab-${currentMode}`)?.classList.add('active');
+
+            const backBtn = document.getElementById('btn-back-to-live');
+            if (backBtn) backBtn.style.display = viewingPastIdx !== null ? 'inline-flex' : 'none';
+
+            const workspace = document.getElementById('active-problem-workspace');
+
+            workspace.innerHTML = `
+                <article class="problem-card">
+                    <div class="card-header-badges">
+                        <div class="badge-group">
+                            <span class="source-badge">${currentMode.toUpperCase()} #${displayIdx + 1} · ${prob.scheduledDate}</span>
+                            <span class="author-badge">${prob.author}</span>
+                            <span class="points-badge">Total: 10.0 Points</span>
+                            <span class="diff-badge">${prob.module} · Difficulty: ${prob.difficultyText}</span>
+                        </div>
+                    </div>
+
+                    <h2 class="problem-title">${prob.title}</h2>
+                    <div class="problem-body">${prob.description}</div>
+
+                    ${prob.hasChimeraSimulator ? getChimeraSimulatorHtml() : ''}
+
+                    <div class="submission-bar">
+                        <div class="submission-note">
+                            <strong>Submit on Discord:</strong> Send your solution (PDF, LaTeX, or clear photos) on our Discord server before the timer ends. All submissions are graded manually and results are posted on Discord.
+                        </div>
+                        <a href="https://discord.gg/KJATXYfan4" target="_blank" rel="noopener" class="btn-discord-submit">
+                            <i class="fab fa-discord"></i> Submit Solution on Discord
+                        </a>
+                    </div>
+                </article>
+            `;
+
+            if (prob.hasChimeraSimulator) {
+                initChimeraSimulator();
+            }
+
+            // Render strictly PAST problems (idx < liveIdx) — zero future spoilers
+            const pastListEl = document.getElementById('past-problems-list');
+            const pastItems = list.slice(0, liveIdx);
+
+            if (pastItems.length === 0) {
+                pastListEl.innerHTML = `
+                    <div style="color:var(--text-muted); font-size:0.88rem; padding:12px 4px;">
+                        No past ${currentMode.toUpperCase()} problems yet.
+                    </div>
+                `;
+            } else {
+                pastListEl.innerHTML = pastItems.map((item, idx) => `
+                    <div class="past-row" onclick="window.openPastProblem(${idx})">
+                        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                            <span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--accent-blue); font-weight:700;">#${idx + 1} · ${item.scheduledDate}</span>
+                            <strong style="color:var(--text-pure);">${item.title}</strong>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span class="author-badge">${item.author}</span>
+                            <span class="diff-badge">Diff: ${item.difficultyText}</span>
+                            <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-green);">Open &rarr;</span>
+                        </div>
+                    </div>
+                `).reverse().join('');
+            }
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([workspace]).catch(() => {});
+            }
+        }
+
+        function getChimeraSimulatorHtml() {
+            return `
+                <div class="sim-wrapper" id="chimera-sim-container">
+                    <div class="sim-header">
+                        <div>
+                            <h3 style="font-family:var(--font-display); font-size:1.25rem; color:#fff; margin-bottom:2px;">
+                                <i class="fa-solid fa-wave-square" style="color:#38bdf8; margin-right:8px;"></i>
+                                Interactive Chimera Flash Simulator (3D Slow-Fast AGB Oscillator &amp; Poincaré Stroboscope)
+                            </h3>
+                            <p style="font-size:0.82rem; color:#8ea0c0;">
+                                Use the fine-tune controls (<code>0.00001</code> step) to investigate Part B (Bautin hard-excitation) and Part C (Crisis Ghost vs. Superstable Period-3 Window where \\(g_\\Lambda^3(z_c) - z_c = 0\\) and \\(\\Lambda_3 = 0\\)).
+                            </p>
+                        </div>
+                        <span class="sim-badge" id="regimeBadge">REGIME: INITIALIZING</span>
+                    </div>
+
+                    <div class="sim-grid-top">
+                        <div class="sim-card">
+                            <div class="sim-card-header">
+                                <span>Continuous Phase Space (u, v) &amp; Slow Manifold v = N(u)</span>
+                                <span style="color:#38bdf8;">RK4 Live Orbit</span>
+                            </div>
+                            <canvas id="phaseCanvas" class="sim-canvas" width="620" height="340"></canvas>
+                        </div>
+
+                        <div class="sim-card">
+                            <div class="sim-card-header">
+                                <span>Stroboscopic Return Map z_(n+1) = g(z_n) &amp; Cobweb (N_trans = 500)</span>
+                                <span style="color:#f59e0b;">Poincaré Section</span>
+                            </div>
+                            <canvas id="mapCanvas" class="sim-canvas" width="620" height="340"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="sim-controls-grid">
+                        <div class="sim-card">
+                            <div class="sim-card-header"><span>Physical Parameter Controls</span></div>
+
+                            <div class="sim-slider-group">
+                                <div class="sim-slider-label">
+                                    <span>Convective Overshoot Coupling (&Lambda;<sub>ov</sub>)</span>
+                                    <input type="number" id="numLambda" class="sim-num-input" min="2.80000" max="3.95000" step="0.00001" value="3.82800" />
+                                </div>
+                                <input type="range" id="sliderLambda" min="2.80000" max="3.95000" step="0.00001" value="3.82800" />
+                            </div>
+
+                            <div class="sim-slider-group">
+                                <div class="sim-slider-label">
+                                    <span>Gravothermal Driving Parameter (&mu; = &alpha;<sub>c</sub> &minus; &alpha;<sub>mech</sub>)</span>
+                                    <span class="sim-slider-val" id="valMu">0.180</span>
+                                </div>
+                                <input type="range" id="sliderMu" min="-0.080" max="0.450" step="0.005" value="0.180" />
+                            </div>
+
+                            <div class="sim-slider-group">
+                                <div class="sim-slider-label">
+                                    <span>Thermo-Opacity Asymmetry (&sigma;) [Bautin Control]</span>
+                                    <span class="sim-slider-val" id="valSigma">0.350</span>
+                                </div>
+                                <input type="range" id="sliderSigma" min="0.000" max="1.200" step="0.010" value="0.350" />
+                            </div>
+
+                            <div class="sim-slider-group">
+                                <div class="sim-slider-label">
+                                    <span>Fast-Slow Timescale Stiffness (&delta; = &tau;<sub>mech</sub>/&tau;<sub>th</sub>)</span>
+                                    <span class="sim-slider-val" id="valDelta">0.020</span>
+                                </div>
+                                <input type="range" id="sliderDelta" min="0.008" max="0.080" step="0.002" value="0.020" />
+                            </div>
+
+                            <div class="sim-btn-row">
+                                <button class="sim-btn" id="btnStepDownCoarse">-0.0001 &Lambda;<sub>ov</sub></button>
+                                <button class="sim-btn" id="btnStepDown">-0.00001 &Lambda;<sub>ov</sub></button>
+                                <button class="sim-btn" id="btnStepUp">+0.00001 &Lambda;<sub>ov</sub></button>
+                                <button class="sim-btn" id="btnStepUpCoarse">+0.0001 &Lambda;<sub>ov</sub></button>
+                                <button class="sim-btn" id="btnGhost">Preset: Crisis Ghost (3.82810)</button>
+                                <button class="sim-btn" id="btnBautin">Preset: Subcritical Bautin (&mu; = -0.015)</button>
+                                <button class="sim-btn" id="btnReset">Reset Orbit</button>
+                            </div>
+                        </div>
+
+                        <div class="sim-card">
+                            <div class="sim-card-header"><span>Stroboscopic Telemetry Readout</span></div>
+
+                            <div class="sim-telemetry-grid">
+                                <div class="sim-stat-box">
+                                    <div class="sim-stat-label">Attractor Orbit z<sub>1</sub></div>
+                                    <div class="sim-stat-num" id="statZ1">0.50000</div>
+                                </div>
+                                <div class="sim-stat-box">
+                                    <div class="sim-stat-label">Attractor Orbit z<sub>2</sub></div>
+                                    <div class="sim-stat-num" id="statZ2">0.95700</div>
+                                </div>
+                                <div class="sim-stat-box">
+                                    <div class="sim-stat-label">Attractor Orbit z<sub>3</sub></div>
+                                    <div class="sim-stat-num" id="statZ3">0.15762</div>
+                                </div>
+                                <div class="sim-stat-box">
+                                    <div class="sim-stat-label">3-Cycle Residual g³(0.5)&minus;0.5</div>
+                                    <div class="sim-stat-num" id="statRes">-0.00790</div>
+                                </div>
+                                <div class="sim-stat-box">
+                                    <div class="sim-stat-label">3-Cycle Multiplier &Lambda;<sub>3</sub></div>
+                                    <div class="sim-stat-num" id="statMult">1.0842</div>
+                                </div>
+                                <div class="sim-stat-box">
+                                    <div class="sim-stat-label">1st Lyapunov &ell;<sub>1</sub></div>
+                                    <div class="sim-stat-num" id="statL1">-5.982</div>
+                                </div>
+                            </div>
+
+                            <div class="sim-stat-label" style="margin-top:8px;">Asymptotic Symbolic Kneading Itinerary (Post-500 Transient Pulses):</div>
+                            <div class="sim-tape-box" id="symbolicTape"></div>
+
+                            <p style="font-size:0.78rem; color:#8ea0c0; margin-top:6px;">
+                                Mean Proton Catalyst Concentration: <strong id="statW" style="color:#38bdf8; font-family:var(--font-mono);">0.1428</strong> · Report your 5-sig-fig values for \\(\\mathbf{V} = (\\Lambda_{\\mathrm{ov}}^*, z_2^*, z_3^*)\\) in your Discord submission.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initChimeraSimulator() {
+            const phaseCanvas = document.getElementById('phaseCanvas');
+            const mapCanvas = document.getElementById('mapCanvas');
+            if (!phaseCanvas || !mapCanvas) return;
+            const pCtx = phaseCanvas.getContext('2d');
+            const mCtx = mapCanvas.getContext('2d');
+
+            let params = {
+                lambda: 3.82800,
+                mu: 0.180,
+                sigma: 0.350,
+                delta: 0.020,
+                beta_d: 0.120,
+                kappa: 0.150,
+                gamma: 0.080,
+                eta_dredge: 0.220
+            };
+
+            let state = { u: 1.15, v: 0.25, w: 0.05 };
+            let trail = [];
+            const MAX_TRAIL = 550;
+
+            function N_poly(u, mu, sigma, gamma) {
+                return -mu * u + sigma * u * u + (u * u * u) / 3.0 - gamma * Math.pow(u, 4) + 0.2 * gamma * Math.pow(u, 5);
+            }
+
+            function derivs(s, p) {
+                const Nu = N_poly(s.u, p.mu, p.sigma, p.gamma);
+                const convDrive = 0.06 * (p.lambda - 2.8) * s.w * s.u * s.u;
+                const du = (s.v - Nu + convDrive) / p.delta;
+                const dv = -s.u - p.beta_d * s.v + p.kappa * s.u * s.u - p.eta_dredge * s.w;
+                const H_step = 0.5 * (1.0 + Math.tanh((s.u - 1.50) / 0.08));
+                const dw = 2.4 * H_step * (1.0 - s.w) - 0.85 * s.w * Math.exp(0.45 * s.u);
+                return { du, dv, dw };
+            }
+
+            function stepRK4(dt) {
+                const s = state;
+                const p = params;
+                const k1 = derivs(s, p);
+                const k2 = derivs({ u: s.u + 0.5 * dt * k1.du, v: s.v + 0.5 * dt * k1.dv, w: s.w + 0.5 * dt * k1.dw }, p);
+                const k3 = derivs({ u: s.u + 0.5 * dt * k2.du, v: s.v + 0.5 * dt * k2.dv, w: s.w + 0.5 * dt * k2.dw }, p);
+                const k4 = derivs({ u: s.u + dt * k3.du, v: s.v + dt * k3.dv, w: s.w + dt * k3.dw }, p);
+
+                state.u += (dt / 6.0) * (k1.du + 2 * k2.du + 2 * k3.du + k4.du);
+                state.v += (dt / 6.0) * (k1.dv + 2 * k2.dv + 2 * k3.dv + k4.dv);
+                state.w = Math.max(0.0, Math.min(1.0, state.w + (dt / 6.0) * (k1.dw + 2 * k2.dw + 2 * k3.dw + k4.dw)));
+
+                trail.push({ u: state.u, v: state.v, w: state.w });
+                if (trail.length > MAX_TRAIL) trail.shift();
+            }
+
+            function gMap(z, lam) { return lam * z * (1.0 - z); }
+            function gMapDeriv(z, lam) { return lam * (1.0 - 2.0 * z); }
+
+            function updateStroboscope() {
+                const lam = params.lambda;
+                let z = 0.5;
+                for (let i = 0; i < 500; i++) z = gMap(z, lam);
+
+                const orbit = [];
+                const symbols = [];
+                for (let i = 0; i < 24; i++) {
+                    orbit.push(z);
+                    if (z < 0.32) symbols.push('2');
+                    else if (z < 0.68) symbols.push('0');
+                    else symbols.push('1');
+                    z = gMap(z, lam);
+                }
+
+                let bestIdx = 0, bestDist = 999;
+                for (let i = 0; i < 12; i++) {
+                    const d = Math.abs(orbit[i] - 0.5);
+                    if (d < bestDist) { bestDist = d; bestIdx = i; }
+                }
+
+                const z1 = orbit[bestIdx];
+                const z2 = gMap(z1, lam);
+                const z3 = gMap(z2, lam);
+                const mult3 = gMapDeriv(z1, lam) * gMapDeriv(z2, lam) * gMapDeriv(z3, lam);
+                const absMult3 = Math.abs(mult3);
+
+                // Direct 3rd iterate closure residual at critical point z_c = 0.5
+                const g3_05 = gMap(gMap(gMap(0.5, lam), lam), lam);
+                const res05 = g3_05 - 0.5;
+
+                const denom = 1.0 - params.delta * params.beta_d * params.beta_d;
+                const l1 = (-1.0 / (8.0 * params.delta)) * (1.0 - (2.0 * params.sigma * (params.beta_d * params.sigma - params.kappa)) / denom);
+
+                document.getElementById('statZ1').textContent = z1.toFixed(5);
+                document.getElementById('statZ2').textContent = z2.toFixed(5);
+                document.getElementById('statZ3').textContent = z3.toFixed(5);
+                document.getElementById('statRes').textContent = (res05 >= 0 ? '+' : '') + res05.toFixed(5);
+                document.getElementById('statMult').textContent = mult3.toFixed(4);
+                document.getElementById('statL1').textContent = l1.toFixed(3);
+
+                let wSum = 0;
+                for (let pt of trail) wSum += pt.w;
+                const wMean = trail.length ? wSum / trail.length : 0.14;
+                document.getElementById('statW').textContent = wMean.toFixed(4);
+
+                document.getElementById('symbolicTape').innerHTML = symbols.map(s => `<span class="sym-${s}">${s}</span>`).join(' &rarr; ');
+
+                const badge = document.getElementById('regimeBadge');
+                const z4 = gMap(z3, lam);
+                const isPeriod3 = Math.abs(z4 - z1) < 1e-3 && absMult3 < 1.0;
+
+                if (params.mu < params.delta * params.beta_d && l1 > 0) {
+                    badge.textContent = 'REGIME: SUBCRITICAL BAUTIN HARD-EXCITATION (l_1 > 0)';
+                    badge.style.borderColor = '#f43f5e'; badge.style.color = '#f43f5e';
+                } else if (isPeriod3 && Math.abs(res05) < 0.00015) {
+                    badge.textContent = 'REGIME: SUPERSTABLE PERIOD-3 WINDOW (012)^∞';
+                    badge.style.borderColor = '#10b981'; badge.style.color = '#10b981';
+                } else if (isPeriod3) {
+                    badge.textContent = 'REGIME: STABLE PERIOD-3 SHARKOVSKII WINDOW';
+                    badge.style.borderColor = '#38bdf8'; badge.style.color = '#38bdf8';
+                } else if (lam >= 3.8260 && lam < 3.82843) {
+                    badge.textContent = 'REGIME: TYPE-I CRISIS GHOST INTERMITTENCY TRAP';
+                    badge.style.borderColor = '#f59e0b'; badge.style.color = '#f59e0b';
+                } else {
+                    badge.textContent = absMult3 > 1.0 ? 'REGIME: DETERMINISTIC SYMBOLIC CHAOS' : 'REGIME: LIMIT CYCLE PULSATION';
+                    badge.style.borderColor = '#38bdf8'; badge.style.color = '#38bdf8';
+                }
+
+                drawReturnMap(orbit, lam);
+            }
+
+            function drawReturnMap(orbit, lam) {
+                const W = mapCanvas.width, H = mapCanvas.height, pad = 36;
+                mCtx.clearRect(0, 0, W, H);
+                const toX = z => pad + z * (W - 2 * pad);
+                const toY = z => (H - pad) - z * (H - 2 * pad);
+
+                mCtx.strokeStyle = '#1e293b'; mCtx.lineWidth = 1;
+                [0.32, 0.68].forEach(thresh => {
+                    mCtx.beginPath(); mCtx.setLineDash([4, 4]);
+                    mCtx.moveTo(toX(thresh), pad); mCtx.lineTo(toX(thresh), H - pad); mCtx.stroke();
+                });
+                mCtx.setLineDash([]);
+
+                mCtx.strokeStyle = '#475569'; mCtx.lineWidth = 1.2;
+                mCtx.beginPath(); mCtx.moveTo(toX(0), toY(0)); mCtx.lineTo(toX(1), toY(1)); mCtx.stroke();
+
+                mCtx.strokeStyle = '#38bdf8'; mCtx.lineWidth = 2.2;
+                mCtx.beginPath();
+                for (let i = 0; i <= 200; i++) {
+                    const z = i / 200, gz = gMap(z, lam);
+                    if (i === 0) mCtx.moveTo(toX(z), toY(gz)); else mCtx.lineTo(toX(z), toY(gz));
+                }
+                mCtx.stroke();
+
+                mCtx.strokeStyle = 'rgba(245, 158, 11, 0.35)'; mCtx.lineWidth = 1.3;
+                mCtx.beginPath();
+                for (let i = 0; i <= 300; i++) {
+                    const z = i / 300, g3 = gMap(gMap(gMap(z, lam), lam), lam);
+                    if (i === 0) mCtx.moveTo(toX(z), toY(g3)); else mCtx.lineTo(toX(z), toY(g3));
+                }
+                mCtx.stroke();
+
+                mCtx.strokeStyle = '#f43f5e'; mCtx.lineWidth = 1.6;
+                mCtx.beginPath();
+                for (let i = 0; i < orbit.length - 1; i++) {
+                    const zNow = orbit[i], zNext = orbit[i + 1];
+                    if (i === 0) mCtx.moveTo(toX(zNow), toY(zNow));
+                    mCtx.lineTo(toX(zNow), toY(zNext));
+                    mCtx.lineTo(toX(zNext), toY(zNext));
+                }
+                mCtx.stroke();
+
+                mCtx.fillStyle = '#94a3b8'; mCtx.font = '11px monospace';
+                mCtx.fillText('z_n (Inter-Pulse Entropy)', W / 2 - 75, H - 10);
+                mCtx.fillText('Blue: g(z) | Amber: g^(3)(z) | Red: Post-500 Cobweb', pad, 22);
+            }
+
+            function drawPhaseSpace() {
+                const W = phaseCanvas.width, H = phaseCanvas.height, pad = 36;
+                pCtx.clearRect(0, 0, W, H);
+                const uMin = -2.2, uMax = 2.8, vMin = -1.3, vMax = 1.3;
+                const toX = u => pad + ((u - uMin) / (uMax - uMin)) * (W - 2 * pad);
+                const toY = v => (H - pad) - ((v - vMin) / (vMax - vMin)) * (H - 2 * pad);
+
+                pCtx.strokeStyle = '#1e293b'; pCtx.lineWidth = 1;
+                pCtx.beginPath();
+                pCtx.moveTo(toX(uMin), toY(0)); pCtx.lineTo(toX(uMax), toY(0));
+                pCtx.moveTo(toX(0), toY(vMin)); pCtx.lineTo(toX(0), toY(vMax));
+                pCtx.stroke();
+
+                pCtx.strokeStyle = 'rgba(244, 63, 94, 0.5)'; pCtx.setLineDash([5, 4]);
+                pCtx.beginPath(); pCtx.moveTo(toX(1.50), pad); pCtx.lineTo(toX(1.50), H - pad); pCtx.stroke();
+                pCtx.setLineDash([]);
+
+                pCtx.strokeStyle = '#f59e0b'; pCtx.lineWidth = 2;
+                pCtx.beginPath();
+                for (let i = 0; i <= 220; i++) {
+                    const u = uMin + (i / 220) * (uMax - uMin);
+                    const v = N_poly(u, params.mu, params.sigma, params.gamma);
+                    const cx = toX(u), cy = toY(Math.max(vMin, Math.min(vMax, v)));
+                    if (i === 0) pCtx.moveTo(cx, cy); else pCtx.lineTo(cx, cy);
+                }
+                pCtx.stroke();
+
+                if (trail.length > 1) {
+                    pCtx.strokeStyle = '#38bdf8'; pCtx.lineWidth = 1.8;
+                    pCtx.beginPath();
+                    for (let i = 0; i < trail.length; i++) {
+                        const cx = toX(trail[i].u), cy = toY(trail[i].v);
+                        if (i === 0) pCtx.moveTo(cx, cy); else pCtx.lineTo(cx, cy);
+                    }
+                    pCtx.stroke();
+
+                    const head = trail[trail.length - 1];
+                    pCtx.fillStyle = '#10b981';
+                    pCtx.beginPath(); pCtx.arc(toX(head.u), toY(head.v), 4.5, 0, 2 * Math.PI); pCtx.fill();
+                }
+
+                pCtx.fillStyle = '#94a3b8'; pCtx.font = '11px monospace';
+                pCtx.fillText('u (Dimensionless Shell Temperature)', W / 2 - 105, H - 10);
+                pCtx.fillText('Amber: Slow Manifold v = N(u) | Dashed Red: u_conv = 1.50', pad, 22);
+            }
+
+            function setLambdaValue(val) {
+                const clamped = Math.max(2.80000, Math.min(3.95000, val));
+                params.lambda = clamped;
+                document.getElementById('sliderLambda').value = clamped.toFixed(5);
+                document.getElementById('numLambda').value = clamped.toFixed(5);
+                updateStroboscope();
+            }
+
+            function syncSliders() {
+                params.lambda = parseFloat(document.getElementById('sliderLambda').value);
+                params.mu = parseFloat(document.getElementById('sliderMu').value);
+                params.sigma = parseFloat(document.getElementById('sliderSigma').value);
+                params.delta = parseFloat(document.getElementById('sliderDelta').value);
+
+                document.getElementById('numLambda').value = params.lambda.toFixed(5);
+                document.getElementById('valMu').textContent = params.mu.toFixed(3);
+                document.getElementById('valSigma').textContent = params.sigma.toFixed(3);
+                document.getElementById('valDelta').textContent = params.delta.toFixed(3);
+
+                updateStroboscope();
+            }
+
+            ['sliderLambda', 'sliderMu', 'sliderSigma', 'sliderDelta'].forEach(id => {
+                document.getElementById(id)?.addEventListener('input', syncSliders);
+            });
+
+            document.getElementById('numLambda')?.addEventListener('change', (e) => {
+                setLambdaValue(parseFloat(e.target.value) || 3.82800);
+            });
+
+            document.getElementById('btnStepDownCoarse')?.addEventListener('click', () => setLambdaValue(params.lambda - 0.00010));
+            document.getElementById('btnStepDown')?.addEventListener('click', () => setLambdaValue(params.lambda - 0.00001));
+            document.getElementById('btnStepUp')?.addEventListener('click', () => setLambdaValue(params.lambda + 0.00001));
+            document.getElementById('btnStepUpCoarse')?.addEventListener('click', () => setLambdaValue(params.lambda + 0.00010));
+
+            document.getElementById('btnGhost')?.addEventListener('click', () => setLambdaValue(3.82810));
+            document.getElementById('btnBautin')?.addEventListener('click', () => {
+                document.getElementById('sliderMu').value = '-0.015';
+                document.getElementById('sliderSigma').value = '0.950';
+                state = { u: 0.95, v: 0.2, w: 0.0 };
+                trail = [];
+                syncSliders();
+            });
+            document.getElementById('btnReset')?.addEventListener('click', () => {
+                state = { u: 1.15, v: 0.25, w: 0.05 };
+                trail = [];
+            });
+
+            function animate() {
+                for (let i = 0; i < 4; i++) stepRK4(0.004);
+                drawPhaseSpace();
+                simAnimationId = requestAnimationFrame(animate);
+            }
+
+            syncSliders();
+            animate();
+        }
+
+        window.switchChallengeTab = function(mode) {
+            currentMode = mode;
+            viewingPastIdx = null;
+            renderWorkspace();
+            updateTimer();
+        };
+
+        window.openPastProblem = function(idx) {
+            viewingPastIdx = idx;
+            renderWorkspace();
+            document.querySelector('.dashboard-main')?.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.returnToLiveProblem = function() {
+            viewingPastIdx = null;
+            renderWorkspace();
+        };
+
+        window.openImageModal = function(el) {
+            const modal = document.getElementById('imageModal');
+            const img = document.getElementById('img01');
+            if (modal && img && el) {
+                img.src = el.src;
+                modal.style.display = 'flex';
+            }
+        };
+
+        function updateTimer() {
+            const now = Date.now();
+            const labelEl = document.getElementById('next-timer-label');
+            const timerEl = document.getElementById('next-timer-val');
+            if (labelEl) labelEl.textContent = `Next ${currentMode.toUpperCase()} In:`;
+
+            const interval = CYCLE_MS[currentMode];
+            let targetMs;
+            if (now < EPOCH_UTC) {
+                targetMs = (EPOCH_UTC + interval) - now;
+            } else {
+                const elapsed = now - EPOCH_UTC;
+                targetMs = interval - (elapsed % interval);
+            }
+
+            const d = Math.floor(targetMs / (1000 * 60 * 60 * 24));
+            const h = Math.floor((targetMs / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((targetMs / (1000 * 60)) % 60);
+            const s = Math.floor((targetMs / 1000) % 60);
+
+            if (timerEl) {
+                timerEl.textContent = `${String(d).padStart(2, '0')}d ${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
+            }
+        }
+
+        setInterval(updateTimer, 1000);
+        updateTimer();
+        renderWorkspace();
+    </script>
+</body>
+</html>
