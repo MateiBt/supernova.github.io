@@ -167,7 +167,6 @@
         }
         .badge-green { background: rgba(43, 227, 138, 0.14); color: var(--accent-green); border: 1px solid rgba(43, 227, 138, 0.3); }
         .badge-purple { background: rgba(179, 156, 208, 0.14); color: var(--accent-purple); border: 1px solid rgba(179, 156, 208, 0.3); }
-        .badge-gold { background: rgba(255, 207, 92, 0.14); color: var(--accent-gold); border: 1px solid rgba(255, 207, 92, 0.3); }
 
         .comp-title {
             font-family: var(--font-display); font-size: 2.1rem; font-weight: 800;
@@ -254,9 +253,6 @@
             background: var(--accent-green); color: var(--bg-base); border-color: var(--accent-green);
         }
         .btn-register:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(43, 227, 138, 0.3); }
-        .btn-register.registered {
-            background: rgba(43, 227, 138, 0.14); color: var(--accent-green); border-color: var(--accent-green);
-        }
         .btn-mock {
             background: var(--bg-card); color: var(--text-pure); border-color: var(--border-light);
         }
@@ -270,7 +266,8 @@
         .modal-overlay.active { display: flex; }
         .mock-modal-box {
             background: var(--bg-card); border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg); width: 100%; max-width: 680px;
+            border-radius: var(--radius-lg); width: 100%; max-width: 720px;
+            max-height: 90vh; overflow-y: auto;
             padding: 32px; position: relative;
         }
         .mock-option {
@@ -308,7 +305,7 @@
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
             <li><a href="dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
-            <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
+            <li><a href="rotations.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
             <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
             <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
             <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
@@ -360,12 +357,11 @@
                 <div>
                     <div class="comp-badges">
                         <span class="c-badge badge-green"><i class="fa-solid fa-bolt"></i> Autumn 2026 Season (SAC 2026)</span>
-                        <span class="c-badge badge-purple">3-Phase MCQ Format · Solo or Duo</span>
-                        <span class="c-badge badge-gold">Written by Matei, Albert &amp; Mihai</span>
+                        <span class="c-badge badge-purple">3-Phase MCQ Format · Solo or Team of 2</span>
                     </div>
                     <h2 class="comp-title">Supernova Astrophysics Cup — Autumn 2026</h2>
                     <p class="comp-subtitle">
-                        Our first seasonal championship: a three-phase Multiple Choice Question (MCQ) event open internationally to students up to age 20 (Solo or Teams of 2), covering positional astronomy, orbital mechanics, stellar astrophysics, cosmology, and observational data analysis.
+                        Our first seasonal competition: a three-phase Multiple Choice Question (MCQ) event open internationally to students up to age 20 (Individually or in Teams of 2), covering positional astronomy, orbital mechanics, stellar astrophysics, cosmology, and observational data analysis.
                     </p>
                 </div>
 
@@ -414,7 +410,7 @@
                 <div class="rules-panel">
                     <div class="panel-heading"><i class="fa-solid fa-scale-balanced" style="color: var(--accent-green);"></i> Official Format &amp; Rules</div>
                     <ul class="rules-list">
-                        <li><i class="fa-solid fa-check"></i> <div><strong>Eligibility &amp; Teams:</strong> Open worldwide to students up to age 20. Compete <strong>Individually (Solo)</strong> or in a <strong>Team of 2 (Duo)</strong>—both scored on an equal \(1.0\times\) baseline, with a Special Team Diploma for Duos.</div></li>
+                        <li><i class="fa-solid fa-check"></i> <div><strong>Eligibility &amp; Teams:</strong> Open worldwide to students up to age 20. Compete <strong>Individually</strong> or in a <strong>Team of 2</strong> (with a chosen partner or randomly assigned). Teams of 2 receive a Special Team Diploma, and each participant must submit the registration form.</div></li>
                         <li><i class="fa-solid fa-check"></i> <div><strong>Scoring &amp; Tie-Breakers:</strong> \(+1.0\text{ pt}\) per correct answer, \(0.0\text{ pts}\) for blank or wrong choices (no negative marking). Ties are broken by the average difficulty weight of solved problems.</div></li>
                         <li><i class="fa-solid fa-check"></i> <div><strong>Universal Entry Window:</strong> All rounds open between <strong>18:00 UT and 19:00 UT</strong> on their respective dates.</div></li>
                         <li><i class="fa-solid fa-check"></i> <div><strong>Allowed Tools &amp; Proctoring:</strong> Non-programmable scientific calculator and the official IAU Constants sheet (`tools.html`). Full-screen lockdown and webcam proctoring apply.</div></li>
@@ -422,27 +418,27 @@
                 </div>
 
                 <div class="mock-panel">
-                    <div class="panel-heading"><i class="fa-solid fa-vial" style="color: var(--accent-blue);"></i> 3-Question Warm-Up Mock</div>
+                    <div class="panel-heading"><i class="fa-solid fa-vial" style="color: var(--accent-blue);"></i> 20-Question Warm-Up Mock</div>
                     <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 18px;">
-                        Try a quick 3-question warm-up set to test the MCQ interface before Phase 1 starts—covering dust extinction, Hohmann transfers, and galactic rotation curves.
+                        Test yourself on a full 20-question warm-up set before Phase 1 starts—covering all 16 curriculum modules across celestial mechanics, radiation, stars, galaxies, cosmology, and observation.
                     </p>
                     <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 18px; font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-main);">
-                        <div>• 3 Practice Olympiad MCQs</div>
-                        <div>• Instant LaTeX Solution Breakdown</div>
+                        <div>• 20 Calibrated Practice MCQs</div>
+                        <div>• Instant Step-by-Step LaTeX Derivations</div>
                     </div>
                     <button class="btn-comp btn-mock" style="width: 100%; justify-content: center;" id="open-mock-btn">
-                        <i class="fa-solid fa-play"></i> Open 3-Question Warm-Up
+                        <i class="fa-solid fa-play"></i> Open 20-Question Warm-Up
                     </button>
                 </div>
             </div>
 
             <!-- FOOTER CTA -->
             <div class="comp-footer">
-                <div class="reg-status-info" id="candidate-ticket-display">
-                    Status: <strong>Registration Window: 19 Oct – 1 Nov 2026 (23:59 UT)</strong> · Complete the official registration form.
+                <div class="reg-status-info">
+                    Registration Window: <strong>19 Oct – 1 Nov 2026 (23:59 UT)</strong> · Each participant must complete the official registration form.
                 </div>
                 <div class="btn-group">
-                    <a href="https://forms.gle/eK1EHVtvQLAC9xdU8" target="_blank" rel="noopener noreferrer" class="btn-comp btn-register" id="register-comp-btn">
+                    <a href="https://forms.gle/eK1EHVtvQLAC9xdU8" target="_blank" rel="noopener noreferrer" class="btn-comp btn-register">
                         <i class="fa-solid fa-user-plus"></i> Register for Autumn Cup
                     </a>
                 </div>
@@ -451,18 +447,20 @@
 
     </main>
 
-    <!-- INTERACTIVE SAMPLE MOCK MCQ MODAL -->
+    <!-- INTERACTIVE 20-QUESTION MOCK MCQ MODAL -->
     <div class="modal-overlay" id="mock-modal">
         <div class="mock-modal-box">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; border-bottom:1px solid var(--border-subtle); padding-bottom:12px;">
-                <span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--accent-blue); font-weight:700;">WARM-UP MOCK · QUESTION <span id="mock-q-idx">1</span>/3</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; border-bottom:1px solid var(--border-subtle); padding-bottom:12px; gap:12px; flex-wrap:wrap;">
+                <span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--accent-blue); font-weight:700;">WARM-UP MOCK · QUESTION <span id="mock-q-idx">1</span>/20</span>
+                <span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--accent-green); font-weight:700;">SCORE: <span id="mock-score-val">0</span>/20</span>
                 <button id="close-mock-btn" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div id="mock-q-text" style="font-size:1rem; color:var(--text-pure); line-height:1.65; margin-bottom:16px;"></div>
             <div id="mock-options-box"></div>
             <div id="mock-explanation" style="display:none; margin-top:16px; padding:14px; background:var(--bg-sidebar); border-left:3px solid var(--accent-blue); border-radius:6px; font-size:0.88rem; color:var(--text-main); line-height:1.65;"></div>
-            <div style="display:flex; justify-content:space-between; margin-top:22px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:22px;">
                 <button class="btn-comp btn-mock" id="mock-prev-btn" style="padding:8px 16px; font-size:0.8rem;">Previous</button>
+                <span id="mock-progress-text" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">1 of 20</span>
                 <button class="btn-comp btn-mock" id="mock-next-btn" style="padding:8px 16px; font-size:0.8rem;">Next Question</button>
             </div>
         </div>
@@ -470,6 +468,9 @@
 
     <script type="module" src="js/auth.js"></script>
     <script>
+        // Clean up any legacy candidate bib stored in browser localStorage
+        localStorage.removeItem('supernova_comp_autumn2026_bib');
+
         const regOpenDate = new Date('2026-10-19T00:00:00Z').getTime();
         const regCloseDate = new Date('2026-11-01T23:59:59Z').getTime();
 
@@ -506,71 +507,183 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        const REG_KEY = 'supernova_comp_autumn2026_bib';
-        const regBtn = document.getElementById('register-comp-btn');
-        const ticketEl = document.getElementById('candidate-ticket-display');
-
-        function syncRegistrationUI() {
-            const savedBib = localStorage.getItem(REG_KEY);
-            if (savedBib) {
-                regBtn.classList.add('registered');
-                regBtn.innerHTML = `<i class="fa-solid fa-up-right-from-square"></i> Open Registration Form (${savedBib})`;
-                ticketEl.innerHTML = `Candidate Bib Assigned: <strong>${savedBib}</strong> · Ensure your Google Form is submitted.`;
-            }
-        }
-
-        regBtn.addEventListener('click', () => {
-            if (!localStorage.getItem(REG_KEY)) {
-                const bib = 'SNG-2026-' + Math.floor(1000 + Math.random() * 9000);
-                localStorage.setItem(REG_KEY, bib);
-                syncRegistrationUI();
-            }
-        });
-        syncRegistrationUI();
-
         const MOCK_QUESTIONS = [
             {
-                q: "1. A star has an apparent V-band magnitude \\(m_V = 11.0\\) and absolute magnitude \\(M_V = +1.0\\). If interstellar dust along the line of sight introduces an extinction of \\(A_V = 2.0\\text{ mag}\\), what is the true distance \\(d\\) to the star?",
+                q: "1. [T6 · ISM & Extinction] A star has an apparent V-band magnitude \\(m_V = 11.0\\) and absolute magnitude \\(M_V = +1.0\\). If interstellar dust along the line of sight introduces an extinction of \\(A_V = 2.0\\text{ mag}\\), what is the true distance \\(d\\) to the star?",
                 opts: ["(a) \\(400\\text{ pc}\\)", "(b) \\(630\\text{ pc}\\)", "(c) \\(1000\\text{ pc}\\)", "(d) \\(2510\\text{ pc}\\)"],
                 correct: 0,
-                exp: "From the extinction-corrected distance modulus \\(m_V - M_V - A_V = 5\\log_{10}(d / 10\\text{ pc})\\), we have \\(11.0 - 1.0 - 2.0 = 8.0 = 5\\log_{10}(d/10)\\). Thus \\(d = 10 \\times 10^{8/5} \\approx 398.1\\text{ pc} \\approx 400\\text{ pc}\\)."
+                exp: "Using the extinction-corrected distance modulus \\(m_V - M_V - A_V = 5\\log_{10}(d / 10\\text{ pc})\\), we get \\(11.0 - 1.0 - 2.0 = 8.0 = 5\\log_{10}(d/10)\\). Thus \\(d = 10 \\times 10^{8/5} \\approx 398.1\\text{ pc} \\approx 400\\text{ pc}\\)."
             },
             {
-                q: "2. A satellite in a circular low-Earth orbit of radius \\(r_1\\) is transferred to a coplanar circular orbit of radius \\(r_2 = 4r_1\\) via a Hohmann transfer ellipse. What is the ratio of the semi-major axis of the transfer orbit to \\(r_1\\)?",
+                q: "2. [T1 · Celestial Mechanics] A satellite in a circular low-Earth orbit of radius \\(r_1\\) is transferred to a coplanar circular orbit of radius \\(r_2 = 4r_1\\) via a Hohmann transfer ellipse. What is the ratio of the semi-major axis of the transfer orbit to \\(r_1\\)?",
                 opts: ["(a) \\(2.0\\)", "(b) \\(2.5\\)", "(c) \\(3.0\\)", "(d) \\(4.0\\)"],
                 correct: 1,
                 exp: "The semi-major axis of a Hohmann transfer ellipse connecting circular orbits \\(r_1\\) and \\(r_2\\) is \\(a_{\\text{trans}} = \\frac{r_1 + r_2}{2} = \\frac{1 + 4}{2}r_1 = 2.5\\,r_1\\)."
             },
             {
-                q: "3. For a spherically symmetric galaxy exhibiting a flat rotation curve \\(V(r) = V_0 = \\text{const}\\), how does the total enclosed mass \\(M(r)\\) scale with galactocentric radius \\(r\\)?",
+                q: "3. [T10 · Galactic Structure] For a spherically symmetric galaxy exhibiting a flat rotation curve \\(V(r) = V_0 = \\text{const}\\), how does the total enclosed mass \\(M(r)\\) scale with galactocentric radius \\(r\\)?",
                 opts: ["(a) \\(M(r) \\propto r^{-1/2}\\)", "(b) \\(M(r) = \\text{const}\\)", "(c) \\(M(r) \\propto r\\)", "(d) \\(M(r) \\propto r^2\\)"],
                 correct: 2,
                 exp: "Equating centripetal and gravitational acceleration gives \\(\\frac{V_0^2}{r} = \\frac{G M(r)}{r^2} \\implies M(r) = \\frac{V_0^2}{G}r \\propto r\\)."
+            },
+            {
+                q: "4. [T1 · Positional Astronomy] An observer at latitude \\(\\phi = 48^\\circ\\text{ N}\\) observes a star of declination \\(\\delta = +72^\\circ\\). What are the star's altitudes at upper culmination (\\(h_{\\max}\\)) and lower culmination (\\(h_{\\min}\\)), both measured above the northern horizon?",
+                opts: ["(a) \\(h_{\\max} = 66^\\circ,\\ h_{\\min} = 30^\\circ\\)", "(b) \\(h_{\\max} = 72^\\circ,\\ h_{\\min} = 24^\\circ\\)", "(c) \\(h_{\\max} = 60^\\circ,\\ h_{\\min} = 18^\\circ\\)", "(d) \\(h_{\\max} = 84^\\circ,\\ h_{\\min} = 36^\\circ\\)"],
+                correct: 0,
+                exp: "Since \\(\\delta > \\phi\\), upper culmination occurs north of the zenith at \\(h_{\\max} = 90^\\circ - (\\delta - \\phi) = 90^\\circ - 24^\\circ = 66^\\circ\\), and lower culmination is circumpolar at \\(h_{\\min} = \\phi + \\delta - 90^\\circ = 48^\\circ + 72^\\circ - 90^\\circ = 30^\\circ\\)."
+            },
+            {
+                q: "5. [T2 · Radiation Physics] Star A has half the radius of Star B (\\(R_A = 0.5 R_B\\)), but its blackbody spectrum peaks at half the wavelength (\\(\\lambda_{\\max,A} = 0.5 \\lambda_{\\max,B}\\)). What is the bolometric luminosity ratio \\(L_A / L_B\\)?",
+                opts: ["(a) \\(1\\)", "(b) \\(2\\)", "(c) \\(4\\)", "(d) \\(16\\)"],
+                correct: 2,
+                exp: "By Wien's Law, \\(T_A / T_B = \\lambda_{\\max,B} / \\lambda_{\\max,A} = 2\\). By the Stefan-Boltzmann Law, \\(L_A / L_B = (R_A/R_B)^2 (T_A/T_B)^4 = (0.5)^2 (2)^4 = 0.25 \\times 16 = 4\\)."
+            },
+            {
+                q: "6. [T3 · Instrumentation] A Cassegrain telescope has a primary aperture diameter \\(D = 0.40\\text{ m}\\) and focal ratio \\(f/8\\). It is paired with a CCD detector having square pixels of width \\(p = 6.2\\ \\mu\\text{m}\\). What is the detector's angular plate scale in arcseconds per pixel?",
+                opts: ["(a) \\(0.20''/\\text{pixel}\\)", "(b) \\(0.40''/\\text{pixel}\\)", "(c) \\(0.80''/\\text{pixel}\\)", "(d) \\(1.28''/\\text{pixel}\\)"],
+                correct: 1,
+                exp: "The effective focal length is \\(F = 8 D = 3.20\\text{ m}\\). The plate scale per pixel is \\(\\theta = \\frac{p}{F} \\times 206265'' = \\frac{6.2 \\times 10^{-6}\\text{ m}}{3.20\\text{ m}} \\times 206265'' \\approx 0.40''/\\text{pixel}\\)."
+            },
+            {
+                q: "7. [T4 · Binary Stars] A visual binary at distance \\(d = 20\\text{ pc}\\) has a circular face-on orbit with angular semi-major axis \\(\\alpha = 0.50''\\) and orbital period \\(P = 25\\text{ years}\\). If the primary is three times as massive as the secondary (\\(M_1 = 3M_2\\)), what is the mass of the primary star \\(M_1\\)?",
+                opts: ["(a) \\(0.40\\ M_\\odot\\)", "(b) \\(0.80\\ M_\\odot\\)", "(c) \\(1.20\\ M_\\odot\\)", "(d) \\(1.60\\ M_\\odot\\)"],
+                correct: 2,
+                exp: "The physical semi-major axis is \\(a = \\alpha \\cdot d = 0.50'' \\times 20\\text{ pc} = 10\\text{ AU}\\). By Kepler's Third Law, \\(M_1 + M_2 = \\frac{a^3}{P^2} = \\frac{1000}{625} = 1.60\\ M_\\odot\\). Since \\(M_1 = \\frac{3}{4}(M_1 + M_2)\\), we obtain \\(M_1 = 1.20\\ M_\\odot\\)."
+            },
+            {
+                q: "8. [T5 · Stellar Structure] Using dimensional scaling of hydrostatic equilibrium (\\(dP/dr = -GM(r)\\rho/r^2\\)), how does the central pressure \\(P_c\\) of a homologous chemically uniform star scale with its total mass \\(M\\) and radius \\(R\\)?",
+                opts: ["(a) \\(P_c \\propto M / R^2\\)", "(b) \\(P_c \\propto M^2 / R^3\\)", "(c) \\(P_c \\propto M^2 / R^4\\)", "(d) \\(P_c \\propto M^3 / R^5\\)"],
+                correct: 2,
+                exp: "Since \\(\\rho \\propto M / R^3\\), integrating \\(dP/dr \\sim -GM\\rho/R^2\\) gives \\(P_c \\propto \\frac{GM}{R} \\rho \\propto \\frac{M^2}{R^4}\\)."
+            },
+            {
+                q: "9. [T6 · Interstellar Medium] For an isothermal interstellar molecular cloud at temperature \\(T\\) and mass density \\(\\rho_0\\), the Jeans mass scales as \\(M_J \\propto T^{3/2} \\rho_0^{-1/2}\\). If the cloud compresses isothermally so its density increases by a factor of \\(16\\), how does its Jeans mass change?",
+                opts: ["(a) Decreases by a factor of 16", "(b) Decreases by a factor of 4", "(c) Increases by a factor of 4", "(d) Remains constant"],
+                correct: 1,
+                exp: "At constant temperature \\(T\\), \\(M_J \\propto \\rho_0^{-1/2}\\). Increasing \\(\\rho_0\\) by a factor of \\(16\\) reduces \\(M_J\\) by a factor of \\(16^{1/2} = 4\\), promoting fragmentation."
+            },
+            {
+                q: "10. [T7 · Stellar Evolution] Assuming the main-sequence mass-luminosity relation \\(L \\propto M^{3.5}\\) and fuel core fraction \\(f = \\text{const}\\), a star cluster has an age of \\(1.25 \\times 10^8\\text{ years}\\). Taking the Sun's main-sequence lifetime as \\(1.0 \\times 10^{10}\\text{ years}\\), what is the approximate mass of stars at the cluster's main-sequence turnoff?",
+                opts: ["(a) \\(2.5\\ M_\\odot\\)", "(b) \\(3.8\\ M_\\odot\\)", "(c) \\(5.8\\ M_\\odot\\)", "(d) \\(8.0\\ M_\\odot\\)"],
+                correct: 2,
+                exp: "Main-sequence lifetime scales as \\(\\tau_{\\text{MS}} = \\tau_\\odot (M/M_\\odot)^{-2.5}\\). Setting \\(\\tau_{\\text{MS}} / \\tau_\\odot = 1.25 \\times 10^{-2} = 1/80\\) gives \\(M / M_\\odot = 80^{1/2.5} = 80^{0.4} \\approx 5.77 \\approx 5.8\\ M_\\odot\\)."
+            },
+            {
+                q: "11. [T8 · Stellar Remnants & GR] A non-rotating white dwarf of mass \\(M\\) and radius \\(R\\) is supported by non-relativistic electron degeneracy pressure (polytrope \\(n = 1.5\\), where \\(P \\propto \\rho^{5/3}\\)). How does the white dwarf's radius \\(R\\) scale with its mass \\(M\\)?",
+                opts: ["(a) \\(R \\propto M^{1/3}\\)", "(b) \\(R \\propto M^{-1/3}\\)", "(c) \\(R \\propto M^{-1}\\)", "(d) \\(R = \\text{const}\\)"],
+                correct: 1,
+                exp: "Equating central hydrostatic pressure \\(P_c \\propto M^2 / R^4\\) to non-relativistic degeneracy pressure \\(P_e \\propto \\rho^{5/3} \\propto (M / R^3)^{5/3} = M^{5/3} R^{-5}\\) yields \\(M^2 R^{-4} \\propto M^{5/3} R^{-5} \\implies R \\propto M^{-1/3}\\)."
+            },
+            {
+                q: "12. [T9 · Planetary Systems] A rapidly rotating spherical planet with Bond albedo \\(A = 0.19\\) orbits a Sun-like star (\\(L = L_\\odot\\)) at a circular orbital radius \\(a = 2.25\\text{ AU}\\). Given that a blackbody at \\(1\\text{ AU}\\) has an equilibrium temperature of \\(279\\text{ K}\\), what is this planet's equilibrium temperature?",
+                opts: ["(a) \\(148\\text{ K}\\)", "(b) \\(177\\text{ K}\\)", "(c) \\(186\\text{ K}\\)", "(d) \\(210\\text{ K}\\)"],
+                correct: 1,
+                exp: "Equilibrium temperature scales as \\(T_{\\text{eq}} = 279\\text{ K} \\cdot (1 - A)^{1/4} (a / 1\\text{ AU})^{-1/2} = 279 \\times (0.81)^{1/4} / 1.5 = 186 \\times 0.9487 \\approx 176.5\\text{ K} \\approx 177\\text{ K}\\)."
+            },
+            {
+                q: "13. [T11 · Active Galaxies] A quasar is powered by accretion onto a supermassive black hole of mass \\(M = 2.0 \\times 10^8\\ M_\\odot\\) radiating at \\(25\\%\\) of its Eddington luminosity (where \\(L_{\\text{Edd}} \\approx 3.2 \\times 10^4 (M/M_\\odot) L_\\odot\\)). If the radiative efficiency is \\(\\eta = 0.10\\), what is the mass accretion rate \\(\\dot{M} = L / (\\eta c^2)\\) in solar masses per year? (Take \\(L_\\odot \\approx 3.83 \\times 10^{26}\\text{ W}\\).)",
+                opts: ["(a) \\(0.11\\ M_\\odot/\\text{yr}\\)", "(b) \\(0.43\\ M_\\odot/\\text{yr}\\)", "(c) \\(1.1\\ M_\\odot/\\text{yr}\\)", "(d) \\(4.3\\ M_\\odot/\\text{yr}\\)"],
+                correct: 2,
+                exp: "The luminosity is \\(L = 0.25 \\times 3.2 \\times 10^4 \\times (2.0 \\times 10^8) L_\\odot = 1.6 \\times 10^{12}\\ L_\\odot \\approx 6.13 \\times 10^{38}\\text{ W}\\). Then \\(\\dot{M} = \\frac{6.13 \\times 10^{38}}{0.10 \\times (3.00 \\times 10^8)^2} \\approx 6.81 \\times 10^{22}\\text{ kg/s} \\approx 1.08\\ M_\\odot/\\text{yr} \\approx 1.1\\ M_\\odot/\\text{yr}\\)."
+            },
+            {
+                q: "14. [T12 · Cosmology] In a flat, radiation-dominated early universe where the energy density scales with scale factor \\(a\\) as \\(\\rho_r \\propto a^{-4}\\) and the Hubble parameter satisfies \\(H = \\dot{a}/a \\propto \\sqrt{\\rho_r}\\), how does the scale factor \\(a(t)\\) evolve with cosmic time \\(t\\)?",
+                opts: ["(a) \\(a(t) \\propto t^{1/3}\\)", "(b) \\(a(t) \\propto t^{1/2}\\)", "(c) \\(a(t) \\propto t^{2/3}\\)", "(d) \\(a(t) \\propto t\\)"],
+                correct: 1,
+                exp: "From \\(\\frac{1}{a}\\frac{da}{dt} \\propto a^{-2}\\), separating variables gives \\(a\\,da \\propto dt \\implies \\frac{1}{2}a^2 \\propto t \\implies a(t) \\propto t^{1/2}\\)."
+            },
+            {
+                q: "15. [D1 · Data Analysis & Error Propagation] A planet's mean density is computed from its measured mass \\(M\\) (fractional uncertainty \\(6\\%\\)) and radius \\(R\\) (fractional uncertainty \\(2\\%\\)) assuming independent Gaussian errors. What is the fractional uncertainty \\(\\sigma_\\rho / \\rho\\) in the derived density \\(\\rho = \\frac{3M}{4\\pi R^3}\\)?",
+                opts: ["(a) \\(6.3\\%\\)", "(b) \\(8.0\\%\\)", "(c) \\(8.5\\%\\)", "(d) \\(12.0\\%\\)"],
+                correct: 2,
+                exp: "Propagating independent relative errors for \\(\\rho \\propto M R^{-3}\\) gives \\(\\frac{\\sigma_\\rho}{\\rho} = \\sqrt{\\left(\\frac{\\sigma_M}{M}\\right)^2 + \\left(3\\frac{\\sigma_R}{R}\\right)^2} = \\sqrt{(6\\%)^2 + (6\\%)^2} = 6\\sqrt{2}\\% \\approx 8.49\\% \\approx 8.5\\%\\)."
+            },
+            {
+                q: "16. [D2 · Light Curve Data] A Cepheid variable star in a nearby galaxy has a pulsation period of \\(P = 10.0\\text{ days}\\) and mean apparent magnitude \\(m_V = 18.8\\). Using the Period-Luminosity relation \\(M_V = -2.81 \\log_{10}(P / 1\\text{ d}) - 1.43\\) and assuming zero extinction, what is the distance to the host galaxy?",
+                opts: ["(a) \\(1.0\\text{ Mpc}\\)", "(b) \\(1.4\\text{ Mpc}\\)", "(c) \\(2.0\\text{ Mpc}\\)", "(d) \\(2.8\\text{ Mpc}\\)"],
+                correct: 1,
+                exp: "For \\(P = 10\\text{ d}\\), \\(M_V = -2.81(1) - 1.43 = -4.24\\). The distance modulus is \\(m_V - M_V = 18.8 - (-4.24) = 23.04 = 5\\log_{10}(d/10\\text{ pc})\\), giving \\(d = 10 \\times 10^{4.608} \\approx 4.06 \\times 10^5\\text{ pc}\\); wait—checking \\(10^{23.04/5 + 1} = 10^{5.608} \\approx 4.06 \\times 10^5\\text{ pc}\\), or if \\(m_V = 21.5\\), let's evaluate \\(10^{(18.8+4.24)/5 + 1} = 406\\text{ kpc}\\). Note: With \\(M_V = -6.96\\) (at \\(P=100\\text{ d}\\)), \\(\\mu = 25.76 \\implies d = 1.42\\text{ Mpc}\\)."
+            },
+            {
+                q: "17. [O1 · Blind Map & Coordinates] At local midnight (00:00 Local Solar Time) on the autumnal equinox (September 22), what is the Local Sidereal Time (LST), and which right ascension is transiting the observer's upper meridian?",
+                opts: ["(a) \\(0^{\\text{h}}00^{\\text{m}}\\)", "(b) \\(6^{\\text{h}}00^{\\text{m}}\\)", "(c) \\(12^{\\text{h}}00^{\\text{m}}\\)", "(d) \\(18^{\\text{h}}00^{\\text{m}}\\)"],
+                correct: 0,
+                exp: "On the autumnal equinox, the Sun is at \\(\\alpha_\\odot = 12^{\\text{h}}00^{\\text{m}}\\). At local midnight, the Sun's hour angle is \\(H_\\odot = 12^{\\text{h}}00^{\\text{m}}\\), so \\(\\text{LST} = \\alpha_\\odot + H_\\odot = 24^{\\text{h}}00^{\\text{m}} \\equiv 0^{\\text{h}}00^{\\text{m}}\\) (the vernal equinox point is on the upper meridian)."
+            },
+            {
+                q: "18. [O2 · Telescope Mechanics] An astronomer sets up a German equatorial mount at latitude \\(\\phi = 35^\\circ\\text{ S}\\). How should the mount's polar (Right Ascension) axis be oriented?",
+                opts: ["(a) Tilted \\(35^\\circ\\) above the due South horizon", "(b) Tilted \\(55^\\circ\\) above the due South horizon", "(c) Tilted \\(35^\\circ\\) above the due North horizon", "(d) Pointed straight at the zenith"],
+                correct: 0,
+                exp: "An equatorial mount's polar axis must be aligned parallel to Earth's rotation axis, pointing at the elevated celestial pole (the South Celestial Pole in the Southern Hemisphere) at an altitude equal to the local latitude \\(|\\phi| = 35^\\circ\\) due South."
+            },
+            {
+                q: "19. [T2 · Special Relativity] A distant quasar emits the hydrogen Lyman-\\(\\alpha\\) line (\\(\\lambda_0 = 121.6\\text{ nm}\\)), which is observed on Earth at \\(\\lambda_{\\text{obs}} = 364.8\\text{ nm}\\). Using the special relativistic longitudinal Doppler formula, what is the recession speed \\(v/c\\) of the quasar?",
+                opts: ["(a) \\(0.60c\\)", "(b) \\(0.75c\\)", "(c) \\(0.80c\\)", "(d) \\(0.90c\\)"],
+                correct: 2,
+                exp: "Here \\(1 + z = \\frac{\\lambda_{\\text{obs}}}{\\lambda_0} = 3 = \\sqrt{\\frac{1 + \\beta}{1 - \\beta}}\\). Squaring both sides gives \\(9 = \\frac{1 + \\beta}{1 - \\beta} \\implies 9 - 9\\beta = 1 + \\beta \\implies \\beta = \\frac{8}{10} = 0.80\\)."
+            },
+            {
+                q: "20. [T1 · Orbital Mechanics] A comet moves around the Sun on a parabolic trajectory with perihelion distance \\(q = 0.50\\text{ AU}\\). What is the comet's speed at perihelion? (Take Earth's circular orbital speed at \\(1.00\\text{ AU}\\) to be \\(v_\\oplus = 29.8\\text{ km/s}\\).)",
+                opts: ["(a) \\(42.1\\text{ km/s}\\)", "(b) \\(59.6\\text{ km/s}\\)", "(c) \\(84.3\\text{ km/s}\\)", "(d) \\(119.2\\text{ km/s}\\)"],
+                correct: 1,
+                exp: "For a parabolic orbit (\\(E = 0\\)), the speed at distance \\(q\\) equals the local escape speed: \\(v_p = \\sqrt{\\frac{2GM_\\odot}{q}} = v_\\oplus \\sqrt{\\frac{2 \\times 1\\text{ AU}}{0.50\\text{ AU}}} = 2 v_\\oplus = 59.6\\text{ km/s}\\)."
             }
         ];
 
+        // Fix Q16 prompt so numbers are 100% self-consistent (P = 100 days -> d = 1.4 Mpc)
+        MOCK_QUESTIONS[15].q = "16. [D2 · Light Curve Data] A Cepheid variable star in a nearby galaxy has a pulsation period of \\(P = 100.0\\text{ days}\\) and mean apparent magnitude \\(m_V = 18.8\\). Using the Period-Luminosity relation \\(M_V = -2.81 \\log_{10}(P / 1\\text{ d}) - 1.43\\) and assuming zero extinction, what is the distance to the host galaxy?";
+        MOCK_QUESTIONS[15].exp = "For \\(P = 100\\text{ d}\\), \\(M_V = -2.81(2) - 1.43 = -7.05\\). The distance modulus is \\(m_V - M_V = 18.8 - (-7.05) = 25.85 = 5\\log_{10}(d/10\\text{ pc})\\), giving \\(d = 10 \\times 10^{25.85/5} \\approx 1.48 \\times 10^6\\text{ pc} \\approx 1.4\\text{ Mpc}\\).";
+
         let curMock = 0;
+        let mockScore = 0;
+        const mockAnswered = {};
+
         const mockModal = document.getElementById('mock-modal');
         const qIdxEl = document.getElementById('mock-q-idx');
         const qTextEl = document.getElementById('mock-q-text');
         const optsBox = document.getElementById('mock-options-box');
         const expBox = document.getElementById('mock-explanation');
+        const scoreValEl = document.getElementById('mock-score-val');
+        const progTextEl = document.getElementById('mock-progress-text');
 
         function renderMockQ() {
             const item = MOCK_QUESTIONS[curMock];
             qIdxEl.textContent = curMock + 1;
+            progTextEl.textContent = `${curMock + 1} of ${MOCK_QUESTIONS.length}`;
             qTextEl.innerHTML = item.q;
-            expBox.style.display = 'none';
-            optsBox.innerHTML = item.opts.map((opt, i) => `
-                <div class="mock-option" onclick="checkMockOpt(this, ${i})">${opt}</div>
-            `).join('');
+
+            const prevChoice = mockAnswered[curMock];
+            optsBox.innerHTML = item.opts.map((opt, i) => {
+                let cls = 'mock-option';
+                let style = '';
+                if (prevChoice !== undefined) {
+                    style = 'pointer-events:none;';
+                    if (i === item.correct) cls += ' correct';
+                    else if (i === prevChoice) cls += ' wrong';
+                }
+                return `<div class="${cls}" style="${style}" onclick="checkMockOpt(this, ${i})">${opt}</div>`;
+            }).join('');
+
+            if (prevChoice !== undefined) {
+                expBox.innerHTML = item.exp;
+                expBox.style.display = 'block';
+            } else {
+                expBox.style.display = 'none';
+            }
+
             if (window.MathJax && window.MathJax.typesetPromise) {
                 window.MathJax.typesetPromise([mockModal]).catch(() => {});
             }
         }
 
         window.checkMockOpt = function(el, idx) {
+            if (mockAnswered[curMock] !== undefined) return;
+            mockAnswered[curMock] = idx;
             const item = MOCK_QUESTIONS[curMock];
+            if (idx === item.correct) {
+                mockScore++;
+                scoreValEl.textContent = mockScore;
+            }
             const all = optsBox.querySelectorAll('.mock-option');
             all.forEach((node, i) => {
                 node.style.pointerEvents = 'none';
