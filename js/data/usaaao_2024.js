@@ -7,9 +7,9 @@ export const usaaao_2024 = [
         year: 2024,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.2 / 10.0",
         title: "MIThenge Corridor Solar Alignment",
         description: `David is walking down MIT's Infinite Corridor (latitude \\(42^\\circ 21' 33''\\text{ N}\\)) when he suddenly sees the Sun aligning with the window at the end of the corridor. Being the observational master he is, David immediately pulls out his compass and measures the Sun to be at an azimuth of \\(245.81^\\circ\\). Forgetting to bring his jacket, he is painfully reminded as he walks outside that it has been less than 6 months since the previous winter solstice. Which of the following choices is closest to the current date? Assume the corridor is parallel to the surface of the Earth.<br><br>
 (a) January 15 <br>
@@ -66,7 +66,7 @@ Which of the following is true?<br><br>
         moduleName: "Planetary Systems and Formation",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.3 / 10.0",
         title: "Geometric Transit Probability of Earth",
         description: `Aliens in a nearby star system (located in a random direction from Earth) are looking for nearby planets using the transit method. What is the probability that they can see the Earth transit across the Sun? (Assume they observe our Sun over multiple years and their instruments are sensitive enough to detect any transit that occurs.)<br><br>
 (a) 100% <br>
@@ -89,9 +89,9 @@ Which of the following is true?<br><br>
         year: 2024,
         module: "O2",
         moduleName: "Telescope Practice",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "1.5 / 10.0",
         title: "Telescope Magnification & Field of View Comparison",
         description: `Orion is observing the sky with two telescopes that he just made. Orion wrote down that the first telescope has a primary mirror with focal length \\(F_p = 2\\text{ m}\\) and an eyepiece with focal length \\(F_e = 30\\text{ mm}\\). However, he does not know the specifications of his second telescope. Given that the full-field image from the second telescope shows the same pair of reference star groups (marked with a red circle and a green oval) separated by 3 times the linear distance across the frame compared to the first telescope, which of the following choices could be the specifications of the second telescope?<br><br>
 (a) \\(F_p = 1\\text{ m},\\ F_e = 15\\text{ mm}\\) <br>
@@ -118,7 +118,7 @@ Which of the following is true?<br><br>
         moduleName: "Stellar Remnants and General Relativity",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.5 / 10.0",
         title: "Core-Collapse Supernova Neutrino Yield",
         description: `A supernova is triggered largely by neutrinos. In fact, 99% of the energy coming from the supernova is released in the form of neutrinos. Over a time span of about three months, the supernova outputs visible light with power equivalent to 10 billion Suns. Assuming supernova neutrinos have a mean energy of around 10 MeV, that all the power of the supernova is released during the time it is visible, and that all of the power released is in the form of either visible light or neutrinos, estimate the number of neutrinos released.<br><br>
 (a) \\(10^{54}\\) <br>
@@ -143,9 +143,9 @@ Which of the following is true?<br><br>
         year: 2024,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.3 / 10.0",
         title: "Angular Momentum of Intersecting Orbits",
         description: `Newly discovered planets DDP and CJ are found to orbit a nearby star. Planet CJ has a circular orbit with a radius of \\(2d\\), while planet DDP moves in an elliptical orbit with an aphelion of \\(5d\\) and a perihelion of \\(d\\). Their orbits intersect at location B. Additionally, through external analysis, planet DDP is found to be three times more massive than planet CJ. From the perspective of the star, what is the ratio of the angular momentum of planet DDP when it passes through point B to the angular momentum of planet CJ when it passes through point B? You may assume that the masses of both planets are significantly smaller than the mass of the star they orbit.<br><br>
 (a) \\(\\frac{3\\sqrt{3}}{2}\\) <br>
@@ -175,9 +175,9 @@ Which of the following is true?<br><br>
         year: 2024,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "7/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.6 / 10.0",
         title: "Rocket Periapsis from Orbital Area",
         description: `Arjun launches a 50 kg rocket with speed 10,405 m/s from the surface of the Earth and redirects it into a stable elliptical orbit. Upon analysis, he finds the area of the orbit to be \\(1.438 \\times 10^{15} \\text{ m}^2\\). What is the approximate distance between the periapsis of the orbit and the center of the Earth? Assume no energy was lost in the redirection of the rocket into its new orbit.<br><br>
 (a) 10000 km <br>
@@ -213,7 +213,7 @@ Which of the following is true?<br><br>
         moduleName: "Galactic Structure",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "4/10",
+        difficultyText: "1.4 / 10.0",
         title: "Orbital Velocity in a Uniform Disk",
         description: `The mass density of the Milky Way galaxy determines the orbital velocity of planets, stars, and other objects orbiting around its center. Assuming a constant surface mass density \\(\\sigma\\) for the Milky Way and modeling it as a perfect circular disk, identify the dependence of the circular orbital velocity \\(v(r)\\) of a point mass at radius \\(r\\) from the galaxy's center.<br><br>
 (a) \\( 1/\\sqrt{r} \\) <br>
@@ -236,7 +236,7 @@ Which of the following is true?<br><br>
         moduleName: "Stellar Parameters and Spectral Classification",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.3 / 10.0",
         title: "Trigonometric Parallax Volume on Mars vs. Earth",
         description: `Let's assume that on an expedition mission to Mars, we take a telescope with 0.01 arcsecond angular resolution from Earth. What is the ratio of the number of stars we can measure the parallax distance to using this telescope on Mars compared to Earth? The semimajor axis of Mars is 1.524 AU.<br><br>
 (a) 0.25 <br>
@@ -259,9 +259,9 @@ Which of the following is true?<br><br>
         year: 2024,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "hard",
-        icon: "fire",
-        difficultyText: "8/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "3.2 / 10.0",
         title: "Observing M52 on a Zero-Obliquity Planet",
         description: `Ben Chen is an alien living on a system identical to Earth, except his planet's obliquity is \\(0^\\circ\\). Located at latitude \\(42.20^\\circ\\text{ N}\\), he wants to observe M52. Due to the open cluster being so dim, Ben needs perfect conditions to observe M52. Due to atmospheric effects, M52 can only be observed above an altitude of \\(30^\\circ\\). Additionally, it must be during astronomical night (when the Sun is more than \\(18^\\circ\\) below the horizon). Of the following dates, which is the earliest after the vernal equinox that Ben can observe the cluster? The coordinates of M52 are approximately \\(\\alpha = 0^{\\text{h}}\\) and \\(\\delta = 60^\\circ\\).<br><br>
 (a) April 21st <br>
@@ -292,9 +292,9 @@ Which of the following is true?<br><br>
         year: 2024,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "hard",
-        icon: "fire",
-        difficultyText: "7/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.9 / 10.0",
         title: "Zenith Passage & Sunlight Duration in a Deep Shaft",
         description: `Joe lives at the bottom of a vertical cylindrical hole with a radius of \\(10\\text{ m}\\) at a depth of \\(10\\text{ km}\\) below the surface. He sees the Sun directly through the opening of the hole for a couple days twice a year, around November 2nd and February 9th.<br><br>
 <strong>11.</strong> Which of the following is Joe's latitude?<br>
@@ -318,9 +318,9 @@ Which of the following is true?<br><br>
         year: 2024,
         module: "T4",
         moduleName: "Stellar Parameters and Spectral Classification",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "7/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.5 / 10.0",
         title: "Binary Star Kinematics Snapshot",
         description: `Samvit observes a binary star system of masses \\(M_1\\) and \\(M_2\\). Unfortunately, the star with mass \\(M_2\\) is too dim for him to observe it, leading to the following snapshot below.<br><br>
 <img src="assets/img/USAAAO_2024/Q13_USAAAO_2024.png" alt="Binary System Snapshot Diagram" style="max-width: 100%; border-radius: 2px; margin: 15px 0;"><br>
@@ -347,7 +347,7 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "4/10",
+        difficultyText: "1.8 / 10.0",
         title: "Solar Differential Rotation Synodic Lap Period",
         description: `The surface of the Sun exhibits differential rotation, with different rotational periods at different latitudes. If the rotation speed of the Sun's surface at the equator is \\(2021\\text{ m/s}\\), and at \\(60^\\circ\\text{ South}\\) is \\(809\\text{ m/s}\\), how long would it take for a sunspot at the equator to do a full extra lap around the Sun compared to a sunspot at \\(60^\\circ\\text{ South}\\)?<br><br>
 (a) 6.2 days <br>
@@ -372,9 +372,9 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         year: 2024,
         module: "T2",
         moduleName: "Radiation Physics and Relativity Fundamentals",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.1 / 10.0",
         title: "Relativistic Proton Classical Turning Point",
         description: `Two protons A and B lie in the solar interior. In the rest frame of proton A, proton B approaches it radially from a large distance with speed \\(0.9c\\). In the rest frame of proton A, identify the radius of the "classically forbidden" region for proton B (i.e. the region into which proton B cannot enter).<br><br>
 (a) \\(6.6 \\times 10^{-12}\\text{ m}\\) <br>
@@ -401,7 +401,7 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "4/10",
+        difficultyText: "1.3 / 10.0",
         title: "Synodic Lunar Month",
         description: `Consider a sun-planet-moon system. The rotation period of the planet is 2 days. The period of revolution of the moon around the planet is 42 days while that of the planet around the sun is 420 days. What is the length of the lunar cycle as seen from the planet? You can assume the direction of planetary rotation, planetary revolution, and lunar revolution is the same.<br><br>
 (a) 42.1 days <br>
@@ -424,7 +424,7 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         moduleName: "Astronomical Instrumentation",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.4 / 10.0",
         title: "ELT Direct Imaging Resolution Limit",
         description: `The Extremely Large Telescope (ELT) is an optical telescope under construction in Chile. The primary mirror has been planned to have a diameter of \\(39.3\\text{ m}\\), making it the largest optical telescope ever built. One of the goals for this telescope is the direct imaging of exoplanets. Consider an exoplanet at a distance of \\(1\\text{ AU}\\) from a star. What is the maximum distance from Earth of such a star-exoplanet system in which the ELT can resolve the exoplanet separately from the star? Ignore atmospheric seeing and assume optical wavelength to be \\(500\\text{ nm}\\).<br><br>
 (a) 112 pc <br>
@@ -449,9 +449,9 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         year: 2024,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.4 / 10.0",
         title: "Sundial Shadow Azimuths & Polar Gnomon Tilt",
         description: `At 6am on March 20th, as the Sun is rising, Leo, who is at \\((40^\\circ\\text{ N}, 75^\\circ\\text{ W})\\), plants a stick vertically on the ground. Every hour on the hour, he marks out a line in the current direction of the shadow until the Sun sets at 6pm. Three months later (on the summer solstice), Leo returns to the same spot and marks out the hourly shadow lines again.<br><br>
 <strong>18.</strong> Let \\(\\alpha_{12}\\) and \\(\\alpha_6\\) be the azimuths of the shadow lines drawn in the spring at 12pm and 6pm, and \\(\\beta_{12}\\) and \\(\\beta_6\\) be the azimuths of the shadow lines drawn in the summer at 12pm and 6pm. Which of the following statements is true? Ignore atmospheric effects and the equation of time.<br>
@@ -476,9 +476,9 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         year: 2024,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.1 / 10.0",
         title: "Orbital Period Around a Cylindrical Planet",
         description: `<p>Imagine a very long cylindrical planet that has a satellite orbiting around it. Considering that the average density of the planet is \\(\\rho\\) and the radius is \\(R\\), find the expression that relates the period \\(P\\) of the satellite with its distance \\(d\\) to the center of the planet.</p>
 <ul style="list-style-type: none; padding-left: 0;">
@@ -505,9 +505,9 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         year: 2024,
         module: "T12",
         moduleName: "Cosmology and the Structure of the Universe",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.4 / 10.0",
         title: "Primordial Magnetic Monopole Dilution by Inflation",
         description: `The problem of magnetic monopoles arises from the fact that Grand Unified Theories predict that the number density of magnetic monopoles at the time of their creation was \\(n_M(t_{\\text{GUT}}) \\approx 10^{82}\\text{ m}^{-3}\\). Cosmic inflation provides a solution to this problem, as the exponential expansion of the primordial universe dilutes the monopoles. Calculate, approximately, how much the universe expanded linearly during the inflationary period so that today the probability of a single magnetic monopole existing in the observable universe is 1%. Assume the universe is flat, the diameter of the observable universe today is \\(28.5\\text{ Gpc}\\), and between the end of inflation and today the universe has linearly expanded by a factor of \\(5 \\times 10^{26}\\).<br><br>
 (a) \\(e^{40}\\) <br>
@@ -537,7 +537,7 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         moduleName: "Stellar Structure and Atmospheres",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "4/10",
+        difficultyText: "1.5 / 10.0",
         title: "Central Temperature Scaling of Polytropic X-Stars",
         description: `Tara is investigating a new type of stars she calls X-stars. She observes that in an X-star of mass \\(M\\) and radius \\(R\\), the gas pressure in the center of the star is proportional to \\(\\frac{M^3}{R^5}\\). What is the temperature at the center of the star proportional to?<br><br>
 (a) \\(MR\\) <br>
@@ -560,7 +560,7 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         moduleName: "Radiation Physics and Relativity Fundamentals",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.4 / 10.0",
         title: "Peak Emission Frequency of Star Recentus (Voided)",
         description: `<em>[VOIDED ON OFFICIAL EXAM]</em> A recently discovered star Recentus in a nearby galaxy has been confirmed to have a luminosity of \\(4L_\\odot\\) with a radius of \\(4R_\\odot\\). What is the approximate frequency of peak emission of Recentus?<br><br>
 (a) \\(2 \\times 10^{14}\\text{ Hz}\\) <br>
@@ -588,7 +588,7 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         moduleName: "Galactic Structure",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "2/10",
+        difficultyText: "1.1 / 10.0",
         title: "Galactic Mass from Outer Rotation Speed",
         description: `Tara observes an X-star on the edge of a galaxy with radius \\(r = 15 \\times 10^3\\text{ pc}\\). She estimates that the star is moving at a speed of \\(v = 270\\text{ km/s}\\). What is a good estimate for the mass of the galaxy in units of the mass of the Sun (\\(M_\\odot\\))?<br><br>
 (a) \\(1 \\times 10^6\\) <br>
@@ -613,7 +613,7 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         moduleName: "Cosmology and the Structure of the Universe",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "4/10",
+        difficultyText: "1.6 / 10.0",
         title: "Galaxy Bolometric Luminosity from Luminosity Distance",
         description: `There is a galaxy at redshift \\(0.5\\) for which we have a measurement of apparent bolometric magnitude \\(m = 22\\). With a standard candle in that galaxy, we have found its luminosity distance to Earth to be \\(2.8\\text{ Gpc}\\). Estimate the luminosity of this galaxy.<br><br>
 (a) \\(10^{10}\\ L_\\odot\\) <br>
@@ -638,7 +638,7 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         moduleName: "Astronomical Instrumentation",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "2/10",
+        difficultyText: "1.1 / 10.0",
         title: "Telescope Focal Length for Full-Moon Field of View",
         description: `An astronomer wants to design a telescope so that the full Moon fills the entire field of view (FOV) of the telescope. She uses an eyepiece with an apparent FOV of \\(60^\\circ\\). If the focal length of the eyepiece is \\(25\\text{ mm}\\), what will the focal length of the chosen telescope be? Note that the angular diameter of the Moon is \\(0.5^\\circ\\).<br><br>
 (a) 2000 mm <br>
@@ -663,7 +663,7 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         moduleName: "Cosmology and the Structure of the Universe",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.4 / 10.0",
         title: "Matter Density Ratio at Recombination vs. Today",
         description: `The Cosmic Microwave Background is made of light that was released when the Universe first became transparent. It is a blackbody spectrum with temperature equal to the current temperature of the Universe. We observe the peak wavelength of the CMB to be at \\(1.063\\text{ millimeters}\\). When the CMB was released, we can theoretically predict the temperature of the Universe to be \\(3000\\text{ Kelvins}\\). How much larger was the density of matter when the CMB was released than now? Select the closest answer.<br><br>
 (a) \\(10^3\\) <br>
@@ -686,9 +686,9 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         year: 2024,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "hard",
-        icon: "fire",
-        difficultyText: "8/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "3.1 / 10.0",
         title: "Great-Circle Flight Geodesic Navigation Error",
         description: `Moving into MIT for the start of the spring semester, Austin is flying from Lubbock, Texas (\\(33.58^\\circ\\text{ N}, 101.84^\\circ\\text{ W}\\)) to Boston, MA (\\(42.36^\\circ\\text{ N}, 71.06^\\circ\\text{ W}\\)). However, when he lands he finds that he is not in Boston. The pilots entered the destination latitude coordinate incorrectly (while keeping the destination longitude \\(71.06^\\circ\\text{ W}\\) correct)! Austin remembers that the plane left Lubbock at a bearing of \\(63^\\circ\\) (east of north) and followed the shortest great-circle path to the current destination. Where is Austin now?<br><br>
 (a) \\((51.46^\\circ\\text{ N}, 71.06^\\circ\\text{ W})\\) <br>
@@ -716,9 +716,9 @@ What could Samvit hypothesize to be the position and mass of the other star at t
         year: 2024,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "hard",
-        icon: "fire",
-        difficultyText: "7/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "3.0 / 10.0",
         title: "LARES Satellite Topocentric Altitude & Photometry",
         description: `Austin is back at MIT in Boston (\\(42.36^\\circ\\text{ N}, 71.06^\\circ\\text{ W}\\)) observing the LARES satellite, a sphere of diameter \\(36.4\\text{ cm}\\) made of THA-18N tungsten alloy. It orbits at an altitude of \\(1450\\text{ km}\\) above the surface of the Earth at an inclination of \\(69.49^\\circ\\) relative to the equatorial plane.<br><br>
 <strong>29.</strong> What is the highest altitude angle Austin can point his telescope if he wants to observe LARES when it is at its highest latitude?<br>

@@ -5,9 +5,11 @@ export const usaaao_2018 = [
         id: "Q1",
         competition: "USAAAO",
         year: 2018,
+        module: "T1",
+        moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "1/10",
+        difficultyText: "1.0 / 10.0",
         title: "Kepler's Third Law",
         description: `A planet's orbit around a star has a semimajor axis of 16 AU. What is the period of the planet's orbit?<br><br>
 (a) 6 years <br>

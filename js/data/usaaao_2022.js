@@ -9,7 +9,7 @@ export const usaaao_2022 = [
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "2/10",
+        difficultyText: "1.2 / 10.0",
         title: "Comet Velocity at Aphelion",
         description: `A comet's orbit has the following characteristics: eccentricity \\(e = 0.995\\); aphelion distance \\(r_a = 5 \\cdot 10^4\\) AU. Assume we know the mass of the Sun \\(M_S = 1.98 \\cdot 10^{30}\\) kg, and gravitational constant \\(G = 6.67 \\cdot 10^{-11}\\) Nm\\(^2\\)/kg\\(^2\\). Determine the velocity of the comet at its aphelion.<br><br>
 (a) 34.76 m/s <br>
@@ -47,9 +47,9 @@ export const usaaao_2022 = [
         year: 2022,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.4 / 10.0",
         title: "Area Swept by an Elliptical Orbit",
         description: `Consider the following elliptical orbit of a comet around a star:<br><br>
 <img src="../assets/img/USAAAO_2022/Q03_USAAAO_2022.jpeg" alt="Elliptical Orbit Diagram" class="user-diagram" onclick="window.openImageModal(this)"><br>
@@ -84,9 +84,9 @@ Assume that the direction of the orbit is counterclockwise.<br><br>
         year: 2022,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "1.7 / 10.0",
         title: "Angular Momentum in a Binary System",
         description: `Two (spherical) asteroids, Ek and Do, are orbiting in free space around their stationary center of mass. Ek has mass \\(7M_\\$\\) and Do has mass \\(1.4M_\\$\\), where \\(M_\\$\\) is the mass of the moon. What is the ratio of the angular momentum of the whole system to the angular momentum of Do about the center of mass of the system?<br><br>
 (a) 26 <br>
@@ -122,7 +122,7 @@ Assume that the direction of the orbit is counterclockwise.<br><br>
         moduleName: "Planetary Systems and Formation",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "4/10",
+        difficultyText: "1.4 / 10.0",
         title: "Earth Transit Duration",
         description: `Imagine that you observe transits of Earth across the Sun from a far away exoplanet. Assuming Earth's orbit has 0 eccentricity and it transits directly across the Sun's diameter (the impact parameter is 0), what is the duration of Earth's transit?<br><br>
 (a) 3.24 hrs <br>
@@ -150,9 +150,9 @@ Assume that the direction of the orbit is counterclockwise.<br><br>
         year: 2022,
         module: "T4",
         moduleName: "Stellar Parameters and Spectral Classification",
-        difficultyClass: "hard",
-        icon: "skull",
-        difficultyText: "8/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "1.8 / 10.0",
         title: "Binary Mass from Light Curve",
         description: `An astronomer observes an eclipsing binary star system from Earth, and he plots the following light curve.<br><br>
 <img src="../assets/img/USAAAO_2022/Q17_USAAAO_2022.jpeg" alt="Eclipsing Binary Light Curve" class="user-diagram" onclick="window.openImageModal(this)"><br>

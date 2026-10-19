@@ -9,7 +9,7 @@ export const usaaao_2023 = [
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "2/10",
+        difficultyText: "1.1 / 10.0",
         title: "Julian Day Calendar Conversion",
         description: `According to the astronomical Julian day count, \\(\\text{JD } 2459946.0\\) corresponds to January 1, 2023 at 12:00 UT. What would be the date and time at Chorzów, Poland corresponding to \\(\\text{JD } 2460000.0\\)? Poland uses Central European Time (\\(\\text{GMT} + 1:00\\)).<br><br>
 (a) 31 January 2023, 24:00 <br>
@@ -38,9 +38,9 @@ export const usaaao_2023 = [
         year: 2023,
         module: "T3",
         moduleName: "Astronomical Instrumentation",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.0 / 10.0",
         title: "Star Cluster Distance Modulus & Objective Focal Length",
         description: `A cluster has a radius of 2 parsecs. A Sun-like star in the cluster has an apparent magnitude of 10. When we look at the cluster with a telescope that has an eyepiece with an apparent field of view of 30 degrees, the cluster just fits within the eyepiece. If this telescope has an eyepiece of focal length 20 mm, what is the focal length of its objective lens?<br><br>
 (a) 570 mm <br>
@@ -71,7 +71,7 @@ export const usaaao_2023 = [
         moduleName: "Planetary Systems and Formation",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "2/10",
+        difficultyText: "1.1 / 10.0",
         title: "Earth-Moon Albedo & Brightness Ratio from Mars",
         description: `The radius of the Moon is about 4 times smaller than the radius of the Earth. The mean albedos of the Moon and the Earth are 0.12 and 0.36, respectively. The Mars Reconnaissance Orbiter took a picture of the Earth-Moon system. How many times brighter than the Moon did the Earth appear in the image?<br><br>
 (a) \\(4/9\\) <br>
@@ -94,7 +94,7 @@ export const usaaao_2023 = [
         moduleName: "Radiation Physics and Relativity Fundamentals",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "1/10",
+        difficultyText: "1.0 / 10.0",
         title: "Solar Corona X-Ray Blackbody Peak",
         description: `The Sun has a surface temperature of about 6000 K and its blackbody emission peaks in the visible spectrum. Around the 1940s, astronomers found out that the Sun is a strong X-ray emitter. Today, it is understood that this emission comes from the solar corona where temperatures can reach on the order of \\(10^6\\text{ K}\\). Assuming the corona is a blackbody emitter, what wavelength would that emission peak at?<br><br>
 (a) 2.9 nm <br>
@@ -117,7 +117,7 @@ export const usaaao_2023 = [
         moduleName: "Stellar Parameters and Spectral Classification",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "1/10",
+        difficultyText: "1.0 / 10.0",
         title: "Stellar Parallax of 61 Cygni",
         description: `Friedrich Bessel was the first person to quantitatively measure the annual change in stellar positions due to the motion of the Earth around the Sun. This change is known as stellar parallax. Bessel determined the stellar parallax for 61 Cygni to be about \\(1/3\\) arc-seconds. What is the distance to 61 Cygni from Earth?<br><br>
 (a) \\(1/3\\) light years <br>
@@ -140,7 +140,7 @@ export const usaaao_2023 = [
         moduleName: "Stellar Remnants and General Relativity",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.2 / 10.0",
         title: "Neutron Star Blackbody Luminosity",
         description: `Compute the blackbody luminosity of a neutron star with its surface temperature at \\(10^6\\text{ K}\\) and radius \\(10^4\\text{ m}\\).<br><br>
 (a) \\(0.1\\ L_\\odot\\) <br>
@@ -186,9 +186,9 @@ The Balmer lines are a series of spectral lines of hydrogen. In the low-temperat
         year: 2023,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "1.9 / 10.0",
         title: "Comet Fragmentation Escape",
         description: `A comet passes near the Sun on a parabolic orbit. While it's passing near the Sun with orbital velocity \\(V\\), the Sun's heat causes the comet to melt, and it shatters into many small fragments. The fragments move away uniformly in all directions (in the comet's reference frame) with velocity \\(v \\ll V\\). What fraction of the fragments will escape the solar system? Ignore any forces other than the Sun's gravity.<br><br>
 (a) 0% <br>
@@ -216,9 +216,9 @@ The Balmer lines are a series of spectral lines of hydrogen. In the low-temperat
         year: 2023,
         module: "T10",
         moduleName: "Galactic Structure",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.3 / 10.0",
         title: "Galaxy Mass Calculation",
         description: `Consider Galaxies A and B, both of which have radius \\(R\\). At a distance \\(R\\) from its center, Galaxy A's rotational velocity is equal to \\(v\\). Meanwhile, Galaxy B's radial velocity dispersion is also equal to \\(v\\). However, galaxy A is spiral while galaxy B is spherical elliptical and composed of uniform, evenly-spaced stars. Calculate the masses of both galaxies. (Answer choices are listed as \\(m_A\\); \\(m_B\\)).<br><br>
 (a) \\( v^2R/G \\) ; \\( v^2R/G \\) <br>
@@ -243,9 +243,9 @@ The Balmer lines are a series of spectral lines of hydrogen. In the low-temperat
         year: 2023,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.1 / 10.0",
         title: "Free-Fall to Venus",
         description: `Consider a satellite that has a circular orbit with a radius of \\(6.0 \\times 10^8\\) m around Venus. Due to a failure in its ignition system, the satellite's orbital velocity was suddenly decreased to zero during a maneuver. How long does the satellite take to hit the surface of the planet? Consider that the mass of Venus is \\(4.67 \\times 10^{24}\\) kg and neglect any gravitational effects on the satellite other than that from Venus.<br><br>
 (a) 15 hours.<br>
@@ -272,7 +272,7 @@ The Balmer lines are a series of spectral lines of hydrogen. In the low-temperat
         moduleName: "Stellar Evolution",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.2 / 10.0",
         title: "Main-Sequence Proton-Proton Chain Lifetime",
         description: `Consider a main-sequence star with mass \\(M = 9.1 \\times 10^{29}\\text{ kg}\\), which is sustained through the proton-proton chain reaction operating with \\(\\epsilon = 0.7\\%\\) mass-to-energy efficiency. The hydrogen and helium mass fractions of this star are \\(f_{\\text{H}} = 0.71\\) and \\(f_{\\text{He}} = 0.22\\) at the beginning of its lifetime. Assume this star has solar luminosity and that all hydrogen can be used for fusion. Calculate the lifetime of this star.<br><br>
 (a) \\(3.3 \\times 10^{17}\\text{ s}\\) <br>
@@ -295,9 +295,9 @@ The Balmer lines are a series of spectral lines of hydrogen. In the low-temperat
         year: 2023,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "hard",
-        icon: "skull",
-        difficultyText: "8/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.8 / 10.0",
         title: "Time Segment of an Elliptical Orbit",
         description: `A planet is in an elliptical orbit around a star. Let \\(r_{min}\\) be the minimum distance between the planet and star, and let \\(r_{max}\\) be the maximum distance between the planet and star. Suppose that \\(r_{max} = 4r_{min}\\). During what percentage of the time period of each orbit is the planet at least \\(\\frac{5}{2}r_{min}\\) away from the star?<br><br>
 (a) 23% <br>
@@ -325,7 +325,7 @@ The Balmer lines are a series of spectral lines of hydrogen. In the low-temperat
         moduleName: "Planetary Systems and Formation",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.4 / 10.0",
         title: "Exoplanet Radius from Transit Magnitude Depth",
         description: `The apparent magnitude of a star of radius \\(0.41R_\\odot\\) as observed from Earth appears to fluctuate by 0.037. That is, the difference between the maximum and minimum apparent magnitudes is 0.037. This fluctuation is caused by an exoplanet that orbits the star. Determine the radius of the exoplanet.<br><br>
 (a) \\(0.075R_\\odot\\) <br>
@@ -352,7 +352,7 @@ The Balmer lines are a series of spectral lines of hydrogen. In the low-temperat
         moduleName: "Stellar Evolution",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.2 / 10.0",
         title: "Maximum Mass of First-Generation Stars Alive Today",
         description: `An empirically determined approximate formula for the lifetime of a star is given by:
 $$ T = \\left(\\frac{M_\\odot}{M}\\right)^{2.5} \\cdot 10^{10}\\text{ years} $$
@@ -379,7 +379,7 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
         moduleName: "Radiation Physics and Relativity Fundamentals",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.3 / 10.0",
         title: "Relativistic Light Sail Proper Time to Alpha Centauri",
         description: `With the technology currently available, it would take hundreds of millennia to send a human-made object to other stars. A possible solution to this problem is to use relativistic light sails, which consist of very small probes propelled by radiation pressure. It is estimated that in the reference frame of an Earth observer, these sails would take 20.0 years to reach Alpha Centauri, which is 4.37 light-years away from the Solar System. The velocity of a light sail can be assumed to be constant throughout the entire trip. How long would this trip be in the reference frame of the light sail?<br><br>
 (a) 18.5 years <br>
@@ -400,9 +400,9 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
         year: 2023,
         module: "O1",
         moduleName: "Blind Map Practice",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "1.7 / 10.0",
         title: "Blind Sky Map Constellation Identification",
         description: `A wide-field southern/equatorial star chart displays the Milky Way running through Centaurus (with \\(\\alpha\\) and \\(\\beta\\) Centauri prominent near the right), Crux at the bottom-right, Lupus and Libra in the upper-right/center, and Virgo (with Spica) toward the left. Which of the following constellations is NOT on this sky map?<br><br>
 (a) Virgo <br>
@@ -427,9 +427,9 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
         year: 2023,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "hard",
-        icon: "skull",
-        difficultyText: "8/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "3.3 / 10.0",
         title: "Spherical Excess & Conic Gnomon Shadow Paths",
         description: `<strong>17.</strong> The fictional towns of Baia and Caia are located at \\((66.56^\\circ\\text{ N}, 67.55^\\circ\\text{ E})\\) and \\((\\phi, 18.95^\\circ\\text{ E})\\), respectively. It is known that the spherical triangle with vertices at Baia, Caia, and the North Pole covers \\(6.75\\%\\) of Earth's surface. Compute \\(\\phi\\).<br>
 (a) \\(66.56^\\circ\\text{ N}\\) &nbsp; (b) \\(55.25^\\circ\\text{ N}\\) &nbsp; (c) \\(23.44^\\circ\\text{ N}\\) &nbsp; (d) \\(55.25^\\circ\\text{ S}\\) &nbsp; (e) \\(66.56^\\circ\\text{ S}\\)<br><br>
@@ -461,9 +461,9 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
         year: 2023,
         module: "T9",
         moduleName: "Planetary Systems and Formation",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "7/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.2 / 10.0",
         title: "Radial Velocity and Exoplanet Mass",
         description: `In 1995, researchers at the University of Geneva discovered an exoplanet in the main-sequence star 51 Pegasi. This was the first-ever discovery of an exoplanet orbiting a Sun-like star! When they observed the star, a periodic Doppler shifting of its stellar spectrum indicated that its radial velocity was varying sinusoidally; this wobbling could be explained if the star was being pulled in a circle by the gravity of an exoplanet. The radial velocity sinusoid of 51 Pegasi was measured to have a semi-amplitude of 56 m/s with a period of 4.2 days, and the mass of the star is known to be \\(1.1 M_\\odot\\). Assuming that the researchers at Geneva viewed the planet's orbit edge-on and that the orbit was circular, what is the mass of the exoplanet in Jupiter masses?<br><br>
 (a) \\( 0.81 M_J \\) <br>
@@ -517,9 +517,9 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
         year: 2023,
         module: "T4",
         moduleName: "Stellar Parameters and Spectral Classification",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "1.6 / 10.0",
         title: "Binary Mass from Astrometry",
         description: `Consider the binary system Kepler-16, which has the primary star Kepler-16A and the secondary star Kepler-16B. It has an orbital period \\(P = 41.08\\) days and the measured parallax is \\(p = 13.29\\) mas. Calculate the total mass of the stars, using the fact that their maximum angular separation measured from Earth is \\(\\theta = 2.98\\) mas and they are on an edge-on orbit.<br><br>
 (a) \\( 0.756 M_\\odot \\) <br>
@@ -544,9 +544,9 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
         year: 2023,
         module: "T9",
         moduleName: "Planetary Systems and Formation",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "1.8 / 10.0",
         title: "Habitable Zone Eccentricity",
         description: `The habitable zone of a star is defined as the one where water in the liquid state can exist on the surface of a planet. Therefore, considering that the planets are ideal black bodies with fast rotation, determine the maximum eccentricity that the orbit of a planet can have so that it can be home to life. Ignore any thermodynamic effects that might happen in the atmosphere or the sidereal space. Consider that the melting point of water is 273 K and the boiling point is 373 K.<br><br>
 (a) 0.274 <br>
@@ -571,9 +571,9 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
         year: 2023,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "6/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.3 / 10.0",
         title: "Polar Day Duration on a High-Obliquity Earth",
         description: `Billions of years from now, as the Moon moves farther away from the Earth, the Earth's axial tilt may become unstable. Imagine the Earth's tilt is such that the angle between the celestial equator and the ecliptic is \\(60^\\circ\\), rather than the current \\(23.44^\\circ\\), so the Arctic Circle is now as far south as \\(30^\\circ\\text{ North}\\). For an observer at \\(40^\\circ\\text{ North}\\), how many days out of the year would the Sun never set (also known as the "polar day")? (Ignore atmospheric refraction, and assume the Earth's orbit is circular and nothing else has changed from today.)<br><br>
 (a) 28 <br>
@@ -604,7 +604,7 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
         moduleName: "Astronomical Instrumentation",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "4/10",
+        difficultyText: "1.5 / 10.0",
         title: "Parabolic Mirror Newtonian Telescope Focal Ratio",
         description: `Erez is designing a Newtonian telescope! The equation of the primary mirror is \\(y = x^2 / 36\\text{ m} - 1\\text{ m}\\) and the telescope tube intersects the mirror at \\(y = 0\\). What is the f-number (focal ratio) of the telescope?<br><br>
 (a) \\(f/0.75\\) <br>
@@ -632,7 +632,7 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
         moduleName: "Positional Astronomy and Celestial Mechanics",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "3/10",
+        difficultyText: "1.3 / 10.0",
         title: "Overlap of Tropical and Frigid Planetary Zones",
         description: `Consider a hypothetical planet orbiting the Sun with an obliquity angle \\(i\\) (angle between the axis of rotation and the normal to the orbital plane). Assume that a year is much longer than a day for this planet. Define a <em>tropical region</em> on the planet as one where the Sun reaches the zenith at some time in its revolution period. Define a <em>frigid region</em> on the planet as one where there is a day when the Sun never rises. What is the minimum value of \\(i\\) for which there is a location on the planet which is both tropical and frigid?<br><br>
 (a) \\(0^\\circ\\) <br>
@@ -657,9 +657,9 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
         year: 2023,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "7/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.4 / 10.0",
         title: "Grazing Comet Hyperbola",
         description: `A comet is approaching our solar system from the depths of space with a velocity of 10000 m/s, and if it continues moving in a straight line on its current trajectory, it will just barely graze the surface of the Sun! What is the eccentricity of the comet's orbit?<br><br>
 (a) 1.00014 <br>
@@ -684,7 +684,7 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
         moduleName: "Cosmology and the Structure of the Universe",
         difficultyClass: "easy",
         icon: "bolt",
-        difficultyText: "2/10",
+        difficultyText: "1.0 / 10.0",
         title: "Hubble Law Distance to a Low-Redshift Galaxy",
         description: `How far from the Solar System would a galaxy with a redshift of \\(0.035\\) be?<br><br>
 (a) 150 Mpc <br>
@@ -705,9 +705,9 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
         year: 2023,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "medium",
-        icon: "fire",
-        difficultyText: "5/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "1.9 / 10.0",
         title: "Non-Intersecting Coplanar Aligned Elliptical Orbits",
         description: `Two planets A and B orbit a star with coplanar orbital paths that don't intersect. The major axes of the orbits are perfectly aligned, but the major axis of A is larger than that of B. A and B are observed to have eccentricities 0.5 and 0.75, respectively. What is the minimal possible ratio of semi-major axes of A to B?<br><br>
 (a) 1 <br>
@@ -732,9 +732,9 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
         year: 2023,
         module: "T1",
         moduleName: "Positional Astronomy and Celestial Mechanics",
-        difficultyClass: "hard",
-        icon: "fire",
-        difficultyText: "7/10",
+        difficultyClass: "easy",
+        icon: "bolt",
+        difficultyText: "2.8 / 10.0",
         title: "Harvard Bridge Solar Azimuth Alignment & Diurnal Altitude",
         description: `On a map of MIT and the Charles River where North points directly upwards, the Harvard Bridge runs NNW–SSE and the Charles River runs perpendicular to it, angled from West-Southwest (upriver, left) to East-Northeast (downriver, right, azimuth \\(A \\approx 68^\\circ\\)).<br><br>
 <strong>29.</strong> Leo is biking along the Harvard Bridge in the morning when he stops and looks out downriver (East-Northeast) parallel to the banks. He sees the Sun straight in front of him, peeking out from above the buildings. What part of the academic year is it?<br>
