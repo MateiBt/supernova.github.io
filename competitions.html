@@ -435,9 +435,12 @@
             <!-- FOOTER CTA -->
             <div class="comp-footer">
                 <div class="reg-status-info">
-                    Registration Window: <strong>19 Oct – 1 Nov 2026 (23:59 UT)</strong> · Each participant must complete the official registration form.
+                    Registration Window: <strong>19 Oct – 1 Nov 2026 (23:59 UT)</strong> · Each participant must complete the registration form.
                 </div>
                 <div class="btn-group">
+                    <a href="https://docs.google.com/document/d/19tkOy5Jg8G5Me1zHaUO1f_YnWKbrFhB0jZfDDJFOUNc/export?format=pdf" target="_blank" rel="noopener noreferrer" class="btn-comp btn-mock">
+                        <i class="fa-solid fa-file-pdf" style="color: var(--accent-rose);"></i> Download Rules &amp; Syllabus (PDF)
+                    </a>
                     <a href="https://forms.gle/eK1EHVtvQLAC9xdU8" target="_blank" rel="noopener noreferrer" class="btn-comp btn-register">
                         <i class="fa-solid fa-user-plus"></i> Register for Autumn Cup
                     </a>
@@ -599,10 +602,10 @@
                 exp: "Propagating independent relative errors for \\(\\rho \\propto M R^{-3}\\) gives \\(\\frac{\\sigma_\\rho}{\\rho} = \\sqrt{\\left(\\frac{\\sigma_M}{M}\\right)^2 + \\left(3\\frac{\\sigma_R}{R}\\right)^2} = \\sqrt{(6\\%)^2 + (6\\%)^2} = 6\\sqrt{2}\\% \\approx 8.49\\% \\approx 8.5\\%\\)."
             },
             {
-                q: "16. [D2 · Light Curve Data] A Cepheid variable star in a nearby galaxy has a pulsation period of \\(P = 10.0\\text{ days}\\) and mean apparent magnitude \\(m_V = 18.8\\). Using the Period-Luminosity relation \\(M_V = -2.81 \\log_{10}(P / 1\\text{ d}) - 1.43\\) and assuming zero extinction, what is the distance to the host galaxy?",
+                q: "16. [D2 · Light Curve Data] A Cepheid variable star in a nearby galaxy has a pulsation period of \\(P = 100.0\\text{ days}\\) and mean apparent magnitude \\(m_V = 18.8\\). Using the Period-Luminosity relation \\(M_V = -2.81 \\log_{10}(P / 1\\text{ d}) - 1.43\\) and assuming zero extinction, what is the distance to the host galaxy?",
                 opts: ["(a) \\(1.0\\text{ Mpc}\\)", "(b) \\(1.4\\text{ Mpc}\\)", "(c) \\(2.0\\text{ Mpc}\\)", "(d) \\(2.8\\text{ Mpc}\\)"],
                 correct: 1,
-                exp: "For \\(P = 10\\text{ d}\\), \\(M_V = -2.81(1) - 1.43 = -4.24\\). The distance modulus is \\(m_V - M_V = 18.8 - (-4.24) = 23.04 = 5\\log_{10}(d/10\\text{ pc})\\), giving \\(d = 10 \\times 10^{4.608} \\approx 4.06 \\times 10^5\\text{ pc}\\); wait—checking \\(10^{23.04/5 + 1} = 10^{5.608} \\approx 4.06 \\times 10^5\\text{ pc}\\), or if \\(m_V = 21.5\\), let's evaluate \\(10^{(18.8+4.24)/5 + 1} = 406\\text{ kpc}\\). Note: With \\(M_V = -6.96\\) (at \\(P=100\\text{ d}\\)), \\(\\mu = 25.76 \\implies d = 1.42\\text{ Mpc}\\)."
+                exp: "For \\(P = 100\\text{ d}\\), \\(M_V = -2.81(2) - 1.43 = -7.05\\). The distance modulus is \\(m_V - M_V = 18.8 - (-7.05) = 25.85 = 5\\log_{10}(d/10\\text{ pc})\\), giving \\(d = 10 \\times 10^{25.85/5} \\approx 1.48 \\times 10^6\\text{ pc} \\approx 1.4\\text{ Mpc}\\)."
             },
             {
                 q: "17. [O1 · Blind Map & Coordinates] At local midnight (00:00 Local Solar Time) on the autumnal equinox (September 22), what is the Local Sidereal Time (LST), and which right ascension is transiting the observer's upper meridian?",
@@ -614,7 +617,7 @@
                 q: "18. [O2 · Telescope Mechanics] An astronomer sets up a German equatorial mount at latitude \\(\\phi = 35^\\circ\\text{ S}\\). How should the mount's polar (Right Ascension) axis be oriented?",
                 opts: ["(a) Tilted \\(35^\\circ\\) above the due South horizon", "(b) Tilted \\(55^\\circ\\) above the due South horizon", "(c) Tilted \\(35^\\circ\\) above the due North horizon", "(d) Pointed straight at the zenith"],
                 correct: 0,
-                exp: "An equatorial mount's polar axis must be aligned parallel to Earth's rotation axis, pointing at the elevated celestial pole (the South Celestial Pole in the Southern Hemisphere) at an altitude equal to the local latitude \\(|\\phi| = 35^\\circ\\) due South."
+                exp: "An equatorial mount's polar axis must be aligned parallel to Earth's rotation axis, pointing at the elevated celestial pole (the South Celestial Pole in the Southern Hemisphere) at an altitude equal to the local latitude \\(\vert{}\\phi\vert{} = 35^\\circ\\) due South."
             },
             {
                 q: "19. [T2 · Special Relativity] A distant quasar emits the hydrogen Lyman-\\(\\alpha\\) line (\\(\\lambda_0 = 121.6\\text{ nm}\\)), which is observed on Earth at \\(\\lambda_{\\text{obs}} = 364.8\\text{ nm}\\). Using the special relativistic longitudinal Doppler formula, what is the recession speed \\(v/c\\) of the quasar?",
@@ -629,10 +632,6 @@
                 exp: "For a parabolic orbit (\\(E = 0\\)), the speed at distance \\(q\\) equals the local escape speed: \\(v_p = \\sqrt{\\frac{2GM_\\odot}{q}} = v_\\oplus \\sqrt{\\frac{2 \\times 1\\text{ AU}}{0.50\\text{ AU}}} = 2 v_\\oplus = 59.6\\text{ km/s}\\)."
             }
         ];
-
-        // Fix Q16 prompt so numbers are 100% self-consistent (P = 100 days -> d = 1.4 Mpc)
-        MOCK_QUESTIONS[15].q = "16. [D2 · Light Curve Data] A Cepheid variable star in a nearby galaxy has a pulsation period of \\(P = 100.0\\text{ days}\\) and mean apparent magnitude \\(m_V = 18.8\\). Using the Period-Luminosity relation \\(M_V = -2.81 \\log_{10}(P / 1\\text{ d}) - 1.43\\) and assuming zero extinction, what is the distance to the host galaxy?";
-        MOCK_QUESTIONS[15].exp = "For \\(P = 100\\text{ d}\\), \\(M_V = -2.81(2) - 1.43 = -7.05\\). The distance modulus is \\(m_V - M_V = 18.8 - (-7.05) = 25.85 = 5\\log_{10}(d/10\\text{ pc})\\), giving \\(d = 10 \\times 10^{25.85/5} \\approx 1.48 \\times 10^6\\text{ pc} \\approx 1.4\\text{ Mpc}\\).";
 
         let curMock = 0;
         let mockScore = 0;

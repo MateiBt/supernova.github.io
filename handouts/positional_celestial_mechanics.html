@@ -72,35 +72,36 @@
         }
         @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
 
-        /* Sidebar */
+        /* --- UNIFIED SIDEBAR --- */
         .sidebar {
             width: 260px; background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border-subtle);
             display: flex; flex-direction: column;
             padding: 24px 20px; flex-shrink: 0; z-index: 100;
+            overflow-y: auto;
         }
         .brand {
             display: flex; align-items: center; gap: 16px;
             font-family: var(--font-display); font-size: 1.3rem;
             font-weight: 700; color: var(--text-pure);
-            margin-bottom: 40px; padding-left: 4px; line-height: 1.2;
+            margin-bottom: 32px; padding-left: 4px; line-height: 1.2;
             text-decoration: none;
         }
         .brand img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
 
         .menu-label {
-            font-family: var(--font-mono); font-size: 0.7rem;
+            font-family: var(--font-mono); font-size: 0.68rem;
             color: var(--text-muted); text-transform: uppercase;
-            letter-spacing: 0.05em; margin: 20px 0 10px 8px;
+            letter-spacing: 0.05em; margin: 18px 0 8px 8px;
         }
         .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
         .nav-item {
             display: flex; align-items: center; gap: 12px;
-            padding: 10px 12px; border-radius: var(--radius-sm);
+            padding: 9px 12px; border-radius: var(--radius-sm);
             color: var(--text-muted); text-decoration: none;
-            font-weight: 500; font-size: 0.9rem; transition: all 0.2s ease;
+            font-weight: 500; font-size: 0.88rem; transition: all 0.2s ease;
         }
-        .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.05rem; }
         .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
         .nav-item.active { background-color: rgba(255,255,255,0.06); color: var(--track-accent); border-left: 3px solid var(--track-accent); }
 
@@ -258,25 +259,36 @@
         <div class="comet" style="top: 12%; left: 88%; animation: shooting 9s infinite linear 1s;"></div>
     </div>
 
+    <!-- UNIFIED SIDEBAR NAVIGATION -->
     <aside class="sidebar">
-        <a href="../index.html" class="brand">
+        <a href="../dashboard.html" class="brand">
             <img src="../assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>
         </a>
         
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
-            <li><a href="../index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="../dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="../challenges.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
             <li><a href="../planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
-            <li><a href="../problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
-            <li><a href="../courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
-            <li><a href="#" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="../problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="../courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
+            <li><a href="../competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
+        </ul>
+
+        <div class="menu-label">Tools &amp; Analytics</div>
+        <ul class="nav-menu">
+            <li><a href="../analytics.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="../tools.html" class="nav-item"><i class="fa-solid fa-calculator"></i> Formula &amp; Tools</a></li>
+            <li><a href="../notebook.html" class="nav-item"><i class="fa-solid fa-book-open"></i> Mistake Notebook</a></li>
+            <li><a href="../resources.html" class="nav-item"><i class="fa-solid fa-book-atlas"></i> External Library</a></li>
         </ul>
         
         <div class="menu-label">General</div>
         <ul class="nav-menu">
             <li><a href="../profile.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
             <li><a href="../community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
+            <li><a href="#" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
         </ul>
     </aside>
 
@@ -316,7 +328,7 @@
         </div>
     </main>
 
-    <!-- DYNAMIC HANDOUT HYDRATION SCRIPT -->
+    <script type="module" src="../js/auth.js"></script>
     <script>
         const HANDOUT_REGISTRY = {
             "positional_celestial_mechanics": {
@@ -381,6 +393,13 @@
                 logo: "../assets/img/theory/planetary_systems_logo.png",
                 accent: "#B39CD0",
                 topics: ["9.1 Planetary Equilibrium Temperature, Albedo & Hydrostatic Escape", "9.2 Tidal Forces, Roche Limit & Ring Systems", "9.3 Exoplanet Detection: Transit Light Curves & Radial Velocity"]
+            },
+            "galactic_structure": {
+                eyebrow: "Theory Track · Module 10 · Coming Soon",
+                title: "10. Galactic Structure",
+                logo: "../assets/img/theory/galactic_structure_logo.png",
+                accent: "#B39CD0",
+                topics: ["10.1 Milky Way Morphology, Disk & Halo Kinematics", "10.2 Differential Rotation, Oort Constants & 21-cm Rotation Curves", "10.3 Dark Matter Halo Profiles & Virial Mass of Elliptical Galaxies"]
             },
             "galactic_evolution": {
                 eyebrow: "Theory Track · Module 11 · Coming Soon",

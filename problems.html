@@ -197,14 +197,24 @@
         }
 
         .btn-handout {
-            background: transparent;
-            color: var(--text-muted);
-            border-color: var(--border-subtle);
+            background: var(--bg-sidebar);
+            color: var(--text-main);
+            border-color: var(--border-light);
         }
         .btn-handout:hover {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.08);
             color: var(--text-pure);
-            border-color: var(--border-light);
+            border-color: var(--text-pure);
+        }
+
+        .btn-disabled {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px dashed var(--border-subtle);
+            opacity: 0.45;
+            cursor: not-allowed;
+            pointer-events: none;
+            user-select: none;
         }
 
         /* Category Accents */
@@ -234,7 +244,7 @@
         <div class="comet" style="top: 5%; left: 90%; animation: shooting 8s infinite linear 2s;"></div>
     </div>
 
-    <!-- UNIFIED SIDEBAR NAVIGATION (Links to dashboard.html, never index.html) -->
+    <!-- UNIFIED SIDEBAR NAVIGATION -->
     <aside class="sidebar">
         <a href="dashboard.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
@@ -273,7 +283,7 @@
         <header class="top-header">
             <div class="header-title">
                 <h1>Study &amp; Practice Hub</h1>
-                <p>All 16 modules in one place. Open the handout for any module to read the theory and derivations, or open Practice to solve indexed Olympiad problems.</p>
+                <p>All 16 modules in one place. Open the handout for any theory module to read the derivations, or open Practice to solve indexed Olympiad problems.</p>
             </div>
             <div class="header-actions">
                 <a href="profile.html" class="user-profile">
@@ -606,7 +616,7 @@
                 <p class="module-desc">Naked-eye star charts, missing bright star identification, ecliptic/equator/meridian lines, and estimating observer latitude and time.</p>
                 <div class="card-actions">
                     <a href="practice/obs_blind_map.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
-                    <a href="handouts/obs_blind_map.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Manual</a>
+                    <span class="btn-action btn-disabled"><i class="fa-solid fa-lock"></i> Manual (Soon)</span>
                 </div>
             </div>
 
@@ -621,7 +631,7 @@
                 <p class="module-desc">Practical telescope optics, equatorial mount alignment, field-of-view magnification matching, and CCD astrometry.</p>
                 <div class="card-actions">
                     <a href="practice/obs_telescope.html" class="btn-action btn-practice"><i class="fa-solid fa-pen-to-square"></i> Practice</a>
-                    <a href="handouts/obs_telescope.html" class="btn-action btn-handout"><i class="fa-solid fa-book-open"></i> Manual</a>
+                    <span class="btn-action btn-disabled"><i class="fa-solid fa-lock"></i> Manual (Soon)</span>
                 </div>
             </div>
         </div>

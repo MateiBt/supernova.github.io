@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>10.2 The Milky Way Galaxy | Supernova Guide</title>
+    <title>Module Handout | Supernova Guide</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,12 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- MathJax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
 
     <style>
-        /* --- 1. CANONICAL DESIGN TOKENS --- */
         :root {
             --bg-base: #0A0A0C;
             --bg-sidebar: #101115;
@@ -28,6 +24,7 @@
             --accent-blue: #35E6FF;
             --accent-purple: #B39CD0;
             --accent-rose: #FFC1CC;
+            --track-accent: #B39CD0;
             
             --text-pure: #FFFFFF;
             --text-main: #EDEDED;
@@ -35,7 +32,6 @@
             
             --border-subtle: rgba(255, 255, 255, 0.08);
             --border-light: rgba(255, 255, 255, 0.15);
-            
             --radius-lg: 16px;
             --radius-md: 12px;
             --radius-sm: 8px;
@@ -43,1110 +39,427 @@
             --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
             --font-body: 'Inter', sans-serif;
             --font-mono: 'Space Mono', monospace;
-            
-            --nav-h: 60px;
-            --bc-h: 38px;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; overflow-y: scroll; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         body {
-            background: var(--bg-base);
+            background-color: var(--bg-base);
             color: var(--text-main);
             font-family: var(--font-body);
-            min-height: 100vh;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
             -webkit-font-smoothing: antialiased;
-            animation: fadeIn 0.5s ease-out;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Top Navigation */
-        nav {
-            position: fixed; top: 0; width: 100%; height: var(--nav-h);
-            background: rgba(16, 17, 21, 0.96); backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-subtle);
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 40px; z-index: 1000;
+        .sky-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; pointer-events: none; overflow: hidden; background-color: var(--bg-base);
         }
-        .nav-logo { text-decoration: none; display: flex; align-items: center; gap: 12px; }
-        .nav-logo img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
-        .logo-text { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--text-pure); letter-spacing: 0.5px; }
-
-        .nav-links { display: flex; align-items: center; gap: 24px; }
-        .nav-links a {
-            color: var(--text-muted); text-decoration: none;
-            font-weight: 500; font-size: 0.88rem; transition: color 0.2s;
+        .comet {
+            position: absolute; width: 160px; height: 2px;
+            background: linear-gradient(to right, transparent, var(--track-accent));
+            border-radius: 50%; opacity: 0;
         }
-        .nav-links a:hover, .nav-links a.active { color: var(--accent-purple); }
-
-        .btn-auth {
-            background: var(--bg-card); border: 1px solid var(--border-light); color: var(--text-pure);
-            padding: 7px 18px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600;
-            transition: all 0.2s; font-size: 0.82rem; font-family: var(--font-body);
+        .comet::before {
+            content: ''; position: absolute; top: -2px; right: 0; width: 6px; height: 6px;
+            background: #FFFFFF; border-radius: 50%; box-shadow: 0 0 14px 4px var(--track-accent);
         }
-        .btn-auth:hover { background: var(--accent-purple); color: var(--bg-base); border-color: var(--accent-purple); }
+        @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
 
-        /* Breadcrumb Bar */
-        .breadcrumb {
-            position: fixed; top: var(--nav-h); width: 100%; height: var(--bc-h);
-            background: var(--bg-base); border-bottom: 1px solid var(--border-subtle);
-            padding: 0 40px; z-index: 900; display: flex; align-items: center; gap: 10px;
-            font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-muted);
-        }
-        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-        .breadcrumb a:hover { color: var(--text-pure); }
-        .breadcrumb .sep { opacity: 0.4; }
-        .breadcrumb .current { color: var(--accent-purple); font-weight: 700; }
-
-        /* 3-Column Academic Reader Layout */
-        .page-body {
-            display: grid;
-            grid-template-columns: 280px 1fr 240px;
-            margin-top: calc(var(--nav-h) + var(--bc-h));
-            min-height: calc(100vh - var(--nav-h) - var(--bc-h));
-        }
-
-        /* Left Subchapter Sidebar */
-        .left-sidebar {
-            position: sticky; top: calc(var(--nav-h) + var(--bc-h));
-            height: calc(100vh - var(--nav-h) - var(--bc-h));
-            overflow-y: auto; background: var(--bg-sidebar);
+        /* --- UNIFIED SIDEBAR --- */
+        .sidebar {
+            width: 260px; background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border-subtle);
-            padding: 24px 0 40px; scrollbar-width: thin;
+            display: flex; flex-direction: column;
+            padding: 24px 20px; flex-shrink: 0; z-index: 100;
+            overflow-y: auto;
         }
-        .sidebar-label {
-            font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-purple);
-            padding: 0 20px; margin-bottom: 12px;
+        .brand {
+            display: flex; align-items: center; gap: 16px;
+            font-family: var(--font-display); font-size: 1.3rem;
+            font-weight: 700; color: var(--text-pure);
+            margin-bottom: 32px; padding-left: 4px; line-height: 1.2;
+            text-decoration: none;
         }
-        .subchapter-card {
-            display: block; text-decoration: none; margin: 0 12px 8px;
-            background: transparent; border: 1px solid transparent;
-            border-radius: var(--radius-sm); padding: 12px 14px; transition: all 0.2s;
-        }
-        .subchapter-card:hover, .subchapter-card.active {
-            background: var(--bg-card); border-color: var(--border-subtle);
-        }
-        .subchapter-card.active { border-left: 3px solid var(--accent-purple); }
-        .sc-number { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; }
-        .subchapter-card.active .sc-number, .subchapter-card.active .sc-title { color: var(--accent-purple); }
-        .sc-title { font-family: var(--font-display); font-size: 0.88rem; color: var(--text-pure); font-weight: 600; margin-bottom: 4px; }
-        .sc-desc { font-size: 0.74rem; color: var(--text-muted); line-height: 1.45; }
-        .sc-topics { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-subtle); }
-        .sc-topics li { font-size: 0.72rem; color: var(--text-muted); list-style: none; padding: 2px 0; display: flex; align-items: center; gap: 6px; }
-        .sc-topics li::before { content: '›'; color: var(--accent-purple); font-weight: bold; }
+        .brand img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
 
-        /* Main Reading Canvas */
-        .main-content { padding: 44px 56px 80px; width: 100%; }
-        
-        .chapter-header-row { display: flex; align-items: center; gap: 20px; margin-bottom: 18px; }
-        .chapter-logo-badge {
-            width: 72px; height: 72px; border-radius: var(--radius-md);
-            background: #FFFFFF; padding: 4px; border: 1px solid var(--border-light);
-            flex-shrink: 0; overflow: hidden;
+        .menu-label {
+            font-family: var(--font-mono); font-size: 0.68rem;
+            color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.05em; margin: 18px 0 8px 8px;
         }
-        .chapter-logo-badge img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.3); }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 9px 12px; border-radius: var(--radius-sm);
+            color: var(--text-muted); text-decoration: none;
+            font-weight: 500; font-size: 0.88rem; transition: all 0.2s ease;
+        }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.05rem; }
+        .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
+        .nav-item.active { background-color: rgba(255,255,255,0.06); color: var(--track-accent); border-left: 3px solid var(--track-accent); }
 
-        .chapter-eyebrow {
-            font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-purple); margin-bottom: 6px;
-        }
-        .chapter-title {
-            font-family: var(--font-display); font-size: 2.4rem; font-weight: 700;
-            color: var(--text-pure); line-height: 1.15;
-        }
-        .chapter-intro {
-            font-size: 0.98rem; color: var(--text-muted); line-height: 1.8;
-            max-width: 840px; margin-bottom: 44px; padding-bottom: 28px;
-            border-bottom: 1px solid var(--border-subtle);
+        /* Main Area */
+        .dashboard-main {
+            flex: 1; overflow-y: auto; padding: 40px 48px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        .section-divider { border: none; border-top: 1px solid var(--border-subtle); margin: 48px 0; }
-        .section-anchor { scroll-margin-top: calc(var(--nav-h) + var(--bc-h) + 20px); margin-bottom: 56px; }
-        
-        .content-row {
-            display: grid;
-            grid-template-columns: 1.35fr 1fr;
-            gap: 40px;
-            align-items: start;
-        }
-
-        .subchapter-heading {
-            font-family: var(--font-display); font-size: 1.5rem; font-weight: 700;
-            color: var(--text-pure); margin: 0 0 22px; display: flex; align-items: center;
-            gap: 12px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;
-        }
-        .subchapter-heading .num {
-            font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-purple);
-            background: rgba(179, 156, 208, 0.12); padding: 4px 10px; border-radius: 6px;
-        }
-        .subsection-heading {
-            font-family: var(--font-display); font-size: 1.12rem; font-weight: 600;
-            color: var(--text-pure); margin: 28px 0 10px;
-        }
-
-        .theory-text { font-size: 0.94rem; color: var(--text-muted); line-height: 1.78; margin-bottom: 16px; }
-        .theory-text strong { color: var(--text-pure); font-weight: 600; }
-
-        /* Callout & Equation Boxes */
-        .formula-block, .info-box, .did-you-know {
+        .coming-soon-card {
             background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 48px 44px;
+            max-width: 680px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+        }
+
+        .logo-frame {
+            width: 136px; height: 136px;
+            border-radius: 20px;
+            background: #FFFFFF;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            margin-bottom: 24px;
+        }
+        .logo-frame img {
+            width: 100%; height: 100%; object-fit: contain; transform: scale(1.4);
+        }
+
+        .status-pill {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--track-accent);
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-light);
+            padding: 6px 14px;
+            border-radius: 99px;
+            margin-bottom: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .coming-soon-card h1 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-pure);
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .coming-soon-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 28px;
+            max-width: 540px;
+        }
+
+        .syllabus-preview {
+            width: 100%;
+            background: var(--bg-sidebar);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-md);
             padding: 20px 24px;
-            margin: 22px 0;
+            text-align: left;
+            margin-bottom: 32px;
         }
-        .formula-block { border-left: 3px solid var(--accent-purple); text-align: center; overflow-x: auto; }
-        .info-box { border-left: 3px solid var(--accent-blue); }
-        .did-you-know { border-left: 3px solid var(--accent-rose); }
+        .syllabus-preview h4 {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--track-accent);
+            margin-bottom: 12px;
+        }
+        .syllabus-preview ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .syllabus-preview li {
+            font-size: 0.88rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .syllabus-preview li i {
+            color: var(--track-accent);
+            font-size: 0.75rem;
+        }
 
-        .formula-caption { font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 10px; font-style: italic; }
-        .box-label {
-            font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;
-            display: flex; align-items: center; gap: 8px;
+        .action-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
         }
-        .info-box .box-label { color: var(--accent-blue); }
-        .did-you-know .box-label { color: var(--accent-rose); }
-        .box-text { font-size: 0.88rem; color: var(--text-main); line-height: 1.65; }
 
-        /* Data Table */
-        .data-table { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 0.85rem; background: var(--bg-card); border-radius: var(--radius-sm); overflow: hidden; }
-        .data-table th {
-            background: var(--bg-sidebar); color: var(--text-pure); padding: 12px;
-            text-align: left; font-family: var(--font-mono); font-size: 0.72rem;
-            text-transform: uppercase; border-bottom: 1px solid var(--border-light);
+        .btn-action {
+            padding: 12px 22px;
+            border-radius: var(--radius-sm);
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
         }
-        .data-table td { padding: 11px 12px; color: var(--text-muted); border-bottom: 1px solid var(--border-subtle); }
+        .btn-back {
+            background: var(--bg-sidebar);
+            color: var(--text-pure);
+            border: 1px solid var(--border-light);
+        }
+        .btn-back:hover {
+            border-color: var(--track-accent);
+            color: var(--track-accent);
+        }
+        .btn-practice-jump {
+            background: var(--track-accent);
+            color: var(--bg-base);
+            border: 1px solid var(--track-accent);
+            font-weight: 700;
+        }
+        .btn-practice-jump:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
 
-        /* Media Placeholders */
-        .media-col { display: flex; flex-direction: column; gap: 20px; }
-        .media-placeholder {
-            background: var(--bg-card); border: 1px dashed var(--border-light);
-            border-radius: var(--radius-lg); padding: 28px;
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center; min-height: 240px; text-align: center;
-        }
-        .media-placeholder i { font-size: 2rem; color: var(--accent-purple); opacity: 0.7; margin-bottom: 14px; }
-        .media-placeholder span { font-family: var(--font-display); font-size: 0.92rem; font-weight: 600; color: var(--text-pure); margin-bottom: 6px; }
-        .media-placeholder p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
-        .media-caption { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; padding-left: 10px; border-left: 2px solid var(--accent-purple); }
-
-        /* Derivations Accordion */
-        .derivation-zone {
-            background: var(--bg-card); border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg); padding: 28px 32px; margin: 40px 0;
-        }
-        .zone-label, .rzone-label {
-            font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.08em; display: flex;
-            align-items: center; gap: 10px; margin-bottom: 20px; color: var(--accent-purple);
-        }
-        .derivation-item { border-bottom: 1px solid var(--border-subtle); padding: 16px 0; }
-        .derivation-item:last-child { border-bottom: none; padding-bottom: 0; }
-        .deriv-q {
-            font-family: var(--font-display); font-size: 0.98rem; font-weight: 600;
-            color: var(--text-pure); cursor: pointer; display: flex;
-            align-items: center; justify-content: space-between; gap: 12px;
-        }
-        .deriv-q:hover { color: var(--accent-purple); }
-        .deriv-q .toggle-icon { font-size: 0.8rem; color: var(--text-muted); transition: transform 0.2s; }
-        .deriv-q.open .toggle-icon { transform: rotate(180deg); color: var(--accent-purple); }
-        .deriv-answer { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-subtle); }
-        .deriv-answer p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 12px; }
-
-        /* Quiz Slider Widget */
-        .quiz-zone {
-            background: var(--bg-card); border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg); margin: 40px 0; overflow: hidden;
-        }
-        .quiz-header {
-            background: var(--bg-sidebar); padding: 16px 24px;
-            border-bottom: 1px solid var(--border-subtle);
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .quiz-header-title {
-            font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-pure);
-            display: flex; align-items: center; gap: 8px;
-        }
-        .quiz-header-title i { color: var(--accent-green); }
-        .quiz-counter { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); }
-
-        .quiz-body { padding: 30px 26px; min-height: 250px; }
-        .quiz-item { display: none; animation: fadeIn 0.25s ease; }
-        .quiz-item.active { display: block; }
-
-        .quiz-q { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; color: var(--text-pure); margin-bottom: 20px; line-height: 1.5; }
-        .quiz-options { display: flex; flex-direction: column; gap: 10px; }
-        .quiz-option {
-            background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.9rem;
-            color: var(--text-main); cursor: pointer; transition: 0.2s;
-            display: flex; align-items: center; gap: 12px;
-        }
-        .quiz-option:hover { border-color: var(--accent-purple); color: var(--text-pure); }
-        .quiz-option.correct { border-color: var(--accent-green); color: var(--accent-green); background: rgba(43, 227, 138, 0.08); pointer-events: none; }
-        .quiz-option.wrong { border-color: var(--accent-rose); color: var(--accent-rose); background: rgba(255, 193, 204, 0.08); pointer-events: none; }
-        .opt-letter { font-family: var(--font-mono); font-weight: 700; font-size: 0.8rem; color: var(--accent-purple); min-width: 20px; }
-
-        .quiz-feedback { margin-top: 16px; font-size: 0.86rem; line-height: 1.55; display: none; padding: 12px 16px; border-radius: var(--radius-sm); border-left: 3px solid; }
-        .quiz-feedback.show { display: block; }
-        .quiz-feedback.correct { border-color: var(--accent-green); color: var(--text-main); background: rgba(43, 227, 138, 0.06); }
-        .quiz-feedback.wrong { border-color: var(--accent-rose); color: var(--text-main); background: rgba(255, 193, 204, 0.06); }
-
-        .quiz-footer {
-            padding: 16px 24px; border-top: 1px solid var(--border-subtle);
-            display: flex; justify-content: space-between; align-items: center; background: var(--bg-sidebar);
-        }
-        .btn-quiz-nav {
-            background: var(--bg-card); border: 1px solid var(--border-light); color: var(--text-pure);
-            padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.82rem; font-weight: 600;
-            cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px;
-        }
-        .btn-quiz-nav:hover:not(:disabled) { background: var(--accent-purple); color: var(--bg-base); border-color: var(--accent-purple); }
-        .btn-quiz-nav:disabled { opacity: 0.35; cursor: not-allowed; }
-        .quiz-score-box { font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); }
-        .quiz-score-val { font-weight: 700; color: var(--accent-green); }
-
-        /* Practice, References & Comments Zones */
-        .practice-zone, .resources-zone, .comments-zone {
-            background: var(--bg-card); border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg); padding: 26px 30px; margin: 32px 0;
-        }
-        .practice-preview { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-        .practice-preview p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; max-width: 560px; }
-        .btn-practice {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: rgba(179, 156, 208, 0.12); border: 1px solid var(--accent-purple);
-            color: var(--accent-purple); border-radius: var(--radius-sm);
-            padding: 10px 18px; font-size: 0.85rem; font-weight: 600;
-            text-decoration: none; transition: all 0.2s;
-        }
-        .btn-practice:hover { background: var(--accent-purple); color: var(--bg-base); }
-
-        .resource-list { display: flex; flex-direction: column; gap: 12px; }
-        .resource-item {
-            display: flex; align-items: center; gap: 14px; padding: 12px 16px;
-            background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm); text-decoration: none; transition: border-color 0.2s;
-        }
-        .resource-item:hover { border-color: var(--accent-purple); }
-        .resource-icon { color: var(--accent-purple); font-size: 1.1rem; width: 24px; text-align: center; }
-        .r-title { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
-        .r-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
-
-        .comments-placeholder {
-            text-align: center; padding: 28px; color: var(--text-muted);
-            font-size: 0.88rem; line-height: 1.6;
-        }
-        .comments-placeholder i { font-size: 2rem; color: var(--text-pure); margin-bottom: 10px; display: block; }
-
-        /* Right Progress Sidebar */
-        .right-sidebar {
-            position: sticky; top: calc(var(--nav-h) + var(--bc-h));
-            height: calc(100vh - var(--nav-h) - var(--bc-h));
-            padding: 28px 20px 40px; overflow-y: auto;
-            border-left: 1px solid var(--border-subtle); background: var(--bg-sidebar);
-        }
-        .progress-label {
-            font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 16px;
-        }
-        .progress-track { position: relative; display: flex; flex-direction: column; }
-        .progress-bar-wrapper { position: absolute; left: 6px; top: 0; bottom: 0; width: 2px; background: var(--border-subtle); border-radius: 2px; }
-        .progress-bar-fill { position: absolute; top: 0; left: 0; right: 0; background: var(--accent-purple); border-radius: 2px; transition: height 0.3s ease; height: 0%; }
-        .progress-stop { position: relative; padding: 0 0 20px 24px; cursor: pointer; }
-        .progress-stop:last-child { padding-bottom: 0; }
-        .stop-dot {
-            position: absolute; left: 0; top: 3px; width: 14px; height: 14px;
-            border-radius: 50%; background: var(--bg-base); border: 2px solid var(--border-light);
-            transition: all 0.25s; z-index: 1;
-        }
-        .progress-stop.reached .stop-dot { border-color: var(--accent-purple); background: var(--accent-purple); }
-        .stop-label { font-size: 0.78rem; color: var(--text-muted); line-height: 1.3; }
-        .stop-sublabel { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); margin-top: 2px; }
-        .progress-stop.reached .stop-label { color: var(--text-pure); font-weight: 600; }
-        .progress-pct {
-            margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--border-subtle);
-            font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .pct-number { font-size: 0.95rem; font-weight: 700; color: var(--accent-purple); }
-
-        @media (max-width: 1180px) {
-            .page-body { grid-template-columns: 250px 1fr; }
-            .right-sidebar { display: none; }
-        }
-        @media (max-width: 960px) {
-            .content-row { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 768px) {
-            .page-body { grid-template-columns: 1fr; }
-            .left-sidebar { display: none; }
-            .main-content { padding: 28px 20px 60px; }
+        @media (max-width: 800px) {
+            .sidebar { display: none; }
+            .dashboard-main { padding: 24px 16px; }
+            .coming-soon-card { padding: 32px 22px; }
         }
     </style>
 </head>
 <body>
 
-<nav>
-    <a href="../index.html" class="nav-logo">
-        <img src="../assets/img/supernova_logo.png" alt="Supernova">
-        <span class="logo-text">SUPERNOVA GUIDE</span>
-    </a>
-    <div class="nav-links">
-        <a href="../index.html">Dashboard</a>
-        <a href="../planetariu.html">Planetarium</a>
-        <a href="../problems.html" class="active">Study & Practice</a>
-        <a href="../courses.html">Courses</a>
-        <a href="../community.html">Community</a>
+    <div class="sky-background">
+        <div class="comet" style="top: 12%; left: 88%; animation: shooting 9s infinite linear 1s;"></div>
     </div>
-    <div><button id="loginBtn" class="btn-auth">Login</button></div>
-</nav>
 
-<div class="breadcrumb">
-    <a href="../problems.html">Curriculum Hub</a><span class="sep">/</span>
-    <span>Module 10: Galactic Structure</span><span class="sep">/</span>
-    <span class="current">10.2 — The Milky Way Galaxy</span>
-</div>
-
-<div class="page-body">
-
-<aside class="left-sidebar">
-    <div class="sidebar-label">Module 10 · Galactic Structure</div>
-
-    <a href="#mw-intro" class="subchapter-card active" data-target="mw-intro">
-        <div class="sc-number">10.2.0</div>
-        <div class="sc-title">Introduction &amp; Historical Models</div>
-        <div class="sc-desc">From Herschel's star counts to Shapley's globular clusters.</div>
-        <ul class="sc-topics"><li>Herschel &amp; Kapteyn models</li><li>Shapley's revision</li><li>Interstellar extinction</li></ul>
-    </a>
-
-    <a href="#mw-distances" class="subchapter-card" data-target="mw-distances">
-        <div class="sc-number">10.2.1</div>
-        <div class="sc-title">Distance Measurement Methods</div>
-        <div class="sc-desc">Parallax, photometric parallax, statistical parallax, MS fitting.</div>
-        <ul class="sc-topics"><li>Trigonometric parallax</li><li>Extinction &amp; distance modulus</li><li>Moving cluster method</li></ul>
-    </a>
-
-    <a href="#mw-morphology" class="subchapter-card" data-target="mw-morphology">
-        <div class="sc-number">10.2.2</div>
-        <div class="sc-title">Morphology of the Galaxy</div>
-        <div class="sc-desc">Thin &amp; thick disks, bulge, bar, halo, and dark matter halo.</div>
-        <ul class="sc-topics"><li>Disk scale heights</li><li>Galactic bar</li><li>Stellar populations</li></ul>
-    </a>
-
-    <a href="#mw-kinematics" class="subchapter-card" data-target="mw-kinematics">
-        <div class="sc-number">10.2.3</div>
-        <div class="sc-title">Galactic Coordinates &amp; Kinematics</div>
-        <div class="sc-desc">LSR, peculiar velocities, Oort constants, differential rotation.</div>
-        <ul class="sc-topics"><li>Galactic (l, b) system</li><li>Oort's formulas</li><li>21-cm H I mapping</li></ul>
-    </a>
-
-    <a href="#mw-darkmatter" class="subchapter-card" data-target="mw-darkmatter">
-        <div class="sc-number">10.2.4</div>
-        <div class="sc-title">Rotation Curve &amp; Dark Matter</div>
-        <div class="sc-desc">Flat rotation curves, dark matter halo profiles, NFW model.</div>
-        <ul class="sc-topics"><li>Keplerian vs. flat curves</li><li>NFW density profile</li><li>WIMPs &amp; MACHOs</li></ul>
-    </a>
-
-    <a href="#mw-center" class="subchapter-card" data-target="mw-center">
-        <div class="sc-number">10.2.5</div>
-        <div class="sc-title">The Galactic Centre &amp; Sgr A*</div>
-        <div class="sc-desc">S-star orbits, Sgr A* black hole mass, radio structure.</div>
-        <ul class="sc-topics"><li>S2 orbit &amp; BH mass</li><li>Accretion luminosity</li></ul>
-    </a>
-
-    <div class="sidebar-label" style="margin-top:20px;">Exercises &amp; Review</div>
-
-    <a href="#derivations" class="subchapter-card" data-target="derivations">
-        <div class="sc-number">DRV</div>
-        <div class="sc-title">Key Derivations</div>
-    </a>
-
-    <a href="#quiz" class="subchapter-card" data-target="quiz">
-        <div class="sc-number">QUIZ</div>
-        <div class="sc-title">Chapter Quiz (20 Q)</div>
-    </a>
-
-    <a href="#practice" class="subchapter-card" data-target="practice">
-        <div class="sc-number">PROB</div>
-        <div class="sc-title">Practice Problems</div>
-    </a>
-</aside>
-
-<main class="main-content" id="main-content">
-
-<div class="chapter-header-row">
-    <div class="chapter-logo-badge">
-        <img src="../assets/img/theory/galactic_structure_logo.png" alt="Galactic Structure">
-    </div>
-    <div>
-        <div class="chapter-eyebrow">Theory Track · Module 10 · Section 2</div>
-        <h1 class="chapter-title">The Milky Way Galaxy</h1>
-    </div>
-</div>
-
-<p class="chapter-intro">
-    We live inside the Milky Way — a barred spiral galaxy roughly 50 kpc in diameter containing 
-    hundreds of billions of stars, vast clouds of gas and dust, and an enormous dark matter halo. 
-    Understanding our own Galaxy is both the starting point for all of extragalactic astronomy 
-    and a unique challenge: we cannot step outside to photograph it. Everything we know comes 
-    from interpreting light and radio waves from an observing platform embedded deep within the disk.
-</p>
-
-<div id="mw-intro" class="section-anchor">
-    <h2 class="subchapter-heading"><span class="num">10.2.0</span> Introduction &amp; Historical Models</h2>
-    
-    <div class="content-row">
-        <div class="text-col">
-            <p class="theory-text">
-                The band of the Milky Way — that faint, luminous river crossing the night sky — has fascinated observers since antiquity.
-                It was <strong>Galileo Galilei</strong> who first resolved it into individual stars using his telescope in 1610. 
-                But understanding its <em>structure</em> took another three centuries.
-            </p>
-
-            <h3 class="subsection-heading">Herschel and Kapteyn: The Sun-Centred Models</h3>
-            <p class="theory-text">
-                In the 1780s, <strong>William Herschel</strong> attempted a map of the Galaxy by counting stars in 683 sky regions, 
-                assuming: (a) all stars have the same absolute magnitude, (b) stellar density is constant, (c) no interstellar extinction, 
-                and (d) he could see to the edges of the distribution. His conclusion: the Sun sits near the centre of a disk 
-                five times wider than it is thick.
-            </p>
-            <p class="theory-text">
-                A century later, <strong>Jacobus Kapteyn</strong> refined this picture using statistical star counts and distance moduli, 
-                producing the <strong>Kapteyn Universe</strong> — a flattened spheroid with the Sun some 650 pc from centre. 
-                Both models were wrong for the same reason: they ignored <strong>interstellar extinction</strong>.
-            </p>
-
-            <div class="info-box">
-                <div class="box-label"><i class="fa-solid fa-lightbulb"></i> Interstellar Extinction &amp; Distance</div>
-                <p class="box-text">When extinction \(A_\lambda\) is neglected, the naive distance estimate \(d'\) overestimates the true distance \(d\):</p>
-            </div>
-
-            <div class="formula-block">
-                \[ d = 10^{(m_\lambda - M_\lambda - A_\lambda + 5)/5} = d' \cdot 10^{-A_\lambda/5} \]
-                <div class="formula-caption">Because \(A_\lambda \geq 0\), we always have \(d \leq d'\): extinction makes stars appear farther away than they are. Typical disk extinction: \(\approx 1\,\text{mag kpc}^{-1}\) at visible wavelengths.</div>
-            </div>
-
-            <h3 class="subsection-heading">Shapley and the Globular Cluster Revolution</h3>
-            <p class="theory-text">
-                Between 1915 and 1919, <strong>Harlow Shapley</strong> determined distances to 93 globular clusters using RR Lyrae variable stars 
-                and their period-luminosity relation. He found the clusters concentrated around a point in <strong>Sagittarius</strong>, 
-                which he rightly identified as the Galactic centre — placing the Sun far from the middle, roughly one-third of the way 
-                from centre to edge.
-            </p>
-
-            <div class="did-you-know">
-                <div class="box-label"><i class="fa-solid fa-star"></i> Did You Know?</div>
-                <p class="box-text">Shapley's estimate of the Galactic diameter (~100 kpc) was too large by about a factor of two, because his RR Lyrae calibration had errors and he under-corrected for extinction. Kapteyn's model was too small; Shapley's was too large. Both erred because of dust.</p>
-            </div>
-
-            <h3 class="subsection-heading">The Zone of Avoidance</h3>
-            <p class="theory-text">
-                Shapley noted that globular clusters are completely absent within ±10° of the Galactic plane — the <strong>zone of avoidance</strong>. 
-                He incorrectly attributed this to tidal disruption. In reality, interstellar extinction within the disk is so severe 
-                (&gt;30 mag toward the Galactic centre) that even intrinsically very bright objects simply cannot be detected at optical wavelengths.
-            </p>
-        </div>
+    <!-- UNIFIED SIDEBAR NAVIGATION -->
+    <aside class="sidebar">
+        <a href="../dashboard.html" class="brand">
+            <img src="../assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span>SUPERNOVA<br>GUIDE</span>
+        </a>
         
-        <div class="media-col">
-            <div class="media-placeholder">
-                <i class="fa-solid fa-layer-group"></i>
-                <span>Interactive Model / Diagram</span>
-                <p>Comparative diagram of the Kapteyn Universe vs. the true Milky Way scale.</p>
+        <div class="menu-label">Menu</div>
+        <ul class="nav-menu">
+            <li><a href="../dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="../challenges.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
+            <li><a href="../planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="../problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="../courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
+            <li><a href="../competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
+        </ul>
+
+        <div class="menu-label">Tools &amp; Analytics</div>
+        <ul class="nav-menu">
+            <li><a href="../analytics.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="../tools.html" class="nav-item"><i class="fa-solid fa-calculator"></i> Formula &amp; Tools</a></li>
+            <li><a href="../notebook.html" class="nav-item"><i class="fa-solid fa-book-open"></i> Mistake Notebook</a></li>
+            <li><a href="../resources.html" class="nav-item"><i class="fa-solid fa-book-atlas"></i> External Library</a></li>
+        </ul>
+        
+        <div class="menu-label">General</div>
+        <ul class="nav-menu">
+            <li><a href="../profile.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="../community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
+            <li><a href="#" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+        </ul>
+    </aside>
+
+    <main class="dashboard-main">
+        <div class="coming-soon-card">
+            <div class="logo-frame">
+                <img id="handout-logo" src="../assets/img/theory/positional_celestial_mechanics_logo.png" alt="Module Logo">
             </div>
-            <div class="media-caption"><strong>Fig 1.</strong> Lack of dust penetration limited Kapteyn's view to a local bubble, while Shapley's globular clusters extended across the halo.</div>
-        </div>
-    </div>
-</div>
 
-<hr class="section-divider">
+            <span class="status-pill">
+                <i class="fa-solid fa-compass-drafting"></i>
+                <span id="handout-eyebrow">Handout In Production</span>
+            </span>
 
-<div id="mw-distances" class="section-anchor">
-    <h2 class="subchapter-heading"><span class="num">10.2.1</span> Distance Measurement Methods</h2>
-
-    <div class="content-row">
-        <div class="text-col">
-            <p class="theory-text">
-                All structural knowledge of the Galaxy depends on knowing distances. Astronomical distance determination proceeds in a <strong>ladder</strong>: 
-                each rung is calibrated by the one below it, extending our reach step by step from the solar neighbourhood to the far edge of the disk.
+            <h1 id="handout-title">Theoretical Handout Coming Soon</h1>
+            <p>
+                This curriculum handout—including rigorous LaTeX physical derivations, worked Olympiad examples, interactive figures, and a 20-question conceptual quiz—is currently being compiled.
             </p>
 
-            <h3 class="subsection-heading">1. Trigonometric Parallax</h3>
-            <p class="theory-text">
-                As Earth orbits the Sun, nearby stars appear to shift against the distant background by an angle \(p\). The distance is:
-            </p>
-            <div class="formula-block">
-                \[ d = \frac{1}{p''}\;\text{pc} \]
-                <div class="formula-caption">where \(p''\) is the parallax in arcseconds. Gaia achieves useful parallaxes to several kpc.</div>
+            <div class="syllabus-preview">
+                <h4>Scheduled Subchapters &amp; Derivations</h4>
+                <ul id="handout-topics">
+                    <li><i class="fa-solid fa-check"></i> Core theoretical derivations &amp; physical laws</li>
+                    <li><i class="fa-solid fa-check"></i> Worked Olympiad problem walkthroughs</li>
+                    <li><i class="fa-solid fa-check"></i> 20-question conceptual mastery quiz</li>
+                </ul>
             </div>
 
-            <h3 class="subsection-heading">2. Distance Modulus and Photometric Parallax</h3>
-            <p class="theory-text">
-                If the absolute magnitude \(M\) of a star is known, and we measure its apparent magnitude \(m\) and extinction \(A\):
-            </p>
-            <div class="formula-block">
-                \[ m - M = 5\log_{10}\!\left(\frac{d}{10\,\text{pc}}\right) + A(d) \]
-                <div class="formula-caption">Solved iteratively when \(A = k\,d\) with \(k \approx 10^{-3}\,\text{mag pc}^{-1}\).</div>
-            </div>
-
-            <div class="info-box">
-                <div class="box-label"><i class="fa-solid fa-calculator"></i> Worked Example</div>
-                <p class="box-text">A B0 main-sequence star (\(M_V = -4.0\)) has \(V = +8.2\). Ignoring extinction: \(d' = 10^{(8.2+4.0+5)/5} \approx 2800\,\text{pc}\). With \(k = 10^{-3}\,\text{mag pc}^{-1}\), iterating \(d = 2800 \times 10^{-kd/5}\) gives \(d \approx 1400\,\text{pc}\) — off by a factor of 2!</p>
-            </div>
-
-            <h3 class="subsection-heading">3. Statistical &amp; Moving Cluster Parallaxes</h3>
-            <div class="formula-block">
-                \[ r \approx \frac{s\sin\vartheta}{\mu_A}, \qquad d\,(\text{pc}) = \frac{\langle v_r \rangle \tan\phi}{4.74\,\langle \mu'' \rangle} \]
-                <div class="formula-caption">Left: Statistical parallax from solar apex motion. Right: Moving cluster method applied to the Hyades (\(d = 46 \pm 2\,\text{pc}\)).</div>
+            <div class="action-row">
+                <a href="../problems.html" class="btn-action btn-back">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Curriculum Hub
+                </a>
+                <a id="handout-practice-link" href="../problems.html" class="btn-action btn-practice-jump">
+                    <i class="fa-solid fa-pen-to-square"></i> Go to Module Practice
+                </a>
             </div>
         </div>
+    </main>
 
-        <div class="media-col">
-            <div class="media-placeholder">
-                <i class="fa-solid fa-stairs"></i>
-                <span>Distance Ladder Graph</span>
-                <p>Overlap of Parallax, Moving Clusters, RR Lyrae, and Cepheids.</p>
-            </div>
-        </div>
-    </div>
-</div>
+    <script type="module" src="../js/auth.js"></script>
+    <script>
+        const HANDOUT_REGISTRY = {
+            "positional_celestial_mechanics": {
+                eyebrow: "Theory Track · Module 01 · Coming Soon",
+                title: "1. Positional Astronomy & Celestial Mechanics",
+                logo: "../assets/img/theory/positional_celestial_mechanics_logo.png",
+                accent: "#B39CD0",
+                topics: ["1.1 The Celestial Sphere & Spherical Trigonometry", "1.2 Coordinate Transformations & Time Systems (Solar/Sidereal)", "1.3 Kepler's Laws, Vis-Viva Equation & Orbital Elements", "1.4 Hohmann Transfers, Lagrange Points & The Virial Theorem"]
+            },
+            "radiation_relativity": {
+                eyebrow: "Theory Track · Module 02 · Coming Soon",
+                title: "2. Radiation Physics & Relativity Fundamentals",
+                logo: "../assets/img/theory/radiation_relativity_logo.png",
+                accent: "#B39CD0",
+                topics: ["2.1 Blackbody Radiation: Planck, Wien & Stefan-Boltzmann Laws", "2.2 Special Relativity: Lorentz Transformations & Relativistic Doppler Shift", "2.3 Radiative Transfer, Opacity & Optical Depth"]
+            },
+            "astronomical_instrumentation": {
+                eyebrow: "Theory Track · Module 03 · Coming Soon",
+                title: "3. Astronomical Instrumentation",
+                logo: "../assets/img/theory/astronomical_instrumentation_logo.png",
+                accent: "#B39CD0",
+                topics: ["3.1 Geometric Optics, Focal Ratio & Plate Scale", "3.2 Diffraction Limit, Rayleigh Criterion & Resolving Power", "3.3 Radio Interferometry, Detectors & CCD Signal-to-Noise Ratio"]
+            },
+            "stellar_parameters": {
+                eyebrow: "Theory Track · Module 04 · Coming Soon",
+                title: "4. Stellar Parameters & Spectral Classification",
+                logo: "../assets/img/theory/stellar_parameters_logo.png",
+                accent: "#B39CD0",
+                topics: ["4.1 Visual, Spectroscopic & Eclipsing Binary Systems", "4.2 Boltzmann & Saha Equations in Stellar Spectra", "4.3 The Hertzsprung-Russell Diagram & Luminosity Classes"]
+            },
+            "stellar_structure": {
+                eyebrow: "Theory Track · Module 05 · Coming Soon",
+                title: "5. Stellar Structure & Atmospheres",
+                logo: "../assets/img/theory/stellar_structure_logo.png",
+                accent: "#B39CD0",
+                topics: ["5.1 Hydrostatic Equilibrium & Polytropic Stellar Models", "5.2 Energy Transport: Radiative vs. Convective Zones", "5.3 Nucleosynthesis (pp-chain, CNO cycle) & Solar Structure"]
+            },
+            "interstellar_medium": {
+                eyebrow: "Theory Track · Module 06 · Coming Soon",
+                title: "6. Interstellar Medium & Star Formation",
+                logo: "../assets/img/theory/interstellar_medium_logo.png",
+                accent: "#B39CD0",
+                topics: ["6.1 Interstellar Dust Extinction, Reddening & Strömgren Spheres", "6.2 Jeans Mass, Jeans Length & Molecular Cloud Collapse", "6.3 Protostellar Evolution, Hayashi Track & Bipolar Outflows"]
+            },
+            "stellar_evolution": {
+                eyebrow: "Theory Track · Module 07 · Coming Soon",
+                title: "7. Stellar Evolution",
+                logo: "../assets/img/theory/stellar_evolution_logo.png",
+                accent: "#B39CD0",
+                topics: ["7.1 Main-Sequence & Post-Main-Sequence Evolutionary Tracks", "7.2 Variable Stars, Cepheid Pulsation Mechanism & Period-Luminosity", "7.3 Core-Collapse vs. Type Ia Supernovae"]
+            },
+            "stellar_remnants": {
+                eyebrow: "Theory Track · Module 08 · Coming Soon",
+                title: "8. Stellar Remnants & General Relativity",
+                logo: "../assets/img/theory/stellar_remnants_logo.png",
+                accent: "#B39CD0",
+                topics: ["8.1 Electron Degeneracy Pressure & The Chandrasekhar Limit", "8.2 Neutron Stars, Pulsars & Tolman-Oppenheimer-Volkoff Limit", "8.3 Schwarzschild Metric, Gravitational Redshift & Accretion Disks"]
+            },
+            "planetary_systems": {
+                eyebrow: "Theory Track · Module 09 · Coming Soon",
+                title: "9. Planetary Systems & Formation",
+                logo: "../assets/img/theory/planetary_systems_logo.png",
+                accent: "#B39CD0",
+                topics: ["9.1 Planetary Equilibrium Temperature, Albedo & Hydrostatic Escape", "9.2 Tidal Forces, Roche Limit & Ring Systems", "9.3 Exoplanet Detection: Transit Light Curves & Radial Velocity"]
+            },
+            "galactic_structure": {
+                eyebrow: "Theory Track · Module 10 · Coming Soon",
+                title: "10. Galactic Structure",
+                logo: "../assets/img/theory/galactic_structure_logo.png",
+                accent: "#B39CD0",
+                topics: ["10.1 Milky Way Morphology, Disk & Halo Kinematics", "10.2 Differential Rotation, Oort Constants & 21-cm Rotation Curves", "10.3 Dark Matter Halo Profiles & Virial Mass of Elliptical Galaxies"]
+            },
+            "galactic_evolution": {
+                eyebrow: "Theory Track · Module 11 · Coming Soon",
+                title: "11. Galactic Evolution & Active Galaxies",
+                logo: "../assets/img/theory/galactic_evolution_logo.png",
+                accent: "#B39CD0",
+                topics: ["11.1 Dynamical Friction, Galaxy Mergers & Scaling Relations (Tully-Fisher)", "11.2 Active Galactic Nuclei (Seyferts, Quasars, Blazars) & Eddington Limit", "11.3 Superluminal Motion & Relativistic Beaming in Jets"]
+            },
+            "cosmology": {
+                eyebrow: "Theory Track · Module 12 · Coming Soon",
+                title: "12. Cosmology & Structure of the Universe",
+                logo: "../assets/img/theory/cosmology_logo.png",
+                accent: "#B39CD0",
+                topics: ["12.1 Robertson-Walker Metric, Friedmann Equations & Fluid Equation", "12.2 Cosmological Redshift, Hubble Parameter & Distance Measures", "12.3 Thermal History, Big Bang Nucleosynthesis & CMB Anisotropies"]
+            },
+            "data_methods_plotting": {
+                eyebrow: "Data Analysis Track · Module 01 · Coming Soon",
+                title: "1. Methods & Plotting Guide",
+                logo: "../assets/img/data_analysis/methods_plotting_logo.png",
+                accent: "#35E6FF",
+                topics: ["D1.1 Variance, Standard Deviation & Gaussian Error Propagation", "D1.2 Ordinary & Weighted Least-Squares Linear Regression", "D1.3 Logarithmic Linearization & Residual Analysis"]
+            },
+            "data_full_sets": {
+                eyebrow: "Data Analysis Track · Module 02 · Coming Soon",
+                title: "2. Interpreting Full Data Sets",
+                logo: "../assets/img/data_analysis/full_data_sets_logo.png",
+                accent: "#35E6FF",
+                topics: ["D2.1 Period Folding & Eclipsing Binary Light Curve Extraction", "D2.2 Spectral Line Fitting, Equivalent Width & Radial Velocity", "D2.3 Color-Magnitude Isochrone Fitting & Extinction Correction"]
+            },
+            "obs_blind_map": {
+                eyebrow: "Observational Track · Manual 01 · Coming Soon",
+                title: "Blind Map Observation Manual",
+                logo: "../assets/img/observational/blind_map_logo.png",
+                accent: "#FFC1CC",
+                topics: ["O1.1 IAU Constellation Boundaries & Bright Navigation Stars", "O1.2 Complete Messier & Caldwell Catalog Star-Hopping Routes", "O1.3 Estimating RA, Dec, Ecliptic & Galactic Coordinates Without Grids"]
+            },
+            "obs_telescope": {
+                eyebrow: "Observational Track · Manual 02 · Coming Soon",
+                title: "Practical Telescope Operations Manual",
+                logo: "../assets/img/observational/telescope_practice_logo.png",
+                accent: "#FFC1CC",
+                topics: ["O2.1 German Equatorial Mount Assembly & Counterweight Balancing", "O2.2 Polar Alignment & Setting Circle Calibration", "O2.3 Eyepiece Field of View Mapping & Drift Timing"]
+            }
+        };
 
-<hr class="section-divider">
+        (function hydrateHandoutPage() {
+            const fileName = window.location.pathname.split('/').pop().replace('.html', '');
+            const meta = HANDOUT_REGISTRY[fileName];
+            if (!meta) return;
 
-<div id="mw-morphology" class="section-anchor">
-    <h2 class="subchapter-heading"><span class="num">10.2.2</span> Morphology of the Galaxy</h2>
+            document.title = `${meta.title} — Handout | Supernova Guide`;
+            document.documentElement.style.setProperty('--track-accent', meta.accent);
+            document.getElementById('handout-logo').src = meta.logo;
+            document.getElementById('handout-eyebrow').textContent = meta.eyebrow;
+            document.getElementById('handout-title').textContent = meta.title;
+            document.getElementById('handout-practice-link').href = `../practice/${fileName}.html`;
 
-    <div class="content-row">
-        <div class="text-col">
-            <p class="theory-text">
-                The Milky Way is a <strong>barred spiral galaxy</strong> with a disk diameter of ~50 kpc. 
-                The Sun resides at \(R_0 \approx 8.15\,\text{kpc}\) from the Galactic centre (Sgr A*), located ~30 pc above the midplane.
-            </p>
-
-            <div class="formula-block">
-                \[ n(z,R) = n_0 \left( e^{-|z|/z_\text{thin}} + 0.085\, e^{-|z|/z_\text{thick}} \right) e^{-R/h_R} \]
-                <div class="formula-caption">where \(z_\text{thin} \approx 350\,\text{pc}\), \(z_\text{thick} \approx 1000\,\text{pc}\), and \(h_R > 2.25\,\text{kpc}\).</div>
-            </div>
-
-            <table class="data-table">
-                <thead><tr><th>Component</th><th>Mass (\(10^{10}M_\odot\))</th><th>Scale height</th><th>\([\text{Fe/H}]\)</th><th>Age (Gyr)</th></tr></thead>
-                <tbody>
-                    <tr><td>Thin disk</td><td>6</td><td>350 pc</td><td>−0.5 to +0.3</td><td>&lt;8</td></tr>
-                    <tr><td>Thick disk</td><td>0.2–0.4</td><td>1 kpc</td><td>−2.2 to −0.5</td><td>~10</td></tr>
-                    <tr><td>Galactic bulge</td><td>1</td><td>100–500 pc</td><td>−2 to +0.5</td><td>0.2–10</td></tr>
-                    <tr><td>Stellar halo</td><td>0.3</td><td>~3 kpc</td><td>&lt;−5.4 to −0.5</td><td>11–13</td></tr>
-                    <tr><td>Dark matter halo</td><td>190 (+360/−170)</td><td>~170 kpc</td><td>—</td><td>~13.5</td></tr>
-                </tbody>
-            </table>
-
-            <div class="formula-block">
-                \[ \log_{10}\!\left[\frac{I(r)}{I_e}\right] = -3.3307\left[\left(\frac{r}{r_e}\right)^{1/4} - 1\right], \qquad [\text{Fe/H}] \equiv \log_{10}\!\left[\frac{(N_\text{Fe}/N_\text{H})_\text{star}}{(N_\text{Fe}/N_\text{H})_\odot}\right] \]
-                <div class="formula-caption">Left: de Vaucouleurs \(r^{1/4}\) bulge profile. Right: Logarithmic iron-to-hydrogen metallicity index.</div>
-            </div>
-        </div>
-
-        <div class="media-col">
-            <div class="media-placeholder">
-                <i class="fa-solid fa-compact-disc"></i>
-                <span>Milky Way Anatomy</span>
-                <p>Edge-on schematic showing Bulge, Thin Disk, Thick Disk, and Halo components.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<hr class="section-divider">
-
-<div id="mw-kinematics" class="section-anchor">
-    <h2 class="subchapter-heading"><span class="num">10.2.3</span> Galactic Coordinates &amp; Kinematics</h2>
-
-    <div class="content-row">
-        <div class="text-col">
-            <p class="theory-text">
-                Transformation from equatorial \((\alpha,\delta)\) to Galactic coordinates \((\ell,b)\) (J2000.0):
-            </p>
-            <div class="formula-block">
-                \[\begin{aligned}
-                \sin b &= \sin\delta_\text{NGP}\sin\delta + \cos\delta_\text{NGP}\cos\delta\cos(\alpha - \alpha_\text{NGP})\\
-                \cos b\,\sin(\ell_\text{NCP} - \ell) &= \cos\delta\,\sin(\alpha - \alpha_\text{NGP})\\
-                \cos b\,\cos(\ell_\text{NCP} - \ell) &= \cos\delta_\text{NGP}\sin\delta - \sin\delta_\text{NGP}\cos\delta\cos(\alpha - \alpha_\text{NGP})
-                \end{aligned}\]
-            </div>
-
-            <h3 class="subsection-heading">Oort's Formulas for Differential Rotation</h3>
-            <div class="formula-block">
-                \[ v_r \approx A\,d\,\sin 2\ell, \qquad v_t \approx A\,d\,\cos 2\ell + B\,d \]
-            </div>
-            <div class="formula-block">
-                \[ A \equiv -\frac{1}{2}\!\left(\frac{d\Theta}{dR}\bigg|_{R_0} - \frac{\Theta_0}{R_0}\right), \qquad
-                   B \equiv -\frac{1}{2}\!\left(\frac{d\Theta}{dR}\bigg|_{R_0} + \frac{\Theta_0}{R_0}\right) \]
-                <div class="formula-caption">\(\Omega_0 = A - B = \Theta_0/R_0\) and \(d\Theta/dR|_{R_0} = -(A+B)\). Tangent-point method: \(v_{r,\text{max}} = \Theta(R_0\sin\ell) - \Theta_0\sin\ell\).</div>
-            </div>
-        </div>
-
-        <div class="media-col">
-            <div class="media-placeholder">
-                <i class="fa-solid fa-chart-line"></i>
-                <span>Oort Double-Sine Curve &amp; Tangent Geometry</span>
-                <p>Radial velocity \(v_r\) vs. Galactic longitude \(\ell\) and inner-circle tangent line of sight.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<hr class="section-divider">
-
-<div id="mw-darkmatter" class="section-anchor">
-    <h2 class="subchapter-heading"><span class="num">10.2.4</span> Rotation Curve &amp; Dark Matter</h2>
-
-    <div class="content-row">
-        <div class="text-col">
-            <p class="theory-text">
-                A flat rotation curve (\(\Theta = V = \text{const}\)) requires enclosed mass to grow linearly with radius:
-            </p>
-            <div class="formula-block">
-                \[ M_r = \frac{V^2 r}{G} \quad \Rightarrow \quad \rho(r) = \frac{V^2}{4\pi G r^2} \]
-            </div>
-            <div class="formula-block">
-                \[ \rho_\text{iso}(r) = \frac{\rho_0}{1 + (r/a)^2}, \qquad \rho_\text{NFW}(r) = \frac{\rho_0}{(r/a)(1 + r/a)^2} \]
-                <div class="formula-caption">Pseudo-isothermal halo vs. Navarro–Frenk–White (NFW) cold dark matter halo profile.</div>
-            </div>
-        </div>
-
-        <div class="media-col">
-            <div class="media-placeholder">
-                <i class="fa-solid fa-chart-area"></i>
-                <span>Rotation Curve Plot</span>
-                <p>Keplerian expectation (\(\propto R^{-1/2}\)) vs. observed flat rotation curve.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<hr class="section-divider">
-
-<div id="mw-center" class="section-anchor">
-    <h2 class="subchapter-heading"><span class="num">10.2.5</span> The Galactic Centre &amp; Sgr A*</h2>
-
-    <div class="content-row">
-        <div class="text-col">
-            <p class="theory-text">
-                Monitoring of the star <strong>S2</strong> (\(P = 15.2\,\text{yr}\), \(e = 0.87\), \(r_p = 120\,\text{AU}\)) yields the mass of the central supermassive black hole Sgr A*:
-            </p>
-            <div class="formula-block">
-                \[ M = \frac{4\pi^2 a^3}{GP^2} \approx 3.7 \times 10^6\,M_\odot, \qquad L_\text{acc} = \frac{1}{4}\dot{M}c^2 \]
-                <div class="formula-caption">Left: Keplerian mass enclosed within &lt;2 AU. Right: Virial accretion disk luminosity from \(r_i \gg R_S\) to \(R_S\).</div>
-            </div>
-        </div>
-
-        <div class="media-col">
-            <div class="media-placeholder">
-                <i class="fa-solid fa-dharmachakra"></i>
-                <span>S-Star Orbits</span>
-                <p>Astrometric orbit of S2 around Sgr A*.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<hr class="section-divider">
-
-<!-- DERIVATIONS ZONE -->
-<div id="derivations" class="section-anchor">
-    <div class="derivation-zone">
-        <div class="zone-label"><i class="fa-solid fa-flask"></i> Key Derivations</div>
-
-        <div class="derivation-item">
-            <div class="deriv-q" onclick="toggleDeriv(this)">
-                Derive Oort's radial velocity formula \(v_r \approx Ad\sin 2\ell\) from differential Galactic rotation.
-                <i class="fa-solid fa-chevron-down toggle-icon"></i>
-            </div>
-            <div class="deriv-answer">
-                <p><strong>Setup:</strong> The Sun (at \(O\)) and star (at \(S\)) orbit the Galactic centre \(C\) with angular velocities \(\Omega_0\) and \(\Omega(R)\):</p>
-                <div class="formula-block">\[ v_r = \Theta\cos\alpha - \Theta_0\sin\ell = R_0(\Omega - \Omega_0)\sin\ell \]</div>
-                <p>Taylor expanding \(\Omega(R)\) about \(R_0\) for \(d \ll R_0\) with \(R - R_0 \approx -d\cos\ell\):</p>
-                <div class="formula-block">\[v_r \approx -\frac{1}{2}\!\left(\frac{d\Theta}{dR}\bigg|_{R_0} - \frac{\Theta_0}{R_0}\right) d\sin 2\ell = A\,d\,\sin 2\ell \quad \blacksquare\]</div>
-            </div>
-        </div>
-
-        <div class="derivation-item">
-            <div class="deriv-q" onclick="toggleDeriv(this)">
-                Show that a flat rotation curve (\(\Theta = V = \text{const}\)) implies a dark matter density \(\rho \propto r^{-2}\).
-                <i class="fa-solid fa-chevron-down toggle-icon"></i>
-            </div>
-            <div class="deriv-answer">
-                <div class="formula-block">\[\frac{V^2}{r} = \frac{GM_r}{r^2} \implies M_r = \frac{V^2 r}{G} \implies \frac{dM_r}{dr} = 4\pi r^2\rho(r) = \frac{V^2}{G} \implies \rho(r) = \frac{V^2}{4\pi G r^2} \quad \blacksquare\]</div>
-            </div>
-        </div>
-
-        <div class="derivation-item">
-            <div class="deriv-q" onclick="toggleDeriv(this)">
-                Derive the accretion luminosity \(L = \frac{1}{4}\dot{M}c^2\) for a black hole accreting from large radius.
-                <i class="fa-solid fa-chevron-down toggle-icon"></i>
-            </div>
-            <div class="deriv-answer">
-                <div class="formula-block">\[E_\text{rad} = \frac{1}{2}\frac{GM_\text{bh}M}{R_S} = \frac{GM_\text{bh}M}{2(2GM_\text{bh}/c^2)} = \frac{1}{4}Mc^2 \implies L = \frac{1}{4}\dot{M}c^2 \quad \blacksquare\]</div>
-            </div>
-        </div>
-
-        <div class="derivation-item">
-            <div class="deriv-q" onclick="toggleDeriv(this)">
-                Derive Oort's constants \(A\) and \(B\) for a purely Keplerian rotation curve.
-                <i class="fa-solid fa-chevron-down toggle-icon"></i>
-            </div>
-            <div class="deriv-answer">
-                <div class="formula-block">\[\Theta(R) = \Theta_0(R_0/R)^{1/2} \implies \frac{d\Theta}{dR}\bigg|_{R_0} = -\frac{\Theta_0}{2R_0} \implies A = \frac{3\Theta_0}{4R_0},\; B = -\frac{\Theta_0}{4R_0} \quad \blacksquare\]</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 20-QUESTION INTERACTIVE QUIZ -->
-<div id="quiz" class="section-anchor">
-    <div class="quiz-zone">
-        <div class="quiz-header">
-            <div class="quiz-header-title"><i class="fa-solid fa-circle-question"></i> Chapter Quiz</div>
-            <div class="quiz-counter" id="quiz-counter">1 / 20</div>
-        </div>
-
-        <div class="quiz-body" id="quiz-carousel">
-            <div class="quiz-item" id="q1-item"><div class="quiz-q">Why did both Kapteyn and Herschel conclude incorrectly that the Sun was near the Galactic centre?</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q1')"><span class="opt-letter">A</span>They used parallax measurements that were inaccurate</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q1')"><span class="opt-letter">B</span>They failed to account for interstellar extinction by dust</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q1')"><span class="opt-letter">C</span>They lacked spectroscopic instruments</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q1')"><span class="opt-letter">D</span>They studied globular clusters instead of field stars</div>
-            </div><div id="q1-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q2-item"><div class="quiz-q">The "zone of avoidance" near the Galactic plane is caused by:</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q2')"><span class="opt-letter">A</span>Gravitational tides disrupting globular clusters</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q2')"><span class="opt-letter">B</span>Absence of old stellar populations near the disk</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q2')"><span class="opt-letter">C</span>Severe interstellar extinction blocking optical light</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q2')"><span class="opt-letter">D</span>A gap in the distribution of globular clusters</div>
-            </div><div id="q2-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q3-item"><div class="quiz-q">What is the approximate distance of the Sun from the Galactic centre?</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q3')"><span class="opt-letter">A</span>2 kpc</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q3')"><span class="opt-letter">B</span>15 kpc</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q3')"><span class="opt-letter">C</span>~8 kpc</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q3')"><span class="opt-letter">D</span>25 kpc</div>
-            </div><div id="q3-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q4-item"><div class="quiz-q">What is the scale height of the Galactic thin disk?</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q4')"><span class="opt-letter">A</span>~50 pc</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q4')"><span class="opt-letter">B</span>~350 pc</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q4')"><span class="opt-letter">C</span>~1 kpc</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q4')"><span class="opt-letter">D</span>~3 kpc</div>
-            </div><div id="q4-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q5-item"><div class="quiz-q">A star with \([\text{Fe/H}] = -3.5\) belongs to which stellar population?</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q5')"><span class="opt-letter">A</span>Young Population I (thin disk)</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q5')"><span class="opt-letter">B</span>Old Population I</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q5')"><span class="opt-letter">C</span>Population II (stellar halo)</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q5')"><span class="opt-letter">D</span>Thick disk population</div>
-            </div><div id="q5-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q6-item"><div class="quiz-q">The Local Standard of Rest (LSR) is defined as:</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q6')"><span class="opt-letter">A</span>A fixed point at the Galactic centre</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q6')"><span class="opt-letter">B</span>A point co-located with the Sun but moving in a perfectly circular orbit</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q6')"><span class="opt-letter">C</span>The average velocity of all stars in the solar neighbourhood</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q6')"><span class="opt-letter">D</span>The position of the Sun corrected for Earth's orbital motion</div>
-            </div><div id="q6-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q7-item"><div class="quiz-q">Oort's constant \(A\) measures:</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q7')"><span class="opt-letter">A</span>The total angular velocity of Galactic rotation at \(R_0\)</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q7')"><span class="opt-letter">B</span>The local shear — how much \(\Theta(R)\) departs from rigid-body rotation near the Sun</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q7')"><span class="opt-letter">C</span>The local vorticity of Galactic rotation</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q7')"><span class="opt-letter">D</span>The escape velocity from the solar circle</div>
-            </div><div id="q7-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q8-item"><div class="quiz-q">Why is 21-cm H I emission so valuable for mapping the Milky Way?</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q8')"><span class="opt-letter">A</span>It is emitted only by young, massive stars that trace spiral arms</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q8')"><span class="opt-letter">B</span>It has higher angular resolution than optical telescopes</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q8')"><span class="opt-letter">C</span>Radio waves at 21 cm penetrate interstellar dust and are visible across the entire Galaxy</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q8')"><span class="opt-letter">D</span>It is produced at the Galactic centre and provides a fixed reference frame</div>
-            </div><div id="q8-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q9-item"><div class="quiz-q">The observed flat rotation curve of the Milky Way implies:</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q9')"><span class="opt-letter">A</span>Most Galactic mass is concentrated inside the solar circle</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q9')"><span class="opt-letter">B</span>A dark matter halo with \(\rho \propto r^{-2}\) extending far beyond the luminous disk</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q9')"><span class="opt-letter">C</span>Newtonian gravity breaks down at large galactic radii</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q9')"><span class="opt-letter">D</span>The galaxy is not in equilibrium</div>
-            </div><div id="q9-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q10-item"><div class="quiz-q">What evidence from S-star orbits proves Sgr A* is a supermassive black hole rather than a dense star cluster?</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q10')"><span class="opt-letter">A</span>The total luminosity of Sgr A* exceeds that of any star cluster</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q10')"><span class="opt-letter">B</span>High-velocity gas clouds have been detected within 0.3 pc</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q10')"><span class="opt-letter">C</span>\(3.7 \times 10^6 M_\odot\) is enclosed within &lt;2 AU — too dense for any stable star cluster</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q10')"><span class="opt-letter">D</span>Sgr A* emits synchrotron radiation characteristic of a black hole</div>
-            </div><div id="q10-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q11-item"><div class="quiz-q">What is the orbital period of S2 around Sgr A*?</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q11')"><span class="opt-letter">A</span>1.5 years</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q11')"><span class="opt-letter">B</span>~15 years</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q11')"><span class="opt-letter">C</span>230 years</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q11')"><span class="opt-letter">D</span>~1000 years</div>
-            </div><div id="q11-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q12-item"><div class="quiz-q">The de Vaucouleurs (\(r^{1/4}\)) profile describes the surface brightness of:</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q12')"><span class="opt-letter">A</span>Spiral arms in disk galaxies</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q12')"><span class="opt-letter">B</span>Relaxed spheroidal systems such as the Galactic bulge and elliptical galaxies</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q12')"><span class="opt-letter">C</span>The outer halo of dark matter</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q12')"><span class="opt-letter">D</span>Giant molecular clouds</div>
-            </div><div id="q12-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q13-item"><div class="quiz-q">The Oort constant \(B\) is negative because:</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q13')"><span class="opt-letter">A</span>The Galaxy rotates clockwise as seen from the north Galactic pole</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q13')"><span class="opt-letter">B</span>Near the Sun, \(|d\Theta/dR|\) is smaller than \(\Theta_0/R_0\), so \(A+B < 0\)</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q13')"><span class="opt-letter">C</span>The rotation curve is Keplerian near \(R_0\)</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q13')"><span class="opt-letter">D</span>\(B\) measures the inward radial component of stellar motion</div>
-            </div><div id="q13-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q14-item"><div class="quiz-q">Which observation method can map Galactic structure beyond the solar circle using 21-cm H I?</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q14')"><span class="opt-letter">A</span>The tangent-point method (inside the solar circle only)</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q14')"><span class="opt-letter">B</span>Oort's formulas for nearby stars</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q14')"><span class="opt-letter">C</span>Cepheid variable stars with independent photometric distances</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q14')"><span class="opt-letter">D</span>Stellar parallax measurements</div>
-            </div><div id="q14-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q15-item"><div class="quiz-q">The thick disk of the Milky Way differs from the thin disk mainly in:</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q15')"><span class="opt-letter">A</span>Being the primary site of ongoing star formation</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q15')"><span class="opt-letter">B</span>Greater scale height, older stellar ages, and lower metallicity</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q15')"><span class="opt-letter">C</span>Containing the majority of interstellar gas and dust</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q15')"><span class="opt-letter">D</span>Being associated with Population II halo stars</div>
-            </div><div id="q15-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q16-item"><div class="quiz-q">The NFW dark matter halo profile behaves as \(\rho \propto r^{-1}\) at small radii and \(\rho \propto r^{-3}\) at large radii. This means the enclosed mass \(M_r\) at large radii goes as:</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q16')"><span class="opt-letter">A</span>\(M_r \propto r^{-2}\)</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q16')"><span class="opt-letter">B</span>\(M_r \propto r^0 = \text{const}\)</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q16')"><span class="opt-letter">C</span>\(M_r\) grows logarithmically (diverges, so the halo must be truncated)</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q16')"><span class="opt-letter">D</span>\(M_r \propto r^2\)</div>
-            </div><div id="q16-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q17-item"><div class="quiz-q">The Galactic fountain model explains:</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q17')"><span class="opt-letter">A</span>How gas escapes from the Galaxy permanently</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q17')"><span class="opt-letter">B</span>High-velocity clouds driven up by supernova-heated gas that cool and fall back to the disk</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q17')"><span class="opt-letter">C</span>The origin of globular clusters in the halo</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q17')"><span class="opt-letter">D</span>The formation of spiral arms through tidal interactions</div>
-            </div><div id="q17-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q18-item"><div class="quiz-q">The moving cluster method gives the distance to the Hyades as ~46 pc. The main limitation of this method for distant objects is:</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q18')"><span class="opt-letter">A</span>Interstellar extinction must be assumed to be zero</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q18')"><span class="opt-letter">B</span>It requires knowing the absolute magnitudes of cluster members</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q18')"><span class="opt-letter">C</span>Proper motions become too small to measure accurately for very distant clusters</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q18')"><span class="opt-letter">D</span>All clusters eventually dissolve, so no convergent point can be defined</div>
-            </div><div id="q18-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q19-item"><div class="quiz-q">The "density wave theory" of spiral structure (Lin &amp; Shu 1960s) explains why spiral arms contain young, hot stars by:</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q19')"><span class="opt-letter">A</span>Old stars preferentially migrate outward from the Galactic centre into the arms</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q19')"><span class="opt-letter">B</span>Gas is compressed as it passes through the rotating density wave, triggering star formation</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q19')"><span class="opt-letter">C</span>Magnetic fields along the arms prevent star formation in inter-arm regions</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q19')"><span class="opt-letter">D</span>The spiral pattern co-rotates with all stars, keeping young stars in the arms</div>
-            </div><div id="q19-fb" class="quiz-feedback"></div></div>
-
-            <div class="quiz-item" id="q20-item"><div class="quiz-q">The \([\text{Fe/H}]\) ratio is a better proxy for stellar age than total metallicity \(Z\) primarily because:</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="answerQ(this,false,'q20')"><span class="opt-letter">A</span>Iron is the most abundant element after hydrogen and helium</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q20')"><span class="opt-letter">B</span>Iron lines are invisible in hot stars, making it unbiased toward age</div>
-                <div class="quiz-option" onclick="answerQ(this,true,'q20')"><span class="opt-letter">C</span>Iron lines are easily identified in stellar spectra and iron is released in Type Ia SNe, which enrich successive stellar generations</div>
-                <div class="quiz-option" onclick="answerQ(this,false,'q20')"><span class="opt-letter">D</span>Iron production correlates perfectly with stellar birth rate, unlike other metals</div>
-            </div><div id="q20-fb" class="quiz-feedback"></div></div>
-        </div>
-
-        <div class="quiz-footer">
-            <button class="btn-quiz-nav" id="btn-prev" onclick="changeQ(-1)" disabled><i class="fa-solid fa-arrow-left"></i> Previous</button>
-            <div class="quiz-score-box">Score: <span class="quiz-score-val" id="score-display">0 / 20</span></div>
-            <button class="btn-quiz-nav" id="btn-next" onclick="changeQ(1)">Next <i class="fa-solid fa-arrow-right"></i></button>
-        </div>
-    </div>
-</div>
-
-<!-- PRACTICE LINK ZONE -->
-<div id="practice" class="section-anchor">
-    <div class="practice-zone">
-        <div class="zone-label"><i class="fa-solid fa-dumbbell"></i> Practice Problems</div>
-        <div class="practice-preview">
-            <p>Quantitative problems on this module include: extinction-corrected distance modulus, Oort constant derivations, rotation curve analysis, NFW profile fitting, and Sgr A* accretion luminosity estimates.</p>
-            <a href="../practice/galactic_structure.html" class="btn-practice">Open Module 10 Problems <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-    </div>
-</div>
-
-<!-- REFERENCES -->
-<div id="resources" class="section-anchor resources-zone">
-    <div class="rzone-label"><i class="fa-solid fa-book-bookmark"></i> References &amp; Further Reading</div>
-    <div class="resource-list">
-        <a href="#" class="resource-item">
-            <div class="resource-icon"><i class="fa-solid fa-book"></i></div>
-            <div class="resource-info"><div class="r-title">Carroll &amp; Ostlie — Introduction to Modern Astrophysics (2nd ed.)</div><div class="r-sub">Chapter 24: The Milky Way Galaxy</div></div>
-        </a>
-        <a href="#" class="resource-item">
-            <div class="resource-icon"><i class="fa-solid fa-book"></i></div>
-            <div class="resource-info"><div class="r-title">Karttunen et al. — Fundamental Astronomy (6th ed.)</div><div class="r-sub">Chapter 18: The Milky Way</div></div>
-        </a>
-        <a href="https://arxiv.org/abs/astro-ph/0509565" target="_blank" class="resource-item">
-            <div class="resource-icon"><i class="fa-solid fa-flask"></i></div>
-            <div class="resource-info"><div class="r-title">Gravity Collaboration — Geometric distance &amp; mass of Sgr A*</div><div class="r-sub">Gillessen et al. — Orbital monitoring of S-stars</div></div>
-        </a>
-    </div>
-</div>
-
-<!-- DISCUSSION -->
-<div id="comments" class="section-anchor comments-zone">
-    <div class="rzone-label"><i class="fa-brands fa-github"></i> Discussion &amp; Comments</div>
-    <div class="comments-placeholder">
-        <i class="fa-brands fa-github"></i>
-        <p>GitHub-integrated discussion will be loaded here.<br>Sign in with your GitHub account to comment or ask questions.</p>
-    </div>
-</div>
-
-</main>
-
-<aside class="right-sidebar" id="right-sidebar">
-    <div class="progress-label">On this page</div>
-    <div class="progress-track" id="progress-track">
-        <div class="progress-bar-wrapper"><div class="progress-bar-fill" id="progress-fill"></div></div>
-
-        <div class="progress-stop" data-target="mw-intro" onclick="goTo('mw-intro')">
-            <div class="stop-dot"></div><div class="stop-label">Introduction &amp; History</div><div class="stop-sublabel">10.2.0</div>
-        </div>
-        <div class="progress-stop" data-target="mw-distances" onclick="goTo('mw-distances')">
-            <div class="stop-dot"></div><div class="stop-label">Distance Methods</div><div class="stop-sublabel">10.2.1</div>
-        </div>
-        <div class="progress-stop" data-target="mw-morphology" onclick="goTo('mw-morphology')">
-            <div class="stop-dot"></div><div class="stop-label">Morphology</div><div class="stop-sublabel">10.2.2 · Disk, Bulge, Halo</div>
-        </div>
-        <div class="progress-stop" data-target="mw-kinematics" onclick="goTo('mw-kinematics')">
-            <div class="stop-dot"></div><div class="stop-label">Kinematics &amp; Oort</div><div class="stop-sublabel">10.2.3 · LSR, rotation</div>
-        </div>
-        <div class="progress-stop" data-target="mw-darkmatter" onclick="goTo('mw-darkmatter')">
-            <div class="stop-dot"></div><div class="stop-label">Dark Matter</div><div class="stop-sublabel">10.2.4 · Rotation curve</div>
-        </div>
-        <div class="progress-stop" data-target="mw-center" onclick="goTo('mw-center')">
-            <div class="stop-dot"></div><div class="stop-label">Galactic Centre</div><div class="stop-sublabel">10.2.5 · Sgr A*</div>
-        </div>
-        <div class="progress-stop" data-target="derivations" onclick="goTo('derivations')">
-            <div class="stop-dot"></div><div class="stop-label">Key Derivations</div><div class="stop-sublabel">DRV</div>
-        </div>
-        <div class="progress-stop" data-target="quiz" onclick="goTo('quiz')">
-            <div class="stop-dot"></div><div class="stop-label">Chapter Quiz</div><div class="stop-sublabel">20 Q</div>
-        </div>
-        <div class="progress-stop" data-target="practice" onclick="goTo('practice')">
-            <div class="stop-dot"></div><div class="stop-label">Practice Problems</div><div class="stop-sublabel">PROB</div>
-        </div>
-        <div class="progress-stop" data-target="resources" onclick="goTo('resources')">
-            <div class="stop-dot"></div><div class="stop-label">References</div>
-        </div>
-        <div class="progress-stop" data-target="comments" onclick="goTo('comments')">
-            <div class="stop-dot"></div><div class="stop-label">Discussion</div>
-        </div>
-    </div>
-    <div class="progress-pct"><span>Reading Progress</span><span class="pct-number" id="pct-display">0%</span></div>
-</aside>
-
-</div>
-
-<script>
-const sections=['mw-intro','mw-distances','mw-morphology','mw-kinematics','mw-darkmatter','mw-center','derivations','quiz','practice','resources','comments'];
-function goTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}
-function updateProgress(){
-    const dh=document.documentElement.scrollHeight-window.innerHeight;
-    const pct=dh>0?Math.min(100,Math.round((window.scrollY/dh)*100)):0;
-    document.getElementById('pct-display').textContent=pct+'%';
-    document.getElementById('progress-fill').style.height=pct+'%';
-    let cur=sections[0];
-    const off=130;
-    for(const id of sections){const el=document.getElementById(id);if(!el)continue;if(el.getBoundingClientRect().top<=off)cur=id;}
-    document.querySelectorAll('.progress-stop').forEach(s=>{
-        s.classList.toggle('reached', sections.indexOf(s.dataset.target)<=sections.indexOf(cur));
-    });
-    document.querySelectorAll('.subchapter-card').forEach(c=>{
-        c.classList.toggle('active', c.dataset.target===cur);
-    });
-}
-window.addEventListener('scroll',updateProgress,{passive:true});
-updateProgress();
-
-function toggleDeriv(btn){
-    const ans=btn.nextElementSibling;
-    const open=btn.classList.toggle('open');
-    ans.style.display=open?'block':'none';
-    if(open&&window.MathJax)MathJax.typesetPromise([ans]);
-}
-
-const QA={
-    q1:{c:1,msg:{t:'Correct! Both failed to account for interstellar dust absorption, which made distant stars appear fainter.',f:'Incorrect. The key error was ignoring dust extinction.'}},
-    q2:{c:2,msg:{t:'Correct! The zone of avoidance results from >30 magnitudes of visual extinction in the galactic plane.',f:'Incorrect. The zone of avoidance results from extreme optical extinction by dust.'}},
-    q3:{c:2,msg:{t:'Correct! The modern best value is ~8.15 kpc (Gravity Collaboration); IAU standard is 8.5 kpc.',f:'Incorrect. The Sun is ~8 kpc from the Galactic centre.'}},
-    q4:{c:1,msg:{t:'Correct! The thin disk scale height is z_thin ≈ 350 pc.',f:'Incorrect. The thin disk scale height is ~350 pc.'}},
-    q5:{c:2,msg:{t:'Correct! [Fe/H] = −3.5 is extremely metal-poor, characteristic of Population II halo stars.',f:'Incorrect. [Fe/H] = −3.5 indicates a very old, metal-poor Population II halo star.'}},
-    q6:{c:1,msg:{t:'Correct! The LSR is a point instantaneously at the Sun\'s position moving in a perfectly circular orbit.',f:'Incorrect. The LSR is the dynamical reference frame for a perfectly circular orbit at R₀.'}},
-    q7:{c:1,msg:{t:'Correct! A measures local differential rotation (shear), while B measures local vorticity.',f:'Incorrect. A measures local galactic shear.'}},
-    q8:{c:2,msg:{t:'Correct! Radio waves at 21 cm penetrate interstellar dust across the entire disk.',f:'Incorrect. The key advantage of 21 cm is that radio waves penetrate dust.'}},
-    q9:{c:1,msg:{t:'Correct! A flat rotation curve requires M(r) ∝ r, implying a dark matter halo with ρ ∝ r⁻².',f:'Incorrect. The flat rotation curve implies a dark matter halo with ρ ∝ r⁻².'}},
-    q10:{c:2,msg:{t:'Correct! 3.7×10⁶ M⊙ enclosed within <2 AU exceeds the stability limit of any dense star cluster.',f:'Incorrect. The decisive proof is the mass enclosed within <2 AU.'}},
-    q11:{c:1,msg:{t:'Correct! S2 has an orbital period of ~15.2 years.',f:'Incorrect. S2 has an orbital period of ~15.2 years.'}},
-    q12:{c:1,msg:{t:'Correct! The de Vaucouleurs r^{1/4} profile characterises relaxed spheroidal systems.',f:'Incorrect. The de Vaucouleurs profile describes galactic bulges and elliptical galaxies.'}},
-    q13:{c:1,msg:{t:'Correct! Near R₀, |dΘ/dR| < Θ₀/R₀, making B negative.',f:'Incorrect. B is negative because the local rotation slope is shallower than Keplerian.'}},
-    q14:{c:2,msg:{t:'Correct! Beyond R₀, independent distance indicators like Cepheids are required.',f:'Incorrect. The tangent-point method only works inside R < R₀.'}},
-    q15:{c:1,msg:{t:'Correct! The thick disk has a larger scale height (~1 kpc), older stars, and lower metallicity.',f:'Incorrect. The thick disk is older, more metal-poor, and thicker.'}},
-    q16:{c:2,msg:{t:'Correct! With ρ ∝ r⁻³ at large r, M(r) grows logarithmically and must be truncated.',f:'Incorrect. With ρ ∝ r⁻³, enclosed mass grows logarithmically.'}},
-    q17:{c:1,msg:{t:'Correct! Supernovae drive hot gas into the halo where it cools and falls back onto the disk.',f:'Incorrect. The Galactic fountain describes supernova-heated gas cycling between disk and halo.'}},
-    q18:{c:2,msg:{t:'Correct! Proper motions become too small to measure accurately at large distances.',f:'Incorrect. Proper motions become immeasurably small for distant clusters.'}},
-    q19:{c:1,msg:{t:'Correct! Gas is compressed as it passes through the spiral density wave, triggering star formation.',f:'Incorrect. Density waves compress gas passing through the arms.'}},
-    q20:{c:2,msg:{t:'Correct! Iron lines are prominent in spectra and trace enrichment from Type Ia supernovae.',f:'Incorrect. Iron lines are easily measured and track successive stellar generations.'}}
-};
-
-let correct=0, currentQ=1;
-const totalQ=20, answered={};
-
-function updateQuizView(){
-    document.querySelectorAll('.quiz-item').forEach(el=>el.classList.remove('active'));
-    document.getElementById(`q${currentQ}-item`)?.classList.add('active');
-    document.getElementById('quiz-counter').innerText=`${currentQ} / ${totalQ}`;
-    document.getElementById('btn-prev').disabled=currentQ===1;
-    document.getElementById('btn-next').disabled=currentQ===totalQ;
-}
-function changeQ(dir){
-    currentQ=Math.max(1,Math.min(totalQ,currentQ+dir));
-    updateQuizView();
-}
-document.addEventListener('DOMContentLoaded',updateQuizView);
-
-function answerQ(el,isC,qid){
-    if(answered[qid])return;
-    answered[qid]=true;
-    el.closest('.quiz-options').querySelectorAll('.quiz-option').forEach(o=>o.style.pointerEvents='none');
-    el.classList.add(isC?'correct':'wrong');
-    const fb=document.getElementById(qid+'-fb');
-    fb.textContent=(isC?'✓ ':'✗ ')+(isC?QA[qid].msg.t:QA[qid].msg.f);
-    fb.className='quiz-feedback show '+(isC?'correct':'wrong');
-    if(isC)correct++;
-    document.getElementById('score-display').textContent=correct+' / 20';
-}
-</script>
-<script type="module" src="../js/auth.js"></script>
+            const listEl = document.getElementById('handout-topics');
+            listEl.innerHTML = meta.topics.map(t => `<li><i class="fa-solid fa-angle-right"></i> ${t}</li>`).join('');
+        })();
+    </script>
 </body>
 </html>

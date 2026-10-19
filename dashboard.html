@@ -142,10 +142,7 @@
 
         .kpi-value { font-size: 2rem; font-weight: 800; font-family: var(--font-display); color: var(--text-pure); margin-bottom: 4px; }
         .kpi-label { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; }
-        .kpi-trend { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 0.72rem; margin-top: auto; padding-top: 10px; font-weight: 700; }
-        .trend-up { color: var(--accent-green); }
-        .trend-blue { color: var(--accent-blue); }
-        .trend-purple { color: var(--accent-purple); }
+        .kpi-trend { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 0.72rem; margin-top: auto; padding-top: 10px; font-weight: 700; color: var(--text-muted); }
 
         .feature-split {
             display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
@@ -159,7 +156,7 @@
         .feature-banner:hover { border-color: var(--border-light); transform: translateY(-2px); }
         .feature-tag {
             font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.06em;
+            text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted);
         }
         .feature-banner h3 { font-family: var(--font-display); font-size: 1.25rem; color: var(--text-pure); margin-bottom: 6px; }
         .feature-banner p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.55; }
@@ -171,6 +168,9 @@
             font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-main);
             background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle);
             padding: 7px 10px; border-radius: 6px; display: flex; justify-content: space-between; gap: 8px;
+        }
+        .rotation-mini-item span:last-child {
+            color: var(--text-muted);
         }
 
         .btn-action {
@@ -279,7 +279,7 @@
         <header class="top-header">
             <div class="header-title">
                 <h1>Dashboard</h1>
-                <p>Your solved problem progress, daily/weekly/monthly rotations, and upcoming live courses.</p>
+                <p>Track your solved problems, active problem rotations, and upcoming live courses.</p>
             </div>
             <div class="header-actions">
                 <div class="utc-pill">
@@ -301,10 +301,10 @@
             <div class="card col-3">
                 <div class="card-header">
                     <span class="kpi-label">Current Rank</span>
-                    <i class="fa-solid fa-medal" style="color: var(--accent-gold);"></i>
+                    <i class="fa-solid fa-medal" style="color: var(--text-muted);"></i>
                 </div>
-                <div class="kpi-value" id="dash-rank-display" style="font-size: 1.55rem; color: var(--accent-gold);">Novice Observer</div>
-                <div class="kpi-trend trend-blue" id="dash-next-rank-label"><i class="fa-solid fa-angles-up"></i> Next milestone at 5 solved</div>
+                <div class="kpi-value" id="dash-rank-display" style="font-size: 1.55rem;">Novice Observer</div>
+                <div class="kpi-trend" id="dash-next-rank-label">Next milestone at 5 solved</div>
             </div>
 
             <!-- KPI 2: Problems Solved -->
@@ -314,7 +314,7 @@
                     <i class="fa-solid fa-check-double" style="color: var(--accent-green);"></i>
                 </div>
                 <div class="kpi-value" id="problems-solved-display">0</div>
-                <div class="kpi-trend trend-up" id="dash-total-bank-label"><i class="fa-solid fa-database"></i> Out of 127 indexed problems</div>
+                <div class="kpi-trend" id="dash-total-bank-label">Out of 127 problems</div>
             </div>
 
             <!-- KPI 3: Active Streak -->
@@ -324,31 +324,31 @@
                     <i class="fa-solid fa-fire" style="color: var(--accent-rose);"></i>
                 </div>
                 <div class="kpi-value"><span id="streak-display">0</span><span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;"> days</span></div>
-                <div class="kpi-trend trend-purple"><i class="fa-solid fa-clock"></i> Consecutive study days</div>
+                <div class="kpi-trend">Consecutive study days</div>
             </div>
 
-            <!-- KPI 4: Rotation / Autumn Cup Countdown -->
+            <!-- KPI 4: Rotation Countdown -->
             <div class="card col-3">
                 <div class="card-header">
-                    <span class="kpi-label" id="dash-cycle-label">Cycle Launch (19 Oct UT)</span>
+                    <span class="kpi-label" id="dash-cycle-label">Next POTD Rotation</span>
                     <i class="fa-solid fa-hourglass-half" style="color: var(--accent-blue);"></i>
                 </div>
                 <div class="kpi-value" id="dash-countdown-display" style="font-family: var(--font-mono); font-size: 1.45rem;">00d 00h 00m</div>
-                <div class="kpi-trend trend-blue"><a href="challenges.html" style="color: var(--accent-blue); text-decoration: none;">Open POTD · POTW · POTM &rarr;</a></div>
+                <div class="kpi-trend"><a href="challenges.html" style="color: var(--accent-blue); text-decoration: none;">Open POTD · POTW · POTM &rarr;</a></div>
             </div>
 
             <!-- Dual Feature Hub: Rotations + Live Supernova Courses -->
             <div class="card col-8" style="justify-content: space-between;">
                 <div class="card-header" style="margin-bottom: 14px;">
                     <h3 class="card-title">Problem Rotations &amp; Live Courses</h3>
-                    <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-blue);">19 OCT – NOV 2026</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">AUTUMN 2026</span>
                 </div>
                 <div class="feature-split">
                     <div class="feature-banner">
                         <div>
-                            <span class="feature-tag" style="color: var(--accent-blue);">1D · 1W · 4W CYCLES</span>
+                            <span class="feature-tag">DAILY · WEEKLY · MONTHLY</span>
                             <h3 style="margin-top: 6px;">POTD, POTW &amp; POTM</h3>
-                            <p>Automated daily, weekly, and monthly problems written by Albert, Mihai, and Matei starting 19.10.2026 at 00:00 UT.</p>
+                            <p>Daily, weekly, and monthly problems rotating automatically at 00:00 UT.</p>
                             <div class="rotation-mini-list" id="dash-rotation-preview"></div>
                         </div>
                         <a href="challenges.html" class="btn-action">Open Rotations <i class="fa-solid fa-arrow-right"></i></a>
@@ -356,16 +356,16 @@
 
                     <div class="feature-banner">
                         <div>
-                            <span class="feature-tag" style="color: var(--accent-gold);">18:00 UT · LIVE LECTURES</span>
+                            <span class="feature-tag">18:00 UT · LIVE SESSIONS</span>
                             <h3 style="margin-top: 6px;">Supernova Courses</h3>
-                            <p>Three live sessions taught directly by our team after the Autumn Cup registration window:</p>
+                            <p>Upcoming live lectures before the Autumn Cup:</p>
                             <div class="rotation-mini-list">
-                                <div class="rotation-mini-item"><span>04 Nov · 18:00 UT</span><strong style="color:var(--accent-gold);">Matei (Owner)</strong></div>
-                                <div class="rotation-mini-item"><span>07 Nov · 18:00 UT</span><strong style="color:var(--accent-purple);">Albert (Admin)</strong></div>
-                                <div class="rotation-mini-item"><span>08 Nov · 18:00 UT</span><strong style="color:var(--accent-purple);">Mihai (Admin)</strong></div>
+                                <div class="rotation-mini-item"><span>04 Nov · 18:00 UT</span><span>Matei</span></div>
+                                <div class="rotation-mini-item"><span>07 Nov · 18:00 UT</span><span>Albert</span></div>
+                                <div class="rotation-mini-item"><span>08 Nov · 18:00 UT</span><span>Mihai</span></div>
                             </div>
                         </div>
-                        <a href="courses.html" class="btn-action">View Course Schedule <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="courses.html" class="btn-action">View Schedule <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -396,10 +396,10 @@
                 </div>
             </div>
 
-            <!-- Recommended Unsolved Problems (Pulled from Real Problem Bank) -->
+            <!-- Recommended Unsolved Problems -->
             <div class="card col-8">
                 <div class="card-header">
-                    <h3 class="card-title">Next Unsolved Problems in Archive</h3>
+                    <h3 class="card-title">Next Unsolved Problems</h3>
                     <a href="problems.html" class="btn-sm"><i class="fa-solid fa-layer-group"></i> All 16 Modules</a>
                 </div>
                 <div class="task-list" id="recommended-tasks-container"></div>
@@ -409,7 +409,7 @@
             <div class="card col-4">
                 <div class="card-header">
                     <h3 class="card-title">Archive Completion</h3>
-                    <a href="profile.html" style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); text-decoration: none;">Profile &amp; Rank &rarr;</a>
+                    <a href="profile.html" style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); text-decoration: none;">Profile &rarr;</a>
                 </div>
                 <div class="donut-container">
                     <div class="donut-chart" id="donut-graphic">
@@ -497,10 +497,12 @@
 
             const previewBox = document.getElementById('dash-rotation-preview');
             if (previewBox && curD && curW && curM) {
+                const shortPotwTitle = curW.title.split('—')[0].trim();
+                const shortPotmTitle = curM.title.split(':')[0].replace(/^The\s+/i, '').trim();
                 previewBox.innerHTML = `
-                    <div class="rotation-mini-item"><span>POTD: ${curD.title}</span><strong style="color:var(--accent-blue);">${curD.author}</strong></div>
-                    <div class="rotation-mini-item"><span>POTW: ${curW.title}</span><strong style="color:var(--accent-purple);">${curW.author}</strong></div>
-                    <div class="rotation-mini-item"><span>POTM: ${curM.title}</span><strong style="color:var(--accent-gold);">${curM.author}</strong></div>
+                    <div class="rotation-mini-item"><span>POTD: ${curD.title}</span><span>${curD.author}</span></div>
+                    <div class="rotation-mini-item"><span>POTW: ${shortPotwTitle}</span><span>${curW.author}</span></div>
+                    <div class="rotation-mini-item"><span>POTM: ${shortPotmTitle}</span><span>${curM.author}</span></div>
                 `;
             }
         }
@@ -525,12 +527,12 @@
             const rankName = getRankForCount(totalSolved);
             const nextRankObj = RANKS.find(r => r.req > totalSolved) || RANKS[RANKS.length - 1];
             document.getElementById('dash-rank-display').textContent = rankName;
-            document.getElementById('dash-next-rank-label').innerHTML = totalSolved >= 250
-                ? `<i class="fa-solid fa-crown"></i> Maximum Rank Achieved`
-                : `<i class="fa-solid fa-angles-up"></i> Next: ${nextRankObj.name} (${nextRankObj.req} solved)`;
+            document.getElementById('dash-next-rank-label').textContent = totalSolved >= 250
+                ? `Maximum Rank Reached`
+                : `Next: ${nextRankObj.name} (${nextRankObj.req} solved)`;
 
             document.getElementById('problems-solved-display').textContent = totalSolved;
-            document.getElementById('dash-total-bank-label').innerHTML = `<i class="fa-solid fa-database"></i> Out of ${totalBank} indexed problems`;
+            document.getElementById('dash-total-bank-label').textContent = `Out of ${totalBank} problems`;
 
             const uid = localStorage.getItem('supernova_last_uid');
             let streak = 0;

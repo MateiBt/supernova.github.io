@@ -53,6 +53,44 @@ let currentPage = 1;
 const itemsPerPage = 5;
 let filteredProblems = [...allProblems];
 
+// Automatically synchronize the sidebar across all practice/*.html pages
+function syncPracticeSidebar() {
+    const sidebar = document.querySelector('aside.sidebar');
+    if (!sidebar) return;
+    sidebar.style.overflowY = 'auto';
+    sidebar.innerHTML = `
+        <a href="../dashboard.html" class="brand" style="margin-bottom: 32px;">
+            <img src="../assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span>SUPERNOVA<br>GUIDE</span>
+        </a>
+        
+        <div class="menu-label" style="font-size: 0.68rem; margin: 18px 0 8px 8px;">Menu</div>
+        <ul class="nav-menu">
+            <li><a href="../dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="../challenges.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
+            <li><a href="../planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="../problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="../courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
+            <li><a href="../competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
+        </ul>
+
+        <div class="menu-label" style="font-size: 0.68rem; margin: 18px 0 8px 8px;">Tools &amp; Analytics</div>
+        <ul class="nav-menu">
+            <li><a href="../analytics.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="../tools.html" class="nav-item"><i class="fa-solid fa-calculator"></i> Formula &amp; Tools</a></li>
+            <li><a href="../notebook.html" class="nav-item"><i class="fa-solid fa-book-open"></i> Mistake Notebook</a></li>
+            <li><a href="../resources.html" class="nav-item"><i class="fa-solid fa-book-atlas"></i> External Library</a></li>
+        </ul>
+        
+        <div class="menu-label" style="font-size: 0.68rem; margin: 18px 0 8px 8px;">General</div>
+        <ul class="nav-menu">
+            <li><a href="../profile.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="../community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
+            <li><a href="#" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+        </ul>
+    `;
+}
+
 function isProblemSolved(uniqueId) {
     if (localStorage.getItem(`solved_${uniqueId}`) === 'true') return true;
     try {
@@ -153,7 +191,7 @@ function renderPaginationControls() {
     }
 }
 
-window.applyFilters = function() {
+window.applyFilters = function(resetPage = false) {
     if (allProblems.length === 0) return;
 
     const searchInput = document.getElementById('searchFilter');
@@ -195,7 +233,12 @@ window.applyFilters = function() {
         document.getElementById('paginationContainer').innerHTML = '';
     } else {
         if (noResultsMsg) noResultsMsg.style.display = 'none';
-        currentPage = 1;
+        const totalPages = Math.max(1, Math.ceil(filteredProblems.length / itemsPerPage));
+        if (resetPage === true) {
+            currentPage = 1;
+        } else if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
         renderPage();
     }
 };
@@ -204,13 +247,26 @@ window.handleProblemSolved = function(uniqueId) {
     const currentlySolved = isProblemSolved(uniqueId);
     if (currentlySolved) {
         localStorage.removeItem(`solved_${uniqueId}`);
+        try {
+            const solvedArr = JSON.parse(localStorage.getItem('solvedProblems') || '[]')
+                .filter(id => id !== uniqueId && id !== uniqueId.replace('_', '-'));
+            localStorage.setItem('solvedProblems', JSON.stringify(solvedArr));
+
+            const uid = localStorage.getItem('supernova_last_uid');
+            if (uid) {
+                const prog = JSON.parse(localStorage.getItem(`supernova_progress_${uid}`) || '[]')
+                    .filter(item => item.id !== uniqueId && item.id !== uniqueId.replace('_', '-'));
+                localStorage.setItem(`supernova_progress_${uid}`, JSON.stringify(prog));
+            }
+        } catch (e) {}
     } else {
         localStorage.setItem(`solved_${uniqueId}`, 'true');
         if (typeof window.toggleProblemSolved === 'function') {
             window.toggleProblemSolved(uniqueId);
         }
     }
-    window.applyFilters();
+    // Pass false so currentPage is preserved!
+    window.applyFilters(false);
 };
 
 window.openImageModal = function(element) {
@@ -235,23 +291,25 @@ document.addEventListener('keydown', function(event) {
 });
 
 function init() {
+    syncPracticeSidebar();
+
     const sEl = document.getElementById('searchFilter');
     const dEl = document.getElementById('diffFilter');
     const stEl = document.getElementById('statusFilter');
 
-    if (sEl) sEl.addEventListener('keyup', window.applyFilters);
-    if (dEl) dEl.addEventListener('change', window.applyFilters);
-    if (stEl) stEl.addEventListener('change', window.applyFilters);
+    if (sEl) sEl.addEventListener('keyup', () => window.applyFilters(true));
+    if (dEl) dEl.addEventListener('change', () => window.applyFilters(true));
+    if (stEl) stEl.addEventListener('change', () => window.applyFilters(true));
 
-    window.applyFilters();
+    window.applyFilters(true);
 }
 
 window.addEventListener('userDataLoaded', () => {
-    window.applyFilters();
+    window.applyFilters(false);
 });
 
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
     init();
-} 
+}
