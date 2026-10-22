@@ -291,12 +291,19 @@ export const potdProblems = [
         uniqueId: "potd_2026_11_01",
         dayNumber: 14,
         scheduledDate: "01.11.2026",
-        title: "Featured Olympiad Challenge",
-        author: "Matei",
-        module: "T1 · Celestial Mechanics",
+        title: "The Fate of MiAstroONF27: Escape or Collapse?",
+        author: "Alex Barbu",
+        module: "T12 · Cosmology & Friedmann Expansion",
         difficultyClass: "easy",
-        difficultyText: "3.0 / 10.0",
-        description: `<p><em>[Slot #14 (01.11.2026) — 10.0 Points]</em></p>`
+        difficultyText: "1.7 / 10.0",
+        description: `<p>Consider a simplified model of the Universe: homogeneous, isotropic, matter-dominated, and without dark energy (\\(\\Lambda = 0\\)). Imagine a giant sphere of radius \\(R\\) and total mass \\(M\\), uniformly filled with matter of density \\(\\rho\\). On its surface lies a small galaxy named MiAstroONF27 of mass \\(m\\) (\\(m \\ll M\\)).</p>
+<p>Due to the expansion of the Universe, MiAstroONF27 recedes from the center following Hubble's Law. Assuming intergalactic space is a perfect vacuum, the only force opposing this expansion is the gravitational pull of the enclosed mass \\(M\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Write the equations for the expansion velocity \\(v\\) and the total mechanical energy \\(E\\) of the galaxy in terms of \\(m\\), \\(H\\), \\(R\\), \\(M\\), and \\(G\\). <em>(2.0 points)</em></li>
+    <li>Find the critical mass \\(M_c\\) of the sphere required for the galaxy to barely escape the gravitational pull (where total mechanical energy is zero). <em>(2.5 points)</em></li>
+    <li>Derive the critical density \\(\\rho_c\\) of the sphere in terms of \\(H\\) and \\(G\\). <em>(2.5 points)</em></li>
+    <li>Find the gravitational acceleration \\(\\ddot{R}\\) of the galaxy. Then, calculate the deceleration parameter defined as \\(q \\equiv -\\frac{\\ddot{R}R}{\\dot{R}^2}\\) in terms of the density ratio \\(\\frac{\\rho}{\\rho_c}\\). What is the value of \\(q\\) when \\(\\rho = \\rho_c\\)? <em>(3.0 points)</em></li>
+</ol>`
     }
 ];
 
