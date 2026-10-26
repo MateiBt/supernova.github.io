@@ -73,7 +73,7 @@
         }
         @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
 
-        /* --- UNIFIED SIDEBAR --- */
+        /* --- SIDEBAR --- */
         .sidebar {
             width: 260px; background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border-subtle);
@@ -213,25 +213,16 @@
             border: 1px solid rgba(53, 230, 255, 0.25);
         }
 
+        /* Clean, neutral instructor badge — no icons or colors */
         .host-badge {
             font-family: var(--font-mono);
-            font-size: 0.72rem;
+            font-size: 0.74rem;
             font-weight: 700;
-            padding: 4px 10px;
+            padding: 4px 12px;
             border-radius: 6px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .host-owner {
-            background: rgba(255, 207, 92, 0.14);
-            color: var(--accent-gold);
-            border: 1px solid rgba(255, 207, 92, 0.4);
-        }
-        .host-admin {
-            background: rgba(179, 156, 208, 0.14);
-            color: var(--accent-purple);
-            border: 1px solid rgba(179, 156, 208, 0.35);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-pure);
+            border: 1px solid var(--border-light);
         }
 
         .course-date-box {
@@ -356,7 +347,7 @@
         <div class="comet" style="top: 5%; left: 90%; animation: shooting 8s infinite linear 2s;"></div>
     </div>
 
-    <!-- UNIFIED SIDEBAR NAVIGATION (Redirects to dashboard.html, never index.html) -->
+    <!-- SIDEBAR NAVIGATION -->
     <aside class="sidebar">
         <a href="dashboard.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
@@ -395,7 +386,7 @@
         <header class="top-header">
             <div class="header-title">
                 <h1>Supernova Courses</h1>
-                <p>Exclusive live sessions taught by our team. All three lectures start at 18:00 UT (6:00 PM UT).</p>
+                <p>Live introductory lectures taught by our team. All three sessions start at 18:00 UT (6:00 PM UT).</p>
             </div>
             <div class="header-actions">
                 <div class="utc-pill">
@@ -417,11 +408,11 @@
             <div class="series-banner-left">
                 <span>November 2026 Live Series · 18:00 UT</span>
                 <h2>Supernova Live Lectures</h2>
-                <p>Right after the Autumn Cup registration window closes on 1 November, Matei, Albert, and Mihai are holding three live sessions walking through competition derivations, celestial mechanics, and observational techniques.</p>
+                <p>Three introductory live lectures held by Matei, Albert, and Mihai covering core concepts in celestial mechanics, coordinates and time, and photometry and optics before the Autumn Cup begins.</p>
             </div>
         </section>
 
-        <!-- 3 OFFICIAL SUPERNOVA COURSES -->
+        <!-- 3 SUPERNOVA COURSES -->
         <section class="courses-grid" id="supernova-courses-grid"></section>
 
     </main>
@@ -436,54 +427,45 @@
                 id: "course_matei_2026_11_04",
                 sessionLabel: "Course #01",
                 instructor: "Matei",
-                role: "Owner",
-                roleClass: "host-owner",
-                roleIcon: "fa-crown",
                 dateDisplay: "Wednesday, 4 November 2026",
                 timeDisplay: "18:00 UT (6:00 PM UT)",
                 isoUtc: "2026-11-04T18:00:00Z",
-                title: "Celestial Mechanics & Perturbation Theory",
-                desc: "Hosted by Matei. Going past basic two-body formulas to tackle multi-body potentials, orbital transfers, and apsidal precession.",
+                title: "Celestial Mechanics",
+                desc: "An introductory session hosted by Matei covering the fundamentals of orbital motion and gravitation.",
                 topics: [
-                    "Vis-viva equation, Hohmann transfers, and degenerate radial free-fall",
-                    "Multipole expansion of circumbinary potentials & periastron advance",
-                    "Recovering hidden binary masses from orbital precession data"
+                    "Newton's law of gravitation and Kepler's three laws",
+                    "Orbital energy, angular momentum, and the vis-viva equation",
+                    "Circular, elliptical, and escape trajectories"
                 ]
             },
             {
                 id: "course_albert_2026_11_07",
                 sessionLabel: "Course #02",
                 instructor: "Albert",
-                role: "Admin",
-                roleClass: "host-admin",
-                roleIcon: "fa-shield-halved",
                 dateDisplay: "Saturday, 7 November 2026",
                 timeDisplay: "18:00 UT (6:00 PM UT)",
                 isoUtc: "2026-11-07T18:00:00Z",
-                title: "Spherical Astronomy, Binaries & Radiative Dynamics",
-                desc: "Hosted by Albert. Solving high-difficulty positional and astrophysical problems step by step without falling into common exam traps.",
+                title: "Celestial Coordinates and Time",
+                desc: "An introductory session hosted by Albert covering positional astronomy on the celestial sphere and astronomical timekeeping.",
                 topics: [
-                    "Horizon refraction (R₀ = 34'), sidereal setting times & twilight bounds",
-                    "Eccentric double-lined spectroscopic binaries (K₁, K₂, i, e)",
-                    "Non-collinear solar-sail equilibria in the rotating three-body frame"
+                    "The celestial sphere and horizontal, equatorial, and ecliptic coordinates",
+                    "Rising, culmination, and setting of celestial objects",
+                    "Solar time, sidereal time, and time zones"
                 ]
             },
             {
                 id: "course_mihai_2026_11_08",
                 sessionLabel: "Course #03",
                 instructor: "Mihai",
-                role: "Admin",
-                roleClass: "host-admin",
-                roleIcon: "fa-shield-halved",
                 dateDisplay: "Sunday, 8 November 2026",
                 timeDisplay: "18:00 UT (6:00 PM UT)",
                 isoUtc: "2026-11-08T18:00:00Z",
-                title: "Observational Astronomy, Astrophotography & 3D Coordinates",
-                desc: "Hosted by Mihai. Connecting real telescope imaging and 3D coordinate transformations to Olympiad observational and data problems.",
+                title: "Photometry and Optics Instrumentation",
+                desc: "An introductory session hosted by Mihai covering stellar magnitudes, flux, and basic telescope optics.",
                 topics: [
-                    "Focal-plane plate scale & extracting exposure times from asteroid trails",
-                    "3D heliocentric-to-geocentric ecliptic & equatorial matrix rotations",
-                    "Great-circle planetary alignments and twilight comet orbit recovery"
+                    "Luminosity, radiant flux, and apparent vs. absolute magnitudes",
+                    "Pogson's relation and the distance modulus",
+                    "Refracting and reflecting telescopes, focal ratio, magnification, and resolution"
                 ]
             }
         ];
@@ -507,9 +489,7 @@
                     <article class="course-card">
                         <div class="course-card-top">
                             <span class="session-badge">${c.sessionLabel}</span>
-                            <span class="host-badge ${c.roleClass}">
-                                <i class="fa-solid ${c.roleIcon}"></i> ${c.instructor} (${c.role})
-                            </span>
+                            <span class="host-badge">${c.instructor}</span>
                         </div>
 
                         <div class="course-date-box">
