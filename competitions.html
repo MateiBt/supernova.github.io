@@ -86,15 +86,16 @@
             width: 260px; background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border-subtle);
             display: flex; flex-direction: column;
-            padding: 24px 20px; flex-shrink: 0; z-index: 100;
-            overflow-y: auto;
+            padding: 24px 20px; flex-shrink: 0;
+            position: relative; z-index: 200;
+            overflow-y: auto; pointer-events: auto;
         }
         .brand {
             display: flex; align-items: center; gap: 16px;
             font-family: var(--font-display); font-size: 1.3rem;
             font-weight: 700; color: var(--text-pure);
             margin-bottom: 32px; padding-left: 4px; line-height: 1.2;
-            text-decoration: none;
+            text-decoration: none; cursor: pointer;
         }
         .brand img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
 
@@ -109,9 +110,10 @@
             padding: 9px 12px; border-radius: var(--radius-sm);
             color: var(--text-muted); text-decoration: none;
             font-weight: 500; font-size: 0.88rem; transition: all 0.2s ease;
+            cursor: pointer; pointer-events: auto;
         }
         .nav-item i { width: 20px; text-align: center; font-size: 1.05rem; }
-        .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
+        .nav-item:hover { background-color: rgba(255,255,255,0.04); color: var(--text-main); }
         .nav-item.active { background-color: rgba(43, 227, 138, 0.12); color: var(--accent-green); border-left: 3px solid var(--accent-green); }
 
         /* --- MAIN AREA --- */
@@ -289,11 +291,6 @@
             padding: 16px 14px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             text-align: center; gap: 8px; min-height: 105px;
-            text-decoration: none; transition: border-color 0.2s, transform 0.2s;
-        }
-        .sponsor-item:hover {
-            border-color: var(--border-light);
-            transform: translateY(-2px);
         }
         .sponsor-item img {
             max-height: 46px; max-width: 150px; object-fit: contain;
@@ -431,7 +428,7 @@
         <div class="comet" style="top: 10%; left: 85%; animation: shooting 9s infinite linear 1s;"></div>
     </div>
 
-    <!-- UNIFIED SIDEBAR NAVIGATION -->
+    <!-- SIDEBAR NAVIGATION (Exact Root Filenames) -->
     <aside class="sidebar">
         <a href="dashboard.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
@@ -458,7 +455,7 @@
         
         <div class="menu-label">General</div>
         <ul class="nav-menu">
-            <li><a href="profile.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="profile.html" class="nav-item" id="profileLink"><i class="fa-solid fa-gear"></i> Settings</a></li>
             <li><a href="community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
             <li><a href="#" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
         </ul>
@@ -492,7 +489,7 @@
             <div class="pd-header">
                 <div>
                     <h2>Your Competition Dashboard</h2>
-                    <p id="pd-subtitle">Register via the Google Form with the same email you use on this site. Once you submit the form, we add your email here so you can track your rounds.</p>
+                    <p id="pd-subtitle">Register via the Google Form with the same email you use on this site. Once you submit the form, we add your account here so you can track your rounds.</p>
                 </div>
                 <span class="pd-status-badge pending" id="pd-status-badge">
                     <i class="fa-solid fa-clock"></i> Not Registered Yet
@@ -501,7 +498,7 @@
 
             <div class="pd-stats-grid">
                 <div class="pd-stat-card">
-                    <div class="pd-stat-label">Logged-In Email</div>
+                    <div class="pd-stat-label">Logged-In Account</div>
                     <div class="pd-stat-value" id="pd-user-email" style="font-size:0.9rem; word-break:break-all;">Not signed in</div>
                 </div>
                 <div class="pd-stat-card">
@@ -579,26 +576,26 @@
                     </span>
                 </div>
                 <div class="sponsors-grid">
-                    <a href="https://www.bisque.com" target="_blank" rel="noopener" class="sponsor-item">
+                    <div class="sponsor-item">
                         <img src="assets/img/sponsors/software_bisque.png" alt="Software Bisque" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none;">SOFTWARE BISQUE</div>
                         <span class="sponsor-sub">TheSky™ Imaging Bundle ($695)</span>
-                    </a>
-                    <a href="https://www.jundroo.com" target="_blank" rel="noopener" class="sponsor-item">
+                    </div>
+                    <div class="sponsor-item">
                         <img src="assets/img/sponsors/jundroo.png" alt="Jundroo Games" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none;">jundroo</div>
                         <span class="sponsor-sub">Juno: New Origins Steam Keys</span>
-                    </a>
-                    <a href="https://www.kerbalspaceprogram.com" target="_blank" rel="noopener" class="sponsor-item">
+                    </div>
+                    <div class="sponsor-item">
                         <img src="assets/img/sponsors/ksp.png" alt="Kerbal Space Program" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none; color:#ff5252;">KERBAL SPACE PROGRAM</div>
                         <span class="sponsor-sub">KSP Steam Keys</span>
-                    </a>
-                    <a href="https://artofproblemsolving.com" target="_blank" rel="noopener" class="sponsor-item">
+                    </div>
+                    <div class="sponsor-item">
                         <img src="assets/img/sponsors/aops.png" alt="Art of Problem Solving" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none; color:var(--accent-blue);">AoPS</div>
                         <span class="sponsor-sub">Art of Problem Solving Vouchers</span>
-                    </a>
+                    </div>
                 </div>
             </div>
 
@@ -712,19 +709,18 @@
             </div>
 
             <!-- FOOTER CTA -->
-            <div class="btn-group">
-                <a href="https://drive.google.com/file/d/1B6t4DWtaloF9IRWQ652CjbE6PAN1vg8d/view?usp=drive_link" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                class="btn-comp btn-mock">
-                    <i class="fa-solid fa-file-pdf" style="color: var(--accent-rose);"></i> View Rules &amp; Syllabus (PDF)
-                </a>
-                <a href="https://forms.gle/eK1EHVtvQLAC9xdU8" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                class="btn-comp btn-register">
-                <i class="fa-solid fa-user-plus"></i> Register for Autumn Cup
-                </a>
+            <div class="comp-footer">
+                <div class="reg-status-info">
+                    Registration Window: <strong>19 Oct – 1 Nov 2026 (23:59 UT)</strong> · Each participant must complete the registration form.
+                </div>
+                <div class="btn-group">
+                    <a href="https://drive.google.com/file/d/1B6t4DWtaloF9IRWQ652CjbE6PAN1vg8d/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="btn-comp btn-mock">
+                        <i class="fa-solid fa-file-pdf" style="color: var(--accent-rose);"></i> View Rules &amp; Syllabus (PDF)
+                    </a>
+                    <a href="https://forms.gle/eK1EHVtvQLAC9xdU8" target="_blank" rel="noopener noreferrer" class="btn-comp btn-register">
+                        <i class="fa-solid fa-user-plus"></i> Register for Autumn Cup
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -751,22 +747,63 @@
 
     <script type="module" src="js/auth.js"></script>
     <script type="module">
-        import { auth } from './js/firebase-config.js';
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         // ============================================================================
-        // ADD REGISTERED PARTICIPANTS HERE (FROM YOUR GOOGLE FORM RESPONSES)
+        // REGISTERED PARTICIPANTS LIST (SYNCED FROM OFFICIAL REGISTRATION EXCEL)
         // stage options: "qualifier" (14 Nov) | "selection" (15 Nov) | "final" (20 Nov)
         // ============================================================================
         const REGISTERED_PARTICIPANTS = [
             {
                 email: "contact.supernovaguide@gmail.com",
+                sngUser: "Matei",
                 name: "Matei",
                 mode: "Organizer",
                 stage: "qualifier"
+            },
+            {
+                email: "alex.mihai.barbu11@gmail.com",
+                sngUser: "Regele",
+                name: "Barbu Mihai Alexandru",
+                mode: "Team of 2 (Random Partner)",
+                stage: "qualifier"
+            },
+            {
+                email: "lucadariusflorin2012@gmail.com",
+                sngUser: "Darius S.",
+                name: "Solcan-Luca Darius-Florin",
+                mode: "Solo (Dar!u$)",
+                stage: "qualifier"
+            },
+            {
+                email: "robyan2044@gmail.com",
+                sngUser: "Badea Robert",
+                name: "Badea Robert Yannis",
+                mode: "Team of 2 (Astrobros)",
+                stage: "qualifier"
+            },
+            {
+                email: "alexaionescu32@gmail.com",
+                sngUser: "ioana25",
+                name: "Ionescu Alexa Ioana",
+                mode: "Solo",
+                stage: "qualifier"
+            },
+            {
+                email: "divyaispresenthere@gmail.com",
+                sngUser: "Divya",
+                name: "Divya Yadav",
+                mode: "Solo (Divya)",
+                stage: "qualifier"
+            },
+            {
+                email: "riteshkumarmohapatra11902@gmail.com",
+                sngUser: "Ritesh Kumar Mohapatra",
+                name: "Ritesh Kumar Mohapatra",
+                mode: "Solo",
+                stage: "qualifier"
             }
-            // Example when someone fills out your Google Form:
-            // { email: "participant@gmail.com", name: "Alex", mode: "Solo", stage: "qualifier" },
         ];
 
         // Paste your exam link for each round when the window opens at 18:00 UT:
@@ -784,7 +821,7 @@
 
         let currentParticipant = null;
 
-        onAuthStateChanged(auth, (user) => {
+        function applyParticipantUI(user) {
             const cardEl = document.getElementById('participant-dashboard-card');
             const badgeEl = document.getElementById('pd-status-badge');
             const subEl = document.getElementById('pd-subtitle');
@@ -793,14 +830,18 @@
             const roundNameEl = document.getElementById('pd-next-round-name');
             const regBtnEl = document.getElementById('pd-reg-btn');
 
-            if (!user || !user.email) {
+            if (!user) {
                 emailEl.textContent = "Sign in to view";
                 return;
             }
 
-            emailEl.textContent = user.email;
-            const found = REGISTERED_PARTICIPANTS.find(
-                p => p.email.toLowerCase() === user.email.toLowerCase()
+            const userEmail = (user.email || "").trim().toLowerCase();
+            const userDisplay = (user.displayName || "").trim().toLowerCase();
+            emailEl.textContent = user.email || user.displayName || "Signed In";
+
+            const found = REGISTERED_PARTICIPANTS.find(p =>
+                p.email.trim().toLowerCase() === userEmail ||
+                (p.sngUser && p.sngUser.trim().toLowerCase() === userDisplay)
             );
 
             if (found) {
@@ -808,7 +849,7 @@
                 cardEl.classList.add('is-registered');
                 badgeEl.className = 'pd-status-badge confirmed';
                 badgeEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> Registered`;
-                subEl.textContent = `Welcome, ${found.name}. Your registration for the Supernova Autumn Cup 2026 is confirmed.`;
+                subEl.textContent = `Welcome, ${found.name} (${found.sngUser}). Your registration for the Supernova Autumn Cup 2026 is confirmed.`;
                 modeEl.textContent = found.mode;
                 if (regBtnEl) regBtnEl.style.display = 'none';
 
@@ -824,7 +865,14 @@
                     document.getElementById('pd-step-qualifier')?.classList.add('active-round');
                 }
             }
-        });
+        }
+
+        if (getApps().length > 0) {
+            const authInstance = getAuth(getApp());
+            onAuthStateChanged(authInstance, (user) => {
+                applyParticipantUI(user);
+            });
+        }
 
         window.enterCompetitionRound = function() {
             if (!currentParticipant) {
@@ -856,7 +904,6 @@
     </script>
 
     <script>
-        // Clean up any legacy candidate bib stored in browser localStorage
         localStorage.removeItem('supernova_comp_autumn2026_bib');
 
         const regOpenDate = new Date('2026-10-19T00:00:00Z').getTime();
