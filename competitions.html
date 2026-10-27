@@ -282,7 +282,7 @@
             font-family: var(--font-display); font-size: 1.05rem; color: var(--text-pure);
         }
         .sponsors-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); gap: 14px;
         }
         .sponsor-item {
             background: var(--bg-card);
@@ -296,7 +296,7 @@
             max-height: 46px; max-width: 150px; object-fit: contain;
         }
         .sponsor-fallback {
-            font-family: var(--font-display); font-size: 1.05rem; font-weight: 800; color: var(--text-pure);
+            font-family: var(--font-display); font-size: 1.02rem; font-weight: 800; color: var(--text-pure);
         }
         .sponsor-sub {
             font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted);
@@ -412,7 +412,7 @@
         .mock-option.wrong { border-color: var(--accent-rose); background: rgba(255, 193, 204, 0.1); color: var(--accent-rose); }
 
         @media (max-width: 1100px) {
-            .pd-stats-grid, .pd-rounds-bar, .sponsors-grid, .phases-grid, .prizes-grid, .comp-details-grid {
+            .pd-stats-grid, .pd-rounds-bar, .phases-grid, .prizes-grid, .comp-details-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -552,7 +552,7 @@
                     <div class="comp-badges">
                         <span class="c-badge badge-green"><i class="fa-solid fa-bolt"></i> Autumn 2026 Season (SAC 2026)</span>
                         <span class="c-badge badge-blue">3-Phase MCQ Format · Solo or Team of 2</span>
-                        <span class="c-badge badge-gold">Over $1,000 in Prizes</span>
+                        <span class="c-badge badge-gold">Over $2,100 in Prizes</span>
                     </div>
                     <h2 class="comp-title">Supernova Autumn Cup 2026</h2>
                     <p class="comp-subtitle">
@@ -570,9 +570,9 @@
             <!-- SPONSORS BAR (Put logos in assets/img/sponsors/) -->
             <div class="sponsors-panel">
                 <div class="sponsors-header">
-                    <h3>Sponsored By (Over $1,000 in Prizes)</h3>
+                    <h3>Sponsored By (Over $2,100 in Prizes)</h3>
                     <span style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-gold);">
-                        Software Bisque · Jundroo · Kerbal Space Program · AoPS
+                        Software Bisque · Aries Productions · Axilone (Siril) · Pavonis Interactive · Jundroo · KSP · AoPS
                     </span>
                 </div>
                 <div class="sponsors-grid">
@@ -582,14 +582,32 @@
                         <span class="sponsor-sub">TheSky™ Imaging Bundle ($695)</span>
                     </div>
                     <div class="sponsor-item">
-                        <img src="assets/img/sponsors/jundroo.png" alt="Jundroo Games" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="sponsor-fallback" style="display:none;">jundroo</div>
-                        <span class="sponsor-sub">Juno: New Origins Steam Keys</span>
+                        <img src="assets/img/sponsors/aries_productions.png" alt="Aries Productions" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="sponsor-fallback" style="display:none; color:var(--accent-purple);">ARIES PRODUCTIONS</div>
+                        <span class="sponsor-sub">3× Astro Pixel Processor ($600)</span>
+                    </div>
+                    <div class="sponsor-item">
+                        <div style="display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;">
+                            <img src="assets/img/sponsors/axilone.png" alt="Axilone Astronomy" style="max-height:40px; max-width:95px;" onerror="this.style.display='none';">
+                            <img src="assets/img/sponsors/siril.png" alt="Siril" style="max-height:42px; max-width:95px;" onerror="this.style.display='none';">
+                        </div>
+                        <div class="sponsor-fallback" style="display:none; color:var(--accent-gold);">AXILONE · SIRIL</div>
+                        <span class="sponsor-sub">3× Siril Hardcopy Books (€177)</span>
+                    </div>
+                    <div class="sponsor-item">
+                        <img src="assets/img/sponsors/pavonis.png" alt="Pavonis Interactive" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="sponsor-fallback" style="display:none; color:var(--accent-green);">PAVONIS INTERACTIVE</div>
+                        <span class="sponsor-sub">Terra Invicta Steam Keys ($200)</span>
                     </div>
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/ksp.png" alt="Kerbal Space Program" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none; color:#ff5252;">KERBAL SPACE PROGRAM</div>
                         <span class="sponsor-sub">KSP Steam Keys</span>
+                    </div>
+                    <div class="sponsor-item">
+                        <img src="assets/img/sponsors/jundroo.png" alt="Jundroo Games" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="sponsor-fallback" style="display:none;">jundroo</div>
+                        <span class="sponsor-sub">Juno: New Origins Steam Keys</span>
                     </div>
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/aops.png" alt="Art of Problem Solving" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -624,10 +642,10 @@
                 <div class="phase-card">
                     <span class="phase-num" style="color: var(--accent-gold);">Phase 03 · Friday, 20 Nov 2026</span>
                     <h3>Final Round (90 Min)</h3>
-                    <p>The top 20 participants from the Selection Round compete for the first 10 places (entry window: 18:00–19:00 UT, 45 MCQs) to win software licenses, Steam keys, and AoPS vouchers.</p>
+                    <p>The top 20 participants from the Selection Round compete in the Grand Final (entry window: 18:00–19:00 UT, 45 MCQs) to win commercial software licenses, physical books, Steam keys, and AoPS vouchers.</p>
                     <div class="phase-meta">
                         <span>Format: 45 MCQs (1.5 hr)</span>
-                        <span style="color:var(--accent-gold); font-weight:700;">Top 10 Win Prizes</span>
+                        <span style="color:var(--accent-gold); font-weight:700;">Top 15 Win Prizes</span>
                     </div>
                 </div>
             </div>
@@ -637,16 +655,20 @@
                 <div class="prizes-panel">
                     <div class="panel-heading" style="margin-bottom:4px;"><i class="fa-solid fa-trophy" style="color: var(--accent-gold);"></i> What Do You Win?</div>
                     <div class="prize-tier" style="border-left-color: #FFD700;">
-                        <strong>1st Place:</strong> Gold Certificate + one copy of <strong>TheSky™ Imaging Bundle</strong> (includes <em>TheSky™ Professional</em>, <em>TPoint™</em>, and <em>Cameras+</em>, valued at <strong>$695</strong>) + <strong>Kerbal Space Program</strong> Steam key + <strong>Juno: New Origins</strong> Steam key.
+                        <strong>1st Place (Gold Medal):</strong> Gold Certificate + <strong>TheSky™ Imaging Bundle</strong> ($695) + <strong>Astro Pixel Processor</strong> Lifetime License ($200) + Physical copy of <strong>Mastering image processing with Siril</strong> (€59) + <strong>Kerbal Space Program</strong> Steam key + <strong>Juno: New Origins</strong> Steam key.
                     </div>
                     <div class="prize-tier" style="border-left-color: #C0C0C0;">
-                        <strong>2nd – 5th Place:</strong> Silver Certificate + <strong>Kerbal Space Program</strong> Steam key + <strong>$25 Voucher on AoPS</strong>.
+                        <strong>2nd – 5th Place (Silver Medal):</strong> Silver Certificate + <strong>$25 Voucher on AoPS</strong> + <strong>Kerbal Space Program</strong> Steam key.<br>
+                        <span style="font-size:0.82rem; color:var(--text-muted);">
+                            • <strong>2nd &amp; 3rd Place:</strong> Astro Pixel Processor Lifetime License ($200)<br>
+                            • <strong>4th &amp; 5th Place:</strong> Physical copy of <em>Mastering image processing with Siril</em> (€59, shipped worldwide)
+                        </span>
                     </div>
                     <div class="prize-tier" style="border-left-color: #CD7F32;">
-                        <strong>6th – 10th Place:</strong> Bronze Certificate + <strong>Juno: New Origins</strong> Steam key.
+                        <strong>6th – 10th Place (Bronze Medal):</strong> Bronze Certificate + <strong>Terra Invicta</strong> Steam key ($40 value by Pavonis Interactive).
                     </div>
                     <div class="prize-tier" style="border-left-color: var(--accent-blue);">
-                        <strong>11th – 20th Place:</strong> Honorable Mention Certificate.
+                        <strong>11th – 20th Place (Honorable Mention):</strong> Honorable Mention Certificate + <strong>Juno: New Origins</strong> Steam key (awarded to 11th–15th Place).
                     </div>
                     <div class="prize-tier" style="border-left-color: var(--accent-green);">
                         <strong>All Participants:</strong> Everyone receives a <strong>Participation Certificate</strong> for every round in which they qualify and participate.
