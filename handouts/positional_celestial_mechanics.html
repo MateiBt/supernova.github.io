@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module Handout | Supernova Guide</title>
+    <title>1. Positional Astronomy & Celestial Mechanics — Handout | Supernova Guide</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,17 +13,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['\\[', '\\]'], ['$$', '$$']],
+                processEscapes: true,
+                tags: 'ams'
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
         :root {
             --bg-base: #0A0A0C;
             --bg-sidebar: #101115;
             --bg-card: #15161A;
             --bg-card-hover: #1C1D22;
+            --bg-elevated: #1A1C23;
             
             --accent-green: #2BE38A;
             --accent-blue: #35E6FF;
             --accent-purple: #B39CD0;
             --accent-rose: #FFC1CC;
+            --accent-gold: #FFCF5C;
             --track-accent: #B39CD0;
             
             --text-pure: #FFFFFF;
@@ -44,7 +60,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
         body {
             background-color: var(--bg-base);
@@ -54,7 +70,7 @@
             height: 100vh;
             overflow: hidden;
             -webkit-font-smoothing: antialiased;
-            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .sky-background {
@@ -72,7 +88,7 @@
         }
         @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
 
-        /* --- UNIFIED SIDEBAR --- */
+        /* --- UNIFIED APP SIDEBAR --- */
         .sidebar {
             width: 260px; background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border-subtle);
@@ -103,153 +119,321 @@
         }
         .nav-item i { width: 20px; text-align: center; font-size: 1.05rem; }
         .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
-        .nav-item.active { background-color: rgba(255,255,255,0.06); color: var(--track-accent); border-left: 3px solid var(--track-accent); }
+        .nav-item.active { background-color: rgba(179, 156, 208, 0.12); color: var(--track-accent); border-left: 3px solid var(--track-accent); }
 
-        /* Main Area */
+        /* --- MAIN WORKSPACE --- */
         .dashboard-main {
-            flex: 1; overflow-y: auto; padding: 40px 48px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            flex: 1; overflow-y: auto; padding: 32px 44px 80px;
+            display: flex; flex-direction: column; gap: 28px;
         }
 
-        .coming-soon-card {
+        .module-hero {
             background: var(--bg-card);
-            border: 1px solid var(--border-light);
+            border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg);
-            padding: 48px 44px;
-            max-width: 680px;
-            width: 100%;
-            text-align: center;
+            padding: 24px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .hero-left { display: flex; align-items: center; gap: 22px; }
+        .hero-icon {
+            width: 80px; height: 80px; border-radius: var(--radius-md);
+            background: #FFFFFF; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; flex-shrink: 0; border: 1px solid var(--border-light);
+        }
+        .hero-icon img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.35); }
+        .hero-meta .eyebrow {
+            font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase;
+            color: var(--track-accent); letter-spacing: 0.08em; display: block; margin-bottom: 4px;
+        }
+        .hero-meta h1 {
+            font-family: var(--font-display); font-size: 1.7rem; font-weight: 700;
+            color: var(--text-pure); margin-bottom: 6px;
+        }
+        .hero-meta p { font-size: 0.88rem; color: var(--text-muted); }
+
+        .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-nav-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 16px; border-radius: var(--radius-sm);
+            font-size: 0.84rem; font-weight: 600; text-decoration: none;
+            background: var(--bg-sidebar); color: var(--text-main);
+            border: 1px solid var(--border-light); transition: all 0.2s; cursor: pointer;
+            font-family: var(--font-body);
+        }
+        .btn-nav-pill:hover { border-color: var(--track-accent); color: var(--text-pure); }
+        .btn-nav-pill.primary-pill {
+            background: var(--track-accent); color: var(--bg-base);
+            border-color: var(--track-accent); font-weight: 700;
+        }
+        .btn-nav-pill.primary-pill:hover { opacity: 0.92; transform: translateY(-1px); }
+
+        /* --- READER GRID (TOC + CHAPTER CONTENT) --- */
+        .reader-grid {
+            display: grid;
+            grid-template-columns: 295px 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        .toc-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            max-height: calc(100vh - 64px);
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
+            gap: 12px;
+        }
+        .toc-header {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-pure);
+            display: flex;
             align-items: center;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+            justify-content: space-between;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .toc-header span { display: flex; align-items: center; gap: 8px; }
+        .toc-header i { color: var(--track-accent); }
+
+        .toc-chapter { display: flex; flex-direction: column; gap: 3px; }
+        .toc-chapter-title {
+            font-family: var(--font-mono);
+            font-size: 0.69rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--track-accent);
+            margin-top: 6px;
+            padding: 4px 6px;
         }
 
-        .logo-frame {
-            width: 136px; height: 136px;
-            border-radius: 20px;
-            background: #FFFFFF;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
-            border: 1px solid var(--border-light);
+        .toc-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            text-align: left;
+            padding: 7px 10px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 0.83rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            transition: all 0.18s ease;
+            line-height: 1.35;
+        }
+        .toc-btn:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-pure);
+        }
+        .toc-btn.active {
+            background: rgba(179, 156, 208, 0.14);
+            color: var(--text-pure);
+            border-color: rgba(179, 156, 208, 0.35);
+            font-weight: 600;
+        }
+        .toc-num {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--track-accent);
+            flex-shrink: 0;
+        }
+
+        /* --- HANDOUT CONTENT CARDS --- */
+        .reader-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            min-width: 0;
+        }
+        .chapter-slot {
+            display: contents;
+        }
+
+        .subchapter-panel {
+            display: none;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 40px 44px;
+            line-height: 1.8;
+            font-size: 0.98rem;
+            color: var(--text-main);
+            animation: fadeIn 0.25s ease forwards;
+        }
+        .subchapter-panel.active,
+        .reader-content.continuous-mode .subchapter-panel {
+            display: block;
             margin-bottom: 24px;
         }
-        .logo-frame img {
-            width: 100%; height: 100%; object-fit: contain; transform: scale(1.4);
-        }
 
-        .status-pill {
+        .chapter-badge {
             font-family: var(--font-mono);
             font-size: 0.72rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: var(--track-accent);
-            background: var(--bg-sidebar);
-            border: 1px solid var(--border-light);
-            padding: 6px 14px;
+            background: rgba(179, 156, 208, 0.1);
+            border: 1px solid rgba(179, 156, 208, 0.25);
+            padding: 4px 12px;
             border-radius: 99px;
-            margin-bottom: 16px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            display: inline-block;
+            margin-bottom: 12px;
         }
 
-        .coming-soon-card h1 {
+        .subchapter-panel h2 {
             font-family: var(--font-display);
-            font-size: 2rem;
+            font-size: 1.85rem;
             font-weight: 700;
             color: var(--text-pure);
-            margin-bottom: 12px;
-            line-height: 1.2;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            line-height: 1.25;
         }
 
-        .coming-soon-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.7;
-            margin-bottom: 28px;
-            max-width: 540px;
+        .subchapter-panel h3 {
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin: 34px 0 14px;
+            line-height: 1.3;
         }
 
-        .syllabus-preview {
-            width: 100%;
+        .subchapter-panel h4 {
+            font-family: var(--font-display);
+            font-size: 1.08rem;
+            font-weight: 600;
+            color: var(--text-pure);
+            margin: 24px 0 10px;
+        }
+
+        .subchapter-panel p { margin-bottom: 16px; color: var(--text-main); }
+        .subchapter-panel ul, .subchapter-panel ol {
+            margin: 12px 0 20px 24px;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .subchapter-panel li { padding-left: 4px; }
+        .subchapter-panel strong { color: var(--text-pure); font-weight: 600; }
+
+        .math-block {
             background: var(--bg-sidebar);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-md);
-            padding: 20px 24px;
-            text-align: left;
-            margin-bottom: 32px;
+            padding: 16px 20px;
+            margin: 18px 0;
+            overflow-x: auto;
         }
-        .syllabus-preview h4 {
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--track-accent);
-            margin-bottom: 12px;
-        }
-        .syllabus-preview ul {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .syllabus-preview li {
-            font-size: 0.88rem;
+
+        .handout-note {
+            background: rgba(179, 156, 208, 0.07);
+            border-left: 3px solid var(--track-accent);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            padding: 16px 20px;
+            margin: 22px 0;
+            font-size: 0.93rem;
             color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
-        .syllabus-preview li i {
-            color: var(--track-accent);
-            font-size: 0.75rem;
+        .handout-note.ioaa-note {
+            background: rgba(53, 230, 255, 0.07);
+            border-left-color: var(--accent-blue);
         }
 
-        .action-row {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-            justify-content: center;
+        .footnote-box {
+            margin-top: 28px;
+            padding-top: 14px;
+            border-top: 1px dashed var(--border-light);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 24px 0;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+        }
+        .handout-table {
             width: 100%;
-        }
-
-        .btn-action {
-            padding: 12px 22px;
-            border-radius: var(--radius-sm);
+            border-collapse: collapse;
+            background: var(--bg-sidebar);
             font-size: 0.88rem;
+            text-align: left;
+        }
+        .handout-table th {
+            background: var(--bg-elevated);
+            color: var(--text-pure);
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .handout-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            vertical-align: top;
+        }
+        .handout-table tr:last-child td { border-bottom: none; }
+
+        .subchapter-nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-top: 36px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-subtle);
+        }
+        .reader-content.continuous-mode .subchapter-nav-bar { display: none; }
+
+        .btn-step {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-light);
+            color: var(--text-pure);
+            padding: 12px 18px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 0.86rem;
             font-weight: 600;
-            text-decoration: none;
+            cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
+            gap: 10px;
+            transition: all 0.2s;
         }
-        .btn-back {
-            background: var(--bg-sidebar);
-            color: var(--text-pure);
-            border: 1px solid var(--border-light);
-        }
-        .btn-back:hover {
+        .btn-step:hover:not(:disabled) {
             border-color: var(--track-accent);
             color: var(--track-accent);
         }
-        .btn-practice-jump {
-            background: var(--track-accent);
-            color: var(--bg-base);
-            border: 1px solid var(--track-accent);
-            font-weight: 700;
-        }
-        .btn-practice-jump:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
+        .btn-step:disabled { opacity: 0.35; cursor: not-allowed; }
 
+        @media (max-width: 1100px) {
+            .reader-grid { grid-template-columns: 1fr; }
+            .toc-panel { position: relative; max-height: none; }
+        }
         @media (max-width: 800px) {
             .sidebar { display: none; }
-            .dashboard-main { padding: 24px 16px; }
-            .coming-soon-card { padding: 32px 22px; }
+            .dashboard-main { padding: 20px 16px 60px; }
+            .subchapter-panel { padding: 26px 20px; }
         }
     </style>
 </head>
@@ -292,174 +476,216 @@
         </ul>
     </aside>
 
-    <main class="dashboard-main">
-        <div class="coming-soon-card">
-            <div class="logo-frame">
-                <img id="handout-logo" src="../assets/img/theory/positional_celestial_mechanics_logo.png" alt="Module Logo">
+    <!-- MAIN HANDOUT WORKSPACE -->
+    <main class="dashboard-main" id="main-scroll-container">
+        
+        <!-- Module Hero Header -->
+        <section class="module-hero">
+            <div class="hero-left">
+                <div class="hero-icon">
+                    <img src="../assets/img/theory/positional_celestial_mechanics_logo.png" alt="Positional Astronomy and Celestial Mechanics">
+                </div>
+                <div class="hero-meta">
+                    <span class="eyebrow">Theory Track · Module 01 · Theoretical Handout</span>
+                    <h1>1. Positional Astronomy &amp; Celestial Mechanics</h1>
+                    <p>Curvilinear kinematics, Newtonian conservation laws, Keplerian orbits, orbital maneuvers, and multi-body dynamics.</p>
+                </div>
             </div>
-
-            <span class="status-pill">
-                <i class="fa-solid fa-compass-drafting"></i>
-                <span id="handout-eyebrow">Handout In Production</span>
-            </span>
-
-            <h1 id="handout-title">Theoretical Handout Coming Soon</h1>
-            <p>
-                This curriculum handout—including rigorous LaTeX physical derivations, worked Olympiad examples, interactive figures, and a 20-question conceptual quiz—is currently being compiled.
-            </p>
-
-            <div class="syllabus-preview">
-                <h4>Scheduled Subchapters &amp; Derivations</h4>
-                <ul id="handout-topics">
-                    <li><i class="fa-solid fa-check"></i> Core theoretical derivations &amp; physical laws</li>
-                    <li><i class="fa-solid fa-check"></i> Worked Olympiad problem walkthroughs</li>
-                    <li><i class="fa-solid fa-check"></i> 20-question conceptual mastery quiz</li>
-                </ul>
-            </div>
-
-            <div class="action-row">
-                <a href="../problems.html" class="btn-action btn-back">
-                    <i class="fa-solid fa-arrow-left"></i> Back to Curriculum Hub
+            <div class="hero-actions">
+                <button class="btn-nav-pill" id="toggle-view-mode">
+                    <i class="fa-solid fa-layer-group"></i> <span id="view-mode-label">Full Continuous View</span>
+                </button>
+                <a href="../problems.html" class="btn-nav-pill">
+                    <i class="fa-solid fa-arrow-left"></i> Curriculum Hub
                 </a>
-                <a id="handout-practice-link" href="../problems.html" class="btn-action btn-practice-jump">
-                    <i class="fa-solid fa-pen-to-square"></i> Go to Module Practice
+                <a href="../practice/positional_celestial_mechanics.html" class="btn-nav-pill primary-pill">
+                    <i class="fa-solid fa-pen-to-square"></i> Solve Module Problems
                 </a>
             </div>
+        </section>
+
+        <!-- Reader Layout: Left Sticky TOC + Right Subchapter View -->
+        <div class="reader-grid">
+            
+            <!-- Left Sticky TOC -->
+            <aside class="toc-panel">
+                <div class="toc-header">
+                    <span><i class="fa-solid fa-list-ul"></i> Contents</span>
+                    <small style="font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted);">MODULE T1</small>
+                </div>
+
+                <!-- Chapter 1 -->
+                <div class="toc-chapter">
+                    <div class="toc-chapter-title">1. Kinematics &amp; Gravitation</div>
+                    <button class="toc-btn active" data-target="1.1"><span>1.1 Curvilinear Coordinate Systems</span><span class="toc-num">1.1</span></button>
+                    <button class="toc-btn" data-target="1.2"><span>1.2 Conservation Laws</span><span class="toc-num">1.2</span></button>
+                    <button class="toc-btn" data-target="1.3"><span>1.3 Gravitational Potential Theory</span><span class="toc-num">1.3</span></button>
+                </div>
+
+                <!-- Chapter 2 -->
+                <div class="toc-chapter">
+                    <div class="toc-chapter-title">2. Unperturbed Two-Body Problem</div>
+                    <button class="toc-btn" data-target="2.1"><span>2.1 Two-Body Problem Reduction</span><span class="toc-num">2.1</span></button>
+                    <button class="toc-btn" data-target="2.2"><span>2.2 Conserved Vectors of Motion</span><span class="toc-num">2.2</span></button>
+                    <button class="toc-btn" data-target="2.3"><span>2.3 The Orbit Equation (Derivation)</span><span class="toc-num">2.3</span></button>
+                </div>
+
+                <!-- Chapter 3 -->
+                <div class="toc-chapter">
+                    <div class="toc-chapter-title">3. Properties of Keplerian Orbits</div>
+                    <button class="toc-btn" data-target="3.1"><span>3.1 Elliptic Orbits &amp; Vis-Viva</span><span class="toc-num">3.1</span></button>
+                    <button class="toc-btn" data-target="3.2"><span>3.2 Parabolic Escape Trajectories</span><span class="toc-num">3.2</span></button>
+                    <button class="toc-btn" data-target="3.3"><span>3.3 Hyperbolic Trajectories</span><span class="toc-num">3.3</span></button>
+                </div>
+
+                <!-- Chapter 4 -->
+                <div class="toc-chapter">
+                    <div class="toc-chapter-title">4. Kepler's Equation &amp; Time</div>
+                    <button class="toc-btn" data-target="4.1"><span>4.1 Geometrical Anomalies</span><span class="toc-num">4.1</span></button>
+                    <button class="toc-btn" data-target="4.2"><span>4.2 Kepler's Equation</span><span class="toc-num">4.2</span></button>
+                    <button class="toc-btn" data-target="4.3"><span>4.3 Unbound Time of Flight</span><span class="toc-num">4.3</span></button>
+                </div>
+
+                <!-- Chapter 5 -->
+                <div class="toc-chapter">
+                    <div class="toc-chapter-title">5. 3D Orbits &amp; Transformations</div>
+                    <button class="toc-btn" data-target="5.1"><span>5.1 Celestial Reference Frames</span><span class="toc-num">5.1</span></button>
+                    <button class="toc-btn" data-target="5.2"><span>5.2 Six Classical Orbital Elements</span><span class="toc-num">5.2</span></button>
+                    <button class="toc-btn" data-target="5.3"><span>5.3 State Vector Transformations</span><span class="toc-num">5.3</span></button>
+                    <button class="toc-btn" data-target="5.4"><span>5.4 Sky Plane Projections</span><span class="toc-num">5.4</span></button>
+                </div>
+
+                <!-- Chapter 6 -->
+                <div class="toc-chapter">
+                    <div class="toc-chapter-title">6. Orbital Maneuvers &amp; Transfers</div>
+                    <button class="toc-btn" data-target="6.1"><span>6.1 Impulsive Maneuvers &amp; Delta-V</span><span class="toc-num">6.1</span></button>
+                    <button class="toc-btn" data-target="6.2"><span>6.2 Hohmann, Bi-Elliptic &amp; Plane</span><span class="toc-num">6.2</span></button>
+                    <button class="toc-btn" data-target="6.3"><span>6.3 Interplanetary &amp; Laplace SOI</span><span class="toc-num">6.3</span></button>
+                    <button class="toc-btn" data-target="6.4"><span>6.4 Gravity Assist / Slingshot</span><span class="toc-num">6.4</span></button>
+                </div>
+
+                <!-- Chapter 7 -->
+                <div class="toc-chapter">
+                    <div class="toc-chapter-title">7. Gravitational Perturbations</div>
+                    <button class="toc-btn" data-target="7.1"><span>7.1 Oblateness &amp; Zonal Harmonics ($J_2$)</span><span class="toc-num">7.1</span></button>
+                    <button class="toc-btn" data-target="7.2"><span>7.2 Atmospheric Drag Perturbation</span><span class="toc-num">7.2</span></button>
+                </div>
+
+                <!-- Chapter 8 -->
+                <div class="toc-chapter">
+                    <div class="toc-chapter-title">8. Tidal Dynamics &amp; Roche Limit</div>
+                    <button class="toc-btn" data-target="8.1"><span>8.1 Tidal Forces &amp; Spin-Orbit</span><span class="toc-num">8.1</span></button>
+                    <button class="toc-btn" data-target="8.2"><span>8.2 The Rigid-Body Roche Limit</span><span class="toc-num">8.2</span></button>
+                </div>
+
+                <!-- Chapter 9 -->
+                <div class="toc-chapter">
+                    <div class="toc-chapter-title">9. Restricted Three-Body (CR3BP)</div>
+                    <button class="toc-btn" data-target="9.1"><span>9.1 Synodic Frame &amp; Jacobi Constant</span><span class="toc-num">9.1</span></button>
+                    <button class="toc-btn" data-target="9.2"><span>9.2 Lagrange Equilibrium Points</span><span class="toc-num">9.2</span></button>
+                </div>
+            </aside>
+
+            <!-- Right Dynamic Chapter Container (Ordered Slots 1 to 9) -->
+            <div class="reader-content" id="handout-reader-panels">
+                <div class="chapter-slot" id="ch-slot-1"></div>
+                <div class="chapter-slot" id="ch-slot-2"></div>
+                <div class="chapter-slot" id="ch-slot-3"></div>
+                <div class="chapter-slot" id="ch-slot-4"></div>
+                <div class="chapter-slot" id="ch-slot-5"></div>
+                <div class="chapter-slot" id="ch-slot-6"></div>
+                <div class="chapter-slot" id="ch-slot-7"></div>
+                <div class="chapter-slot" id="ch-slot-8"></div>
+                <div class="chapter-slot" id="ch-slot-9"></div>
+            </div>
+
         </div>
     </main>
 
     <script type="module" src="../js/auth.js"></script>
     <script>
-        const HANDOUT_REGISTRY = {
-            "positional_celestial_mechanics": {
-                eyebrow: "Theory Track · Module 01 · Coming Soon",
-                title: "1. Positional Astronomy & Celestial Mechanics",
-                logo: "../assets/img/theory/positional_celestial_mechanics_logo.png",
-                accent: "#B39CD0",
-                topics: ["1.1 The Celestial Sphere & Spherical Trigonometry", "1.2 Coordinate Transformations & Time Systems (Solar/Sidereal)", "1.3 Kepler's Laws, Vis-Viva Equation & Orbital Elements", "1.4 Hohmann Transfers, Lagrange Points & The Virial Theorem"]
-            },
-            "radiation_relativity": {
-                eyebrow: "Theory Track · Module 02 · Coming Soon",
-                title: "2. Radiation Physics & Relativity Fundamentals",
-                logo: "../assets/img/theory/radiation_relativity_logo.png",
-                accent: "#B39CD0",
-                topics: ["2.1 Blackbody Radiation: Planck, Wien & Stefan-Boltzmann Laws", "2.2 Special Relativity: Lorentz Transformations & Relativistic Doppler Shift", "2.3 Radiative Transfer, Opacity & Optical Depth"]
-            },
-            "astronomical_instrumentation": {
-                eyebrow: "Theory Track · Module 03 · Coming Soon",
-                title: "3. Astronomical Instrumentation",
-                logo: "../assets/img/theory/astronomical_instrumentation_logo.png",
-                accent: "#B39CD0",
-                topics: ["3.1 Geometric Optics, Focal Ratio & Plate Scale", "3.2 Diffraction Limit, Rayleigh Criterion & Resolving Power", "3.3 Radio Interferometry, Detectors & CCD Signal-to-Noise Ratio"]
-            },
-            "stellar_parameters": {
-                eyebrow: "Theory Track · Module 04 · Coming Soon",
-                title: "4. Stellar Parameters & Spectral Classification",
-                logo: "../assets/img/theory/stellar_parameters_logo.png",
-                accent: "#B39CD0",
-                topics: ["4.1 Visual, Spectroscopic & Eclipsing Binary Systems", "4.2 Boltzmann & Saha Equations in Stellar Spectra", "4.3 The Hertzsprung-Russell Diagram & Luminosity Classes"]
-            },
-            "stellar_structure": {
-                eyebrow: "Theory Track · Module 05 · Coming Soon",
-                title: "5. Stellar Structure & Atmospheres",
-                logo: "../assets/img/theory/stellar_structure_logo.png",
-                accent: "#B39CD0",
-                topics: ["5.1 Hydrostatic Equilibrium & Polytropic Stellar Models", "5.2 Energy Transport: Radiative vs. Convective Zones", "5.3 Nucleosynthesis (pp-chain, CNO cycle) & Solar Structure"]
-            },
-            "interstellar_medium": {
-                eyebrow: "Theory Track · Module 06 · Coming Soon",
-                title: "6. Interstellar Medium & Star Formation",
-                logo: "../assets/img/theory/interstellar_medium_logo.png",
-                accent: "#B39CD0",
-                topics: ["6.1 Interstellar Dust Extinction, Reddening & Strömgren Spheres", "6.2 Jeans Mass, Jeans Length & Molecular Cloud Collapse", "6.3 Protostellar Evolution, Hayashi Track & Bipolar Outflows"]
-            },
-            "stellar_evolution": {
-                eyebrow: "Theory Track · Module 07 · Coming Soon",
-                title: "7. Stellar Evolution",
-                logo: "../assets/img/theory/stellar_evolution_logo.png",
-                accent: "#B39CD0",
-                topics: ["7.1 Main-Sequence & Post-Main-Sequence Evolutionary Tracks", "7.2 Variable Stars, Cepheid Pulsation Mechanism & Period-Luminosity", "7.3 Core-Collapse vs. Type Ia Supernovae"]
-            },
-            "stellar_remnants": {
-                eyebrow: "Theory Track · Module 08 · Coming Soon",
-                title: "8. Stellar Remnants & General Relativity",
-                logo: "../assets/img/theory/stellar_remnants_logo.png",
-                accent: "#B39CD0",
-                topics: ["8.1 Electron Degeneracy Pressure & The Chandrasekhar Limit", "8.2 Neutron Stars, Pulsars & Tolman-Oppenheimer-Volkoff Limit", "8.3 Schwarzschild Metric, Gravitational Redshift & Accretion Disks"]
-            },
-            "planetary_systems": {
-                eyebrow: "Theory Track · Module 09 · Coming Soon",
-                title: "9. Planetary Systems & Formation",
-                logo: "../assets/img/theory/planetary_systems_logo.png",
-                accent: "#B39CD0",
-                topics: ["9.1 Planetary Equilibrium Temperature, Albedo & Hydrostatic Escape", "9.2 Tidal Forces, Roche Limit & Ring Systems", "9.3 Exoplanet Detection: Transit Light Curves & Radial Velocity"]
-            },
-            "galactic_structure": {
-                eyebrow: "Theory Track · Module 10 · Coming Soon",
-                title: "10. Galactic Structure",
-                logo: "../assets/img/theory/galactic_structure_logo.png",
-                accent: "#B39CD0",
-                topics: ["10.1 Milky Way Morphology, Disk & Halo Kinematics", "10.2 Differential Rotation, Oort Constants & 21-cm Rotation Curves", "10.3 Dark Matter Halo Profiles & Virial Mass of Elliptical Galaxies"]
-            },
-            "galactic_evolution": {
-                eyebrow: "Theory Track · Module 11 · Coming Soon",
-                title: "11. Galactic Evolution & Active Galaxies",
-                logo: "../assets/img/theory/galactic_evolution_logo.png",
-                accent: "#B39CD0",
-                topics: ["11.1 Dynamical Friction, Galaxy Mergers & Scaling Relations (Tully-Fisher)", "11.2 Active Galactic Nuclei (Seyferts, Quasars, Blazars) & Eddington Limit", "11.3 Superluminal Motion & Relativistic Beaming in Jets"]
-            },
-            "cosmology": {
-                eyebrow: "Theory Track · Module 12 · Coming Soon",
-                title: "12. Cosmology & Structure of the Universe",
-                logo: "../assets/img/theory/cosmology_logo.png",
-                accent: "#B39CD0",
-                topics: ["12.1 Robertson-Walker Metric, Friedmann Equations & Fluid Equation", "12.2 Cosmological Redshift, Hubble Parameter & Distance Measures", "12.3 Thermal History, Big Bang Nucleosynthesis & CMB Anisotropies"]
-            },
-            "data_methods_plotting": {
-                eyebrow: "Data Analysis Track · Module 01 · Coming Soon",
-                title: "1. Methods & Plotting Guide",
-                logo: "../assets/img/data_analysis/methods_plotting_logo.png",
-                accent: "#35E6FF",
-                topics: ["D1.1 Variance, Standard Deviation & Gaussian Error Propagation", "D1.2 Ordinary & Weighted Least-Squares Linear Regression", "D1.3 Logarithmic Linearization & Residual Analysis"]
-            },
-            "data_full_sets": {
-                eyebrow: "Data Analysis Track · Module 02 · Coming Soon",
-                title: "2. Interpreting Full Data Sets",
-                logo: "../assets/img/data_analysis/full_data_sets_logo.png",
-                accent: "#35E6FF",
-                topics: ["D2.1 Period Folding & Eclipsing Binary Light Curve Extraction", "D2.2 Spectral Line Fitting, Equivalent Width & Radial Velocity", "D2.3 Color-Magnitude Isochrone Fitting & Extinction Correction"]
-            },
-            "obs_blind_map": {
-                eyebrow: "Observational Track · Manual 01 · Coming Soon",
-                title: "Blind Map Observation Manual",
-                logo: "../assets/img/observational/blind_map_logo.png",
-                accent: "#FFC1CC",
-                topics: ["O1.1 IAU Constellation Boundaries & Bright Navigation Stars", "O1.2 Complete Messier & Caldwell Catalog Star-Hopping Routes", "O1.3 Estimating RA, Dec, Ecliptic & Galactic Coordinates Without Grids"]
-            },
-            "obs_telescope": {
-                eyebrow: "Observational Track · Manual 02 · Coming Soon",
-                title: "Practical Telescope Operations Manual",
-                logo: "../assets/img/observational/telescope_practice_logo.png",
-                accent: "#FFC1CC",
-                topics: ["O2.1 German Equatorial Mount Assembly & Counterweight Balancing", "O2.2 Polar Alignment & Setting Circle Calibration", "O2.3 Eyepiece Field of View Mapping & Drift Timing"]
+        const loadedChapters = new Set();
+        const readerContainer = document.getElementById('handout-reader-panels');
+        const toggleViewBtn = document.getElementById('toggle-view-mode');
+        const viewModeLabel = document.getElementById('view-mode-label');
+        const mainScroll = document.getElementById('main-scroll-container');
+        const tocButtons = document.querySelectorAll('.toc-btn[data-target]');
+
+        let isContinuousMode = false;
+
+        async function ensureChapterLoaded(chapterNum) {
+            if (loadedChapters.has(chapterNum)) return;
+            const slot = document.getElementById(`ch-slot-${chapterNum}`);
+            if (!slot) return;
+
+            try {
+                const response = await fetch(`./t1_chapters/ch${chapterNum}.html`);
+                if (!response.ok) throw new Error('Not uploaded yet');
+                const html = await response.text();
+                slot.innerHTML = html;
+                loadedChapters.add(chapterNum);
+            } catch (err) {
+                // Graceful fallback if chX.html hasn't been created yet
+                const chapterBtns = Array.from(tocButtons).filter(b => b.dataset.target.startsWith(`${chapterNum}.`));
+                slot.innerHTML = chapterBtns.map(btn => `
+                    <article class="subchapter-panel" data-sub="${btn.dataset.target}">
+                        <span class="chapter-badge">Chapter ${chapterNum} · In Production</span>
+                        <h2>${btn.querySelector('span').textContent}</h2>
+                        <p>This subchapter file (<code>handouts/t1_chapters/ch${chapterNum}.html</code>) is currently being compiled.</p>
+                    </article>
+                `).join('');
+                loadedChapters.add(chapterNum);
+            }
+        }
+
+        window.switchSubchapter = async function(subId) {
+            const chapterNum = subId.split('.')[0];
+            await ensureChapterLoaded(chapterNum);
+
+            tocButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.target === subId);
+            });
+
+            const allPanels = document.querySelectorAll('.subchapter-panel');
+            allPanels.forEach(panel => {
+                panel.classList.toggle('active', panel.dataset.sub === subId);
+            });
+
+            const activePanel = document.querySelector(`.subchapter-panel[data-sub="${subId}"]`);
+
+            if (isContinuousMode) {
+                if (activePanel) activePanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else if (mainScroll) {
+                mainScroll.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            if (activePanel && window.MathJax && window.MathJax.typesetPromise) {
+                await window.MathJax.typesetPromise([activePanel]).catch(() => {});
             }
         };
 
-        (function hydrateHandoutPage() {
-            const fileName = window.location.pathname.split('/').pop().replace('.html', '');
-            const meta = HANDOUT_REGISTRY[fileName];
-            if (!meta) return;
+        tocButtons.forEach(btn => {
+            btn.addEventListener('click', () => switchSubchapter(btn.dataset.target));
+        });
 
-            document.title = `${meta.title} — Handout | Supernova Guide`;
-            document.documentElement.style.setProperty('--track-accent', meta.accent);
-            document.getElementById('handout-logo').src = meta.logo;
-            document.getElementById('handout-eyebrow').textContent = meta.eyebrow;
-            document.getElementById('handout-title').textContent = meta.title;
-            document.getElementById('handout-practice-link').href = `../practice/${fileName}.html`;
+        toggleViewBtn.addEventListener('click', async () => {
+            isContinuousMode = !isContinuousMode;
+            if (isContinuousMode) {
+                // Load all available chapters in parallel for full continuous scroll
+                await Promise.all([1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => ensureChapterLoaded(String(n))));
+            }
+            readerContainer.classList.toggle('continuous-mode', isContinuousMode);
+            viewModeLabel.textContent = isContinuousMode ? 'Single Subchapter View' : 'Full Continuous View';
 
-            const listEl = document.getElementById('handout-topics');
-            listEl.innerHTML = meta.topics.map(t => `<li><i class="fa-solid fa-angle-right"></i> ${t}</li>`).join('');
-        })();
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                await window.MathJax.typesetPromise([readerContainer]).catch(() => {});
+            }
+        });
+
+        // Automatically load Subchapter 1.1 on initial visit
+        document.addEventListener('DOMContentLoaded', () => {
+            switchSubchapter('1.1');
+        });
     </script>
 </body>
 </html>

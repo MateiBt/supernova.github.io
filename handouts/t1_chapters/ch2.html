@@ -1,0 +1,465 @@
+<!-- =========================================================
+     SUBCHAPTER 2.1: TWO-BODY PROBLEM REDUCTION
+     ========================================================= -->
+<article class="subchapter-panel" id="sub-2-1" data-sub="2.1">
+    <span class="chapter-badge">Chapter 2 · The Unperturbed Two-Body Problem</span>
+    <h2>2.1 Two-Body Problem Reduction</h2>
+
+    <p>
+        The foundational model of orbital mechanics is the isolated gravitational interaction of two point masses (or spherically symmetric bodies by the Shell Theorem), $m_1$ and $m_2$. By exploiting the symmetries of Newton's Law of Universal Gravitation, the coupled six-degree-of-freedom motion of two interacting bodies can be decomposed into the trivial uniform motion of their common center of mass and the three-degree-of-freedom motion of a single fictitious particle in a static central field.
+    </p>
+
+    <h3>2.1.1 Center of Mass (Barycenter) Frame</h3>
+    <p>
+        Ok, now let's just consider two point masses $m_1$ and $m_2$ located at position vectors $\vec{r}_1$ and $\vec{r}_2$ with respect to an arbitrary inertial reference frame. The relative separation vector pointing from $m_2$ (often chosen as the primary body) to $m_1$ (the secondary body) is defined as:
+    </p>
+    <div class="math-block">
+        \begin{equation}
+            \vec{r} = \vec{r}_1 - \vec{r}_2, \qquad r = |\vec{r}| = |\vec{r}_1 - \vec{r}_2|
+        \end{equation}
+    </div>
+    <p>with the corresponding radial unit vector pointing from $m_2$ toward $m_1$ given by $\hat{r} = \frac{\vec{r}}{r}$.</p>
+    <p>By Newton's Second Law and Newton's Law of Universal Gravitation, the equations of motion for the two masses in the inertial frame are:</p>
+    <div class="math-block">
+        \begin{align}
+            m_1 \ddot{\vec{r}}_1 &= -\frac{G m_1 m_2}{r^2}\hat{r} = -\frac{G m_1 m_2}{r^3}(\vec{r}_1 - \vec{r}_2) \label{eq:m1_inertial} \\
+            m_2 \ddot{\vec{r}}_2 &= +\frac{G m_1 m_2}{r^2}\hat{r} = +\frac{G m_1 m_2}{r^3}(\vec{r}_1 - \vec{r}_2) \label{eq:m2_inertial}
+        \end{align}
+    </div>
+    <p>Adding Equations $\eqref{eq:m1_inertial}$ and $\eqref{eq:m2_inertial}$ yields zero net internal force on the system:</p>
+    <div class="math-block">
+        \begin{equation}
+            m_1 \ddot{\vec{r}}_1 + m_2 \ddot{\vec{r}}_2 = \vec{0} \implies \frac{d^2}{dt^2}\left(m_1 \vec{r}_1 + m_2 \vec{r}_2\right) = \vec{0}
+        \end{equation}
+    </div>
+    <p>We define the position vector of the <strong>center of mass (barycenter)</strong> $\vec{R}_{\mathrm{cm}}$ as the mass-weighted average of the individual position vectors:</p>
+    <div class="math-block">
+        \begin{equation}
+            \vec{R}_{\mathrm{cm}} \equiv \frac{m_1 \vec{r}_1 + m_2 \vec{r}_2}{m_1 + m_2} = \frac{m_1 \vec{r}_1 + m_2 \vec{r}_2}{M}
+        \end{equation}
+    </div>
+    <p>
+        where $M = m_1 + m_2$ denotes the total mass of the binary system. Because $\ddot{\vec{R}}_{\mathrm{cm}} = \vec{0}$, the barycenter moves at a constant velocity $\vec{V}_{\mathrm{cm}} = \dot{\vec{R}}_{\mathrm{cm}} = \mathrm{const}$, and therefore constitutes a valid inertial reference frame.
+    </p>
+    <p>
+        Transforming into the <strong>barycentric reference frame</strong> (where the origin is fixed at the center of mass, $\vec{R}_{\mathrm{cm}} = \vec{0}$), the position vectors of the individual bodies $\vec{r}_1' = \vec{r}_1 - \vec{R}_{\mathrm{cm}}$ and $\vec{r}_2' = \vec{r}_2 - \vec{R}_{\mathrm{cm}}$ satisfy the linear system:
+    </p>
+    <div class="math-block">
+        \begin{equation}
+            m_1 \vec{r}_1' + m_2 \vec{r}_2' = \vec{0} \qquad \text{and} \qquad \vec{r}_1' - \vec{r}_2' = \vec{r}
+        \end{equation}
+    </div>
+    <p>Solving this linear system expresses each body's barycentric position vector purely in terms of the relative separation vector $\vec{r}$:</p>
+    <div class="math-block">
+        \begin{align}
+            \vec{r}_1' &= \left(\frac{m_2}{m_1 + m_2}\right)\vec{r} = \frac{m_2}{M}\vec{r} \\
+            \vec{r}_2' &= -\left(\frac{m_1}{m_1 + m_2}\right)\vec{r} = -\frac{m_1}{M}\vec{r}
+        \end{align}
+    </div>
+
+    <h4>Physical Consequences of the Barycentric Decomposition:</h4>
+    <ul>
+        <li><strong>Opposite Phase:</strong> The vectors $\vec{r}_1'$ and $\vec{r}_2'$ are strictly anti-parallel ($\vec{r}_1' / r_1' = -\vec{r}_2' / r_2'$), meaning the two bodies always lie on opposite sides of the barycenter along a common line passing through it.</li>
+        <li><strong>Inverse Mass Scaling:</strong> The distances from the barycenter satisfy $m_1 r_1' = m_2 r_2'$ and $r_1' + r_2' = r$, so the more massive body remains proportionally closer to the center of mass.</li>
+        <li><strong>Homothetic Orbits:</strong> Once the relative trajectory $\vec{r}(t)$ is found, the individual barycentric orbits $\vec{r}_1'(t)$ and $\vec{r}_2'(t)$ are geometrically similar conic sections with the exact same eccentricity $e$, scaled by factors of $m_2/M$ and $m_1/M$, respectively.</li>
+    </ul>
+
+    <h3>2.1.2 Reduced Mass &amp; Equation of Relative Motion</h3>
+    <p>To isolate the relative motion $\vec{r}(t)$, divide the inertial equations of motion $\eqref{eq:m1_inertial}$ and $\eqref{eq:m2_inertial}$ by $m_1$ and $m_2$, respectively:</p>
+    <div class="math-block">
+        \begin{equation}
+            \ddot{\vec{r}}_1 = -\frac{G m_2}{r^2}\hat{r}, \qquad \ddot{\vec{r}}_2 = +\frac{G m_1}{r^2}\hat{r}
+        \end{equation}
+    </div>
+    <p>Subtracting $\ddot{\vec{r}}_2$ from $\ddot{\vec{r}}_1$ yields the differential equation governing the separation vector $\vec{r} = \vec{r}_1 - \vec{r}_2$:</p>
+    <div class="math-block">
+        \begin{equation}
+            \ddot{\vec{r}} = \ddot{\vec{r}}_1 - \ddot{\vec{r}}_2 = -\frac{G(m_1 + m_2)}{r^2}\hat{r}
+        \end{equation}
+    </div>
+    <p>We introduce two fundamental parameters to cast this equation into standard mechanical and astrodynamical forms:</p>
+    <ol>
+        <li>
+            <strong>The Reduced Mass ($\mu$):</strong> Defined as the harmonic product of the two masses:
+            <div class="math-block">
+                \begin{equation}
+                    \mu \equiv \frac{m_1 m_2}{m_1 + m_2} = \frac{m_1 m_2}{M} \implies \frac{1}{\mu} = \frac{1}{m_1} + \frac{1}{m_2}
+                \end{equation}
+            </div>
+        </li>
+        <li>
+            <strong>The Standard Gravitational Parameter ($\mu_0$):</strong> Defined as the product of the gravitational constant and the total system mass:
+            <div class="math-block">
+                \begin{equation}
+                    \mu_0 \equiv G(m_1 + m_2) = G M
+                \end{equation}
+            </div>
+        </li>
+    </ol>
+    <p>Multiplying the relative acceleration equation by the reduced mass $\mu$ gives the <strong>Newtonian force form</strong> of the relative two-body problem:</p>
+    <div class="math-block">
+        \begin{equation}
+            \mu \ddot{\vec{r}} = -\frac{G m_1 m_2}{r^2}\hat{r} \Longleftrightarrow \ddot{\vec{r}} = -\frac{\mu_0}{r^2}\hat{r}
+        \end{equation}
+    </div>
+    <p>
+        Thus, the relative motion of two bodies with masses $m_1$ and $m_2$ is mathematically identical to the motion of a single fictitious particle of mass $\mu$ at position $\vec{r}$ orbiting a stationary central mass $M = m_1 + m_2$ fixed at the origin.
+    </p>
+
+    <h4>Total Energy and Angular Momentum in the Barycentric Frame:</h4>
+    <p>
+        In the center-of-mass frame ($\vec{R}_{\mathrm{cm}} = \vec{0}$), the total orbital angular momentum $\vec{L}_{\mathrm{tot}}$ and total mechanical energy $E_{\mathrm{tot}}$ of the two-body system simplify directly into the properties of the reduced-mass particle:
+    </p>
+    <ul>
+        <li>
+            <strong>Total Angular Momentum:</strong> Substituting $\vec{r}_1' = \frac{m_2}{M}\vec{r}$ and $\vec{r}_2' = -\frac{m_1}{M}\vec{r}$ into $\vec{L}_{\mathrm{tot}} = m_1(\vec{r}_1' \times \dot{\vec{r}}_1') + m_2(\vec{r}_2' \times \dot{\vec{r}}_2')$ gives:
+            <div class="math-block">
+                \begin{equation}
+                    \vec{L}_{\mathrm{tot}} = \left[m_1\left(\frac{m_2}{M}\right)^2 + m_2\left(\frac{m_1}{M}\right)^2\right](\vec{r} \times \dot{\vec{r}}) = \frac{m_1 m_2(m_2 + m_1)}{M^2}(\vec{r} \times \vec{v}) = \mu(\vec{r} \times \vec{v}) = \mu \vec{h}
+                \end{equation}
+            </div>
+        </li>
+        <li>
+            <strong>Total Mechanical Energy:</strong> Similarly, substituting $\dot{\vec{r}}_1'$ and $\dot{\vec{r}}_2'$ into the total kinetic and potential energy yields:
+            <div class="math-block">
+                \begin{equation}
+                    E_{\mathrm{tot}} = \frac{1}{2}m_1 |\dot{\vec{r}}_1'|^2 + \frac{1}{2}m_2 |\dot{\vec{r}}_2'|^2 - \frac{G m_1 m_2}{r} = \frac{1}{2}\mu v^2 - \frac{G M \mu}{r} = \mu\left(\frac{1}{2}v^2 - \frac{\mu_0}{r}\right) = \mu \epsilon
+                \end{equation}
+            </div>
+        </li>
+    </ul>
+
+    <div class="subchapter-nav-bar">
+        <button class="btn-step" onclick="switchSubchapter('1.3')"><i class="fa-solid fa-arrow-left"></i> Prev: 1.3 Gravitational Potential</button>
+        <button class="btn-step" onclick="switchSubchapter('2.2')">Next: 2.2 Conserved Vectors <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+</article>
+
+<!-- =========================================================
+     SUBCHAPTER 2.2: CONSERVED VECTORS OF THE MOTION
+     ========================================================= -->
+<article class="subchapter-panel" id="sub-2-2" data-sub="2.2">
+    <span class="chapter-badge">Chapter 2 · The Unperturbed Two-Body Problem</span>
+    <h2>2.2 Conserved Vectors of the Motion</h2>
+
+    <p>
+        Because the equation of relative motion $\ddot{\vec{r}} = -\frac{\mu_0}{r^2}\hat{r}$ depends only on the mass sum $\mu_0 = G(m_1 + m_2)$, it is standard in celestial mechanics to work with <strong>specific</strong> (per unit reduced mass $\mu$) conserved quantities.
+    </p>
+
+    <h3>2.2.1 Specific Angular Momentum Vector ($\vec{h}$)</h3>
+    <p>
+        The <strong>specific relative angular momentum vector</strong> $\vec{h}$ is defined as the cross product of the relative position vector $\vec{r}$ and relative velocity vector $\vec{v} = \dot{\vec{r}}$:
+    </p>
+    <div class="math-block">
+        \begin{equation}
+            \vec{h} \equiv \frac{\vec{L}_{\mathrm{tot}}}{\mu} = \vec{r} \times \vec{v} = \vec{r} \times \dot{\vec{r}}
+        \end{equation}
+    </div>
+
+    <h4>Proof of Conservation and Planar Motion:</h4>
+    <p>Differentiating $\vec{h}$ with respect to time $t$ and applying the product rule for cross products yields:</p>
+    <div class="math-block">
+        \begin{equation}
+            \frac{d\vec{h}}{dt} = \frac{d}{dt}(\vec{r} \times \dot{\vec{r}}) = (\dot{\vec{r}} \times \dot{\vec{r}}) + (\vec{r} \times \ddot{\vec{r}})
+        \end{equation}
+    </div>
+    <p>
+        The first term vanishes identically because the cross product of any vector with itself is zero ($\dot{\vec{r}} \times \dot{\vec{r}} = \vec{0}$). Substituting the equation of motion $\ddot{\vec{r}} = -\frac{\mu_0}{r^3}\vec{r}$ into the second term gives:
+    </p>
+    <div class="math-block">
+        \begin{equation}
+            \frac{d\vec{h}}{dt} = \vec{r} \times \left(-\frac{\mu_0}{r^3}\vec{r}\right) = -\frac{\mu_0}{r^3}(\vec{r} \times \vec{r}) = \vec{0} \implies \vec{h} = \mathrm{const}
+        \end{equation}
+    </div>
+    <p>
+        Because $\vec{h} = \vec{r} \times \vec{v}$ is strictly constant in both magnitude and direction, taking the scalar dot product of $\vec{r}$ and $\vec{v}$ with $\vec{h}$ at any instant $t$ yields:
+    </p>
+    <div class="math-block">
+        \begin{equation}
+            \vec{r} \cdot \vec{h} = \vec{r} \cdot (\vec{r} \times \vec{v}) = 0 \qquad \text{and} \qquad \vec{v} \cdot \vec{h} = \vec{v} \cdot (\vec{r} \times \vec{v}) = 0
+        \end{equation}
+    </div>
+    <p>
+        Consequently, the position vector $\vec{r}$ and velocity vector $\vec{v}$ are forever perpendicular to the fixed direction of $\vec{h}$. <strong>All unperturbed two-body orbits are strictly planar</strong>, confined to the invariant <strong>orbital plane</strong> passing through the barycenter with normal unit vector $\hat{k} = \vec{h}/h$.
+    </p>
+    <p>
+        In planar polar coordinates $(r, \theta)$ within the orbital plane, where $\vec{r} = r\hat{r}$ and $\vec{v} = \dot{r}\hat{r} + r\dot{\theta}\hat{\theta}$, the specific angular momentum simplifies to:
+    </p>
+    <div class="math-block">
+        \begin{equation}
+            \vec{h} = (r\hat{r}) \times (\dot{r}\hat{r} + r\dot{\theta}\hat{\theta}) = r^2\dot{\theta}(\hat{r} \times \hat{\theta}) = r^2\dot{\theta}\hat{k} \implies h = r^2\dot{\theta} = 2\frac{dA}{dt} = \mathrm{const}
+        \end{equation}
+    </div>
+
+    <h3>2.2.2 Laplace-Runge-Lenz (LRL) Vector ($\vec{e}$)</h3>
+    <p>
+        While rotational invariance in any central force field $F(r)\hat{r}$ guarantees the conservation of $\vec{h}$, the inverse-square gravitational field $F(r) \propto r^{-2}$ possesses an additional hidden dynamical symmetry ($SO(4)$ for bound orbits) that prevents the orbit from precessing. This symmetry is encoded in the dimensionless <strong>Laplace-Runge-Lenz (LRL) vector</strong> (or <strong>eccentricity vector</strong>) $\vec{e}$.
+    </p>
+
+    <h4>Derivation from the Equation of Motion:</h4>
+    <p>Take the cross product of the relative equation of motion $\ddot{\vec{r}} = -\frac{\mu_0}{r^2}\hat{r}$ with the constant angular momentum vector $\vec{h}$:</p>
+    <div class="math-block">
+        \begin{equation}
+            \ddot{\vec{r}} \times \vec{h} = -\frac{\mu_0}{r^2}(\hat{r} \times \vec{h})
+        \end{equation}
+    </div>
+    <p>Since $\vec{h}$ is constant ($\dot{\vec{h}} = \vec{0}$), the left-hand side can be written as a total time derivative:</p>
+    <div class="math-block">
+        \begin{equation}
+            \ddot{\vec{r}} \times \vec{h} = \frac{d}{dt}(\vec{v} \times \vec{h})
+        \end{equation}
+    </div>
+    <p>
+        On the right-hand side, substitute $\vec{h} = r^2\dot{\theta}\hat{k}$ (or equivalently expand the vector triple product $\hat{r} \times (\vec{r} \times \dot{\vec{r}})$). Using the polar unit vector derivative identity $\frac{d\hat{r}}{dt} = \dot{\theta}\hat{\theta} = \frac{\vec{h}}{r^2} \times \hat{r} = -\frac{1}{r^2}(\hat{r} \times \vec{h})$:
+    </p>
+    <div class="math-block">
+        \begin{equation}
+            -\frac{\mu_0}{r^2}(\hat{r} \times \vec{h}) = \mu_0 \frac{d\hat{r}}{dt}
+        \end{equation}
+    </div>
+    <p>
+        <em>(Alternatively, in coordinate-free vector algebra: $\hat{r} \times (\vec{r} \times \dot{\vec{r}}) = \frac{1}{r}\left[(\vec{r}\cdot\dot{\vec{r}})\vec{r} - r^2\dot{\vec{r}}\right] = \dot{r}\vec{r} - r\dot{\vec{r}} = -r^2\frac{d}{dt}\left(\frac{\vec{r}}{r}\right) = -r^2\frac{d\hat{r}}{dt}$.)</em>
+    </p>
+    <p>Equating the left- and right-hand sides gives:</p>
+    <div class="math-block">
+        \begin{equation}
+            \frac{d}{dt}(\vec{v} \times \vec{h}) = \mu_0 \frac{d\hat{r}}{dt} \implies \frac{d}{dt}\left(\frac{\vec{v} \times \vec{h}}{\mu_0} - \hat{r}\right) = \vec{0}
+        \end{equation}
+    </div>
+    <p>Integrating with respect to time defines the conserved <strong>Laplace-Runge-Lenz eccentricity vector</strong> $\vec{e}$:</p>
+    <div class="math-block">
+        \begin{equation}
+            \vec{e} \equiv \frac{\vec{v} \times \vec{h}}{\mu_0} - \hat{r} = \mathrm{const}
+        \end{equation}
+    </div>
+
+    <h4>Geometric Interpretation and Magnitude Proof:</h4>
+    <ol>
+        <li><strong>Coplanarity:</strong> Because $\vec{v} \times \vec{h}$ is perpendicular to $\vec{h}$ and $\hat{r}$ lies in the orbital plane (perpendicular to $\vec{h}$), $\vec{e} \cdot \vec{h} = 0$. Thus, $\vec{e}$ lies entirely within the orbital plane.</li>
+        <li>
+            <strong>Direction and Polar Orbit Equation:</strong> Let $\theta$ be the polar angle in the orbital plane and $\theta_0$ be the fixed angular direction of $\vec{e}$, so that the angle between $\vec{r}$ and $\vec{e}$ is $f = \theta - \theta_0$. Taking the scalar dot product of $\vec{r}$ with $\vec{e}$ yields:
+            <div class="math-block">
+                \begin{equation}
+                    \vec{r} \cdot \vec{e} = \vec{r} \cdot \left(\frac{\vec{v} \times \vec{h}}{\mu_0}\right) - \vec{r} \cdot \hat{r}
+                \end{equation}
+            </div>
+            Using the cyclic invariance of the scalar triple product, $\vec{r} \cdot (\vec{v} \times \vec{h}) = (\vec{r} \times \vec{v}) \cdot \vec{h} = \vec{h} \cdot \vec{h} = h^2$, and noting that $\vec{r} \cdot \vec{e} = r e \cos(\theta - \theta_0)$ and $\vec{r} \cdot \hat{r} = r$, we obtain:
+            <div class="math-block">
+                \begin{equation}
+                    r e \cos(\theta - \theta_0) = \frac{h^2}{\mu_0} - r \implies r(\theta) = \frac{h^2 / \mu_0}{1 + e\cos(\theta - \theta_0)}
+                \end{equation}
+            </div>
+            Since the denominator $1 + e\cos(\theta - \theta_0)$ is maximized—and the radial distance $r(\theta)$ is minimized—when $\cos(\theta - \theta_0) = +1$ ($\theta = \theta_0$), <strong>the vector $\vec{e}$ points strictly from the focus toward periapsis</strong> (the point of closest approach), and its magnitude $e = |\vec{e}|$ is the <strong>orbital eccentricity</strong>.
+        </li>
+        <li>
+            <strong>Relation Between Energy, Angular Momentum, and Eccentricity:</strong> Squaring the LRL vector ($\vec{e} \cdot \vec{e} = e^2$) links $e$ directly to the specific mechanical energy $\epsilon = \frac{1}{2}v^2 - \frac{\mu_0}{r}$:
+            <div class="math-block">
+                \begin{equation}
+                    e^2 = \left(\frac{\vec{v} \times \vec{h}}{\mu_0} - \hat{r}\right) \cdot \left(\frac{\vec{v} \times \vec{h}}{\mu_0} - \hat{r}\right) = \frac{|\vec{v} \times \vec{h}|^2}{\mu_0^2} - \frac{2}{\mu_0}\hat{r}\cdot(\vec{v}\times\vec{h}) + |\hat{r}|^2
+                \end{equation}
+            </div>
+            Since $\vec{v} \perp \vec{h}$, we have $|\vec{v} \times \vec{h}|^2 = v^2 h^2$, and $\hat{r}\cdot(\vec{v}\times\vec{h}) = \frac{1}{r}(\vec{r}\times\vec{v})\cdot\vec{h} = \frac{h^2}{r}$. Substituting these gives:
+            <div class="math-block">
+                \begin{equation}
+                    e^2 = \frac{v^2 h^2}{\mu_0^2} - \frac{2h^2}{\mu_0 r} + 1 = 1 + \frac{2h^2}{\mu_0^2}\left(\frac{1}{2}v^2 - \frac{\mu_0}{r}\right) = 1 + \frac{2\epsilon h^2}{\mu_0^2} \implies e = \sqrt{1 + \frac{2\epsilon h^2}{\mu_0^2}}
+                \end{equation}
+            </div>
+        </li>
+    </ol>
+
+    <div class="subchapter-nav-bar">
+        <button class="btn-step" onclick="switchSubchapter('2.1')"><i class="fa-solid fa-arrow-left"></i> Prev: 2.1 Two-Body Reduction</button>
+        <button class="btn-step" onclick="switchSubchapter('2.3')">Next: 2.3 The Orbit Equation <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+</article>
+
+<!-- =========================================================
+     SUBCHAPTER 2.3: THE ORBIT EQUATION (DERIVATION)
+     ========================================================= -->
+<article class="subchapter-panel" id="sub-2-3" data-sub="2.3">
+    <span class="chapter-badge">Chapter 2 · The Unperturbed Two-Body Problem</span>
+    <h2>2.3 The Orbit Equation (Derivation)</h2>
+
+    <p>
+        While the scalar product $\vec{r} \cdot \vec{e}$ provides an algebraic route to the orbit equation, the differential calculus derivation via <strong>Binet's Equation</strong> is essential in Olympiad astrophysics because it generalizes to arbitrary central forces (such as general relativistic $r^{-3}$ perturbations or $J_2$ oblateness corrections).
+    </p>
+
+    <h3>2.3.1 Binet's Equation</h3>
+    <p>In planar polar coordinates $(r, \theta)$, the radial and azimuthal components of the equation of motion $\ddot{\vec{r}} = -\frac{\mu_0}{r^2}\hat{r}$ are:</p>
+    <div class="math-block">
+        \begin{align}
+            \text{Radial:} \quad & \ddot{r} - r\dot{\theta}^2 = -\frac{\mu_0}{r^2} \label{eq:radial_polar} \\
+            \text{Azimuthal:} \quad & r\ddot{\theta} + 2\dot{r}\dot{\theta} = \frac{1}{r}\frac{d}{dt}(r^2\dot{\theta}) = 0 \implies r^2\dot{\theta} = h = \mathrm{const} \label{eq:azimuthal_polar}
+        \end{align}
+    </div>
+    <p>To eliminate time $t$ and solve for the geometric trajectory $r(\theta)$, introduce the reciprocal radial variable:</p>
+    <div class="math-block">
+        \begin{equation}
+            u(\theta) \equiv \frac{1}{r(\theta)} \implies r = \frac{1}{u}
+        \end{equation}
+    </div>
+    <p>
+        Using the angular momentum conservation law $\dot{\theta} = \frac{h}{r^2} = h u^2$, the time derivative operator $\frac{d}{dt}$ transforms into a spatial angular derivative operator $\frac{d}{d\theta}$ via the chain rule:
+    </p>
+    <div class="math-block">
+        \begin{equation}
+            \frac{d}{dt} = \dot{\theta}\frac{d}{d\theta} = h u^2 \frac{d}{d\theta}
+        \end{equation}
+    </div>
+
+    <h4>First and Second Radial Time Derivatives:</h4>
+    <ol>
+        <li>
+            Differentiating $r = u^{-1}$ once with respect to time $t$ yields the radial velocity $\dot{r}$:
+            <div class="math-block">
+                \begin{equation}
+                    \dot{r} = \frac{dr}{dt} = \frac{dr}{du}\frac{du}{d\theta}\dot{\theta} = \left(-\frac{1}{u^2}\right)\frac{du}{d\theta}(h u^2) = -h \frac{du}{d\theta}
+                \end{equation}
+            </div>
+        </li>
+        <li>
+            Differentiating $\dot{r}$ a second time with respect to $t$ yields the radial acceleration component $\ddot{r}$:
+            <div class="math-block">
+                \begin{equation}
+                    \ddot{r} = \frac{d}{dt}\left(-h\frac{du}{d\theta}\right) = h u^2 \frac{d}{d\theta}\left(-h\frac{du}{d\theta}\right) = -h^2 u^2 \frac{d^2 u}{d\theta^2}
+                \end{equation}
+            </div>
+        </li>
+    </ol>
+    <p>Meanwhile, the centripetal acceleration term $r\dot{\theta}^2$ in terms of $u$ becomes:</p>
+    <div class="math-block">
+        \begin{equation}
+            r\dot{\theta}^2 = \left(\frac{1}{u}\right)(h u^2)^2 = h^2 u^3
+        \end{equation}
+    </div>
+    <p>Substituting $\ddot{r}$, $r\dot{\theta}^2$, and $r^{-2} = u^2$ into the radial equation of motion $\eqref{eq:radial_polar}$ gives:</p>
+    <div class="math-block">
+        \begin{equation}
+            -h^2 u^2 \frac{d^2 u}{d\theta^2} - h^2 u^3 = -\mu_0 u^2
+        \end{equation}
+    </div>
+    <p>Dividing through by $-h^2 u^2$ (for non-rectilinear orbits where $h \neq 0$ and $u \neq 0$) produces <strong>Binet's Differential Equation</strong> for Keplerian motion:</p>
+    <div class="math-block">
+        \begin{equation}
+            \frac{d^2 u}{d\theta^2} + u = \frac{\mu_0}{h^2} \label{eq:binet_kepler}
+        \end{equation}
+    </div>
+    <p><em>(Note: For a general central force per unit mass $f(r)\hat{r}$, Binet's equation takes the universal form $\frac{d^2 u}{d\theta^2} + u = -\frac{f(1/u)}{h^2 u^2}$.)</em></p>
+
+    <h3>2.3.2 Polar Equation for Conic Sections</h3>
+    <p>
+        Binet's equation $\eqref{eq:binet_kepler}$ is a second-order linear inhomogeneous ordinary differential equation with constant coefficients, mathematically identical to a simple harmonic oscillator subject to a constant driving offset.
+    </p>
+
+    <h4>Step 1: Homogeneous and Particular Solutions</h4>
+    <ul>
+        <li>
+            <strong>Particular Solution ($u_p$):</strong> Since the right-hand side $\frac{\mu_0}{h^2}$ is constant, a constant trial solution $u_p = C$ gives:
+            <div class="math-block">
+                \begin{equation}
+                    0 + u_p = \frac{\mu_0}{h^2} \implies u_p = \frac{\mu_0}{h^2}
+                \end{equation}
+            </div>
+        </li>
+        <li>
+            <strong>Homogeneous Solution ($u_h$):</strong> The homogeneous equation $\frac{d^2 u_h}{d\theta^2} + u_h = 0$ has the general harmonic solution:
+            <div class="math-block">
+                \begin{equation}
+                    u_h(\theta) = A\cos(\theta - \theta_0)
+                \end{equation}
+            </div>
+            where $A \ge 0$ and $\theta_0$ are the two integration constants determined by boundary conditions.
+        </li>
+    </ul>
+    <p>Combining both solutions gives the general solution for $u(\theta) = \frac{1}{r(\theta)}$:</p>
+    <div class="math-block">
+        \begin{equation}
+            u(\theta) = \frac{1}{r(\theta)} = \frac{\mu_0}{h^2} + A\cos(\theta - \theta_0) = \frac{\mu_0}{h^2}\left[1 + \left(\frac{A h^2}{\mu_0}\right)\cos(\theta - \theta_0)\right]
+        \end{equation}
+    </div>
+
+    <h4>Step 2: Identifying the Orbital Parameters</h4>
+    <p>
+        Define the dimensionless constant $e \equiv \frac{A h^2}{\mu_0} \ge 0$ (the <strong>eccentricity</strong>) and the characteristic length scale $p$ (the <strong>semi-latus rectum</strong> or parameter of the conic):
+    </p>
+    <div class="math-block">
+        \begin{equation}
+            p \equiv \frac{h^2}{\mu_0} = \frac{h^2}{G(m_1 + m_2)}
+        \end{equation}
+    </div>
+    <p>Inverting $u(\theta)$ yields the <strong>Polar Equation for Conic Sections</strong> (establishing <strong>Kepler's First Law generalized to all conic trajectories</strong>):</p>
+    <div class="math-block">
+        \begin{equation}
+            r(\theta) = \frac{p}{1 + e\cos(\theta - \theta_0)} = \frac{p}{1 + e\cos f}
+        \end{equation}
+    </div>
+    <p>where $f \equiv \theta - \theta_0$ is the <strong>true anomaly</strong> (the angular displacement measured from periapsis $\theta_0$).</p>
+
+    <h4>Geometric Interpretation of $p$ and Classification of Conic Orbits:</h4>
+    <p>
+        Evaluating $r(f)$ at $f = \pm \frac{\pi}{2}$ (perpendicular to the major axis through the focus) gives $r(\pm \pi/2) = p$. For elliptic ($0 \le e < 1$) and hyperbolic ($e > 1$) orbits of semi-major axis $a$, evaluating periapsis $r_p = \frac{p}{1+e}$ and apoapsis/asymptotic vertex $r_a = \frac{p}{|1-e|}$ connects $p$ directly to $a$ and $e$:
+    </p>
+    <div class="math-block">
+        \begin{equation}
+            p = \frac{h^2}{\mu_0} = a|1 - e^2| = \begin{cases}
+                a(1 - e^2) & \text{for ellipses } (0 \le e < 1) \\
+                2q & \text{for parabolas } (e = 1, \text{ periapsis } q = r_p) \\
+                |a|(e^2 - 1) & \text{for hyperbolas } (e > 1)
+            \end{cases}
+        \end{equation}
+    </div>
+
+    <div class="table-wrapper">
+        <table class="handout-table">
+            <thead>
+                <tr>
+                    <th>Conic Class</th>
+                    <th>Eccentricity ($e$)</th>
+                    <th>Specific Energy ($\epsilon$)</th>
+                    <th>Semi-Major Axis ($a$)</th>
+                    <th>Parameter ($p$)</th>
+                    <th>Physical Orbit Regime</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Circle</strong></td>
+                    <td>$e = 0$</td>
+                    <td>$\epsilon = -\frac{\mu_0}{2r_0} < 0$</td>
+                    <td>$a = r_0 > 0$</td>
+                    <td>$p = r_0$</td>
+                    <td>Bound minimum-energy orbit for given $h$</td>
+                </tr>
+                <tr>
+                    <td><strong>Ellipse</strong></td>
+                    <td>$0 < e < 1$</td>
+                    <td>$-\frac{\mu_0}{2p} < \epsilon < 0$</td>
+                    <td>$a = \frac{p}{1 - e^2} > 0$</td>
+                    <td>$p = a(1 - e^2)$</td>
+                    <td>Bound periodic closed trajectory</td>
+                </tr>
+                <tr>
+                    <td><strong>Parabola</strong></td>
+                    <td>$e = 1$</td>
+                    <td>$\epsilon = 0$</td>
+                    <td>$a \to \infty$</td>
+                    <td>$p = 2q$ ($q = r_p$)</td>
+                    <td>Marginal unbound escape trajectory ($v = v_{\mathrm{esc}}$)</td>
+                </tr>
+                <tr>
+                    <td><strong>Hyperbola</strong></td>
+                    <td>$e > 1$</td>
+                    <td>$\epsilon = +\frac{\mu_0}{2|a|} > 0$</td>
+                    <td>$a < 0$ ($|a| = \frac{p}{e^2 - 1}$)</td>
+                    <td>$p = |a|(e^2 - 1)$</td>
+                    <td>Unbound gravitational flyby / scattering ($v_\infty > 0$)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="subchapter-nav-bar">
+        <button class="btn-step" onclick="switchSubchapter('2.2')"><i class="fa-solid fa-arrow-left"></i> Prev: 2.2 Conserved Vectors</button>
+        <button class="btn-step" onclick="switchSubchapter('3.1')">Next: 3.1 Elliptic Orbits <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+</article>

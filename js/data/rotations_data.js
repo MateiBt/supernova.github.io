@@ -617,6 +617,335 @@ From Newton's second law \\(m\\ddot{R} = -\\frac{GMm}{R^2}\\) with \\(M = \\frac
 <p>$$ q \\equiv -\\frac{\\ddot{R}R}{\\dot{R}^2} = \\frac{\\left(\\frac{4}{3}\\pi G \\rho R\\right)R}{H^2 R^2} = \\frac{4\\pi G \\rho}{3 H^2} = \\frac{4\\pi G \\rho}{3\\left(\\frac{8\\pi G}{3}\\rho_c\\right)} = \\mathbf{\\frac{1}{2}\\frac{\\rho}{\\rho_c}} \\quad \\left(\\frac{\\Omega_m}{2}\\right) $$</p>
 <p>When \\(\\rho = \\rho_c\\) (a flat Einstein–de Sitter universe), the deceleration parameter is:</p>
 <p>$$ q = \\mathbf{\\frac{1}{2} = 0.50} $$</p>`
+    },
+
+    // Day 15 — 02.11.2026
+    {
+        uniqueId: "potd_2026_11_02",
+        dayNumber: 15,
+        scheduledDate: "02.11.2026",
+        title: "Hydrostatic Balance and Virial Temperature of a Uniform Star",
+        author: "Matei",
+        module: "T5 · Stellar Structure & Hydrostatic Equilibrium",
+        difficultyClass: "easy",
+        difficultyText: "2.6 / 10.0",
+        description: `<p>In a first-order structural model, a star of mass \\(M = 1.50\\,M_\\odot\\) and radius \\(R = 1.20\\,R_\\odot\\) is approximated as an incompressible sphere of uniform mass density \\(\\rho_0\\), composed entirely of fully ionized pure hydrogen (mean molecular weight \\(\\mu = 0.50\\)).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the uniform mass density \\(\\rho_0\\) of the star in \\(\\mathrm{kg\\,m^{-3}}\\) and \\(\\mathrm{g\\,cm^{-3}}\\). <em>(1.5 points)</em></li>
+    <li>By integrating the equation of hydrostatic equilibrium \\(\\frac{dP}{dr} = -\\frac{G M(r)\\rho(r)}{r^2}\\) from the surface (\\(P(R) = 0\\)) to the center, derive the exact symbolic formula for the central pressure \\(P_c\\) in terms of \\(G, M\\), and \\(R\\), and calculate its numerical value in \\(\\mathrm{Pa}\\) and \\(\\mathrm{atm}\\). <em>(3.0 points)</em></li>
+    <li>Using the ideal gas law \\(P = \\frac{\\rho k_B T}{\\mu m_H}\\) (neglecting radiation pressure), determine the central temperature \\(T_c\\) in Kelvin. <em>(2.0 points)</em></li>
+    <li>Derive the total gravitational potential energy \\(\\Omega = -\\frac{3}{5}\\frac{GM^2}{R}\\) of the uniform sphere and apply the Virial Theorem (\\(2K + \\Omega = 0\\)) to determine the volume-averaged internal temperature \\(\\bar{T}\\), finding the exact ratio \\(\\bar{T} / T_c\\). <em>(2.0 points)</em></li>
+    <li>Calculate the radiation pressure \\(P_{\\mathrm{rad}} = \\frac{1}{3}a T_c^4\\) at the stellar center and the ratio \\(P_{\\mathrm{rad}} / P_c\\) to verify whether neglecting radiation pressure was justified. <em>(1.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p><strong>(a) Uniform Mass Density \\(\\rho_0\\) (1.5 points):</strong><br>
+With \\(M = 1.50 \\times 1.989 \\times 10^{30}\\text{ kg} = 2.984 \\times 10^{30}\\text{ kg}\\) and \\(R = 1.20 \\times 6.957 \\times 10^8\\text{ m} = 8.348 \\times 10^8\\text{ m}\\):</p>
+<p>$$ \\rho_0 = \\frac{M}{\\frac{4}{3}\\pi R^3} = \\frac{2.984 \\times 10^{30}\\text{ kg}}{\\frac{4}{3}\\pi (8.348 \\times 10^8\\text{ m})^3} \\approx \\mathbf{1224\\ \\mathrm{kg\\,m^{-3}}} = \\mathbf{1.224\\ \\mathrm{g\\,cm^{-3}}} $$</p>
+
+<p><strong>(b) Derivation &amp; Calculation of Central Pressure \\(P_c\\) (3.0 points):</strong><br>
+At interior radius \\(r\\), the enclosed mass is \\(M(r) = \\frac{4}{3}\\pi r^3 \\rho_0 = M\\left(\\frac{r}{R}\\right)^3\\). Substituting into the hydrostatic equilibrium equation:</p>
+<p>$$ \\frac{dP}{dr} = -\\frac{G}{r^2}\\left(\\frac{4}{3}\\pi r^3 \\rho_0\\right)\\rho_0 = -\\frac{4}{3}\\pi G \\rho_0^2\\,r $$</p>
+<p>Integrating from \\(r = 0\\) (\\(P = P_c\\)) to \\(r = R\\) (\\(P = 0\\)) and substituting \\(\\rho_0 = \\frac{3M}{4\\pi R^3}\\):</p>
+<p>$$ P_c = \\frac{2}{3}\\pi G \\rho_0^2 R^2 = \\mathbf{\\frac{3}{8\\pi}\\frac{G M^2}{R^4}} $$</p>
+<p>Evaluating numerically (\\(1\\text{ atm} = 1.01325 \\times 10^5\\text{ Pa}\\)):</p>
+<p>$$ P_c = \\frac{3}{8\\pi}\\frac{(6.674 \\times 10^{-11})(2.984 \\times 10^{30})^2}{(8.348 \\times 10^8)^4} \\approx \\mathbf{1.46 \\times 10^{14}\\text{ Pa}} \\approx \\mathbf{1.44 \\times 10^9\\text{ atm}} $$</p>
+
+<p><strong>(c) Central Temperature \\(T_c\\) (2.0 points):</strong><br>
+Applying the ideal gas equation of state at \\(r = 0\\) with \\(\\mu = 0.50\\), \\(m_H = 1.6736 \\times 10^{-27}\\text{ kg}\\), and \\(k_B = 1.3806 \\times 10^{-23}\\ \\mathrm{J\\,K^{-1}}\\):</p>
+<p>$$ T_c = \\frac{\\mu m_H P_c}{\\rho_0 k_B} = \\frac{1}{2}\\frac{G M \\mu m_H}{k_B R} \\approx \\mathbf{7.23 \\times 10^6\\text{ K}} $$</p>
+
+<p><strong>(d) Gravitational Potential Energy &amp; Virial Mean Temperature \\(\\bar{T}\\) (2.0 points):</strong><br>
+Bringing spherical mass shells \\(dM(r) = 4\\pi r^2 \\rho_0\\,dr\\) from infinity onto the enclosed core \\(M(r) = \\frac{4}{3}\\pi r^3 \\rho_0\\):</p>
+<p>$$ \\Omega = -\\int_0^R \\frac{G M(r)\\,dM(r)}{r} = -\\frac{16}{3}\\pi^2 G \\rho_0^2 \\int_0^R r^4\\,dr = -\\frac{16}{15}\\pi^2 G \\rho_0^2 R^5 = -\\frac{3}{5}\\frac{G M^2}{R} \\approx \\mathbf{-4.27 \\times 10^{41}\\text{ J}} $$</p>
+<p>By the Virial Theorem for a monatomic ideal gas, \\(K = \\frac{3}{2}\\frac{M}{\\mu m_H}k_B \\bar{T} = -\\frac{1}{2}\\Omega = \\frac{3}{10}\\frac{G M^2}{R}\\), yielding:</p>
+<p>$$ \\bar{T} = \\frac{1}{5}\\frac{G M \\mu m_H}{k_B R} \\approx \\mathbf{2.89 \\times 10^6\\text{ K}}, \\qquad \\frac{\\bar{T}}{T_c} = \\frac{1/5}{1/2} = \\mathbf{\\frac{2}{5} = 0.40} $$</p>
+
+<p><strong>(e) Radiation Pressure Ratio at the Center (1.5 points):</strong><br>
+With radiation constant \\(a = \\frac{4\\sigma_{\\mathrm{SB}}}{c} = 7.5657 \\times 10^{-16}\\ \\mathrm{J\\,m^{-3}\\,K^{-4}}\\):</p>
+<p>$$ P_{\\mathrm{rad}} = \\frac{1}{3}a T_c^4 = \\frac{1}{3}(7.5657 \\times 10^{-16})(7.228 \\times 10^6\\text{ K})^4 \\approx \\mathbf{6.88 \\times 10^{11}\\text{ Pa}} $$</p>
+<p>$$ \\frac{P_{\\mathrm{rad}}}{P_c} = \\frac{6.88 \\times 10^{11}\\text{ Pa}}{1.46 \\times 10^{14}\\text{ Pa}} \\approx \\mathbf{4.72 \\times 10^{-3}} \\ (0.47\\%) $$</p>
+<p>Because radiation pressure contributes less than \\(0.5\\%\\) of the total central pressure, neglecting it in the hydrostatic gas model is <strong>well justified</strong>.</p>`
+    },
+
+    // Day 16 — 03.11.2026
+    {
+        uniqueId: "potd_2026_11_03",
+        dayNumber: 16,
+        scheduledDate: "03.11.2026",
+        title: "Flat Rotation Curve and the Dark Matter Halo",
+        author: "Albert",
+        module: "T10 · Galactic Structure & Dark Matter",
+        difficultyClass: "easy",
+        difficultyText: "2.8 / 10.0",
+        description: `<p>Neutral hydrogen \\(21\\text{-cm}\\) radio observations of an external spiral galaxy show that its circular rotation curve remains strictly flat at \\(v_c = 220\\ \\mathrm{km\\,s^{-1}}\\) from galactocentric radius \\(r = 4.0\\text{ kpc}\\) out to \\(r = 30.0\\text{ kpc}\\). Photometric surface-brightness mapping indicates that the total luminous mass (stars plus interstellar gas) enclosed within \\(r = 25.0\\text{ kpc}\\) is \\(M_{\\mathrm{lum}} = 6.50 \\times 10^{10}\\,M_\\odot\\). Assume a spherically symmetric total mass distribution at large radii.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the orbital period of a star at galactocentric radius \\(R_0 = 8.0\\text{ kpc}\\) (in millions of years) and the total dynamical mass enclosed within \\(R_0 = 8.0\\text{ kpc}\\) (in solar masses). <em>(2.0 points)</em></li>
+    <li>Determine the total dynamical mass \\(M_{\\mathrm{tot}}(25\\text{ kpc})\\) enclosed within \\(r = 25.0\\text{ kpc}\\), and calculate the dark matter mass fraction \\(f_{\\mathrm{DM}} = \\frac{M_{\\mathrm{DM}}}{M_{\\mathrm{tot}}}\\) inside this radius. <em>(2.0 points)</em></li>
+    <li>Derive the radial mass density profile \\(\\rho(r)\\) required to sustain a constant circular speed \\(v_c\\), and calculate the total mass density at \\(R_0 = 8.0\\text{ kpc}\\) in both \\(\\mathrm{kg\\,m^{-3}}\\) and \\(M_\\odot\\,\\mathrm{pc^{-3}}\\). <em>(2.5 points)</em></li>
+    <li>Evaluate the Oort constants \\(A\\) and \\(B\\) (in \\(\\mathrm{km\\,s^{-1}\\,kpc^{-1}}\\)) at \\(R_0 = 8.0\\text{ kpc}\\). <em>(2.0 points)</em></li>
+    <li>If the galaxy contained no dark matter beyond \\(r = 8.0\\text{ kpc}\\) (so that all mass were concentrated inside \\(8.0\\text{ kpc}\\)), what circular orbital speed would be observed at \\(r = 25.0\\text{ kpc}\\)? <em>(1.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p><strong>(a) Orbital Period &amp; Enclosed Mass at \\(R_0 = 8.0\\text{ kpc}\\) (2.0 points):</strong><br>
+With \\(R_0 = 8.0\\text{ kpc} = 2.469 \\times 10^{20}\\text{ m}\\) and \\(v_c = 2.20 \\times 10^5\\ \\mathrm{m\\,s^{-1}}\\):</p>
+<p>$$ P(R_0) = \\frac{2\\pi R_0}{v_c} = \\frac{2\\pi(2.469 \\times 10^{20}\\text{ m})}{2.20 \\times 10^5\\ \\mathrm{m\\,s^{-1}}} \\approx 7.050 \\times 10^{15}\\text{ s} \\approx \\mathbf{223\\text{ Myr}} $$</p>
+<p>Setting centripetal acceleration equal to gravitational attraction \\(\\frac{v_c^2}{r} = \\frac{G M(r)}{r^2}\\) gives \\(M(r) = \\frac{v_c^2 r}{G}\\):</p>
+<p>$$ M(8.0\\text{ kpc}) = \\frac{(2.20 \\times 10^5)^2 (2.469 \\times 10^{20})}{6.674 \\times 10^{-11}} \\approx 1.790 \\times 10^{41}\\text{ kg} \\approx \\mathbf{9.00 \\times 10^{10}\\,M_\\odot} $$</p>
+
+<p><strong>(b) Dynamical Mass &amp; Dark Matter Fraction within \\(25.0\\text{ kpc}\\) (2.0 points):</strong><br>
+Because \\(M(r) \\propto r\\) in the flat-rotation regime:</p>
+<p>$$ M_{\\mathrm{tot}}(25.0\\text{ kpc}) = M(8.0\\text{ kpc})\\times \\frac{25.0}{8.0} = 9.00 \\times 10^{10}\\,M_\\odot \\times 3.125 \\approx \\mathbf{2.81 \\times 10^{11}\\,M_\\odot} $$</p>
+<p>The dark matter mass is \\(M_{\\mathrm{DM}} = M_{\\mathrm{tot}} - M_{\\mathrm{lum}} = (2.813 - 0.650)\\times 10^{11}\\,M_\\odot = 2.163 \\times 10^{11}\\,M_\\odot\\), yielding a dark matter fraction of:</p>
+<p>$$ f_{\\mathrm{DM}} = \\frac{2.163 \\times 10^{11}}{2.813 \\times 10^{11}} \\approx \\mathbf{0.769} \\quad (\\mathbf{76.9\\%}) $$</p>
+
+<p><strong>(c) Radial Halo Density Profile \\(\\rho(r)\\) (2.5 points):</strong><br>
+Differentiating \\(M(r) = \\frac{v_c^2 r}{G}\\) with respect to \\(r\\) using spherical shell conservation \\(\\frac{dM}{dr} = 4\\pi r^2 \\rho(r)\\):</p>
+<p>$$ 4\\pi r^2 \\rho(r) = \\frac{v_c^2}{G} \\implies \\mathbf{\\rho(r) = \\frac{v_c^2}{4\\pi G r^2} \\propto r^{-2}} $$</p>
+<p>At \\(R_0 = 8.0\\text{ kpc} = 8000\\text{ pc}\\):</p>
+<p>$$ \\rho(8.0\\text{ kpc}) = \\frac{(2.20 \\times 10^5)^2}{4\\pi(6.674 \\times 10^{-11})(2.469 \\times 10^{20})^2} \\approx \\mathbf{9.47 \\times 10^{-22}\\ \\mathrm{kg\\,m^{-3}}} \\approx \\mathbf{0.0140\\,M_\\odot\\,\\mathrm{pc^{-3}}} $$</p>
+
+<p><strong>(d) Oort Constants \\(A\\) and \\(B\\) at \\(R_0 = 8.0\\text{ kpc}\\) (2.0 points):</strong><br>
+For a flat rotation curve where \\(\\left.\\frac{dv_c}{dr}\\right|_{R_0} = 0\\):</p>
+<p>$$ A = \\frac{1}{2}\\left(\\frac{v_c}{R_0} - \\left.\\frac{dv_c}{dr}\\right|_{R_0}\\right) = \\frac{220\\ \\mathrm{km\\,s^{-1}}}{2 \\times 8.0\\text{ kpc}} = \\mathbf{+13.75\\ \\mathrm{km\\,s^{-1}\\,kpc^{-1}}} $$</p>
+<p>$$ B = -\\frac{1}{2}\\left(\\frac{v_c}{R_0} + \\left.\\frac{dv_c}{dr}\\right|_{R_0}\\right) = -\\frac{220\\ \\mathrm{km\\,s^{-1}}}{2 \\times 8.0\\text{ kpc}} = \\mathbf{-13.75\\ \\mathrm{km\\,s^{-1}\\,kpc^{-1}}} $$</p>
+
+<p><strong>(e) Expected Keplerian Speed without Outer Dark Matter (1.5 points):</strong><br>
+If \\(M(r) = M(8.0\\text{ kpc}) = \\text{const.}\\) for \\(r \\ge 8.0\\text{ kpc}\\), orbital speed would fall off following a Keplerian profile \\(v(r) \\propto r^{-1/2}\\):</p>
+<p>$$ v_{\\mathrm{Kep}}(25.0\\text{ kpc}) = v_c\\sqrt{\\frac{8.0\\text{ kpc}}{25.0\\text{ kpc}}} = 220\\ \\mathrm{km\\,s^{-1}} \\times \\sqrt{0.32} \\approx \\mathbf{124.5\\ \\mathrm{km\\,s^{-1}}} $$</p>`
+    },
+
+    // Day 17 — 04.11.2026
+    {
+        uniqueId: "potd_2026_11_04",
+        dayNumber: 17,
+        scheduledDate: "04.11.2026",
+        title: "Hohmann Transfer to a Ringed Giant and the Roche Limit",
+        author: "Matei",
+        module: "T1 · Celestial Mechanics & Tidal Dynamics",
+        difficultyClass: "medium",
+        difficultyText: "3.5 / 10.0",
+        description: `<p>An interplanetary spacecraft is launched from Earth's circular heliocentric orbit (\\(r_1 = 1.00\\text{ AU}\\)) to a ringed gas giant orbiting the Sun on a coplanar circular orbit of radius \\(r_2 = 9.54\\text{ AU}\\). The mission uses a minimum-energy Hohmann transfer ellipse tangent to both planetary orbits. Upon arrival, the probe investigates the planet's ring system (planet mass \\(M_p = 5.68 \\times 10^{26}\\text{ kg}\\), mean density \\(\\rho_p = 687\\ \\mathrm{kg\\,m^{-3}}\\)) and an icy shepherd moon of bulk density \\(\\rho_m = 950\\ \\mathrm{kg\\,m^{-3}}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Determine the semimajor axis \\(a_{\\mathrm{trans}}\\) and eccentricity \\(e_{\\mathrm{trans}}\\) of the heliocentric transfer ellipse. <em>(1.5 points)</em></li>
+    <li>Calculate the transfer time of flight \\(t_{\\mathrm{trans}}\\) from Earth to the gas giant in years. <em>(1.5 points)</em></li>
+    <li>Calculate the spacecraft's heliocentric velocities at perihelion (\\(v_p\\)) and aphelion (\\(v_a\\)) of the transfer orbit, and find the impulsive velocity boosts \\(\\Delta v_1\\) at Earth departure and \\(\\Delta v_2\\) required to circularize the heliocentric orbit at \\(r_2\\) (neglecting the local planetary escape fields). <em>(3.0 points)</em></li>
+    <li>Determine the mean radius \\(R_p\\) of the giant planet in kilometers, and calculate both the rigid-body Roche limit \\(d_{\\mathrm{rigid}} = 1.26\\,R_p\\left(\\frac{\\rho_p}{\\rho_m}\\right)^{1/3}\\) and the fluid-body Roche limit \\(d_{\\mathrm{fluid}} = 2.44\\,R_p\\left(\\frac{\\rho_p}{\\rho_m}\\right)^{1/3}\\) for the icy moon. <em>(2.5 points)</em></li>
+    <li>Calculate the orbital period (in hours) of a ring particle moving on a circular equatorial orbit right at the fluid Roche limit \\(d_{\\mathrm{fluid}}\\). <em>(1.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p><strong>(a) Semimajor Axis &amp; Eccentricity of the Transfer Orbit (1.5 points):</strong><br>
+With perihelion at \\(r_1 = 1.00\\text{ AU}\\) and aphelion at \\(r_2 = 9.54\\text{ AU}\\):</p>
+<p>$$ a_{\\mathrm{trans}} = \\frac{r_1 + r_2}{2} = \\frac{1.00 + 9.54}{2} = \\mathbf{5.27\\text{ AU}} $$</p>
+<p>$$ e_{\\mathrm{trans}} = \\frac{r_2 - r_1}{r_2 + r_1} = \\frac{8.54}{10.54} \\approx \\mathbf{0.8102} $$</p>
+
+<p><strong>(b) Hohmann Transfer Time of Flight (1.5 points):</strong><br>
+By Kepler's Third Law, the full period of the transfer ellipse is \\(P_{\\mathrm{trans}} = a_{\\mathrm{trans}}^{3/2} = (5.27)^{3/2} \\approx 12.098\\text{ years}\\). The outbound coasting flight covers half an orbit:</p>
+<p>$$ t_{\\mathrm{trans}} = \\frac{1}{2}P_{\\mathrm{trans}} \\approx \\mathbf{6.05\\text{ years}} $$</p>
+
+<p><strong>(c) Perihelion/Aphelion Speeds &amp; Impulsive \\(\\Delta v\\) Maneuvers (3.0 points):</strong><br>
+Using the vis-viva equation \\(v(r) = v_\\oplus\\sqrt{\\frac{2}{r} - \\frac{1}{a_{\\mathrm{trans}}}}\\) with \\(v_\\oplus = 29.785\\ \\mathrm{km\\,s^{-1}}\\) (where \\(r\\) and \\(a_{\\mathrm{trans}}\\) are in \\(\\text{AU}\\)):</p>
+<p>$$ v_p = 29.785\\sqrt{\\frac{2}{1.00} - \\frac{1}{5.27}} = 29.785\\sqrt{1.81025} \\approx \\mathbf{40.07\\ \\mathrm{km\\,s^{-1}}} $$</p>
+<p>$$ v_a = 29.785\\sqrt{\\frac{2}{9.54} - \\frac{1}{5.27}} = 29.785\\sqrt{0.019898} \\approx \\mathbf{4.20\\ \\mathrm{km\\,s^{-1}}} $$</p>
+<p>The circular orbital speed of the target planet at \\(r_2 = 9.54\\text{ AU}\\) is \\(v_{\\mathrm{circ},2} = \\frac{v_\\oplus}{\\sqrt{9.54}} \\approx 9.64\\ \\mathrm{km\\,s^{-1}}\\). Thus:</p>
+<p>$$ \\Delta v_1 = v_p - v_\\oplus = 40.07 - 29.79 = \\mathbf{10.29\\ \\mathrm{km\\,s^{-1}}} $$</p>
+<p>$$ \\Delta v_2 = v_{\\mathrm{circ},2} - v_a = 9.64 - 4.20 = \\mathbf{5.44\\ \\mathrm{km\\,s^{-1}}} \\qquad (\\Delta v_{\\mathrm{tot}} = \\mathbf{15.73\\ \\mathrm{km\\,s^{-1}}}) $$</p>
+
+<p><strong>(d) Planetary Radius &amp; Roche Limits (2.5 points):</strong><br>
+From \\(M_p = \\frac{4}{3}\\pi R_p^3 \\rho_p\\):</p>
+<p>$$ R_p = \\left(\\frac{3 M_p}{4\\pi \\rho_p}\\right)^{1/3} = \\left(\\frac{3(5.68 \\times 10^{26}\\text{ kg})}{4\\pi(687\\ \\mathrm{kg\\,m^{-3}})}\\right)^{1/3} \\approx 5.822 \\times 10^7\\text{ m} = \\mathbf{58,220\\text{ km}} $$</p>
+<p>With density ratio factor \\(\\left(\\frac{\\rho_p}{\\rho_m}\\right)^{1/3} = \\left(\\frac{687}{950}\\right)^{1/3} \\approx 0.8976\\):</p>
+<p>$$ d_{\\mathrm{rigid}} = 1.26\\,R_p(0.8976) \\approx \\mathbf{1.131\\,R_p} \\approx \\mathbf{65,850\\text{ km}} $$</p>
+<p>$$ d_{\\mathrm{fluid}} = 2.44\\,R_p(0.8976) \\approx \\mathbf{2.190\\,R_p} \\approx \\mathbf{127,500\\text{ km}} $$</p>
+
+<p><strong>(e) Ring Particle Orbital Period at the Fluid Roche Limit (1.5 points):</strong><br>
+At \\(d_{\\mathrm{fluid}} = 1.2752 \\times 10^8\\text{ m}\\), Kepler's Third Law around the giant planet yields:</p>
+<p>$$ P_{\\mathrm{Roche}} = 2\\pi\\sqrt{\\frac{d_{\\mathrm{fluid}}^3}{G M_p}} = 2\\pi\\sqrt{\\frac{(1.2752 \\times 10^8)^3}{(6.674 \\times 10^{-11})(5.68 \\times 10^{26})}} \\approx 4.648 \\times 10^4\\text{ s} \\approx \\mathbf{12.91\\text{ hours}} $$</p>`
+    },
+
+    // Day 18 — 05.11.2026
+    {
+        uniqueId: "potd_2026_11_05",
+        dayNumber: 18,
+        scheduledDate: "05.11.2026",
+        title: "Feeding a Quasar: Eddington Limit and Accretion Efficiency",
+        author: "Albert",
+        module: "T11 · Active Galaxies & Supermassive Black Holes",
+        difficultyClass: "easy",
+        difficultyText: "2.7 / 10.0",
+        description: `<p>A distant quasar is powered by a supermassive black hole of mass \\(M_{\\mathrm{BH}} = 3.00 \\times 10^8\\,M_\\odot\\) accreting fully ionized pure hydrogen gas. The quasar radiates isotropically at \\(40.0\\%\\) of its Eddington luminosity (\\(L_{\\mathrm{bol}} = 0.400\\,L_{\\mathrm{Edd}}\\)), with a radiative mass-to-energy conversion efficiency of \\(\\eta = 0.100\\) (\\(L_{\\mathrm{bol}} = \\eta \\dot{M} c^2\\)). Take the Thomson electron-scattering cross-section as \\(\\sigma_T = 6.652 \\times 10^{-29}\\ \\mathrm{m^2}\\), proton mass \\(m_p = 1.673 \\times 10^{-27}\\text{ kg}\\), and \\(L_\\odot = 3.828 \\times 10^{26}\\text{ W}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the Schwarzschild radius \\(R_S\\) of the black hole in kilometers and in astronomical units. <em>(1.5 points)</em></li>
+    <li>Derive the formula for the Eddington luminosity \\(L_{\\mathrm{Edd}}\\) by equating outward Thomson radiation force on electrons to inward gravitational attraction on protons, and calculate both \\(L_{\\mathrm{Edd}}\\) and \\(L_{\\mathrm{bol}}\\) in Watts and solar luminosities. <em>(2.5 points)</em></li>
+    <li>Determine the mass accretion rate \\(\\dot{M}\\) required to power the quasar in \\(\\mathrm{kg\\,s^{-1}}\\) and in \\(M_\\odot\\,\\mathrm{yr^{-1}}\\). <em>(2.0 points)</em></li>
+    <li>Assuming the inner accretion disk radiates as an ideal blackbody over a two-sided surface area \\(A = 2 \\times 4\\pi R_{\\mathrm{in}}^2\\) characteristic of the innermost stable circular orbit at \\(R_{\\mathrm{in}} = 3R_S\\), estimate its effective temperature \\(T_{\\mathrm{eff}}\\) and peak emission wavelength \\(\\lambda_{\\max}\\). <em>(2.5 points)</em></li>
+    <li>If the black hole accretes continuously at its full Eddington limit (\\(L = L_{\\mathrm{Edd}}\\)) with radiative efficiency \\(\\eta = 0.100\\) such that the black hole mass grows at rate \\(\\dot{M}_{\\mathrm{BH}} = (1 - \\eta)\\dot{M}\\), calculate the Salpeter \\(e\\)-folding growth timescale \\(\\tau_{\\mathrm{Sal}} = \\frac{M_{\\mathrm{BH}}}{\\dot{M}_{\\mathrm{BH}}}\\) in millions of years. <em>(1.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p><strong>(a) Schwarzschild Radius \\(R_S\\) (1.5 points):</strong><br>
+With \\(M_{\\mathrm{BH}} = 3.00 \\times 10^8 \\times 1.989 \\times 10^{30}\\text{ kg} = 5.967 \\times 10^{38}\\text{ kg}\\):</p>
+<p>$$ R_S = \\frac{2 G M_{\\mathrm{BH}}}{c^2} = \\frac{2(6.674 \\times 10^{-11})(5.967 \\times 10^{38})}{(2.998 \\times 10^8)^2} \\approx \\mathbf{8.86 \\times 10^8\\text{ km}} \\approx \\mathbf{5.92\\text{ AU}} $$</p>
+
+<p><strong>(b) Derivation of \\(L_{\\mathrm{Edd}}\\) &amp; Quasar Luminosity (2.5 points):</strong><br>
+At distance \\(r\\), the photon momentum flux is \\(\\frac{L}{4\\pi r^2 c}\\), exerting an outward Thomson scattering force \\(F_{\\mathrm{rad}} = \\frac{L \\sigma_T}{4\\pi r^2 c}\\) on each free electron (coupled electrostatically to a proton of mass \\(m_p\\)). Balancing against inward gravity \\(F_{\\mathrm{grav}} = \\frac{G M_{\\mathrm{BH}} m_p}{r^2}\\):</p>
+<p>$$ \\frac{L_{\\mathrm{Edd}} \\sigma_T}{4\\pi r^2 c} = \\frac{G M_{\\mathrm{BH}} m_p}{r^2} \\implies \\mathbf{L_{\\mathrm{Edd}} = \\frac{4\\pi G M_{\\mathrm{BH}} m_p c}{\\sigma_T}} $$</p>
+<p>Evaluating numerically:</p>
+<p>$$ L_{\\mathrm{Edd}} = \\frac{4\\pi(6.674 \\times 10^{-11})(5.967 \\times 10^{38})(1.673 \\times 10^{-27})(2.998 \\times 10^8)}{6.652 \\times 10^{-29}} \\approx \\mathbf{3.77 \\times 10^{39}\\text{ W}} \\approx \\mathbf{9.86 \\times 10^{12}\\,L_\\odot} $$</p>
+<p>$$ L_{\\mathrm{bol}} = 0.400\\,L_{\\mathrm{Edd}} \\approx \\mathbf{1.51 \\times 10^{39}\\text{ W}} \\approx \\mathbf{3.94 \\times 10^{12}\\,L_\\odot} $$</p>
+
+<p><strong>(c) Mass Accretion Rate \\(\\dot{M}\\) (2.0 points):</strong></p>
+<p>$$ \\dot{M} = \\frac{L_{\\mathrm{bol}}}{\\eta c^2} = \\frac{1.509 \\times 10^{39}\\text{ W}}{0.100 \\times (2.998 \\times 10^8\\ \\mathrm{m\\,s^{-1}})^2} \\approx \\mathbf{1.68 \\times 10^{23}\\ \\mathrm{kg\\,s^{-1}}} \\approx \\mathbf{2.67\\,M_\\odot\\,\\mathrm{yr^{-1}}} $$</p>
+
+<p><strong>(d) Inner Disk Blackbody Temperature &amp; Peak Wavelength (2.5 points):</strong><br>
+With \\(R_{\\mathrm{in}} = 3R_S = 2.659 \\times 10^{12}\\text{ m}\\) and radiating area \\(A = 8\\pi R_{\\mathrm{in}}^2 \\approx 1.777 \\times 10^{26}\\ \\mathrm{m^2}\\):</p>
+<p>$$ T_{\\mathrm{eff}} = \\left(\\frac{L_{\\mathrm{bol}}}{8\\pi R_{\\mathrm{in}}^2 \\sigma_{\\mathrm{SB}}}\\right)^{1/4} = \\left(\\frac{1.509 \\times 10^{39}}{(1.777 \\times 10^{26})(5.670 \\times 10^{-8})}\\right)^{1/4} \\approx \\mathbf{1.11 \\times 10^5\\text{ K}} $$</p>
+<p>By Wien's Displacement Law (\\(b = 2.898 \\times 10^{-3}\\ \\mathrm{m\\,K}\\)):</p>
+<p>$$ \\lambda_{\\max} = \\frac{b}{T_{\\mathrm{eff}}} = \\frac{2.898 \\times 10^{-3}}{1.106 \\times 10^5} \\approx \\mathbf{26.2\\text{ nm}} \\quad (\\text{extreme ultraviolet, } \\text{EUV}) $$</p>
+
+<p><strong>(e) Salpeter Growth Timescale \\(\\tau_{\\mathrm{Sal}}\\) (1.5 points):</strong><br>
+At the Eddington limit, \\(L_{\\mathrm{Edd}} = \\eta \\dot{M}_{\\mathrm{Edd}} c^2\\) and \\(\\dot{M}_{\\mathrm{BH}} = (1 - \\eta)\\dot{M}_{\\mathrm{Edd}} = \\frac{1 - \\eta}{\\eta}\\frac{L_{\\mathrm{Edd}}}{c^2}\\), yielding a mass-independent \\(e\\)-folding time:</p>
+<p>$$ \\tau_{\\mathrm{Sal}} = \\frac{M_{\\mathrm{BH}}}{\\dot{M}_{\\mathrm{BH}}} = \\left(\\frac{\\eta}{1 - \\eta}\\right)\\frac{\\sigma_T c}{4\\pi G m_p} \\approx \\mathbf{50.0\\text{ Myr}} \\quad (\\text{or } \\mathbf{45.0\\text{ Myr}}\\text{ without the }(1-\\eta)\\text{ factor}) $$</p>`
+    },
+
+    // Day 19 — 06.11.2026
+    {
+        uniqueId: "potd_2026_11_06",
+        dayNumber: 19,
+        scheduledDate: "06.11.2026",
+        title: "The Strömgren Sphere and Jeans Collapse of an H II Region",
+        author: "Mihai",
+        module: "T6 · Interstellar Medium & Star Formation",
+        difficultyClass: "medium",
+        difficultyText: "3.2 / 10.0",
+        description: `<p>A young O5 main-sequence star is born inside a homogeneous, isothermal interstellar cloud of pure neutral atomic hydrogen at temperature \\(T_{\\mathrm{cloud}} = 50.0\\text{ K}\\) and number density \\(n_H = 200\\ \\mathrm{cm^{-3}}\\). The star emits \\(N_{\\mathrm{Ly}} = 3.50 \\times 10^{49}\\ \\mathrm{s^{-1}}\\) Lyman-continuum ionizing photons (\\(h\\nu \\ge 13.6\\text{ eV}\\)), carving out a spherical \\(\\text{H II}\\) region of fully ionized hydrogen (\\(n_e = n_p = n_H = 200\\ \\mathrm{cm^{-3}}\\)) at equilibrium temperature \\(T_{\\mathrm{H\\,II}} = 10,000\\text{ K}\\). The case-B hydrogen recombination coefficient at \\(10,000\\text{ K}\\) is \\(\\alpha_B = 2.60 \\times 10^{-13}\\ \\mathrm{cm^3\\,s^{-1}}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>By balancing the stellar photoionization rate against the total recombination rate inside the ionized sphere, derive the formula for the Strömgren radius \\(R_{\\mathrm{St}}\\) and calculate its value in parsecs. <em>(2.5 points)</em></li>
+    <li>Calculate the total mass of ionized hydrogen gas \\(M_{\\mathrm{H\\,II}}\\) contained within the Strömgren sphere in solar masses. <em>(2.0 points)</em></li>
+    <li>Determine the characteristic recombination timescale \\(t_{\\mathrm{rec}} = \\frac{1}{n_e \\alpha_B}\\) (in years) if the central ionizing star were suddenly extinguished. <em>(1.5 points)</em></li>
+    <li>Calculate the ratio of the thermal gas pressure inside the hot ionized \\(\\text{H II}\\) region (\\(\\mu_{\\mathrm{H\\,II}} = 0.50\\)) to that of the surrounding cold neutral cloud (\\(\\mu_{\\mathrm{cloud}} = 1.00\\)), and explain its dynamical consequence. <em>(1.5 points)</em></li>
+    <li>For the cold neutral cloud (\\(T_{\\mathrm{cloud}} = 50.0\\text{ K},\\ n_H = 200\\ \\mathrm{cm^{-3}}\\)), calculate the isothermal sound speed \\(c_s = \\sqrt{\\frac{k_B T_{\\mathrm{cloud}}}{m_H}}\\), the gravitational free-fall time \\(t_{\\mathrm{ff}} = \\sqrt{\\frac{3\\pi}{32 G \\rho_0}}\\) (in \\(\\text{Myr}\\)), and the Jeans mass \\(M_J = \\frac{\\pi}{6}\\rho_0\\left(\\frac{\\pi c_s^2}{G \\rho_0}\\right)^{3/2}\\) (in solar masses). <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p><strong>(a) Strömgren Radius \\(R_{\\mathrm{St}}\\) (2.5 points):</strong><br>
+In ionization equilibrium, the recombination rate per unit volume is \\(n_e n_p \\alpha_B = n_H^2 \\alpha_B\\). Equating the total recombinations in the sphere to \\(N_{\\mathrm{Ly}}\\):</p>
+<p>$$ \\frac{4}{3}\\pi R_{\\mathrm{St}}^3 n_H^2 \\alpha_B = N_{\\mathrm{Ly}} \\implies \\mathbf{R_{\\mathrm{St}} = \\left(\\frac{3 N_{\\mathrm{Ly}}}{4\\pi n_H^2 \\alpha_B}\\right)^{1/3}} $$</p>
+<p>Substituting \\(N_{\\mathrm{Ly}} = 3.50 \\times 10^{49}\\ \\mathrm{s^{-1}}\\), \\(n_H = 200\\ \\mathrm{cm^{-3}}\\), and \\(\\alpha_B = 2.60 \\times 10^{-13}\\ \\mathrm{cm^3\\,s^{-1}}\\):</p>
+<p>$$ R_{\\mathrm{St}} = \\left(\\frac{3(3.50 \\times 10^{49})}{4\\pi(200)^2(2.60 \\times 10^{-13})}\\right)^{1/3} \\approx 9.296 \\times 10^{18}\\text{ cm} = 9.296 \\times 10^{16}\\text{ m} \\approx \\mathbf{3.01\\text{ pc}} $$</p>
+
+<p><strong>(b) Mass of Ionized Gas \\(M_{\\mathrm{H\\,II}}\\) (2.0 points):</strong><br>
+The mass density is \\(\\rho_0 = n_H m_H = (2.00 \\times 10^8\\ \\mathrm{m^{-3}})(1.6736 \\times 10^{-27}\\text{ kg}) = 3.347 \\times 10^{-19}\\ \\mathrm{kg\\,m^{-3}}\\). Thus:</p>
+<p>$$ M_{\\mathrm{H\\,II}} = \\frac{4}{3}\\pi R_{\\mathrm{St}}^3 \\rho_0 = \\frac{N_{\\mathrm{Ly}} m_H}{n_H \\alpha_B} \\approx 1.126 \\times 10^{33}\\text{ kg} \\approx \\mathbf{566\\,M_\\odot} $$</p>
+
+<p><strong>(c) Characteristic Recombination Timescale \\(t_{\\mathrm{rec}}\\) (1.5 points):</strong></p>
+<p>$$ t_{\\mathrm{rec}} = \\frac{1}{n_e \\alpha_B} = \\frac{1}{(200\\ \\mathrm{cm^{-3}})(2.60 \\times 10^{-13}\\ \\mathrm{cm^3\\,s^{-1}})} \\approx 1.923 \\times 10^{10}\\text{ s} \\approx \\mathbf{609\\text{ years}} $$</p>
+
+<p><strong>(d) Thermal Overpressure Ratio &amp; Dynamical Expansion (1.5 points):</strong><br>
+Because each ionized hydrogen atom yields two free particles (\\(e^- + p^+\\)), \\(P_{\\mathrm{H\\,II}} = 2 n_H k_B T_{\\mathrm{H\\,II}}\\) while \\(P_{\\mathrm{cloud}} = n_H k_B T_{\\mathrm{cloud}}\\):</p>
+<p>$$ \\frac{P_{\\mathrm{H\\,II}}}{P_{\\mathrm{cloud}}} = \\frac{2 T_{\\mathrm{H\\,II}}}{T_{\\mathrm{cloud}}} = \\frac{2(10,000\\text{ K})}{50.0\\text{ K}} = \\mathbf{400} $$</p>
+<p>This \\(400\\text{-fold}\\) overpressure drives a supersonic ionization-shock front outward into the ambient neutral cloud, causing the \\(\\text{H II}\\) region to expand dynamically and compress the surrounding gas.</p>
+
+<p><strong>(e) Sound Speed, Free-Fall Time &amp; Jeans Mass of the Cold Cloud (2.5 points):</strong></p>
+<ul>
+    <li><strong>Isothermal Sound Speed:</strong>
+    $$ c_s = \\sqrt{\\frac{k_B T_{\\mathrm{cloud}}}{m_H}} = \\sqrt{\\frac{(1.3806 \\times 10^{-23})(50.0)}{1.6736 \\times 10^{-27}}} \\approx \\mathbf{642\\ \\mathrm{m\\,s^{-1}}} $$</li>
+    <li><strong>Gravitational Free-Fall Time:</strong>
+    $$ t_{\\mathrm{ff}} = \\sqrt{\\frac{3\\pi}{32 G \\rho_0}} = \\sqrt{\\frac{3\\pi}{32(6.674 \\times 10^{-11})(3.347 \\times 10^{-19})}} \\approx 1.148 \\times 10^{14}\\text{ s} \\approx \\mathbf{3.64\\text{ Myr}} $$</li>
+    <li><strong>Jeans Length &amp; Jeans Mass:</strong>
+    With \\(\\lambda_J = \\sqrt{\\frac{\\pi c_s^2}{G \\rho_0}} \\approx 2.409 \\times 10^{17}\\text{ m} \\approx 7.81\\text{ pc}\\):
+    $$ M_J = \\frac{\\pi}{6}\\rho_0 \\lambda_J^3 \\approx 2.448 \\times 10^{33}\\text{ kg} \\approx \\mathbf{1230\\,M_\\odot} $$</li>
+</ul>`
+    },
+
+    // Day 20 — 07.11.2026
+    {
+        uniqueId: "potd_2026_11_07",
+        dayNumber: 20,
+        scheduledDate: "07.11.2026",
+        title: "Designing a Cassegrain Observatory: Plate Scale, Resolution, and SNR",
+        author: "Mihai",
+        module: "T3 · Astronomical Instrumentation & Photometry",
+        difficultyClass: "easy",
+        difficultyText: "2.8 / 10.0",
+        description: `<p>An astronomical observatory operates a classical Cassegrain reflecting telescope with primary mirror diameter \\(D = 0.800\\text{ m}\\) and effective focal ratio \\(f/10.0\\). A convex secondary mirror of diameter \\(d_{\\mathrm{sec}} = 0.200\\text{ m}\\) obstructs the center of the entrance pupil. At the Cassegrain focus sits a cooled CCD detector with a \\(4096 \\times 4096\\) array of square pixels, each of side length \\(p = 9.00\\ \\mu\\text{m}\\). Observations are performed in the Johnson \\(V\\) band (\\(\\lambda_0 = 550\\text{ nm}\\)).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Determine the effective focal length \\(F\\) of the telescope, the focal-plane plate scale \\(s\\) (in \\(\\mathrm{arcsec\\,mm^{-1}}\\) and \\(\\mathrm{arcsec\\,pixel^{-1}}\\)), and the total angular field of view (in arcminutes) of the CCD sensor. <em>(2.5 points)</em></li>
+    <li>Calculate the theoretical Rayleigh diffraction limit \\(\\theta_R = 1.22\\frac{\\lambda_0}{D}\\) in arcseconds. Given a local atmospheric seeing disk of \\(\\theta_{\\mathrm{see}} = 1.40''\\) (FWHM), state whether the system is diffraction-limited or seeing-limited and calculate how many pixels span the seeing FWHM. <em>(2.0 points)</em></li>
+    <li>Calculate the unobstructed effective light-collecting area \\(A_{\\mathrm{eff}}\\) (in \\(\\mathrm{m^2}\\)) and the percentage of incident light blocked by the secondary mirror. <em>(1.5 points)</em></li>
+    <li>For visual observation, the CCD is replaced by an eyepiece of focal length \\(f_{\\mathrm{ep}} = 25.0\\text{ mm}\\) and apparent field of view \\(\\mathrm{AFOV} = 68.0^\\circ\\). Calculate the magnification \\(M\\), the exit pupil diameter \\(d_{\\mathrm{exit}}\\), and the true field of view \\(\\mathrm{TFOV}\\). <em>(2.0 points)</em></li>
+    <li>In a \\(t = 300\\text{ s}\\) CCD integration, a target star produces a net count rate of \\(\\dot{N}_\\star = 18.0\\ \\mathrm{e^-\\,s^{-1}}\\) summed over a photometric aperture of \\(n_{\\mathrm{pix}} = 25\\text{ pixels}\\). The sky background rate is \\(\\dot{B} = 12.0\\ \\mathrm{e^-\\,s^{-1}\\,pixel^{-1}}\\), the dark current rate is \\(\\dot{D} = 0.050\\ \\mathrm{e^-\\,s^{-1}\\,pixel^{-1}}\\), and the RMS readout noise is \\(R = 5.00\\ \\mathrm{e^-\\,pixel^{-1}}\\). Calculate the resulting signal-to-noise ratio \\(\\mathrm{SNR}\\). <em>(2.0 points)</em></li>
+</ol>`,
+        solutionHtml: `<p><strong>(a) Effective Focal Length, Plate Scale &amp; CCD Field of View (2.5 points):</strong><br>
+For aperture \\(D = 0.800\\text{ m}\\) at \\(f/10.0\\), the effective focal length is:</p>
+<p>$$ F = 10.0 \\times 0.800\\text{ m} = \\mathbf{8.00\\text{ m}} = 8000\\text{ mm} $$</p>
+<p>The focal-plane plate scale is:</p>
+<p>$$ s = \\frac{206,264.8''}{F\\,[\\text{mm}]} = \\frac{206,264.8''}{8000\\text{ mm}} \\approx \\mathbf{25.78\\ \\mathrm{arcsec\\,mm^{-1}}} $$</p>
+<p>For a pixel pitch of \\(p = 9.00 \\times 10^{-3}\\text{ mm}\\), the angular scale per pixel and total sensor field of view are:</p>
+<p>$$ s_{\\mathrm{px}} = 25.783''\\,\\mathrm{mm^{-1}} \\times 0.00900\\text{ mm} \\approx \\mathbf{0.2320\\ \\mathrm{arcsec\\,pixel^{-1}}} $$</p>
+<p>$$ \\mathrm{FOV} = 4096 \\times 0.2320'' = 950.5'' \\approx \\mathbf{15.84' \\times 15.84'} $$</p>
+
+<p><strong>(b) Rayleigh Diffraction Limit &amp; Seeing Sampling (2.0 points):</strong></p>
+<p>$$ \\theta_R = 1.22\\frac{\\lambda_0}{D} = 1.22\\frac{550 \\times 10^{-9}\\text{ m}}{0.800\\text{ m}} \\times 206,264.8'' \\approx \\mathbf{0.173''} $$</p>
+<p>Because \\(\\theta_{\\mathrm{see}} = 1.40'' \\gg \\theta_R = 0.173''\\), the ground-based observations are <strong>seeing-limited</strong>. The stellar FWHM spans:</p>
+<p>$$ N_{\\mathrm{FWHM}} = \\frac{\\theta_{\\mathrm{see}}}{s_{\\mathrm{px}}} = \\frac{1.40''}{0.2320''\\,\\mathrm{px^{-1}}} \\approx \\mathbf{6.03\\text{ pixels}} \\quad (\\text{well-sampled above the Nyquist criterion}) $$</p>
+
+<p><strong>(c) Effective Light-Collecting Area &amp; Central Obstruction Loss (1.5 points):</strong></p>
+<p>$$ A_{\\mathrm{eff}} = \\frac{\\pi}{4}\\left(D^2 - d_{\\mathrm{sec}}^2\\right) = \\frac{\\pi}{4}\\left(0.800^2 - 0.200^2\\right) = \\frac{\\pi}{4}(0.600) \\approx \\mathbf{0.471\\ \\mathrm{m^2}} $$</p>
+<p>$$ \\text{Obstruction Loss} = \\left(\\frac{d_{\\mathrm{sec}}}{D}\\right)^2 \\times 100\\% = \\left(\\frac{0.200}{0.800}\\right)^2 \\times 100\\% = \\mathbf{6.25\\%} $$</p>
+
+<p><strong>(d) Visual Mode: Magnification, Exit Pupil &amp; True FOV (2.0 points):</strong></p>
+<p>$$ M = \\frac{F}{f_{\\mathrm{ep}}} = \\frac{8000\\text{ mm}}{25.0\\text{ mm}} = \\mathbf{320\\times} $$</p>
+<p>$$ d_{\\mathrm{exit}} = \\frac{D}{M} = \\frac{800\\text{ mm}}{320} = \\mathbf{2.50\\text{ mm}}, \\qquad \\mathrm{TFOV} = \\frac{\\mathrm{AFOV}}{M} = \\frac{68.0^\\circ}{320} = \\mathbf{0.2125^\\circ} = \\mathbf{12.75'} $$</p>
+
+<p><strong>(e) CCD Photometric Signal-to-Noise Ratio (2.0 points):</strong><br>
+In exposure time \\(t = 300\\text{ s}\\), the total stellar signal is \\(S = \\dot{N}_\\star t = 18.0 \\times 300 = 5400\\ \\mathrm{e^-}\\). By the standard CCD noise equation across \\(n_{\\mathrm{pix}} = 25\\text{ pixels}\\):</p>
+<p>$$ \\mathrm{SNR} = \\frac{\\dot{N}_\\star t}{\\sqrt{\\dot{N}_\\star t + n_{\\mathrm{pix}}\\left(\\dot{B} t + \\dot{D} t + R^2\\right)}} = \\frac{5400}{\\sqrt{5400 + 25\\big(12.0(300) + 0.050(300) + 5.00^2\\big)}} $$</p>
+<p>$$ \\mathrm{SNR} = \\frac{5400}{\\sqrt{5400 + 25(3600 + 15 + 25)}} = \\frac{5400}{\\sqrt{5400 + 91,000}} = \\frac{5400}{\\sqrt{96,400}} \\approx \\frac{5400}{310.48} \\approx \\mathbf{17.4} $$</p>`
+    },
+
+    // Day 21 — 08.11.2026
+    {
+        uniqueId: "potd_2026_11_08",
+        dayNumber: 21,
+        scheduledDate: "08.11.2026",
+        title: "The MACHO Microlensing Event",
+        author: "Khalfani Xavier Kamil Susanto",
+        module: "T8 · Stellar Remnants & Gravitational Lensing",
+        difficultyClass: "easy",
+        difficultyText: "3.4 / 10.0",
+        description: `<p>Astronomers are monitoring a gravitational microlensing event caused by a Massive Compact Halo Object (MACHO) passing in front of a background star. The lens (MACHO) has mass \\(M = 0.50\\,M_\\odot\\) and is located at a distance \\(D_L = 4.0\\text{ kpc}\\) from Earth. The background source star is at \\(D_S = 8.0\\text{ kpc}\\). The lens has a transverse velocity relative to the line of sight of \\(v_\\perp = 150\\ \\mathrm{km\\,s^{-1}}\\).</p>
+<p>You may assume the source and lens are point masses, the source is much brighter than the lens, and we are in the weak-field limit. Use \\(G = 6.674 \\times 10^{-11}\\ \\mathrm{m^3\\,kg^{-1}\\,s^{-2}}\\), \\(c = 2.998 \\times 10^8\\ \\mathrm{m\\,s^{-1}}\\), \\(M_\\odot = 1.989 \\times 10^{30}\\text{ kg}\\), \\(1\\text{ kpc} = 3.086 \\times 10^{19}\\text{ m}\\), \\(1\\text{ AU} = 1.496 \\times 10^{11}\\text{ m}\\), and \\(1\\text{ day} = 86,400\\text{ s}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Derive the physical Einstein radius \\(R_E\\) in the lens plane and calculate its numerical value in Astronomical Units (\\(\\text{AU}\\)). <em>(2.5 points)</em></li>
+    <li>Define the dimensionless impact parameter \\(u(t) = b(t) / R_E\\). If the minimum impact parameter at closest approach is \\(u_0 = 0.20\\), write the expression for \\(u(t)\\) in terms of the Einstein crossing time \\(t_E = R_E / v_\\perp\\), and calculate \\(t_E\\) in days. <em>(2.5 points)</em></li>
+    <li>The total flux magnification of the background star is given by Paczyński's formula:
+    $$ A(u) = \\frac{u^2 + 2}{u\\sqrt{u^2 + 4}} $$
+    Calculate the peak magnification \\(A_{\\max}\\) of this event. <em>(2.5 points)</em></li>
+    <li>The event is considered "highly magnified" when \\(A \\ge 2.0\\). Determine the total duration \\(\\Delta t\\) (in days) during which the event remains highly magnified. <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Weak-field gravitational microlensing, physical Einstein radius, rectilinear sky-plane trajectory, and inversion of the Paczyński light-curve magnification formula.</p>
+
+<p><strong>(a) Physical Einstein Radius \\(R_E\\) in the Lens Plane (2.5 points):</strong><br>
+From the weak-field deflection angle \\(\\alpha = \\frac{4GM}{c^2 b}\\) and Euclidean small-angle lens geometry \\(\\theta_E = \\sqrt{\\frac{4GM}{c^2}\\frac{D_{LS}}{D_L D_S}}\\), the physical radius in the lens plane is \\(R_E = D_L \\theta_E\\):</p>
+<p>$$ R_E = \\sqrt{\\frac{4GM}{c^2}\\frac{D_L D_{LS}}{D_S}} $$</p>
+<p>With \\(D_{LS} = D_S - D_L = 8.0 - 4.0 = 4.0\\text{ kpc}\\), we first evaluate the gravitational prefactor and distance combination:</p>
+<p>$$ \\frac{4GM}{c^2} = \\frac{4(6.674 \\times 10^{-11})(0.50 \\times 1.989 \\times 10^{30})}{(2.998 \\times 10^8)^2} \\approx 2953.8\\text{ m} $$</p>
+<p>$$ \\frac{D_L D_{LS}}{D_S} = \\frac{(4.0\\text{ kpc})(4.0\\text{ kpc})}{8.0\\text{ kpc}} = 2.0\\text{ kpc} = 2.0 \\times 3.086 \\times 10^{19}\\text{ m} = 6.172 \\times 10^{19}\\text{ m} $$</p>
+<p>Substituting into \\(R_E\\) and converting to Astronomical Units:</p>
+<p>$$ R_E = \\sqrt{(2953.8\\text{ m})(6.172 \\times 10^{19}\\text{ m})} = \\sqrt{1.823 \\times 10^{23}\\ \\mathrm{m^2}} \\approx 4.270 \\times 10^{11}\\text{ m} \\approx \\mathbf{2.85\\text{ AU}} $$</p>
+
+<p><strong>(b) Dimensionless Impact Parameter \\(u(t)\\) &amp; Einstein Crossing Time \\(t_E\\) (2.5 points):</strong><br>
+Taking \\(t = 0\\) at the instant of closest approach \\(b_{\\min} = u_0 R_E\\), the Pythagorean distance along the uniform rectilinear relative trajectory \\(b(t) = \\sqrt{b_{\\min}^2 + (v_\\perp t)^2}\\) normalized by \\(R_E\\) is:</p>
+<p>$$ u(t) = \\mathbf{\\sqrt{u_0^2 + \\left(\\frac{t}{t_E}\\right)^2}} $$</p>
+<p>Evaluating the Einstein radius crossing time \\(t_E = R_E / v_\\perp\\) for \\(v_\\perp = 150\\ \\mathrm{km\\,s^{-1}} = 1.50 \\times 10^5\\ \\mathrm{m\\,s^{-1}}\\):</p>
+<p>$$ t_E = \\frac{4.270 \\times 10^{11}\\text{ m}}{1.50 \\times 10^5\\ \\mathrm{m\\,s^{-1}}} \\approx 2.847 \\times 10^6\\text{ s} = \\frac{2.847 \\times 10^6}{86,400}\\text{ days} \\approx \\mathbf{32.9\\text{ days}} $$</p>
+
+<p><strong>(c) Peak Magnification \\(A_{\\max}\\) (2.5 points):</strong><br>
+Maximum magnification occurs at closest approach (\\(t = 0,\\ u = u_0 = 0.20\\)):</p>
+<p>$$ A_{\\max} = \\frac{u_0^2 + 2}{u_0\\sqrt{u_0^2 + 4}} = \\frac{(0.20)^2 + 2}{0.20\\sqrt{(0.20)^2 + 4}} = \\frac{2.04}{0.20\\sqrt{4.04}} \\approx \\frac{2.04}{0.4020} \\approx \\mathbf{5.08} $$</p>
+
+<p><strong>(d) Duration of High Magnification (\\(A \\ge 2.0\\)) (2.5 points):</strong><br>
+Setting \\(A(u) = 2.0\\) and squaring both sides:</p>
+<p>$$ \\frac{u^2 + 2}{u\\sqrt{u^2 + 4}} = 2 \\implies (u^2 + 2)^2 = 4u^2(u^2 + 4) \\implies 3u^4 + 12u^2 - 4 = 0 $$</p>
+<p>Solving the quadratic in \\(x = u^2 > 0\\):</p>
+<p>$$ u^2 = \\frac{-12 + \\sqrt{144 - 4(3)(-4)}}{6} = \\frac{-12 + \\sqrt{192}}{6} = 2\\left(\\frac{2}{\\sqrt{3}} - 1\\right) \\approx 0.30940 \\implies u \\approx 0.5562 $$</p>
+<p>Substituting \\(u^2 = 0.30940\\) and \\(u_0^2 = 0.0400\\) into \\(u(t)^2 = u_0^2 + (t / t_E)^2\\):</p>
+<p>$$ \\left(\\frac{t}{t_E}\\right)^2 = 0.30940 - 0.0400 = 0.26940 \\implies \\frac{t}{t_E} = \\pm 0.5190 $$</p>
+<p>The total duration spent above \\(A = 2.0\\) is symmetric around \\(t = 0\\):</p>
+<p>$$ \\Delta t = 2|t| = 2(0.5190)\\,t_E = 1.038\\,t_E \\approx 1.038 \\times 32.95\\text{ days} \\approx \\mathbf{34.2\\text{ days}} $$</p>`
     }
 ];
 
@@ -870,6 +1199,267 @@ Active attitude/propulsion control is required to maintain position.</p>
     <li><strong>Limit \\(\\theta \\to 0\\):</strong> The transverse radiation force vanishes (\\(\\mathbf{a}_{\\text{rad},\\perp} \\to 0\\)), returning the equilibrium to the Sun–Earth line (\\(y = 0\\)). Since \\(\\beta = 1.50 > 1\\), radiation pressure exceeds solar gravity everywhere on the Sun-facing side.</li>
     <li><strong>Limit \\(\\theta \\to \\pi/2\\):</strong> As the sail turns edge-on to the sunlight, \\(\\cos\\theta \\to 0\\) and \\(\\mathbf{a}_{\\text{rad}} \\to \\mathbf{0}\\). Radiation pressure vanishes and the position collapses to the classical gravitational collinear Lagrange point \\(\\mathbf{L_1}\\) at \\(d_E = (\\mu/3)^{1/3}\\text{ AU} \\approx 0.0100\\text{ AU} \\ (1.50 \\times 10^6\\text{ km})\\).</li>
 </ul>`
+    },
+
+    // Week 03 — 02.11.2026 – 08.11.2026
+    {
+        uniqueId: "potw_2026_w3",
+        weekNumber: 3,
+        scheduledDate: "02.11.2026 – 08.11.2026",
+        title: "The Invisible Planet and the Dance of the Stars",
+        author: "Albert",
+        module: "T1 · Celestial Mechanics & Perturbation Theory",
+        difficultyClass: "hard",
+        difficultyText: "6.8 / 10.0",
+        description: `<p>Two identical stars, each of mass \\(M\\), move on circular orbits around their common center of mass. The distance between the two stars is constant and equal to \\(2a\\). In the same orbital plane lies a test body (a circumbinary planet) of negligible mass at distance \\(R\\) from the center of mass of the system, where:</p>
+<p>$$ R \\gg a $$</p>
+<p>The planet follows an almost circular orbit. Neglect all other gravitational influences and relativistic effects. Denote the gravitational constant by \\(G\\). Throughout all calculations until the end, retain terms up to order \\((a/R)^2\\) inclusive and neglect higher-order terms.</p>
+<p><em>Methodological Hint:</em> When expanding the gravitational potential, it is helpful to treat the contributions of the two stars separately and perform the time averaging afterward. Use \\(G = 6.67430 \\times 10^{-11}\\ \\mathrm{m^3\\,kg^{-1}\\,s^{-2}}\\), \\(M_\\odot = 1.9885 \\times 10^{30}\\text{ kg}\\), and \\(1\\text{ AU} = 1.4960 \\times 10^{11}\\text{ m}\\).</p>
+
+<div class="task-box" style="margin-top: 18px; border-left: 3px solid var(--accent-blue); background: var(--bg-sidebar); padding: 18px 22px; border-radius: var(--radius-md); margin-bottom: 16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <strong style="color:var(--text-pure); font-size:1.02rem;">Part A — The Time-Averaged Gravitational Potential</strong>
+        <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-gold); background:rgba(255,207,92,0.12); padding:3px 9px; border-radius:6px;">2.0 Points</span>
+    </div>
+    <p style="font-size:0.92rem; color:var(--text-main); margin-bottom:12px;">
+        At a given instant, the angle between the radius vector of the planet and the line joining the two stars is \\(\\theta\\).
+    </p>
+    <ol style="padding-left: 20px; line-height: 1.85; font-size: 0.92rem;">
+        <li>Starting from the exact expression for the gravitational potential, expand it in powers of \\(a/R\\) and show that the instantaneous potential can be written, up to the required order, in the form:
+        $$ \\Phi(R, \\theta) = \\Phi_0(R) + \\Phi_2(R, \\theta) $$ <em>(1.0 point)</em></li>
+        <li>Calculate the effective time-averaged potential over one orbital period of the binary stars, \\(\\langle \\Phi(R) \\rangle\\). Interpret physically the extra term that appears compared to the potential of a single central star of mass \\(2M\\). <em>(1.0 point)</em></li>
+    </ol>
+</div>
+
+<div class="task-box" style="border-left: 3px solid var(--accent-purple); background: var(--bg-sidebar); padding: 18px 22px; border-radius: var(--radius-md); margin-bottom: 16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <strong style="color:var(--text-pure); font-size:1.02rem;">Part B — Circular Motion</strong>
+        <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-gold); background:rgba(255,207,92,0.12); padding:3px 9px; border-radius:6px;">2.0 Points</span>
+    </div>
+    <ol start="3" style="padding-left: 20px; line-height: 1.85; font-size: 0.92rem;">
+        <li>Using the time-averaged potential, determine the orbital angular frequency \\(\\Omega\\) of a circular orbit of radius \\(R\\), expressed in terms of \\(G, M, a\\), and \\(R\\). <em>(1.0 point)</em></li>
+        <li>Compare your result with the classical Keplerian frequency:
+        $$ n = \\sqrt{\\frac{2GM}{R^3}} $$
+        which would be obtained if the two stars were replaced by a single point mass \\(2M\\) at the center. Determine, to the first non-vanishing order in \\(a/R\\), which of the two frequencies is larger, and explain physically why. <em>(1.0 point)</em></li>
+    </ol>
+</div>
+
+<div class="task-box" style="border-left: 3px solid var(--accent-gold); background: var(--bg-sidebar); padding: 18px 22px; border-radius: var(--radius-md); margin-bottom: 16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <strong style="color:var(--text-pure); font-size:1.02rem;">Part C — The Orbit Is Not Quite an Ellipse</strong>
+        <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-gold); background:rgba(255,207,92,0.12); padding:3px 9px; border-radius:6px;">2.5 Points</span>
+    </div>
+    <p style="font-size:0.92rem; color:var(--text-main); margin-bottom:12px;">
+        Now consider a nearly circular orbit and apply a small radial perturbation:
+        $$ R(t) = R_0 + \\delta R(t), \\qquad |\\delta R| \\ll R_0 $$
+    </p>
+    <ol start="5" style="padding-left: 20px; line-height: 1.85; font-size: 0.92rem;">
+        <li>Show that the radial perturbation is approximately simple harmonic and determine the radial (epicyclic) frequency \\(\\kappa\\). <em>(1.25 points)</em></li>
+        <li>Because \\(\\kappa \\ne \\Omega\\) in general, the direction of the periastron does not remain fixed. Prove that the periastron advance after one complete revolution of the planet is, in the required approximation:
+        $$ \\Delta\\varpi \\simeq \\frac{3\\pi}{2}\\frac{a^2}{R^2} $$
+        Specify the direction (sense) of the apsidal precession. <em>(1.25 points)</em></li>
+    </ol>
+</div>
+
+<div class="task-box" style="border-left: 3px solid var(--accent-green); background: var(--bg-sidebar); padding: 18px 22px; border-radius: var(--radius-md); margin-bottom: 16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <strong style="color:var(--text-pure); font-size:1.02rem;">Part D — An Observable System</strong>
+        <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-gold); background:rgba(255,207,92,0.12); padding:3px 9px; border-radius:6px;">2.0 Points</span>
+    </div>
+    <p style="font-size:0.92rem; color:var(--text-main); margin-bottom:12px;">
+        A binary star system has \\(M = 1.2\\,M_\\odot\\) and \\(2a = 0.20\\text{ AU}\\), while a circumbinary planet moves on a nearly circular orbit with \\(R = 1.60\\text{ AU}\\).
+    </p>
+    <ol start="7" style="padding-left: 20px; line-height: 1.85; font-size: 0.92rem;">
+        <li>Calculate the orbital period of the planet, retaining the correction due to the binary structure. <em>(0.75 points)</em></li>
+        <li>Calculate by how many degrees the periastron advances per revolution. <em>(0.75 points)</em></li>
+        <li>Estimate the time required for the major axis of the orbit to rotate by \\(360^\\circ\\). <em>(0.5 points)</em></li>
+    </ol>
+</div>
+
+<div class="task-box" style="border-left: 3px solid var(--accent-blue); background: var(--bg-sidebar); padding: 18px 22px; border-radius: var(--radius-md);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <strong style="color:var(--text-pure); font-size:1.02rem;">Part E — The Inverse Problem</strong>
+        <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-gold); background:rgba(255,207,92,0.12); padding:3px 9px; border-radius:6px;">1.5 Points</span>
+    </div>
+    <p style="font-size:0.92rem; color:var(--text-main); margin-bottom:12px;">
+        An astronomer cannot resolve the two central stars and detects only the planet, measuring very precisely its orbital period \\(P\\), orbital radius \\(R\\), and periastron advance \\(\\Delta\\varpi\\) from one revolution to the next.
+    </p>
+    <ol start="10" style="padding-left: 20px; line-height: 1.85; font-size: 0.92rem;">
+        <li>Show that, within the approximation of this problem, these observations alone allow the astronomer to determine both the total mass \\(M_{\\mathrm{tot}} = 2M\\) of the binary system and the separation \\(2a\\) between the two stars without resolving them directly. <em>(0.75 points)</em></li>
+        <li>Explain why applying Kepler's Third Law naively while ignoring apsidal precession leads to a systematically biased value for the total mass, and state whether the mass is overestimated or underestimated. <em>(0.75 points)</em></li>
+    </ol>
+</div>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Multipole (Legendre quadrupole) expansion of a circumbinary gravitational potential, secular time-averaging, epicyclic frequency perturbation, and apsidal precession.</p>
+
+<p><strong>Part A — The Time-Averaged Gravitational Potential (2.0 Points)</strong></p>
+<p><strong>1. Multipole Expansion of the Instantaneous Potential (1.0 point):</strong><br>
+Relative to the center of mass, the two stars lie at distance \\(a\\) at angles \\(\\theta\\) and \\(\\theta + \\pi\\) from the planet's radius vector \\(\\mathbf{R}\\). By the law of cosines, the distances from the planet to the two stars are:</p>
+<p>$$ r_{1,2} = \\sqrt{R^2 + a^2 \\mp 2aR\\cos\\theta} = R\\sqrt{1 \\mp \\frac{2a}{R}\\cos\\theta + \\left(\\frac{a}{R}\\right)^2} $$</p>
+<p>Using the Taylor expansion \\((1 + \\epsilon)^{-1/2} = 1 - \\frac{1}{2}\\epsilon + \\frac{3}{8}\\epsilon^2 + \\mathcal{O}(\\epsilon^3)\\) with \\(\\epsilon = \\mp\\frac{2a}{R}\\cos\\theta + \\left(\\frac{a}{R}\\right)^2\\):</p>
+<p>$$ \\frac{1}{r_{1,2}} = \\frac{1}{R}\\left[1 \\pm \\left(\\frac{a}{R}\\right)\\cos\\theta + \\frac{1}{2}\\left(\\frac{a}{R}\\right)^2\\left(3\\cos^2\\theta - 1\\right) + \\mathcal{O}\\!\\left(\\frac{a^3}{R^3}\\right)\\right] $$</p>
+<p>Summing the two contributions \\(\\Phi(R,\\theta) = -GM\\left(\\frac{1}{r_1} + \\frac{1}{r_2}\\right)\\), the odd dipole terms \\(\\pm(a/R)\\cos\\theta\\) cancel by symmetry, leaving:</p>
+<p>$$ \\Phi(R,\\theta) = \\underbrace{-\\frac{2GM}{R}}_{\\Phi_0(R)} \\underbrace{- \\frac{GM a^2}{R^3}\\left(3\\cos^2\\theta - 1\\right)}_{\\Phi_2(R,\\theta)} = -\\frac{2GM}{R} - \\frac{GM a^2}{2 R^3}\\left(1 + 3\\cos 2\\theta\\right) $$</p>
+
+<p><strong>2. Secular Time-Averaged Potential \\(\\langle\\Phi(R)\\rangle\\) (1.0 point):</strong><br>
+Because the binary orbital period is much shorter than the planet's orbital period (\\(R \\gg a\\)), the angle \\(\\theta\\) sweeps rapidly through \\([0, 2\\pi]\\). Using \\(\\langle\\cos^2\\theta\\rangle = \\frac{1}{2}\\) (so \\(\\langle 3\\cos^2\\theta - 1\\rangle = \\frac{1}{2}\\)):</p>
+<p>$$ \\langle\\Phi(R)\\rangle = -\\frac{2GM}{R} - \\frac{GM a^2}{2 R^3} = -\\frac{2GM}{R}\\left[1 + \\frac{1}{4}\\left(\\frac{a}{R}\\right)^2\\right] $$</p>
+<p><em>Physical interpretation:</em> The extra term \\(-\\frac{GM a^2}{2R^3}\\) is the attractive gravitational <strong>quadrupole potential</strong> equivalent to smearing the two stars of mass \\(M\\) into a uniform circular ring of mass \\(2M\\) and radius \\(a\\) in the orbital plane.</p>
+
+<hr style="border:none; border-top:1px solid var(--border-subtle); margin:16px 0;">
+
+<p><strong>Part B — Circular Motion (2.0 Points)</strong></p>
+<p><strong>3. Angular Frequency \\(\\Omega\\) of a Circular Orbit (1.0 point):</strong><br>
+For a circular orbit of radius \\(R\\) in the central potential \\(\\langle\\Phi(R)\\rangle\\), the inward radial acceleration balances the centripetal acceleration \\(\\Omega^2 R = \\frac{d\\langle\\Phi\\rangle}{dR}\\):</p>
+<p>$$ \\frac{d\\langle\\Phi\\rangle}{dR} = \\frac{2GM}{R^2} + \\frac{3GM a^2}{2 R^4} = \\frac{2GM}{R^2}\\left[1 + \\frac{3}{4}\\left(\\frac{a}{R}\\right)^2\\right] $$</p>
+<p>Dividing by \\(R\\) and taking the square root using \\(\\sqrt{1+x} \\simeq 1 + \\frac{1}{2}x\\):</p>
+<p>$$ \\Omega = \\sqrt{\\frac{2GM}{R^3}}\\left[1 + \\frac{3}{8}\\left(\\frac{a}{R}\\right)^2\\right] $$</p>
+
+<p><strong>4. Comparison with the Keplerian Frequency \\(n\\) (1.0 point):</strong><br>
+Since \\(\\Omega = n\\left[1 + \\frac{3}{8}\\left(\\frac{a}{R}\\right)^2\\right]\\), we have <strong>\\(\\Omega > n\\)</strong>. Physically, because the gravitational force \\(F \\propto r^{-2}\\) is a convex function of distance, the increase in attraction from the nearer star outweighs the decrease in attraction from the farther star when averaged over all angles, producing a stronger net inward pull than a single point mass \\(2M\\) at the origin.</p>
+
+<hr style="border:none; border-top:1px solid var(--border-subtle); margin:16px 0;">
+
+<p><strong>Part C — The Orbit Is Not Quite an Ellipse (2.5 Points)</strong></p>
+<p><strong>5. Radial Perturbation &amp; Epicyclic Frequency \\(\\kappa\\) (1.25 points):</strong><br>
+In terms of the conserved specific angular momentum \\(L = R^2\\dot{\\varphi} = R_0^2 \\Omega\\), the radial equation of motion is \\(\\ddot{R} = -\\frac{d\\Phi_{\\mathrm{eff}}}{dR}\\), where \\(\\Phi_{\\mathrm{eff}}(R) = \\langle\\Phi(R)\\rangle + \\frac{L^2}{2R^2}\\). Linearizing around \\(R = R_0\\) with \\(R(t) = R_0 + \\delta R(t)\\) gives \\(\\delta\\ddot{R} + \\kappa^2 \\delta R = 0\\), where:</p>
+<p>$$ \\kappa^2 = \\left.\\frac{d^2\\Phi_{\\mathrm{eff}}}{dR^2}\\right|_{R_0} = \\left.\\frac{d^2\\langle\\Phi\\rangle}{dR^2}\\right|_{R_0} + \\frac{3}{R_0}\\left.\\frac{d\\langle\\Phi\\rangle}{dR}\\right|_{R_0} $$</p>
+<p>Using \\(\\frac{d\\langle\\Phi\\rangle}{dR} = \\frac{2GM}{R^2} + \\frac{3GMa^2}{2R^4}\\) and \\(\\frac{d^2\\langle\\Phi\\rangle}{dR^2} = -\\frac{4GM}{R^3} - \\frac{6GMa^2}{R^5}\\):</p>
+<p>$$ \\kappa^2 = \\left(-\\frac{4GM}{R_0^3} - \\frac{6GMa^2}{R_0^5}\\right) + \\left(\\frac{6GM}{R_0^3} + \\frac{9GMa^2}{2R_0^5}\\right) = \\frac{2GM}{R_0^3}\\left[1 - \\frac{3}{4}\\left(\\frac{a}{R_0}\\right)^2\\right] $$</p>
+<p>Taking the square root yields the radial epicyclic frequency:</p>
+<p>$$ \\kappa = \\sqrt{\\frac{2GM}{R_0^3}}\\left[1 - \\frac{3}{8}\\left(\\frac{a}{R_0}\\right)^2\\right] = n\\left[1 - \\frac{3}{8}\\left(\\frac{a}{R_0}\\right)^2\\right] $$</p>
+
+<p><strong>6. Periastron Advance per Revolution \\(\\Delta\\varpi\\) (1.25 points):</strong><br>
+The time between two successive periastron passages (one full radial oscillation) is the anomalistic period \\(T_r = \\frac{2\\pi}{\\kappa}\\). During this interval, the planet sweeps an azimuthal angle \\(\\Delta\\varphi = \\Omega T_r = 2\\pi\\frac{\\Omega}{\\kappa}\\). Using \\((1+x)/(1-x) \\simeq 1 + 2x\\) for \\(x = \\frac{3}{8}(a/R)^2\\):</p>
+<p>$$ \\frac{\\Omega}{\\kappa} = \\frac{1 + \\frac{3}{8}(a/R)^2}{1 - \\frac{3}{8}(a/R)^2} \\simeq 1 + \\frac{3}{4}\\left(\\frac{a}{R}\\right)^2 $$</p>
+<p>Hence, the apsidal shift per revolution is:</p>
+<p>$$ \\Delta\\varpi = \\Delta\\varphi - 2\\pi = 2\\pi\\left(\\frac{\\Omega}{\\kappa} - 1\\right) \\simeq \\mathbf{\\frac{3\\pi}{2}\\frac{a^2}{R^2}} $$</p>
+<p>Because \\(\\kappa < \\Omega\\) (\\(\\Delta\\varpi > 0\\)), the planet must travel slightly more than \\(2\\pi\\) radians in azimuth to complete one radial oscillation, so the periastron precesses in the <strong>prograde direction</strong> (in the same direction as the orbital motion).</p>
+
+<hr style="border:none; border-top:1px solid var(--border-subtle); margin:16px 0;">
+
+<p><strong>Part D — An Observable System (2.0 Points)</strong></p>
+<p>With \\(M = 1.2\\,M_\\odot\\), \\(a = 0.10\\text{ AU}\\), and \\(R = 1.60\\text{ AU}\\), the dimensionless ratio is \\(\\frac{a}{R} = \\frac{0.10}{1.60} = \\frac{1}{16} = 0.0625\\), so \\(\\left(\\frac{a}{R}\\right)^2 = \\frac{1}{256} \\approx 3.90625 \\times 10^{-3}\\).</p>
+<ul>
+    <li><strong>7. Orbital Period \\(P\\) (0.75 points):</strong><br>
+    The unperturbed Keplerian frequency for total mass \\(2M = 2.4\\,M_\\odot\\) is:
+    $$ n = \\sqrt{\\frac{2GM}{R^3}} = \\sqrt{\\frac{2(6.67430 \\times 10^{-11})(1.2 \\times 1.9885 \\times 10^{30})}{(1.60 \\times 1.4960 \\times 10^{11})^3}} \\approx 1.52403 \\times 10^{-7}\\ \\mathrm{rad\\,s^{-1}} $$
+    which corresponds to \\(P_{\\mathrm{Kep}} = \\frac{2\\pi}{n} \\approx 4.1227 \\times 10^7\\text{ s} \\approx 477.17\\text{ days} \\ (1.3064\\text{ yr})\\). Including the quadrupole correction:
+    $$ P = \\frac{2\\pi}{\\Omega} \\simeq P_{\\mathrm{Kep}}\\left[1 - \\frac{3}{8}\\left(\\frac{a}{R}\\right)^2\\right] = 477.17\\text{ d} \\times (1 - 0.001465) \\approx \\mathbf{476.47\\text{ days}} \\quad (\\mathbf{1.3045\\text{ years}}) $$</li>
+    <li><strong>8. Periastron Advance per Revolution (0.75 points):</strong>
+    $$ \\Delta\\varpi = \\frac{3\\pi}{2}\\left(\\frac{1}{16}\\right)^2 = \\frac{3\\pi}{512}\\text{ rad} \\approx 0.01841\\text{ rad} \\approx \\mathbf{1.055^\\circ\\text{ / rev}} $$</li>
+    <li><strong>9. Time for a Full \\(360^\\circ\\) Precession Cycle (0.5 points):</strong><br>
+    The number of revolutions required is \\(N_{\\mathrm{rev}} = \\frac{360^\\circ}{1.0547^\\circ} = \\frac{512}{1.5} \\approx 341.33\\text{ revolutions}\\):
+    $$ T_{\\mathrm{prec}} = N_{\\mathrm{rev}} \\times P \\approx 341.33 \\times 1.3045\\text{ yr} \\approx \\mathbf{445.3\\text{ years}} $$</li>
+</ul>
+
+<hr style="border:none; border-top:1px solid var(--border-subtle); margin:16px 0;">
+
+<p><strong>Part E — The Inverse Problem (1.5 Points)</strong></p>
+<p><strong>10. Recovering Both \\(2a\\) and \\(M_{\\mathrm{tot}} = 2M\\) (0.75 points):</strong><br>
+From the measured orbital radius \\(R\\) and apsidal advance \\(\\Delta\\varpi\\), the binary separation \\(2a\\) is isolated directly from the precession relation:</p>
+<p>$$ a = R\\sqrt{\\frac{2\\,\\Delta\\varpi}{3\\pi}} \\implies \\mathbf{2a = 2R\\sqrt{\\frac{2\\,\\Delta\\varpi}{3\\pi}}} $$</p>
+<p>Substituting \\(\\left(\\frac{a}{R}\\right)^2 = \\frac{2\\,\\Delta\\varpi}{3\\pi}\\) into \\(\\Omega = \\frac{2\\pi}{P} = \\sqrt{\\frac{G M_{\\mathrm{tot}}}{R^3}}\\left[1 + \\frac{3}{8}\\left(\\frac{a}{R}\\right)^2\\right]\\) yields the true total binary mass:</p>
+<p>$$ \\mathbf{M_{\\mathrm{tot}} = 2M \\simeq \\frac{4\\pi^2 R^3}{G P^2}\\left(1 - \\frac{\\Delta\\varpi}{2\\pi}\\right) = \\frac{4\\pi^2 R^3}{G P^2}\\left[1 - \\frac{3}{4}\\left(\\frac{a}{R}\\right)^2\\right]} $$</p>
+
+<p><strong>11. Systematic Mass Bias When Ignoring Precession (0.75 points):</strong><br>
+If the astronomer applies Kepler's Third Law naively (\\(M_{\\mathrm{naive}} = \\frac{4\\pi^2 R^3}{G P^2}\\)), the quadrupole attraction that speeds up the planet's orbital motion (\\(\\Omega > n\\), shortening \\(P\\)) is misattributed entirely to a larger central mass. Consequently, ignoring the binary quadrupole systematically <strong>overestimates</strong> the total mass of the binary by a relative fraction of \\(\\frac{3}{4}(a/R)^2 = \\frac{\\Delta\\varpi}{2\\pi}\\) (about \\(+0.29\\%\\) for the system in Part D).</p>`
+    },
+
+    // Week 04 — 09.11.2026 – 15.11.2026
+    {
+        uniqueId: "potw_2026_w4",
+        weekNumber: 4,
+        scheduledDate: "09.11.2026 – 15.11.2026",
+        title: "Saturn's Hexagon",
+        author: "Mihai",
+        module: "T9 · Planetary Atmospheres & Rossby Wave Dynamics",
+        difficultyClass: "hard",
+        difficultyText: "6.4 / 10.0",
+        description: `<p>Saturn's north polar hexagon was first discovered in 1988 by astronomer David A. Godfrey, who was analyzing archival images taken by the Voyager 1 and 2 spacecraft during their flybys in 1980 and 1981. Because the pattern was only captured in a limited number of frames, early researchers were unsure whether it was a fleeting weather anomaly or a permanent atmospheric feature.</p>
+<p>It wasn't until the Cassini spacecraft entered orbit and observed the north pole emerging from winter shadows in 2006 that the hexagon was definitively confirmed as a permanent, remarkably stable structure. Because it had maintained its geometric shape for at least an entire Saturnian year (nearly 30 Earth years), physicists realized it was not a random storm, but a deeply rooted planetary standing wave.</p>
+<p>In this problem, we will discover how such patterns form in planetary atmospheres, why Saturn's hexagon is so stable, and why it is a hexagon in the first place. Throughout this problem, we use a local Cartesian coordinate system \\((x, y)\\) with the \\(x\\)-axis pointing <strong>eastward</strong> and the \\(y\\)-axis pointing <strong>northward</strong>.</p>
+
+<div class="task-box" style="margin-top: 18px; border-left: 3px solid var(--accent-blue); background: var(--bg-sidebar); padding: 18px 22px; border-radius: var(--radius-md); margin-bottom: 16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <strong style="color:var(--text-pure); font-size:1.02rem;">Part A — Eastward Wind Speed in Saturn's Atmosphere</strong>
+        <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-gold); background:rgba(255,207,92,0.12); padding:3px 9px; border-radius:6px;">3.0 Points</span>
+    </div>
+    <p style="font-size:0.92rem; color:var(--text-main); margin-bottom:12px;">
+        Consider an air parcel of volume \\(V = \\Delta x\\,\\Delta y\\,\\Delta z\\) moving eastward through Saturn's atmosphere. Because of non-uniform heating between the equator and the poles, the parcel experiences a pressure difference in the north–south (\\(y\\)) direction.
+    </p>
+    <ol type="a" style="padding-left: 20px; line-height: 1.85; font-size: 0.92rem;">
+        <li>Derive an expression for the force per unit mass (acceleration) felt by the parcel due to the pressure difference, in terms of the northward pressure gradient \\(\\frac{\\partial P}{\\partial y}\\) at the parcel's location and the parcel density \\(\\rho\\). <em>(1.5 points)</em></li>
+        <li>For the parcel to flow purely eastward at speed \\(U\\), the northward pressure-gradient force must be balanced by the southward Coriolis force per unit mass \\(a_{\\mathrm{Coriolis}} = f U\\), where \\(f = 2\\Omega\\sin\\phi\\) is the Coriolis parameter (\\(\\Omega\\) is the planet's angular rotation velocity and \\(\\phi\\) is the latitude). Assuming the atmosphere behaves as an ideal gas, find \\(U\\) in terms of \\(\\frac{\\partial P}{\\partial y}\\), \\(f\\), the local temperature \\(T\\), local pressure \\(P\\), the mean molecular mass \\(\\mu m_H\\) (or molar mass \\(M_{\\mathrm{mol}}\\)), and fundamental constants. <em>(1.5 points)</em></li>
+    </ol>
+</div>
+
+<div class="task-box" style="border-left: 3px solid var(--accent-purple); background: var(--bg-sidebar); padding: 18px 22px; border-radius: var(--radius-md); margin-bottom: 16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <strong style="color:var(--text-pure); font-size:1.02rem;">Part B — Why Do We See a Hexagon-Shaped Structure?</strong>
+        <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-gold); background:rgba(255,207,92,0.12); padding:3px 9px; border-radius:6px;">7.0 Points</span>
+    </div>
+    <p style="font-size:0.92rem; color:var(--text-main); margin-bottom:12px;">
+        If the air parcel is displaced slightly northward or southward by a small distance \\(y\\), it oscillates around its equilibrium latitude \\(y = 0\\). In frictionless barotropic flow, the absolute vorticity \\(\\eta = \\zeta + f\\) is conserved along the parcel's trajectory, where the relative vorticity is:
+        $$ \\zeta = \\frac{\\partial v}{\\partial x} - \\frac{\\partial u}{\\partial y} $$
+        with \\(u\\) the eastward velocity and \\(v\\) the northward velocity.
+    </p>
+    <ol type="a" style="padding-left: 20px; line-height: 1.85; font-size: 0.92rem;">
+        <li>Assuming \\(u = U = \\text{const.}\\) across a small displacement \\(dy\\) and that the parcel initially has zero relative vorticity (\\(\\zeta_0 = 0\\) at \\(y = 0\\)), derive the differential equation for the northward displacement \\(y(x)\\) as the parcel moves around Saturn. Show that it executes simple harmonic motion around \\(y = 0\\) and find the wavelength \\(\\lambda\\) of the resulting <em>Rossby wave</em> in terms of \\(U\\) and the northward Coriolis gradient \\(\\beta = \\frac{\\partial f}{\\partial y}\\). <em>(2.0 points)</em></li>
+        <li>For the polygonal wave pattern to remain stationary and not interfere destructively with itself, the air parcel must end up in the exact same phase after completing a full loop around the latitude circle \\(\\phi\\). Find an expression for the integer number of polygon sides \\(m\\) in terms of \\(U\\), \\(\\beta\\), the latitude \\(\\phi\\), and Saturn's radius \\(R_{\\mathrm{Saturn}}\\). <em>(1.5 points)</em></li>
+        <li>Derive an expression for \\(\\beta = \\frac{\\partial f}{\\partial y}\\) in terms of \\(\\Omega\\), \\(\\phi\\), and \\(R_{\\mathrm{Saturn}}\\). Then, using \\(U = 120\\ \\mathrm{m\\,s^{-1}}\\), \\(R_{\\mathrm{Saturn}} = 6.027 \\times 10^7\\text{ m}\\), Saturn's rotation period \\(P_{\\mathrm{rot}} \\approx 10^{\\text{h}}39^{\\text{m}}\\) (\\(\\Omega \\approx 1.64 \\times 10^{-4}\\ \\mathrm{rad\\,s^{-1}}\\)), and the observed hexagon latitude \\(\\phi = 75.63^\\circ\\), calculate the predicted value of \\(m\\). How far is it from the observed value \\(m = 6\\)? <em>(1.5 points)</em></li>
+        <li>In reality, neglecting the meridional shear of \\(U(y)\\) is a poor approximation for a narrow jet. Accounting for the curvature of the wind profile replaces \\(\\beta\\) with the effective parameter:
+        $$ \\beta_{\\mathrm{eff}} = \\beta - \\frac{\\partial^2 U}{\\partial y^2} $$
+        <em>Sánchez-Lavega et al. (2014)</em> measured the velocity profile of Saturn's north polar jet shown below. Approximating the peak of the red curve as a parabola \\(U(y) = U_{\\max} - c y^2\\) around the jet center, determine the constant \\(c\\) from the graph and calculate the corrected number of sides \\(m\\). <em>(2.0 points)</em></li>
+    </ol>
+    <img src="assets/img/potw/saturn_hexagon_jet_profile.png" alt="Saturn North Polar Jet Profile — Sánchez-Lavega et al. (2014)" class="user-diagram" onclick="window.openImageModal(this)">
+</div>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Geostrophic wind balance, barotropic potential vorticity conservation, planetary Rossby waves, and jet-stream curvature stabilization (Sánchez-Lavega et al., 2014).</p>
+
+<p><strong>Part A — Eastward Wind Speed in Saturn's Atmosphere (3.0 Points)</strong></p>
+<p><strong>(a) Northward Pressure-Gradient Acceleration (1.5 points):</strong><br>
+For an air parcel of volume \\(V = \\Delta x\\,\\Delta y\\,\\Delta z\\) and mass \\(m = \\rho\\,\\Delta x\\,\\Delta y\\,\\Delta z\\), the net force in the northward (\\(+y\\)) direction due to pressure acting on the southern face \\(y\\) and northern face \\(y + \\Delta y\\) is:</p>
+<p>$$ F_y = \\big[P(y) - P(y + \\Delta y)\\big]\\Delta x\\,\\Delta z \\simeq -\\frac{\\partial P}{\\partial y}\\,\\Delta x\\,\\Delta y\\,\\Delta z = -\\frac{\\partial P}{\\partial y}V $$</p>
+<p>Dividing by the parcel mass \\(m = \\rho V\\) gives the pressure-gradient force per unit mass:</p>
+<p>$$ a_{\\mathrm{press},y} = \\frac{F_y}{m} = \\mathbf{-\\frac{1}{\\rho}\\frac{\\partial P}{\\partial y}} $$</p>
+
+<p><strong>(b) Geostrophic Eastward Wind Speed \\(U\\) (1.5 points):</strong><br>
+In the northern hemisphere, an eastward flow (\\(U > 0\\)) experiences a southward Coriolis acceleration \\(-f U\\). Balancing the northward pressure-gradient force against the southward Coriolis force requires \\(-\\frac{1}{\\rho}\\frac{\\partial P}{\\partial y} - f U = 0\\) (where \\(\\frac{\\partial P}{\\partial y} < 0\\) as pressure decreases toward the cold pole):</p>
+<p>$$ U = -\\frac{1}{\\rho f}\\frac{\\partial P}{\\partial y} $$</p>
+<p>Substituting the ideal gas law \\(\\rho = \\frac{P \\mu m_H}{k_B T} = \\frac{P M_{\\mathrm{mol}}}{R_{\\mathrm{gas}} T}\\):</p>
+<p>$$ U = \\mathbf{-\\frac{k_B T}{f P \\mu m_H}\\frac{\\partial P}{\\partial y} = -\\frac{R_{\\mathrm{gas}} T}{f P M_{\\mathrm{mol}}}\\frac{\\partial P}{\\partial y}} $$</p>
+
+<hr style="border:none; border-top:1px solid var(--border-subtle); margin:16px 0;">
+
+<p><strong>Part B — Why Do We See a Hexagon-Shaped Structure? (7.0 Points)</strong></p>
+<p><strong>(a) Rossby Wave Differential Equation &amp; Wavelength \\(\\lambda\\) (2.0 points):</strong><br>
+Expanding the Coriolis parameter to first order around the equilibrium latitude \\(y = 0\\) gives \\(f(y) = f_0 + \\beta y\\), where \\(\\beta = \\frac{\\partial f}{\\partial y}\\). Conservation of absolute vorticity \\(\\eta = \\zeta + f = \\text{const.}\\) with initial condition \\(\\zeta_0 = 0\\) at \\(y = 0\\) yields:</p>
+<p>$$ \\zeta + f_0 + \\beta y = f_0 \\implies \\zeta = -\\beta y $$</p>
+<p>Since \\(u = U = \\text{const.}\\) (\\(\\frac{\\partial u}{\\partial y} = 0\\)), the relative vorticity reduces to \\(\\zeta = \\frac{\\partial v}{\\partial x}\\). For a parcel advected eastward at speed \\(U = \\frac{dx}{dt}\\), the northward velocity is \\(v = \\frac{dy}{dt} = U\\frac{dy}{dx}\\), so \\(\\zeta = \\frac{\\partial v}{\\partial x} = U\\frac{d^2 y}{dx^2}\\). Substituting into \\(\\zeta = -\\beta y\\) gives the harmonic oscillator equation:</p>
+<p>$$ \\mathbf{\\frac{d^2 y}{dx^2} + \\frac{\\beta}{U}\\,y = 0} \\qquad \\left(\\text{or in time: } \\frac{d^2 y}{dt^2} + \\beta U\\,y = 0\\right) $$</p>
+<p>This describes sinusoidal oscillations around \\(y = 0\\) with wavenumber \\(k = \\sqrt{\\frac{\\beta}{U}}\\), corresponding to the stationary Rossby wavelength:</p>
+<p>$$ \\lambda = \\frac{2\\pi}{k} = \\mathbf{2\\pi\\sqrt{\\frac{U}{\\beta}}} $$</p>
+
+<p><strong>(b) Number of Polygon Sides \\(m\\) from Periodic Boundary Condition (1.5 points):</strong><br>
+At latitude \\(\\phi\\), the circumference of the parallel circle around Saturn is \\(C(\\phi) = 2\\pi R_{\\mathrm{Saturn}}\\cos\\phi\\). Constructive closure after one full loop requires an integer number of wavelengths \\(m\\lambda = C(\\phi)\\):</p>
+<p>$$ m = \\frac{2\\pi R_{\\mathrm{Saturn}}\\cos\\phi}{2\\pi\\sqrt{U / \\beta}} = \\mathbf{R_{\\mathrm{Saturn}}\\cos\\phi\\sqrt{\\frac{\\beta}{U}}} $$</p>
+
+<p><strong>(c) Expression for \\(\\beta\\) &amp; Uniform-Flow Prediction for \\(m\\) (1.5 points):</strong><br>
+Using \\(dy = R_{\\mathrm{Saturn}}\\,d\\phi\\) and \\(f = 2\\Omega\\sin\\phi\\):</p>
+<p>$$ \\beta = \\frac{\\partial f}{\\partial y} = \\frac{1}{R_{\\mathrm{Saturn}}}\\frac{d}{d\\phi}\\left(2\\Omega\\sin\\phi\\right) = \\mathbf{\\frac{2\\Omega\\cos\\phi}{R_{\\mathrm{Saturn}}}} $$</p>
+<p>With \\(\\Omega \\approx 1.64 \\times 10^{-4}\\ \\mathrm{rad\\,s^{-1}}\\), \\(R_{\\mathrm{Saturn}} = 6.027 \\times 10^7\\text{ m}\\), and \\(\\phi = 75.63^\\circ\\) (\\(\\cos 75.63^\\circ \\approx 0.2482\\)):</p>
+<p>$$ \\beta = \\frac{2(1.64 \\times 10^{-4})(0.2482)}{6.027 \\times 10^7\\text{ m}} \\approx \\mathbf{1.35 \\times 10^{-12}\\ \\mathrm{m^{-1}\\,s^{-1}}} $$</p>
+<p>Substituting \\(\\beta\\) and \\(U = 120\\ \\mathrm{m\\,s^{-1}}\\) into the formula for \\(m\\):</p>
+<p>$$ m = (6.027 \\times 10^7\\text{ m})(0.2482)\\sqrt{\\frac{1.35 \\times 10^{-12}}{120}} \\approx \\mathbf{1.59} $$</p>
+<p>This naive uniform-flow value (\\(m \\approx 1.6\\)) is nearly a factor of \\(4\\) smaller than the observed \\(m = 6\\), proving that the planetary \\(\\beta\\)-effect alone cannot trap a hexagonal wave at such high wind speed.</p>
+
+<p><strong>(d) Jet-Curvature Correction \\(\\beta_{\\mathrm{eff}}\\) &amp; Recovery of \\(m \\approx 6\\) (2.0 points):</strong><br>
+For the parabolic velocity profile \\(U(y) = U_{\\max} - c y^2\\), the second derivative is \\(\\frac{\\partial^2 U}{\\partial y^2} = -2c\\), which increases the effective restoring gradient to:</p>
+<p>$$ \\beta_{\\mathrm{eff}} = \\beta - \\frac{\\partial^2 U}{\\partial y^2} = \\beta + 2c $$</p>
+<p>From the <em>Sánchez-Lavega et al. (2014)</em> graph, the jet peak lies at planetocentric latitude \\(\\phi \\approx 75.6^\\circ\\text{--}75.8^\\circ\\) with maximum eastward speed \\(U_{\\max} \\approx 115\\text{--}120\\ \\mathrm{m\\,s^{-1}}\\), and falls to \\(U \\approx 0\\ \\mathrm{m\\,s^{-1}}\\) at a half-width of \\(\\Delta\\phi \\approx 3.4^\\circ\\text{--}3.5^\\circ\\) on either side of the peak (at \\(\\sim 72.3^\\circ\\) and \\(\\sim 79.2^\\circ\\)). Converting \\(\\Delta\\phi \\approx 3.45^\\circ\\) to meridional distance \\(\\Delta y = R_{\\mathrm{Saturn}}\\,\\Delta\\phi_{\\mathrm{rad}} \\approx 3.63 \\times 10^6\\text{ m}\\):</p>
+<p>$$ c \\simeq \\frac{U_{\\max}}{(\\Delta y)^2} \\approx \\frac{120\\ \\mathrm{m\\,s^{-1}}}{(3.63 \\times 10^6\\text{ m})^2} \\approx 9.1 \\times 10^{-12}\\ \\mathrm{m^{-1}\\,s^{-1}} \\implies 2c \\approx 1.82 \\times 10^{-11}\\ \\mathrm{m^{-1}\\,s^{-1}} $$</p>
+<p>Thus \\(\\beta_{\\mathrm{eff}} = 1.35 \\times 10^{-12} + 1.82 \\times 10^{-11} \\approx \\mathbf{1.96 \\times 10^{-11}\\ \\mathrm{m^{-1}\\,s^{-1}}}\\) (dominated by the sharp jet curvature rather than planetary rotation), giving the corrected wavenumber:</p>
+<p>$$ m = R_{\\mathrm{Saturn}}\\cos\\phi\\sqrt{\\frac{\\beta_{\\mathrm{eff}}}{U_{\\max}}} \\approx (1.496 \\times 10^7\\text{ m})\\sqrt{\\frac{1.96 \\times 10^{-11}}{120}} \\approx \\mathbf{6.04 \\approx 6} $$
+*(Accepting \\(m \\in [5.5, 6.5]\\) depending on the exact points sampled along the red curve).* This confirms that the sharp meridional curvature of Saturn's polar jet acts as a waveguide that locks the standing Rossby wave into a 6-sided polygon.</p>`
     }
 ];
 

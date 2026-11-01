@@ -1,0 +1,579 @@
+<!-- =========================================================
+     SUBCHAPTER 1.1: CURVILINEAR COORDINATE SYSTEMS
+     ========================================================= -->
+<article class="subchapter-panel active" id="sub-1-1" data-sub="1.1">
+    <span class="chapter-badge">Chapter 1 · Kinematics &amp; Newtonian Gravitation in Central Fields</span>
+    <h2>1.1 Curvilinear Coordinate Systems</h2>
+
+    <h3>1.1.1 Planar Polar Coordinates $(r, \theta)$</h3>
+    <p>
+        For motion confined to a 2D plane, we use polar coordinates. A point $P$ is defined by its distance $r$ from the origin and its angle $\theta$ measured counterclockwise from a reference axis (usually the x-axis). Just like with cartesian coordinates, we need two perpendicular unit vectors to describe the motion in polar coordinates.
+    </p>
+    <p>Thus we define:</p>
+    <ol>
+        <li>$\hat{e}_r$: The radial unit vector, pointing directly away from the origin toward $P$.</li>
+        <li>$\hat{e}_\theta$: The azimuthal (or transverse) unit vector, pointing perpendicular to $\hat{e}_r$ in the direction of increasing $\theta$.</li>
+    </ol>
+    <p>
+        Just like $\hat{i}$ and $\hat{j}$ point in directions of increasing $x$ and $y$ coordinates, $\hat{e}_r$ and $\hat{e}_\theta$ point in directions of increasing $r$ and $\theta$.
+    </p>
+    <p>We can express these in terms of the fixed Cartesian unit vectors ($\hat{i}, \hat{j}$):</p>
+    <div class="math-block">
+        \[
+        \hat{e}_r = \cos\theta \, \hat{i} + \sin\theta \, \hat{j}
+        \]
+        \[
+        \hat{e}_\theta = -\sin\theta \, \hat{i} + \cos\theta \, \hat{j}
+        \]
+    </div>
+
+    <h4>Time Derivatives of Unit Vectors in Polar Coordinates</h4>
+    <p>
+        As the particle moves, $\theta$ changes with time ($\theta = \theta(t)$), so the unit vectors rotate. Using the chain rule, we differentiate them with respect to time $t$, noting that $\hat{i}$ and $\hat{j}$ are constant in time:
+    </p>
+    <div class="math-block">
+        \[
+        \frac{d\hat{e}_r}{dt} = \dot{\hat{e}}_r = (-\sin\theta \cdot \dot{\theta}) \hat{i} + (\cos\theta \cdot \dot{\theta}) \hat{j} = \dot{\theta}(-\sin\theta \, \hat{i} + \cos\theta \, \hat{j})
+        \]
+    </div>
+    <p>Notice that the term in parentheses is exactly $\hat{e}_\theta$. Therefore:</p>
+    <div class="math-block">
+        \[
+        \dot{\hat{e}}_r = \dot{\theta} \hat{e}_\theta
+        \]
+    </div>
+    <p>Similarly, differentiating $\hat{e}_\theta$:</p>
+    <div class="math-block">
+        \[
+        \frac{d\hat{e}_\theta}{dt} = \dot{\hat{e}}_\theta = (-\cos\theta \cdot \dot{\theta}) \hat{i} - (\sin\theta \cdot \dot{\theta}) \hat{j} = -\dot{\theta}(\cos\theta \, \hat{i} + \sin\theta \, \hat{j})
+        \]
+        \[
+        \dot{\hat{e}}_\theta = -\dot{\theta} \hat{e}_r
+        \]
+    </div>
+
+    <h4>Velocity in Polar Coordinates</h4>
+    <p>The position vector of the particle is simply its distance $r$ in the direction of $\hat{e}_r$:</p>
+    <div class="math-block">
+        \[
+        \vec{r} = r \hat{e}_r
+        \]
+    </div>
+    <p>To find the velocity vector $\vec{v}$, we take the time derivative of $\vec{r}$, applying the product rule:</p>
+    <div class="math-block">
+        \[
+        \vec{v} = \frac{d\vec{r}}{dt} = \dot{r} \hat{e}_r + r \dot{\hat{e}}_r
+        \]
+    </div>
+    <p>Substituting our derived expression for $\dot{\hat{e}}_r$:</p>
+    <div class="math-block">
+        \[
+        \vec{v} = \dot{r} \hat{e}_r + r\dot{\theta} \hat{e}_\theta
+        \]
+    </div>
+    <p>
+        Here, $v_r = \dot{r}$ is the <strong>radial velocity</strong> (how fast the distance from the origin is changing), and $v_\theta = r\dot{\theta}$ is the <strong>transverse (or azimuthal) velocity</strong> (how fast the particle is sweeping across the angle).
+    </p>
+
+    <h4>Acceleration in Polar Coordinates</h4>
+    <p>To find the acceleration vector $\vec{a}$, we differentiate the velocity vector $\vec{v}$, again using the product rule on both terms:</p>
+    <div class="math-block">
+        \[
+        \vec{a} = \frac{d\vec{v}}{dt} = \frac{d}{dt}(\dot{r} \hat{e}_r) + \frac{d}{dt}(r\dot{\theta} \hat{e}_\theta)
+        \]
+        \[
+        \vec{a} = (\ddot{r} \hat{e}_r + \dot{r} \dot{\hat{e}}_r) + (\dot{r}\dot{\theta} \hat{e}_\theta + r\ddot{\theta} \hat{e}_\theta + r\dot{\theta} \dot{\hat{e}}_\theta)
+        \]
+    </div>
+    <p>Substitute $\dot{\hat{e}}_r = \dot{\theta} \hat{e}_\theta$ and $\dot{\hat{e}}_\theta = -\dot{\theta} \hat{e}_r$:</p>
+    <div class="math-block">
+        \[
+        \vec{a} = \ddot{r} \hat{e}_r + \dot{r}(\dot{\theta} \hat{e}_\theta) + \dot{r}\dot{\theta} \hat{e}_\theta + r\ddot{\theta} \hat{e}_\theta + r\dot{\theta}(-\dot{\theta} \hat{e}_r)
+        \]
+    </div>
+    <p>Grouping the $\hat{e}_r$ and $\hat{e}_\theta$ terms gives the fundamental acceleration equation in polar coordinates:</p>
+    <div class="math-block">
+        \[
+        \vec{a} = (\ddot{r} - r\dot{\theta}^2) \hat{e}_r + (r\ddot{\theta} + 2\dot{r}\dot{\theta}) \hat{e}_\theta
+        \]
+    </div>
+    <p>
+        $a_r = \ddot{r} - r\dot{\theta}^2$ represents the total radial acceleration. The $- r\dot{\theta}^2$ term is the familiar <strong>centripetal acceleration</strong> required to keep a body in a curved path.
+    </p>
+    <p>
+        $a_\theta = r\ddot{\theta} + 2\dot{r}\dot{\theta}$ represents the transverse acceleration. The $2\dot{r}\dot{\theta}$ term is the <strong>Coriolis acceleration</strong>, which arises when a particle moves radially while the reference frame rotates.
+    </p>
+
+    <div class="handout-note">
+        <strong>Note:</strong> In a purely central force field (like gravity, where force is only along the radial direction), the transverse acceleration $a_\theta = 0$. As we will see in Section 1.2, setting $r\ddot{\theta} + 2\dot{r}\dot{\theta} = 0$ leads directly to the conservation of angular momentum and to Kepler's Second Law.
+    </div>
+
+    <h3>1.1.2 Spherical Coordinates $(r, \theta, \phi)$ &amp; Cylindrical Coordinates $(r, \phi, z)$</h3>
+
+    <h4>Spherical Coordinates $(r, \theta, \phi)$</h4>
+    <p>This is the standard system used in astronomy (e.g., Right Ascension and Declination are forms of spherical coordinates).</p>
+    <ul>
+        <li>$r$: Radial distance from the origin.</li>
+        <li>$\theta$: The polar angle (co-latitude or zenith angle), measured from the positive z-axis down ($0 \le \theta \le \pi$).</li>
+        <li>$\phi$: The azimuthal angle (longitude), measured counterclockwise in the xy-plane from the positive x-axis ($0 \le \phi \le 2\pi$).</li>
+    </ul>
+    <p>
+        The position vector is simply $\vec{r} = r \hat{e}_r$. The derivation of velocity and acceleration is similar to the one in 2D, but with three rotating unit vectors ($\hat{e}_r, \hat{e}_\theta, \hat{e}_\phi$), each pointing in the direction of increase of the corresponding coordinate (the derivation is left as an exercise). The results are:
+    </p>
+    <div class="math-block">
+        \[
+        \vec{v} = \dot{r} \hat{e}_r + r\dot{\theta} \hat{e}_\theta + r\dot{\phi}\sin\theta \hat{e}_\phi
+        \]
+        \[
+        \begin{aligned}
+        \vec{a} = {} & (\ddot{r} - r\dot{\theta}^2 - r\dot{\phi}^2\sin^2\theta) \hat{e}_r \\
+        & + (r\ddot{\theta} + 2\dot{r}\dot{\theta} - r\dot{\phi}^2\sin\theta\cos\theta) \hat{e}_\theta \\
+        & + (r\ddot{\phi}\sin\theta + 2\dot{r}\dot{\phi}\sin\theta + 2r\dot{\theta}\dot{\phi}\cos\theta) \hat{e}_\phi
+        \end{aligned}
+        \]
+    </div>
+
+    <h4>Cylindrical Coordinates $(r, \phi, z)$</h4>
+    <p>
+        Useful for problems involving accretion disks or planetary rings. It is simply planar polar coordinates $(r, \phi)$ in the $xy$-plane, plus a Cartesian $z$ axis.
+    </p>
+    <ul>
+        <li>$r$: Radial distance from the $z$-axis (often denoted as $\rho$ or $s$ to distinguish from spherical $r$).</li>
+        <li>$\phi$: Azimuthal angle in the $xy$-plane.</li>
+        <li>$z$: Height above the $xy$-plane.</li>
+    </ul>
+    <p>
+        Because the $\hat{e}_z$ unit vector is fixed, its time derivative is zero ($\dot{\hat{e}}_z = 0$). We just add the $z$ components to the equations in polar coordinates:
+    </p>
+    <div class="math-block">
+        \[
+        \vec{v} = \dot{r} \hat{e}_r + r\dot{\phi} \hat{e}_\phi + \dot{z} \hat{e}_z
+        \]
+        \[
+        \vec{a} = (\ddot{r} - r\dot{\phi}^2) \hat{e}_r + (r\ddot{\phi} + 2\dot{r}\dot{\phi}) \hat{e}_\phi + \ddot{z} \hat{e}_z
+        \]
+    </div>
+
+    <div class="subchapter-nav-bar">
+        <button class="btn-step" disabled><i class="fa-solid fa-arrow-left"></i> Previous</button>
+        <button class="btn-step" onclick="switchSubchapter('1.2')">Next: 1.2 Conservation Laws <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+</article>
+
+<!-- =========================================================
+     SUBCHAPTER 1.2: CONSERVATION LAWS IN NEWTONIAN MECHANICS
+     ========================================================= -->
+<article class="subchapter-panel" id="sub-1-2" data-sub="1.2">
+    <span class="chapter-badge">Chapter 1 · Kinematics &amp; Newtonian Gravitation in Central Fields</span>
+    <h2>1.2 Conservation Laws in Newtonian Mechanics</h2>
+
+    <h3>1.2.1 Conservation of Linear &amp; Angular Momentum</h3>
+    <p>
+        Let us consider a particle of mass $m$ (e.g., a planet) orbiting a much larger primary body of mass $M$ (e.g., a star) located at the origin of an inertial reference frame.
+    </p>
+    <p>
+        According to Newton's Second Law, the net force $\vec{F}$ acting on the particle relates to its acceleration $\vec{a} = \ddot{\vec{r}}$ by:
+    </p>
+    <div class="math-block">
+        \[
+        \vec{F} = m\ddot{\vec{r}} = \frac{d\vec{p}}{dt}
+        \]
+    </div>
+    <p>
+        where $\vec{p} = m\vec{v}$ is the linear momentum. In a central force field, the force vector is always aligned with the radial position vector $\vec{r}$. Mathematically, this means $\vec{F} = F(r)\hat{e}_r$, where $F(r)$ is a scalar function of distance (for gravity, $F(r) = -GMm/r^2$).
+    </p>
+
+    <h4>Torque and Angular Momentum</h4>
+    <p>
+        The angular momentum $\vec{L}$ of the particle with respect to the origin is defined as the cross product of its position vector and its linear momentum:
+    </p>
+    <div class="math-block">
+        \[
+        \vec{L} = \vec{r} \times \vec{p} = m(\vec{r} \times \vec{v})
+        \]
+    </div>
+    <p>To see how $\vec{L}$ changes over time, we take its time derivative using the product rule for cross products:</p>
+    <div class="math-block">
+        \[
+        \frac{d\vec{L}}{dt} = \frac{d}{dt} (\vec{r} \times \vec{p}) = \left( \frac{d\vec{r}}{dt} \times \vec{p} \right) + \left( \vec{r} \times \frac{d\vec{p}}{dt} \right)
+        \]
+    </div>
+    <p>Let's evaluate these two terms:</p>
+    <ol>
+        <li>The first term is $(\vec{v} \times m\vec{v})$. Since any vector crossed with itself is zero ($\vec{v}$ is parallel to $m\vec{v}$), this term vanishes.</li>
+        <li>The second term is $(\vec{r} \times \vec{F})$. This is the fundamental definition of <strong>torque</strong> ($\vec{\tau}$).</li>
+    </ol>
+    <p>Therefore, the rate of change of angular momentum equals the net torque:</p>
+    <div class="math-block">
+        \[
+        \frac{d\vec{L}}{dt} = \vec{\tau} = \vec{r} \times \vec{F}
+        \]
+    </div>
+
+    <h4>Application to Central Forces</h4>
+    <p>
+        Because we are dealing with a central force ($\vec{F} = F(r)\hat{e}_r$) and the position vector is purely radial ($\vec{r} = r\hat{e}_r$), the torque becomes:
+    </p>
+    <div class="math-block">
+        \[
+        \vec{\tau} = (r\hat{e}_r) \times (F(r)\hat{e}_r) = rF(r) (\hat{e}_r \times \hat{e}_r) = 0
+        \]
+    </div>
+    <p>Since the torque is zero, the angular momentum vector must be a constant in time:</p>
+    <div class="math-block">
+        \[
+        \frac{d\vec{L}}{dt} = 0 \implies \vec{L} = \text{constant vector}
+        \]
+    </div>
+
+    <h4>Specific Angular Momentum ($\vec{h}$)</h4>
+    <p>We define the <strong>specific angular momentum</strong> ($\vec{h}$), which is the angular momentum per unit mass:</p>
+    <div class="math-block">
+        \[
+        \vec{h} = \frac{\vec{L}}{m} = \vec{r} \times \vec{v}
+        \]
+    </div>
+    <p>
+        Like $\vec{L}$, the specific angular momentum $\vec{h}$ is a conserved vector. Because $\vec{h}$ is always perpendicular to both $\vec{r}$ and $\vec{v}$, and its direction never changes, the vectors $\vec{r}$ and $\vec{v}$ must always lie in the same plane. <strong>All unperturbed two-body orbits are strictly planar.</strong> We will align our coordinate system such that $\vec{h}$ points along the $z$-axis: $\vec{h} = h\hat{k}$.
+    </p>
+
+    <h4>Kepler's 2nd Law</h4>
+    <p>
+        Kepler's 2nd Law states that the position vector of a planet sweeps out equal areas during equal intervals of time. In this section, we will derive it using Newtonian mechanics.<sup>[1]</sup>
+    </p>
+    <p>
+        We start by writing the specific angular momentum in polar coordinates, by using the formulas derived in Section 1.1: $\vec{r} = r\hat{e}_r$ and $\vec{v} = \dot{r}\hat{e}_r + r\dot{\theta}\hat{e}_\theta$.
+    </p>
+    <div class="math-block">
+        \[
+        \vec{h} = (r\hat{e}_r) \times (\dot{r}\hat{e}_r + r\dot{\theta}\hat{e}_\theta)
+        \]
+        \[
+        \vec{h} = r\dot{r}(\hat{e}_r \times \hat{e}_r) + r^2\dot{\theta}(\hat{e}_r \times \hat{e}_\theta)
+        \]
+    </div>
+    <p>Since $\hat{e}_r \times \hat{e}_r = 0$ and $\hat{e}_r \times \hat{e}_\theta = \hat{k}$ (the z-axis perpendicular to the plane), we get:</p>
+    <div class="math-block">
+        \[
+        \vec{h} = r^2\dot{\theta} \hat{k} \implies h = r^2\dot{\theta} = \text{constant}
+        \]
+    </div>
+    <p>
+        Geometrically, as the radius vector $\vec{r}$ sweeps through an infinitesimal angle $d\theta$, it traces out an infinitesimal triangular area $dA = \frac{1}{2} r (r d\theta) = \frac{1}{2} r^2 d\theta$. Dividing by the time interval $dt$, we find the <strong>areal velocity</strong>:
+    </p>
+    <div class="math-block">
+        \[
+        \frac{dA}{dt} = \frac{1}{2} r^2 \frac{d\theta}{dt} = \frac{1}{2} r^2 \dot{\theta}
+        \]
+    </div>
+    <p>Substituting $h = r^2\dot{\theta}$, we arrive at:</p>
+    <div class="math-block">
+        \[
+        \frac{dA}{dt} = \frac{h}{2} = \text{constant}
+        \]
+    </div>
+    <p>which concludes the derivation.</p>
+
+    <div class="footnote-box">
+        <sup>[1]</sup> Actually, Kepler's Laws have been used by Newton to come with his theory for gravity, not the other way around. Kepler derived them empirically from planet ephemerids, almost 80 years before Newton came with his theory.
+    </div>
+
+    <h3>1.2.2 Mechanical Energy in Gravitational Fields</h3>
+    <p>
+        Just as angular momentum is conserved due to the lack of torque, mechanical energy is conserved because gravity is a <strong>conservative force</strong>.
+    </p>
+
+    <h4>Work-Energy Theorem &amp; Potential Energy</h4>
+    <p>The work $W$ done by a force moving a particle from position $\vec{r}_1$ to $\vec{r}_2$ is the line integral of the force:</p>
+    <div class="math-block">
+        \[
+        W = \int_{\vec{r}_1}^{\vec{r}_2} \vec{F} \cdot d\vec{r}
+        \]
+    </div>
+    <p>
+        For a central force $\vec{F} = F(r)\hat{e}_r$, the dot product $\vec{F} \cdot d\vec{r}$ simplifies to $F(r)dr$. The work done depends only on the initial and final radial distances ($r_1$ and $r_2$), not the path taken. Therefore, the force is conservative, and we can define a potential energy function $U(r)$ such that the force is the negative gradient of the potential ($\vec{F} = -\nabla U$).
+    </p>
+    <p>For Newtonian gravity, $F(r) = -\frac{GMm}{r^2}$. The gravitational potential energy is:</p>
+    <div class="math-block">
+        \[
+        U(r) = -\int F(r) dr = -\int \left(-\frac{GMm}{r^2}\right) dr = -\frac{GMm}{r}
+        \]
+    </div>
+    <p><em>(Note: We set the constant of integration to zero so that $U \to 0$ as $r \to \infty$.)</em></p>
+
+    <h4>Specific Mechanical Energy ($\epsilon$)</h4>
+    <p>The total mechanical energy $E$ of the system is the sum of kinetic energy ($K = \frac{1}{2}mv^2$) and potential energy ($U$):</p>
+    <div class="math-block">
+        \[
+        E = K + U = \frac{1}{2}mv^2 - \frac{GMm}{r} = \text{constant}
+        \]
+    </div>
+    <p>Just as we did with angular momentum, we divide by the particle's mass $m$ to define the <strong>specific mechanical energy</strong> ($\epsilon$):</p>
+    <div class="math-block">
+        \[
+        \epsilon = \frac{E}{m} = \frac{1}{2}v^2 - \frac{GM}{r}
+        \]
+    </div>
+    <p>This quantity remains constant everywhere along an unperturbed orbit.</p>
+    <p>
+        Now recall that the squared velocity is $v^2 = \vec{v} \cdot \vec{v} = (\dot{r}\hat{e}_r + r\dot{\theta}\hat{e}_\theta) \cdot (\dot{r}\hat{e}_r + r\dot{\theta}\hat{e}_\theta) = \dot{r}^2 + r^2\dot{\theta}^2$. Substituting this into the energy equation yields:
+    </p>
+    <div class="math-block">
+        \[
+        \epsilon = \frac{1}{2}(\dot{r}^2 + r^2\dot{\theta}^2) - \frac{GM}{r}
+        \]
+    </div>
+    <p>Now, substitute the relation for specific angular momentum ($\dot{\theta} = h/r^2$):</p>
+    <div class="math-block">
+        \[
+        \epsilon = \frac{1}{2}\dot{r}^2 + \frac{h^2}{2r^2} - \frac{GM}{r}
+        \]
+    </div>
+    <p>
+        This is an important result. We have completely eliminated the angular variable $\theta$. The term $\frac{h^2}{2r^2}$ acts as a "centrifugal potential energy." We define the <strong>effective potential</strong> $U_{eff}(r)$:
+    </p>
+    <div class="math-block">
+        \[
+        U_{eff}(r) = \frac{h^2}{2r^2} - \frac{GM}{r}
+        \]
+        \[
+        \epsilon = \frac{1}{2}\dot{r}^2 + U_{eff}(r)
+        \]
+    </div>
+
+    <div class="subchapter-nav-bar">
+        <button class="btn-step" onclick="switchSubchapter('1.1')"><i class="fa-solid fa-arrow-left"></i> Prev: 1.1 Coordinate Systems</button>
+        <button class="btn-step" onclick="switchSubchapter('1.3')">Next: 1.3 Gravitational Potential <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+</article>
+
+<!-- =========================================================
+     SUBCHAPTER 1.3: GRAVITATIONAL POTENTIAL THEORY
+     ========================================================= -->
+<article class="subchapter-panel" id="sub-1-3" data-sub="1.3">
+    <span class="chapter-badge">Chapter 1 · Kinematics &amp; Newtonian Gravitation in Central Fields</span>
+    <h2>1.3 Gravitational Potential Theory</h2>
+
+    <h3>1.3.1 Newton's Law of Universal Gravitation &amp; Gravitational Potential</h3>
+    <p>
+        Newton's Law of Universal Gravitation states that the attractive force $\vec{F}$ exerted by a point mass $M$ on another point mass $m$ located at a position vector $\vec{r}$ relative to $M$ is:
+    </p>
+    <div class="math-block">
+        \[
+        \vec{F} = -\frac{GMm}{r^2} \hat{e}_r
+        \]
+    </div>
+    <p>
+        where $G \approx 6.674 \times 10^{-11} \text{ m}^3\text{kg}^{-1}\text{s}^{-2}$ is the universal gravitational constant, and $\hat{e}_r$ is the radial unit vector pointing from $M$ to $m$.
+    </p>
+
+    <h4>Gravitational Field Vector ($\vec{g}$)</h4>
+    <p>
+        Instead of talking about the force on a specific test mass $m$, it is more useful to describe the <strong>gravitational field</strong> (or gravitational acceleration) generated by $M$ at any point in space. We define this field $\vec{g}(\vec{r})$ as the force per unit mass:
+    </p>
+    <div class="math-block">
+        \[
+        \vec{g}(\vec{r}) = \frac{\vec{F}}{m} = -\frac{GM}{r^2} \hat{e}_r
+        \]
+    </div>
+
+    <h4>Gravitational Potential ($\Phi$)</h4>
+    <p>
+        As proven in Section 1.2, gravity is a conservative force. Therefore, the gravitational field can be expressed as the negative gradient of a scalar <strong>gravitational potential</strong> $\Phi(r)$. The potential is the potential energy $U(r)$ per unit test mass:
+    </p>
+    <div class="math-block">
+        \[
+        \Phi(r) = \frac{U(r)}{m} = -\frac{GM}{r}
+        \]
+    </div>
+    <p>By definition, $\vec{g} = -\nabla \Phi$. In spherical coordinates with spherical symmetry, the gradient is simply the radial derivative:</p>
+    <div class="math-block">
+        \[
+        \vec{g} = -\frac{d\Phi}{dr} \hat{e}_r = -\frac{d}{dr}\left(-\frac{GM}{r}\right) \hat{e}_r = -\frac{GM}{r^2} \hat{e}_r
+        \]
+    </div>
+    <p>
+        Working with the scalar potential $\Phi$ is mathematically much simpler than working with the vector field $\vec{g}$, especially when summing the contributions of multiple masses (since scalars simply add: $\Phi_{total} = \sum \Phi_i$).
+    </p>
+
+    <h3>1.3.2 Shell Theorem &amp; Spherical Distributions</h3>
+    <p>For extended continuous bodies, we replace the mass $M$ with a volume integral over the density distribution $\rho(\vec{r}')$:</p>
+    <div class="math-block">
+        \[
+        \Phi(\vec{r}) = -G \iiint \frac{\rho(\vec{r}')}{|\vec{r} - \vec{r}'|} dV'
+        \]
+    </div>
+    <p>
+        The integral above is a powerful tool. It allows one to find the potential at <em>any</em> point in space for <em>any</em> distribution of mass. Having expressed the potential, it is quite easy to find the field and then, the force.
+    </p>
+    <p>
+        In terms of notation, $dV'$ is the volume element, $\rho$ represents the mass distribution that causes the field; the prime notation in the position vectors is used to mark the positions of points in the mass distribution, while the un-primed $\vec{r}$ is the position vector of the point where the potential is calculated. Basically, the denominator is just the distance between a point in the mass distribution and wherever you want to compute the potential.
+    </p>
+    <p>
+        However, evaluating this 3D integral can be quite difficult for certain mass distributions. Sometimes another tool is more convenient, <strong>Gauss's Law for Gravity</strong>, which relates the gravitational flux through a closed surface to the mass enclosed within it:
+    </p>
+    <div class="math-block">
+        \[
+        \oint_S \vec{g} \cdot d\vec{A} = -4\pi G M_{encl}
+        \]
+    </div>
+    <p>
+        Gauss's Law is also available for any mass distribution and any point in space, but it is usually practical only in situations where the mass distribution is symmetric.
+    </p>
+
+    <h4>The Shell Theorem</h4>
+    <p>
+        Consider a thin, uniform spherical shell of mass $M$ and radius $R$. By drawing a spherical Gaussian surface of radius $r$ concentric with the shell, we discover two profound truths that greatly simplify celestial mechanics:
+    </p>
+    <ol>
+        <li>
+            <strong>Outside the shell ($r > R$):</strong> The enclosed mass is $M$. Gauss's law gives $g(4\pi r^2) = -4\pi G M$, so $\vec{g} = -\frac{GM}{r^2}\hat{e}_r$.<br>
+            <em>Conclusion:</em> A spherically symmetric body affects external objects gravitationally as though all of its mass were concentrated at its exact center.
+        </li>
+        <li>
+            <strong>Inside the shell ($r < R$):</strong> The enclosed mass is $0$. Gauss's law gives $g(4\pi r^2) = 0$, so $\vec{g} = 0$.<br>
+            <em>Conclusion:</em> Inside a uniform spherical shell, the gravitational field is strictly zero everywhere. Consequently, the potential $\Phi$ inside the shell is constant and equals its value at the surface: $\Phi_{inside} = -\frac{GM}{R}$.
+        </li>
+    </ol>
+
+    <h4>The Uniform Solid Sphere</h4>
+    <p>Now consider a planet modeled as a uniform solid sphere of mass $M$ and radius $R$ with constant density $\rho = \frac{M}{\frac{4}{3}\pi R^3}$.</p>
+    <ul>
+        <li>
+            <strong>For external points ($r \ge R$):</strong> By the Shell Theorem, the sphere acts as a point mass.
+            <div class="math-block">
+                \[
+                g_{out}(r) = -\frac{GM}{r^2}, \quad \Phi_{out}(r) = -\frac{GM}{r}
+                \]
+            </div>
+        </li>
+        <li>
+            <strong>For internal points ($r < R$):</strong> A test particle at radius $r$ only feels gravity from the mass <em>interior</em> to its radius. The outer shells exert no net force. The enclosed mass is $M(r) = M(r/R)^3$.
+            <div class="math-block">
+                \[
+                g_{in}(r) = -\frac{G M(r)}{r^2} = -\frac{G M (r/R)^3}{r^2} = -\frac{GM}{R^3} r
+                \]
+            </div>
+            Notice that gravity inside a uniform planet increases linearly with distance from the center.<br>
+            To find the internal potential $\Phi_{in}(r)$, we integrate $g_{in}$ and match the boundary condition at the surface ($r=R$):
+            <div class="math-block">
+                \[
+                \Phi_{in}(r) = -\int g_{in}(r) dr = \frac{GM}{2R^3} r^2 + C
+                \]
+            </div>
+            At $r=R$, $\Phi_{in}(R) = \frac{GM}{2R} + C = -\frac{GM}{R} \implies C = -\frac{3GM}{2R}$.
+            <div class="math-block">
+                \[
+                \Phi_{in}(r) = -\frac{GM}{2R^3} (3R^2 - r^2)
+                \]
+            </div>
+        </li>
+    </ul>
+
+    <h4>Gravitational Binding Energy ($U$)</h4>
+    <p>
+        The gravitational binding energy is the total energy required to completely disassemble a celestial body into point masses at infinity. We calculate it by assembling the sphere shell by shell from the inside out. Let the current assembled mass be $M(r) = \frac{4}{3}\pi r^3 \rho$. The work $dU$ required to bring the next shell of mass $dm = 4\pi r^2 \rho dr$ from infinity to the surface $r$ is:
+    </p>
+    <div class="math-block">
+        \[
+        dU = \Phi(r) dm = -\frac{GM(r)}{r} dm = -\frac{G (\frac{4}{3}\pi r^3 \rho) (4\pi r^2 \rho dr)}{r} = -\frac{16}{3}\pi^2 G \rho^2 r^4 dr
+        \]
+    </div>
+    <p>Integrating from the center ($r=0$) to the total radius ($r=R$):</p>
+    <div class="math-block">
+        \[
+        U = \int_0^R -\frac{16}{3}\pi^2 G \rho^2 r^4 dr = -\frac{16}{3}\pi^2 G \rho^2 \frac{R^5}{5}
+        \]
+    </div>
+    <p>Substitute the density $\rho = \frac{3M}{4\pi R^3}$ back into the equation:</p>
+    <div class="math-block">
+        \[
+        U = -\frac{16}{3}\pi^2 G \left( \frac{9M^2}{16\pi^2 R^6} \right) \frac{R^5}{5} = -\frac{3GM^2}{5R}
+        \]
+    </div>
+
+    <div class="handout-note ioaa-note">
+        <strong>IOAA Note:</strong> The factor of $3/5$ is specific to a <em>uniform</em> sphere. Real stars are denser in the core, making their binding energy more negative. In astrophysics problems, binding energy is often generalized as $U = -\alpha \frac{GM^2}{R}$, where $\alpha \approx 3/5$ for uniform planets, but $\alpha > 1$ for centrally condensed stars like the Sun.
+    </div>
+
+    <h3>1.3.3 The Virial Theorem for Bound Systems</h3>
+    <p>
+        While two-body systems are solved exactly (Section 2), systems containing $N$ interacting masses (like a star cluster or a galaxy) are chaotic. However, their global properties are strictly governed by the <strong>Virial Theorem</strong>.
+    </p>
+    <p>Consider a system of $N$ particles with masses $m_i$ and position vectors $\vec{r}_i$. We define a scalar quantity called the moment of inertia $I$:</p>
+    <div class="math-block">
+        \[
+        I = \sum_{i=1}^N m_i r_i^2 = \sum_{i=1}^N m_i (\vec{r}_i \cdot \vec{r}_i)
+        \]
+    </div>
+    <p>Taking the first time derivative:</p>
+    <div class="math-block">
+        \[
+        \frac{dI}{dt} = 2 \sum_{i=1}^N m_i (\vec{r}_i \cdot \dot{\vec{r}}_i) = 2 \sum_{i=1}^N m_i (\vec{r}_i \cdot \vec{v}_i)
+        \]
+    </div>
+    <p>Taking the second time derivative, applying the product rule:</p>
+    <div class="math-block">
+        \[
+        \frac{d^2 I}{dt^2} = 2 \sum_{i=1}^N m_i (\vec{v}_i \cdot \vec{v}_i + \vec{r}_i \cdot \dot{\vec{v}}_i)
+        \]
+    </div>
+    <p>Recognize that $\vec{v}_i \cdot \vec{v}_i = v_i^2$, and $m_i \dot{\vec{v}}_i = m_i \vec{a}_i = \vec{F}_i$ (the total force on particle $i$).</p>
+    <div class="math-block">
+        \[
+        \frac{1}{2} \frac{d^2 I}{dt^2} = \sum_{i=1}^N m_i v_i^2 + \sum_{i=1}^N \vec{r}_i \cdot \vec{F}_i
+        \]
+    </div>
+    <p>Let's evaluate the two sums on the right side:</p>
+    <ol>
+        <li><strong>Kinetic Energy Term:</strong> We know kinetic energy is $K_i = \frac{1}{2} m_i v_i^2$. Therefore, the first sum is exactly twice the total kinetic energy of the system ($2K$).</li>
+        <li>
+            <strong>Virial Term (Force Sum):</strong> The total force on particle $i$ is the sum of gravitational forces from all other particles $j$: $\vec{F}_i = \sum_{j \ne i} \vec{F}_{ij}$.<br>
+            The term is $\sum_{i} \vec{r}_i \cdot (\sum_{j \ne i} \vec{F}_{ij})$.<br>
+            By Newton's Third Law, $\vec{F}_{ji} = -\vec{F}_{ij}$. We can pair up the terms for any two interacting particles $i$ and $j$:
+            <div class="math-block">
+                \[
+                \vec{r}_i \cdot \vec{F}_{ij} + \vec{r}_j \cdot \vec{F}_{ji} = \vec{r}_i \cdot \vec{F}_{ij} - \vec{r}_j \cdot \vec{F}_{ij} = (\vec{r}_i - \vec{r}_j) \cdot \vec{F}_{ij}
+                \]
+            </div>
+            Substituting the gravitational force $\vec{F}_{ij} = -\frac{G m_i m_j}{|\vec{r}_i - \vec{r}_j|^3} (\vec{r}_i - \vec{r}_j)$:
+            <div class="math-block">
+                \[
+                (\vec{r}_i - \vec{r}_j) \cdot \vec{F}_{ij} = -\frac{G m_i m_j}{|\vec{r}_i - \vec{r}_j|^3} |\vec{r}_i - \vec{r}_j|^2 = -\frac{G m_i m_j}{|\vec{r}_i - \vec{r}_j|}
+                \]
+            </div>
+            This is exactly the gravitational potential energy $U_{ij}$ between the two particles! Summing over all unique pairs gives the total potential energy $U$.
+        </li>
+    </ol>
+    <p>Plugging these back into our second derivative equation yields the generalized Virial Theorem:</p>
+    <div class="math-block">
+        \[
+        \frac{1}{2} \frac{d^2 I}{dt^2} = 2K + U
+        \]
+    </div>
+
+    <h4>The Steady-State Virial Theorem</h4>
+    <p>
+        If a star cluster or galaxy is in a stable, bound, dynamically relaxed state (it is neither collapsing nor exploding), its moment of inertia $I$ fluctuates around a constant mean value. Therefore, the time-averaged second derivative $\langle \ddot{I} \rangle$ is zero.<br>
+        This yields the fundamental equation of statistical celestial mechanics:
+    </p>
+    <div class="math-block">
+        \[
+        2\langle K \rangle + \langle U \rangle = 0
+        \]
+    </div>
+    <p>Since the total energy is $E = K + U$, we can equivalently state:</p>
+    <div class="math-block">
+        \[
+        E = -K \quad \text{and} \quad E = \frac{1}{2}U
+        \]
+    </div>
+    <p>
+        This theorem is heavily tested in IOAA. It allows you to estimate the total mass of a galaxy cluster just by measuring the velocity dispersion (kinetic energy) of its galaxies and its approximate radius (potential energy), which historically provided the first evidence for Dark Matter.
+    </p>
+
+    <div class="subchapter-nav-bar">
+        <button class="btn-step" onclick="switchSubchapter('1.2')"><i class="fa-solid fa-arrow-left"></i> Prev: 1.2 Conservation Laws</button>
+        <button class="btn-step" onclick="switchSubchapter('2.1')">Next: 2.1 Two-Body Reduction <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+</article>
