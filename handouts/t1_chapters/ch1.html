@@ -1,31 +1,328 @@
 <!-- =========================================================
+     CHAPTER 1 SCOPED STYLES (ZERO SCROLLBARS + SUPERHANDOUT UI)
+     ========================================================= -->
+<style>
+    /* Eliminate unnecessary horizontal/vertical scrollbars on MathJax & figures */
+    .subchapter-panel .math-block {
+        overflow-x: auto;
+        overflow-y: hidden !important;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 14px 18px;
+        margin: 16px 0;
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+        border-radius: var(--radius-md, 12px);
+    }
+    .subchapter-panel .math-block::-webkit-scrollbar,
+    .subchapter-panel mjx-container::-webkit-scrollbar {
+        display: none;
+    }
+    .subchapter-panel mjx-container[jax="CHTML"][display="true"] {
+        margin: 0.4em 0 !important;
+        overflow-x: auto;
+        overflow-y: hidden !important;
+        scrollbar-width: none;
+    }
+
+    /* Welcome Banner, Idea Boxes, Worked Examples & Remarks */
+    .welcome-card {
+        background: linear-gradient(135deg, rgba(53, 230, 255, 0.08), rgba(179, 156, 208, 0.08));
+        border: 1px solid rgba(53, 230, 255, 0.28);
+        border-left: 4px solid var(--accent-blue, #35E6FF);
+        border-radius: var(--radius-md, 12px);
+        padding: 20px 22px;
+        margin: 18px 0 26px;
+    }
+    .welcome-card h4 {
+        font-family: var(--font-display, sans-serif);
+        color: var(--text-pure, #FFFFFF);
+        font-size: 1.08rem;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .welcome-card p, .welcome-card li {
+        font-size: 0.93rem;
+        line-height: 1.65;
+        color: var(--text-main, #EDEDED);
+    }
+
+    .idea-box {
+        background: rgba(53, 230, 255, 0.05);
+        border: 1px solid rgba(53, 230, 255, 0.22);
+        border-left: 4px solid var(--accent-blue, #35E6FF);
+        border-radius: var(--radius-md, 12px);
+        padding: 16px 20px;
+        margin: 20px 0;
+    }
+    .idea-box .box-title {
+        font-family: var(--font-mono, monospace);
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--accent-blue, #35E6FF);
+        font-weight: 700;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .example-box {
+        background: rgba(43, 227, 138, 0.04);
+        border: 1px solid rgba(43, 227, 138, 0.22);
+        border-left: 4px solid var(--accent-green, #2BE38A);
+        border-radius: var(--radius-md, 12px);
+        padding: 18px 20px;
+        margin: 22px 0;
+    }
+    .example-box .box-title {
+        font-family: var(--font-mono, monospace);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--accent-green, #2BE38A);
+        font-weight: 700;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .example-divider {
+        border: none;
+        border-top: 1px dashed rgba(43, 227, 138, 0.25);
+        margin: 12px 0;
+    }
+
+    /* Responsive Zero-Scrollbar Figure Cards */
+    .handout-figure {
+        background: var(--bg-sidebar, #101115);
+        border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+        border-radius: var(--radius-md, 12px);
+        padding: 18px;
+        margin: 22px 0;
+        text-align: center;
+        overflow: hidden;
+    }
+    .handout-figure svg {
+        width: 100%;
+        max-width: 560px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        overflow: visible;
+    }
+    .handout-figure figcaption {
+        font-size: 0.83rem;
+        color: var(--text-muted, #8A94A6);
+        margin-top: 10px;
+        line-height: 1.5;
+    }
+
+    /* Olympiad Problem Cards & Collapsible Solution Drawers */
+    .problems-section-title {
+        margin-top: 36px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-light, rgba(255, 255, 255, 0.15));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .problem-card {
+        background: var(--bg-card, #15161A);
+        border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+        border-left: 4px solid var(--accent-purple, #B39CD0);
+        border-radius: var(--radius-md, 12px);
+        padding: 18px 20px;
+        margin: 18px 0;
+    }
+    .problem-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+    .problem-title {
+        font-family: var(--font-display, sans-serif);
+        font-size: 1.02rem;
+        font-weight: 700;
+        color: var(--text-pure, #FFFFFF);
+    }
+    .problem-pts {
+        font-family: var(--font-mono, monospace);
+        font-size: 0.74rem;
+        font-weight: 700;
+        padding: 3px 9px;
+        border-radius: 6px;
+        background: rgba(179, 156, 208, 0.14);
+        color: var(--accent-purple, #B39CD0);
+        border: 1px solid rgba(179, 156, 208, 0.3);
+    }
+    .problem-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+    }
+    .btn-prob-toggle {
+        background: var(--bg-sidebar, #101115);
+        color: var(--text-main, #EDEDED);
+        border: 1px solid var(--border-light, rgba(255, 255, 255, 0.15));
+        padding: 7px 14px;
+        border-radius: var(--radius-sm, 8px);
+        font-family: var(--font-mono, monospace);
+        font-size: 0.76rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        transition: all 0.2s ease;
+    }
+    .btn-prob-toggle:hover {
+        border-color: var(--accent-blue, #35E6FF);
+        color: var(--accent-blue, #35E6FF);
+    }
+    .btn-prob-toggle.sol-btn:hover,
+    .btn-prob-toggle.sol-btn.open {
+        border-color: var(--accent-green, #2BE38A);
+        color: var(--accent-green, #2BE38A);
+        background: rgba(43, 227, 138, 0.08);
+    }
+    .prob-drawer {
+        display: none;
+        margin-top: 14px;
+        padding: 16px 18px;
+        border-radius: var(--radius-sm, 8px);
+        background: var(--bg-sidebar, #101115);
+        border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+        font-size: 0.92rem;
+        line-height: 1.65;
+    }
+    .prob-drawer.hint-drawer {
+        border-left: 3px solid #F59E0B;
+    }
+    .prob-drawer.sol-drawer {
+        border-left: 3px solid var(--accent-green, #2BE38A);
+    }
+    .prob-drawer.active {
+        display: block;
+    }
+    .data-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        scrollbar-width: none;
+        margin: 12px 0;
+    }
+    .data-table-wrapper::-webkit-scrollbar { display: none; }
+    .handout-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: var(--font-mono, monospace);
+        font-size: 0.8rem;
+    }
+    .handout-table th, .handout-table td {
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+        text-align: center;
+    }
+    .handout-table th {
+        color: var(--accent-blue, #35E6FF);
+        background: rgba(255, 255, 255, 0.03);
+        text-transform: uppercase;
+        font-size: 0.72rem;
+    }
+</style>
+
+<!-- =========================================================
      SUBCHAPTER 1.1: CURVILINEAR COORDINATE SYSTEMS
      ========================================================= -->
 <article class="subchapter-panel active" id="sub-1-1" data-sub="1.1">
     <span class="chapter-badge">Chapter 1 · Kinematics &amp; Newtonian Gravitation in Central Fields</span>
     <h2>1.1 Curvilinear Coordinate Systems</h2>
 
+    <div class="welcome-card">
+        <h4><i class="fa-solid fa-rocket" style="color: var(--accent-blue);"></i> Welcome to Module T1: Celestial Mechanics!</h4>
+        <p>
+            Welcome to the opening theoretical handout of the <strong>Supernova Guide</strong> curriculum! Whether you are preparing for your national Olympiad selection, the <strong>Supernova Autumn Cup (SAC)</strong>, or aiming for a medal at the <strong>IOAA</strong>, <strong>IPhO</strong>, or <strong>APhO</strong>, we built this series to give you a single, crystal-clear, first-principles reference with zero hand-waving.
+        </p>
+        <ul style="margin-top: 10px;">
+            <li><strong>How to use this handout:</strong> Never skip the derivations! Contest writers love to perturb the gravitational potential, hollow out a cavity inside a planet, or place a particle in a rotating frame. If you understand <em>how</em> our equations come from differentiating rotating unit vectors and integrating energy, you cannot be blindsided.</li>
+            <li><strong>Interactive Checkpoints &amp; Solutions:</strong> At the end of each subchapter, you will find point-valued Olympiad problems from <strong>USAAAO, IOAA, IPhO, and APhO</strong>. Try each problem on paper first, then click <strong>Show Hint</strong> or <strong>Show Full Solution</strong> right underneath the problem to check your work!</li>
+        </ul>
+    </div>
+
     <h3>1.1.1 Planar Polar Coordinates $(r, \theta)$</h3>
     <p>
-        For motion confined to a 2D plane, we use polar coordinates. A point $P$ is defined by its distance $r$ from the origin and its angle $\theta$ measured counterclockwise from a reference axis (usually the x-axis). Just like with cartesian coordinates, we need two perpendicular unit vectors to describe the motion in polar coordinates.
+        For motion confined to a 2D plane, we use polar coordinates. A point $P$ is defined by its distance $r$ from the origin and its angle $\theta$ measured counterclockwise from a reference axis (usually the positive $x$-axis). Just like with Cartesian coordinates, we need two perpendicular unit vectors to describe the motion in polar coordinates.
     </p>
     <p>Thus we define:</p>
     <ol>
-        <li>$\hat{e}_r$: The radial unit vector, pointing directly away from the origin toward $P$.</li>
-        <li>$\hat{e}_\theta$: The azimuthal (or transverse) unit vector, pointing perpendicular to $\hat{e}_r$ in the direction of increasing $\theta$.</li>
+        <li>$\hat{e}_r$: The <strong>radial unit vector</strong>, pointing directly away from the origin toward $P$.</li>
+        <li>$\hat{e}_\theta$: The <strong>azimuthal (or transverse) unit vector</strong>, pointing perpendicular to $\hat{e}_r$ in the direction of increasing $\theta$.</li>
     </ol>
     <p>
-        Just like $\hat{i}$ and $\hat{j}$ point in directions of increasing $x$ and $y$ coordinates, $\hat{e}_r$ and $\hat{e}_\theta$ point in directions of increasing $r$ and $\theta$.
+        Just like $\hat{i}$ and $\hat{j}$ point in directions of increasing $x$ and $y$ coordinates, $\hat{e}_r$ and $\hat{e}_\theta$ point in directions of increasing $r$ and $\theta$. We can express these in terms of the fixed Cartesian unit vectors ($\hat{i}, \hat{j}$):
     </p>
-    <p>We can express these in terms of the fixed Cartesian unit vectors ($\hat{i}, \hat{j}$):</p>
     <div class="math-block">
         \[
-        \hat{e}_r = \cos\theta \, \hat{i} + \sin\theta \, \hat{j}
-        \]
-        \[
-        \hat{e}_\theta = -\sin\theta \, \hat{i} + \cos\theta \, \hat{j}
+        \begin{aligned}
+        \hat{e}_r &= \cos\theta \, \hat{i} + \sin\theta \, \hat{j} \\
+        \hat{e}_\theta &= -\sin\theta \, \hat{i} + \cos\theta \, \hat{j}
+        \end{aligned}
         \]
     </div>
+
+    <figure class="handout-figure">
+        <svg viewBox="0 0 460 250" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <marker id="arr-muted" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#8A94A6"/>
+                </marker>
+                <marker id="arr-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#35E6FF"/>
+                </marker>
+                <marker id="arr-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2BE38A"/>
+                </marker>
+                <marker id="arr-rose" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#FFC1CC"/>
+                </marker>
+            </defs>
+            <!-- Cartesian Axes -->
+            <line x1="40" y1="205" x2="400" y2="205" stroke="#8A94A6" stroke-width="1.5" marker-end="url(#arr-muted)"/>
+            <line x1="65" y1="225" x2="65" y2="25" stroke="#8A94A6" stroke-width="1.5" marker-end="url(#arr-muted)"/>
+            <text x="408" y="209" fill="#8A94A6" font-family="Inter, sans-serif" font-size="13">x (Reference Axis)</text>
+            <text x="60" y="18" fill="#8A94A6" font-family="Inter, sans-serif" font-size="13">y</text>
+            <text x="48" y="222" fill="#8A94A6" font-family="Inter, sans-serif" font-size="13">O</text>
+
+            <!-- Angle arc theta -->
+            <path d="M 145 205 A 80 80 0 0 0 132 161" fill="none" stroke="#B39CD0" stroke-width="1.8" marker-end="url(#arr-muted)"/>
+            <text x="152" y="185" fill="#B39CD0" font-family="Inter, sans-serif" font-size="14" font-weight="bold">θ(t)</text>
+
+            <!-- Position vector r -->
+            <line x1="65" y1="205" x2="265" y2="90" stroke="#35E6FF" stroke-width="2.6" marker-end="url(#arr-blue)"/>
+            <text x="145" y="135" fill="#35E6FF" font-family="Inter, sans-serif" font-size="14" font-weight="bold">r⃗ = r ê_r</text>
+
+            <!-- Unit vector e_r at P -->
+            <line x1="265" y1="90" x2="343" y2="45" stroke="#FFC1CC" stroke-width="2.2" marker-end="url(#arr-rose)"/>
+            <text x="350" y="48" fill="#FFC1CC" font-family="Inter, sans-serif" font-size="14" font-weight="bold">ê_r</text>
+
+            <!-- Unit vector e_theta at P -->
+            <line x1="265" y1="90" x2="220" y2="12" stroke="#2BE38A" stroke-width="2.2" marker-end="url(#arr-green)"/>
+            <text x="190" y="18" fill="#2BE38A" font-family="Inter, sans-serif" font-size="14" font-weight="bold">ê_θ</text>
+
+            <!-- Right angle box at P -->
+            <polyline points="278,82.5 270.5,69.5 257.5,77" fill="none" stroke="#8A94A6" stroke-width="1.2"/>
+            <circle cx="265" cy="90" r="4" fill="#FFFFFF"/>
+            <text x="275" y="106" fill="#FFFFFF" font-family="Inter, sans-serif" font-size="13" font-weight="bold">P(r, θ)</text>
+        </svg>
+        <figcaption><strong>Figure 1.1:</strong> Planar polar coordinates $(r, \theta)$ and the co-rotating orthonormal basis $(\hat{e}_r, \hat{e}_\theta)$. As the particle moves, $\theta(t)$ changes and the basis vectors rotate with angular velocity $\dot{\theta}\hat{k}$.</figcaption>
+    </figure>
 
     <h4>Time Derivatives of Unit Vectors in Polar Coordinates</h4>
     <p>
@@ -33,7 +330,10 @@
     </p>
     <div class="math-block">
         \[
-        \frac{d\hat{e}_r}{dt} = \dot{\hat{e}}_r = (-\sin\theta \cdot \dot{\theta}) \hat{i} + (\cos\theta \cdot \dot{\theta}) \hat{j} = \dot{\theta}(-\sin\theta \, \hat{i} + \cos\theta \, \hat{j})
+        \begin{aligned}
+        \frac{d\hat{e}_r}{dt} = \dot{\hat{e}}_r &= (-\sin\theta \cdot \dot{\theta}) \hat{i} + (\cos\theta \cdot \dot{\theta}) \hat{j} \\
+        &= \dot{\theta}(-\sin\theta \, \hat{i} + \cos\theta \, \hat{j})
+        \end{aligned}
         \]
     </div>
     <p>Notice that the term in parentheses is exactly $\hat{e}_\theta$. Therefore:</p>
@@ -45,11 +345,19 @@
     <p>Similarly, differentiating $\hat{e}_\theta$:</p>
     <div class="math-block">
         \[
-        \frac{d\hat{e}_\theta}{dt} = \dot{\hat{e}}_\theta = (-\cos\theta \cdot \dot{\theta}) \hat{i} - (\sin\theta \cdot \dot{\theta}) \hat{j} = -\dot{\theta}(\cos\theta \, \hat{i} + \sin\theta \, \hat{j})
+        \begin{aligned}
+        \frac{d\hat{e}_\theta}{dt} = \dot{\hat{e}}_\theta &= (-\cos\theta \cdot \dot{\theta}) \hat{i} - (\sin\theta \cdot \dot{\theta}) \hat{j} \\
+        &= -\dot{\theta}(\cos\theta \, \hat{i} + \sin\theta \, \hat{j}) \\
+        \dot{\hat{e}}_\theta &= -\dot{\theta} \hat{e}_r
+        \end{aligned}
         \]
-        \[
-        \dot{\hat{e}}_\theta = -\dot{\theta} \hat{e}_r
-        \]
+    </div>
+
+    <div class="idea-box">
+        <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Idea: Geometric Shortcut for Rotating Unit Vectors</div>
+        <p style="margin: 0;">
+            You never need to write out $\sin\theta$ and $\cos\theta$ to find $\dot{\hat{e}}_r$ and $\dot{\hat{e}}_\theta$. Any unit vector has a fixed length of $1$, so as it rotates counterclockwise by an angle $d\theta$, its tip moves by a distance $1 \cdot d\theta$ perpendicular to itself in the direction of rotation: $\hat{e}_r$ tips toward $+\hat{e}_\theta$ ($\dot{\hat{e}}_r = \dot{\theta}\hat{e}_\theta$), while $\hat{e}_\theta$ tips inward toward $-\hat{e}_r$ ($\dot{\hat{e}}_\theta = -\dot{\theta}\hat{e}_r$). Equivalently, for any unit vector $\hat{u}$ rotating with angular velocity $\vec{\omega} = \dot{\theta}\hat{k}$, $\dot{\hat{u}} = \vec{\omega} \times \hat{u}$.
+        </p>
     </div>
 
     <h4>Velocity in Polar Coordinates</h4>
@@ -79,10 +387,10 @@
     <p>To find the acceleration vector $\vec{a}$, we differentiate the velocity vector $\vec{v}$, again using the product rule on both terms:</p>
     <div class="math-block">
         \[
-        \vec{a} = \frac{d\vec{v}}{dt} = \frac{d}{dt}(\dot{r} \hat{e}_r) + \frac{d}{dt}(r\dot{\theta} \hat{e}_\theta)
-        \]
-        \[
-        \vec{a} = (\ddot{r} \hat{e}_r + \dot{r} \dot{\hat{e}}_r) + (\dot{r}\dot{\theta} \hat{e}_\theta + r\ddot{\theta} \hat{e}_\theta + r\dot{\theta} \dot{\hat{e}}_\theta)
+        \begin{aligned}
+        \vec{a} = \frac{d\vec{v}}{dt} &= \frac{d}{dt}(\dot{r} \hat{e}_r) + \frac{d}{dt}(r\dot{\theta} \hat{e}_\theta) \\
+        &= (\ddot{r} \hat{e}_r + \dot{r} \dot{\hat{e}}_r) + (\dot{r}\dot{\theta} \hat{e}_\theta + r\ddot{\theta} \hat{e}_\theta + r\dot{\theta} \dot{\hat{e}}_\theta)
+        \end{aligned}
         \]
     </div>
     <p>Substitute $\dot{\hat{e}}_r = \dot{\theta} \hat{e}_\theta$ and $\dot{\hat{e}}_\theta = -\dot{\theta} \hat{e}_r$:</p>
@@ -101,11 +409,11 @@
         $a_r = \ddot{r} - r\dot{\theta}^2$ represents the total radial acceleration. The $- r\dot{\theta}^2$ term is the familiar <strong>centripetal acceleration</strong> required to keep a body in a curved path.
     </p>
     <p>
-        $a_\theta = r\ddot{\theta} + 2\dot{r}\dot{\theta}$ represents the transverse acceleration. The $2\dot{r}\dot{\theta}$ term is the <strong>Coriolis acceleration</strong>, which arises when a particle moves radially while the reference frame rotates.
+        $a_\theta = r\ddot{\theta} + 2\dot{r}\dot{\theta}$ represents the transverse acceleration. The $2\dot{r}\dot{\theta}$ term is the <strong>Coriolis acceleration</strong>, which arises when a particle moves radially while the reference frame rotates (half comes from the radial velocity vector $\dot{r}\hat{e}_r$ tipping toward $\hat{e}_\theta$, and the other half comes from the larger linear speed $(r+dr)\dot{\theta}$ required to maintain angular rate $\dot{\theta}$ at a larger radius).
     </p>
 
     <div class="handout-note">
-        <strong>Note:</strong> In a purely central force field (like gravity, where force is only along the radial direction), the transverse acceleration $a_\theta = 0$. As we will see in Section 1.2, setting $r\ddot{\theta} + 2\dot{r}\dot{\theta} = 0$ leads directly to the conservation of angular momentum and to Kepler's Second Law.
+        <strong>Note:</strong> In a purely central force field (like gravity, where force is only along the radial direction), the transverse acceleration $a_\theta = 0$. As we will see in Section 1.2, setting $r\ddot{\theta} + 2\dot{r}\dot{\theta} = \frac{1}{r}\frac{d}{dt}(r^2\dot{\theta}) = 0$ leads directly to the conservation of angular momentum and to Kepler's Second Law.
     </div>
 
     <h3>1.1.2 Spherical Coordinates $(r, \theta, \phi)$ &amp; Cylindrical Coordinates $(r, \phi, z)$</h3>
@@ -114,15 +422,15 @@
     <p>This is the standard system used in astronomy (e.g., Right Ascension and Declination are forms of spherical coordinates).</p>
     <ul>
         <li>$r$: Radial distance from the origin.</li>
-        <li>$\theta$: The polar angle (co-latitude or zenith angle), measured from the positive z-axis down ($0 \le \theta \le \pi$).</li>
-        <li>$\phi$: The azimuthal angle (longitude), measured counterclockwise in the xy-plane from the positive x-axis ($0 \le \phi \le 2\pi$).</li>
+        <li>$\theta$: The polar angle (co-latitude or zenith angle), measured from the positive $z$-axis down ($0 \le \theta \le \pi$).</li>
+        <li>$\phi$: The azimuthal angle (longitude), measured counterclockwise in the $xy$-plane from the positive $x$-axis ($0 \le \phi \le 2\pi$).</li>
     </ul>
     <p>
-        The position vector is simply $\vec{r} = r \hat{e}_r$. The derivation of velocity and acceleration is similar to the one in 2D, but with three rotating unit vectors ($\hat{e}_r, \hat{e}_\theta, \hat{e}_\phi$), each pointing in the direction of increase of the corresponding coordinate (the derivation is left as an exercise). The results are:
+        The position vector is simply $\vec{r} = r \hat{e}_r$. The derivation of velocity and acceleration is similar to the one in 2D, but with three rotating unit vectors ($\hat{e}_r, \hat{e}_\theta, \hat{e}_\phi$), each pointing in the direction of increase of the corresponding coordinate. The results are:
     </p>
     <div class="math-block">
         \[
-        \vec{v} = \dot{r} \hat{e}_r + r\dot{\theta} \hat{e}_\theta + r\dot{\phi}\sin\theta \hat{e}_\phi
+        \vec{v} = \dot{r} \hat{e}_r + r\dot{\theta} \hat{e}_\theta + r\dot{\phi}\sin\theta \, \hat{e}_\phi
         \]
         \[
         \begin{aligned}
@@ -152,6 +460,134 @@
         \[
         \vec{a} = (\ddot{r} - r\dot{\phi}^2) \hat{e}_r + (r\ddot{\phi} + 2\dot{r}\dot{\phi}) \hat{e}_\phi + \ddot{z} \hat{e}_z
         \]
+    </div>
+
+    <div class="example-box">
+        <div class="box-title"><i class="fa-solid fa-compass-drafting"></i> Worked Example 1.1: The Logarithmic Spiral Orbit in a Central Field</div>
+        <p>
+            A test particle of mass $m$ moves in a planar central force field $\vec{F}(r) = F(r)\hat{e}_r$ centered at the origin $O$. Observations show that its trajectory is a logarithmic spiral $r(\theta) = r_0 e^{k\theta}$, where $r_0 > 0$ and $k \neq 0$ are constants. (a) Show that the angle $\gamma$ between the velocity vector $\vec{v}$ and the azimuthal unit vector $\hat{e}_\theta$ is constant everywhere. (b) Given that $a_\theta = 0$, find $r(t)$ and the central force law $F(r)$.
+        </p>
+        <hr class="example-divider">
+        <p>
+            <strong>Solution:</strong><br>
+            <strong>(a)</strong> Since $\vec{v} = \dot{r}\hat{e}_r + r\dot{\theta}\hat{e}_\theta$, the tangent of the angle $\gamma$ between $\vec{v}$ and $\hat{e}_\theta$ is $\tan\gamma = \frac{v_r}{v_\theta} = \frac{\dot{r}}{r\dot{\theta}} = \frac{1}{r}\frac{dr}{d\theta}$. Differentiating $r(\theta) = r_0 e^{k\theta}$ gives $\frac{dr}{d\theta} = k r_0 e^{k\theta} = kr$, so $\tan\gamma = k = \text{constant}$.<br>
+            <strong>(b)</strong> Since $a_\theta = \frac{1}{r}\frac{d}{dt}(r^2\dot{\theta}) = 0$, specific angular momentum $h = r^2\dot{\theta}$ is constant. Substituting $\dot{\theta} = h/r^2$ into $\dot{r} = kr\dot{\theta}$ gives $\dot{r} = \frac{kh}{r}$. Integrating $r\,dr = kh\,dt$ yields $r(t) = \sqrt{r_0^2 + 2kht}$. Differentiating $\dot{r} = kh/r$ gives $\ddot{r} = -\frac{kh}{r^2}\dot{r} = -\frac{k^2 h^2}{r^3}$. Substituting $\ddot{r}$ and $r\dot{\theta}^2 = \frac{h^2}{r^3}$ into $a_r = \ddot{r} - r\dot{\theta}^2$ yields:
+        </p>
+        <div class="math-block">
+            \[
+            F(r) = m(\ddot{r} - r\dot{\theta}^2) = -\frac{m(1 + k^2)h^2}{r^3}
+            \]
+        </div>
+        <p style="margin-bottom: 0;">Thus, a logarithmic spiral trajectory requires an attractive <strong>inverse-cube</strong> central force $F(r) \propto -1/r^3$.</p>
+    </div>
+
+    <!-- SUBCHAPTER 1.1 PROBLEMS -->
+    <div class="problems-section-title">
+        <h3>Subchapter 1.1 Problems</h3>
+        <span class="problem-pts">5 Points Total</span>
+    </div>
+
+    <!-- PROBLEM 1.1 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 1.1 · Rotating Velocity Vector in Polar Coordinates (USAAAO First Round)</span>
+            <span class="problem-pts">[2 pts]</span>
+        </div>
+        <p>
+            A space probe moving in the $xy$-plane has a velocity vector given in fixed Cartesian coordinates by $\vec{v}(t) = v_0\left(\cos(\omega t)\hat{i} + \sin(\omega t)\hat{j}\right)$, where $v_0$ and $\omega$ are positive constants, and its initial position at $t = 0$ is $\vec{r}(0) = -\frac{v_0}{\omega}\hat{j}$.
+        </p>
+        <ol type="a">
+            <li>Determine the acceleration vector $\vec{a}(t)$ and its magnitude $|\vec{a}|$, and evaluate the scalar product $\vec{v} \cdot \vec{a}$.</li>
+            <li>Find the position vector $\vec{r}(t)$ by integrating $\vec{v}(t)$, and express $\vec{r}$, $\vec{v}$, and $\vec{a}$ in planar polar coordinates $(r, \theta)$.</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-1-1').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-1-1')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-1-1').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-1-1')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-1-1">
+            <strong>Hint:</strong> Differentiate $\vec{v}(t)$ directly with respect to $t$, keeping $\hat{i}$ and $\hat{j}$ fixed. After integrating $\vec{v}(t)$ with the initial condition $\vec{r}(0) = -\frac{v_0}{\omega}\hat{j}$, compare the resulting $(x, y)$ components with the polar angle $\theta = \omega t - \frac{\pi}{2}$.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-1-1">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> Differentiating $\vec{v}(t)$ with respect to time $t$ (since $\hat{i}$ and $\hat{j}$ are constant):</p>
+            <div class="math-block">
+                \[
+                \begin{aligned}
+                \vec{a}(t) = \frac{d\vec{v}}{dt} &= v_0\omega\left(-\sin(\omega t)\hat{i} + \cos(\omega t)\hat{j}\right) \\
+                |\vec{a}| &= v_0\omega\sqrt{\sin^2(\omega t) + \cos^2(\omega t)} = v_0\omega
+                \end{aligned}
+                \]
+            </div>
+            <p>Taking the dot product of $\vec{v}(t)$ and $\vec{a}(t)$:</p>
+            <div class="math-block">
+                \[
+                \vec{v} \cdot \vec{a} = v_0^2\omega\left(-\cos(\omega t)\sin(\omega t) + \sin(\omega t)\cos(\omega t)\right) = 0
+                \]
+            </div>
+            <p>Thus $\vec{a} \perp \vec{v}$ at all times (as expected since the speed $|\vec{v}| = v_0$ is constant).</p>
+            <p><strong>(b)</strong> Integrating $\vec{v}(t)$ from $0$ to $t$ with $\vec{r}(0) = -\frac{v_0}{\omega}\hat{j}$ gives:</p>
+            <div class="math-block">
+                \[
+                \vec{r}(t) = \frac{v_0}{\omega}\sin(\omega t)\hat{i} - \frac{v_0}{\omega}\cos(\omega t)\hat{j} = \frac{v_0}{\omega}\left(\cos\left(\omega t - \frac{\pi}{2}\right)\hat{i} + \sin\left(\omega t - \frac{\pi}{2}\right)\hat{j}\right)
+                \]
+            </div>
+            <p>Identifying the polar radius $r = \frac{v_0}{\omega} = \text{const}$ and polar angle $\theta(t) = \omega t - \frac{\pi}{2}$ (so $\dot{r} = 0$ and $\dot{\theta} = \omega$), we have:</p>
+            <div class="math-block">
+                \[
+                \vec{r} = \frac{v_0}{\omega}\hat{e}_r, \qquad \vec{v} = v_0\hat{e}_\theta, \qquad \vec{a} = -v_0\omega\hat{e}_r
+                \]
+            </div>
+        </div>
+    </div>
+
+    <!-- PROBLEM 1.2 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 1.2 · Conical Latitude Motion in Spherical Coordinates</span>
+            <span class="problem-pts">[3 pts]</span>
+        </div>
+        <p>
+            Consider a particle moving on the surface of a sphere of constant radius $r = R$ at a fixed polar angle $\theta = \theta_0$ (corresponding to a circle of constant latitude $\alpha = \frac{\pi}{2} - \theta_0$) with constant azimuthal angular speed $\dot{\phi} = \Omega$.
+        </p>
+        <ol type="a">
+            <li>Using the general spherical acceleration equation, evaluate the three components $(a_r, a_\theta, a_\phi)$ of the particle's acceleration vector $\vec{a}$.</li>
+            <li>Verify your result geometrically by noting that the particle moves in a horizontal circle of cylindrical radius $\rho = R\sin\theta_0$ with centripetal acceleration $\vec{a} = -\Omega^2\rho\hat{e}_\rho$, and projecting $-\hat{e}_\rho$ onto $\hat{e}_r$ and $\hat{e}_\theta$. Why is $a_\theta \neq 0$ even though $\dot{\theta} = \ddot{\theta} = 0$?</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-1-2').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-1-2')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-1-2').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-1-2')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-1-2">
+            <strong>Hint:</strong> Set $\dot{r} = \ddot{r} = 0$, $\dot{\theta} = \ddot{\theta} = 0$, and $\ddot{\phi} = 0$ in the spherical acceleration formula. For part (b), use the meridional projection $\hat{e}_\rho = \sin\theta_0\,\hat{e}_r + \cos\theta_0\,\hat{e}_\theta$.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-1-2">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> Substituting $r = R$ ($\dot{r} = \ddot{r} = 0$), $\theta = \theta_0$ ($\dot{\theta} = \ddot{\theta} = 0$), and $\dot{\phi} = \Omega$ ($\ddot{\phi} = 0$) into the spherical acceleration equation gives:</p>
+            <div class="math-block">
+                \[
+                \begin{aligned}
+                a_r &= -R\Omega^2\sin^2\theta_0 \\
+                a_\theta &= -R\Omega^2\sin\theta_0\cos\theta_0 \\
+                a_\phi &= 0
+                \end{aligned}
+                \]
+            </div>
+            <p><strong>(b)</strong> Geometrically, the particle moves in a horizontal circle of radius $\rho = R\sin\theta_0$ centered on the $z$-axis, so its acceleration points horizontally inward toward the $z$-axis: $\vec{a} = -\Omega^2\rho\hat{e}_\rho = -R\Omega^2\sin\theta_0\,\hat{e}_\rho$. In the meridional plane, the cylindrical radial unit vector $\hat{e}_\rho$ decomposes along the spherical basis vectors as $\hat{e}_\rho = \sin\theta_0\,\hat{e}_r + \cos\theta_0\,\hat{e}_\theta$. Therefore:</p>
+            <div class="math-block">
+                \[
+                \vec{a} = -R\Omega^2\sin\theta_0\left(\sin\theta_0\,\hat{e}_r + \cos\theta_0\,\hat{e}_\theta\right) = -R\Omega^2\sin^2\theta_0\,\hat{e}_r - R\Omega^2\sin\theta_0\cos\theta_0\,\hat{e}_\theta
+                \]
+            </div>
+            <p style="margin-bottom: 0;">Why is $a_\theta \lt 0$ (pointing toward the pole $\theta = 0$) even though $\theta = \theta_0$ is constant? Because a circle of constant latitude (except the equator $\theta_0 = \pi/2$) is <em>not</em> a great circle! The centripetal acceleration points toward the $z$-axis rather than the sphere's center $O$, which has a northward component $-\hat{e}_\theta$ tangent to the sphere.</p>
+        </div>
     </div>
 
     <div class="subchapter-nav-bar">
@@ -216,13 +652,13 @@
     </p>
     <div class="math-block">
         \[
-        \vec{\tau} = (r\hat{e}_r) \times (F(r)\hat{e}_r) = rF(r) (\hat{e}_r \times \hat{e}_r) = 0
+        \vec{\tau} = (r\hat{e}_r) \times (F(r)\hat{e}_r) = rF(r) (\hat{e}_r \times \hat{e}_r) = \vec{0}
         \]
     </div>
     <p>Since the torque is zero, the angular momentum vector must be a constant in time:</p>
     <div class="math-block">
         \[
-        \frac{d\vec{L}}{dt} = 0 \implies \vec{L} = \text{constant vector}
+        \frac{d\vec{L}}{dt} = \vec{0} \implies \vec{L} = \text{constant vector}
         \]
     </div>
 
@@ -246,13 +682,13 @@
     </p>
     <div class="math-block">
         \[
-        \vec{h} = (r\hat{e}_r) \times (\dot{r}\hat{e}_r + r\dot{\theta}\hat{e}_\theta)
-        \]
-        \[
-        \vec{h} = r\dot{r}(\hat{e}_r \times \hat{e}_r) + r^2\dot{\theta}(\hat{e}_r \times \hat{e}_\theta)
+        \begin{aligned}
+        \vec{h} &= (r\hat{e}_r) \times (\dot{r}\hat{e}_r + r\dot{\theta}\hat{e}_\theta) \\
+        &= r\dot{r}(\hat{e}_r \times \hat{e}_r) + r^2\dot{\theta}(\hat{e}_r \times \hat{e}_\theta)
+        \end{aligned}
         \]
     </div>
-    <p>Since $\hat{e}_r \times \hat{e}_r = 0$ and $\hat{e}_r \times \hat{e}_\theta = \hat{k}$ (the z-axis perpendicular to the plane), we get:</p>
+    <p>Since $\hat{e}_r \times \hat{e}_r = \vec{0}$ and $\hat{e}_r \times \hat{e}_\theta = \hat{k}$ (the $z$-axis perpendicular to the plane), we get:</p>
     <div class="math-block">
         \[
         \vec{h} = r^2\dot{\theta} \hat{k} \implies h = r^2\dot{\theta} = \text{constant}
@@ -275,7 +711,7 @@
     <p>which concludes the derivation.</p>
 
     <div class="footnote-box">
-        <sup>[1]</sup> Actually, Kepler's Laws have been used by Newton to come with his theory for gravity, not the other way around. Kepler derived them empirically from planet ephemerids, almost 80 years before Newton came with his theory.
+        <sup>[1]</sup> Actually, Kepler's Laws have been used by Newton to come up with his theory for gravity, not the other way around. Kepler derived them empirically from planet ephemerides, almost 80 years before Newton came up with his theory.
     </div>
 
     <h3>1.2.2 Mechanical Energy in Gravitational Fields</h3>
@@ -296,7 +732,7 @@
     <p>For Newtonian gravity, $F(r) = -\frac{GMm}{r^2}$. The gravitational potential energy is:</p>
     <div class="math-block">
         \[
-        U(r) = -\int F(r) dr = -\int \left(-\frac{GMm}{r^2}\right) dr = -\frac{GMm}{r}
+        U(r) = -\int F(r) \, dr = -\int \left(-\frac{GMm}{r^2}\right) dr = -\frac{GMm}{r}
         \]
     </div>
     <p><em>(Note: We set the constant of integration to zero so that $U \to 0$ as $r \to \infty$.)</em></p>
@@ -330,15 +766,283 @@
         \]
     </div>
     <p>
-        This is an important result. We have completely eliminated the angular variable $\theta$. The term $\frac{h^2}{2r^2}$ acts as a "centrifugal potential energy." We define the <strong>effective potential</strong> $U_{eff}(r)$:
+        This is an important result. We have completely eliminated the angular variable $\theta$. The term $\frac{h^2}{2r^2}$ acts as a "centrifugal potential energy." We define the <strong>effective potential</strong> $U_{\mathrm{eff}}(r)$:
     </p>
     <div class="math-block">
         \[
-        U_{eff}(r) = \frac{h^2}{2r^2} - \frac{GM}{r}
+        \begin{aligned}
+        U_{\mathrm{eff}}(r) &= \frac{h^2}{2r^2} - \frac{GM}{r} \\
+        \epsilon &= \frac{1}{2}\dot{r}^2 + U_{\mathrm{eff}}(r)
+        \end{aligned}
         \]
-        \[
-        \epsilon = \frac{1}{2}\dot{r}^2 + U_{eff}(r)
-        \]
+    </div>
+
+    <figure class="handout-figure">
+        <svg viewBox="0 0 520 280" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <marker id="arr-ax" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#8A94A6"/>
+                </marker>
+            </defs>
+            <!-- Axes -->
+            <line x1="55" y1="250" x2="55" y2="18" stroke="#8A94A6" stroke-width="1.5" marker-end="url(#arr-ax)"/>
+            <line x1="40" y1="135" x2="495" y2="135" stroke="#8A94A6" stroke-width="1.5" marker-end="url(#arr-ax)"/>
+            <text x="63" y="24" fill="#8A94A6" font-family="Inter, sans-serif" font-size="12" font-weight="bold">U_eff(r), ε</text>
+            <text x="500" y="139" fill="#8A94A6" font-family="Inter, sans-serif" font-size="13" font-weight="bold">r</text>
+            <text x="42" y="150" fill="#8A94A6" font-family="Inter, sans-serif" font-size="12">0</text>
+
+            <!-- Centrifugal barrier +h^2/(2r^2) (dashed rose) -->
+            <path d="M 82 22 Q 105 98 165 120 T 465 133" fill="none" stroke="#FFC1CC" stroke-width="1.6" stroke-dasharray="5,4"/>
+            <text x="92" y="42" fill="#FFC1CC" font-family="Inter, sans-serif" font-size="11">+h² / (2r²)</text>
+
+            <!-- Gravitational potential -GM/r (dashed purple) -->
+            <path d="M 88 255 Q 140 185 235 160 T 470 143" fill="none" stroke="#B39CD0" stroke-width="1.6" stroke-dasharray="5,4"/>
+            <text x="98" y="248" fill="#B39CD0" font-family="Inter, sans-serif" font-size="11">−GM / r</text>
+
+            <!-- Total Effective Potential U_eff(r) (solid cyan) -->
+            <path d="M 76 30 C 92 165, 118 222, 155 222 C 195 222, 275 162, 475 141" fill="none" stroke="#35E6FF" stroke-width="2.8"/>
+            <text x="375" y="162" fill="#35E6FF" font-family="Inter, sans-serif" font-size="12" font-weight="bold">U_eff(r)</text>
+
+            <!-- Bound Elliptical Energy Line (green) -->
+            <line x1="103" y1="185" x2="262" y2="185" stroke="#2BE38A" stroke-width="2"/>
+            <circle cx="103" cy="185" r="4" fill="#2BE38A"/>
+            <circle cx="262" cy="185" r="4" fill="#2BE38A"/>
+            <line x1="103" y1="185" x2="103" y2="135" stroke="#8A94A6" stroke-width="1.1" stroke-dasharray="3,3"/>
+            <line x1="262" y1="185" x2="262" y2="135" stroke="#8A94A6" stroke-width="1.1" stroke-dasharray="3,3"/>
+            <text x="96" y="128" fill="#EDEDED" font-family="Inter, sans-serif" font-size="11">r_p</text>
+            <text x="256" y="128" fill="#EDEDED" font-family="Inter, sans-serif" font-size="11">r_a</text>
+            <text x="270" y="189" fill="#2BE38A" font-family="Inter, sans-serif" font-size="11" font-weight="bold">ε &lt; 0 (Ellipse: r_p ≤ r ≤ r_a)</text>
+
+            <!-- Circular Orbit Minimum -->
+            <circle cx="155" cy="222" r="4.5" fill="#FFFFFF"/>
+            <line x1="155" y1="222" x2="155" y2="135" stroke="#8A94A6" stroke-width="1.1" stroke-dasharray="3,3"/>
+            <text x="149" y="128" fill="#FFFFFF" font-family="Inter, sans-serif" font-size="11" font-weight="bold">r_c</text>
+            <text x="164" y="236" fill="#FFFFFF" font-family="Inter, sans-serif" font-size="11">ε_min (Circle)</text>
+
+            <!-- Unbound Hyperbolic Energy Line -->
+            <line x1="83" y1="92" x2="465" y2="92" stroke="#F59E0B" stroke-width="1.6" stroke-dasharray="6,3"/>
+            <circle cx="83" cy="92" r="4" fill="#F59E0B"/>
+            <text x="295" y="84" fill="#F59E0B" font-family="Inter, sans-serif" font-size="11" font-weight="bold">ε &gt; 0 (Hyperbola: r ≥ r_p)</text>
+        </svg>
+        <figcaption><strong>Figure 1.2:</strong> The effective potential $U_{\mathrm{eff}}(r) = \frac{h^2}{2r^2} - \frac{GM}{r}$. Radial motion is restricted to regions where $\epsilon \ge U_{\mathrm{eff}}(r)$, with apsides ($\dot{r} = 0$) occurring at the intersections $\epsilon = U_{\mathrm{eff}}(r)$.</figcaption>
+    </figure>
+
+    <div class="idea-box">
+        <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Idea: Reading Orbits Directly from the Effective Potential</div>
+        <p style="margin-bottom: 8px;">
+            Because kinetic energy $\frac{1}{2}\dot{r}^2 = \epsilon - U_{\mathrm{eff}}(r)$ cannot be negative, a particle with specific angular momentum $h$ and specific energy $\epsilon$ can only exist where $\epsilon \ge U_{\mathrm{eff}}(r)$:
+        </p>
+        <ul style="margin: 0;">
+            <li><strong>Turning Points (Periapsis &amp; Apoapsis):</strong> Setting $\dot{r} = 0$ ($\epsilon = U_{\mathrm{eff}}(r)$) gives the quadratic equation $\epsilon r^2 + GMr - \frac{1}{2}h^2 = 0$, whose roots immediately give $r_p$ and $r_a$ without solving for the orbit's shape!</li>
+            <li><strong>Circular Orbit ($\epsilon = \epsilon_{\min}$):</strong> At the bottom of the potential well, $\frac{dU_{\mathrm{eff}}}{dr} = -\frac{h^2}{r^3} + \frac{GM}{r^2} = 0$, giving $r_c = \frac{h^2}{GM}$ and $\epsilon_{\min} = -\frac{G^2 M^2}{2h^2} = -\frac{GM}{2r_c}$.</li>
+            <li><strong>Bound vs. Unbound:</strong> For $\epsilon_{\min} \lt \epsilon \lt 0$, the radius oscillates between $r_p$ and $r_a$ (ellipse). For $\epsilon \ge 0$, the particle reflects once at $r_p$ and escapes to $r \to \infty$ (parabola if $\epsilon = 0$, hyperbola if $\epsilon > 0$).</li>
+        </ul>
+    </div>
+
+    <div class="example-box">
+        <div class="box-title"><i class="fa-solid fa-compass-drafting"></i> Worked Example 1.2: Potentially Hazardous Object (2nd IOAA 2008, Short Problem 14)</div>
+        <p>
+            Consider a Potentially Hazardous Object (PHO) moving in a closed orbit under the influence of the Earth's gravitational force ($GM_\oplus = 3.986 \times 10^{14}\text{ m}^3\text{s}^{-2}$). Let $u = 1/r$ be the inverse distance of the object from the Earth and $p = mv$ be the magnitude of its linear momentum. As the object travels, the graph of $u(p)$ passes through points $A$ and $B$ in the table below. Find the mass $m$ and total energy $E$ of the object, and express $u$ as a function of $p$.
+        </p>
+        <div class="data-table-wrapper">
+            <table class="handout-table">
+                <thead>
+                    <tr>
+                        <th>Point</th>
+                        <th>Momentum $p$ ($\times 10^9\text{ kg}\cdot\text{m}\cdot\text{s}^{-1}$)</th>
+                        <th>Inverse Distance $u$ ($\times 10^{-8}\text{ m}^{-1}$)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>A</td><td>0.052</td><td>5.15</td></tr>
+                    <tr><td>B</td><td>1.94</td><td>194.17</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <hr class="example-divider">
+        <p>
+            <strong>Solution:</strong><br>
+            Whenever a problem gives you linear momentum $p = mv$ and inverse distance $u = 1/r$, write the conserved total mechanical energy $E = K + U$ directly in terms of $p$ and $u$:
+        </p>
+        <div class="math-block">
+            \[
+            E = \frac{p^2}{2m} - GM_\oplus m u \implies u(p) = \frac{1}{2GM_\oplus m^2}p^2 - \frac{E}{GM_\oplus m}
+            \]
+        </div>
+        <p>
+            Notice that $u(p)$ is an upward-opening parabola! Subtracting the energy equation at point $A$ from that at point $B$ eliminates $E$ immediately:
+        </p>
+        <div class="math-block">
+            \[
+            \begin{aligned}
+            \frac{p_B^2 - p_A^2}{2m} &= GM_\oplus m (u_B - u_A) \\
+            m &= \sqrt{\frac{p_B^2 - p_A^2}{2GM_\oplus(u_B - u_A)}} = \sqrt{\frac{(1.94^2 - 0.052^2)\times 10^{18}}{2(3.986\times 10^{14})(189.02\times 10^{-8})}} \approx 5.00 \times 10^4\text{ kg}
+            \end{aligned}
+            \]
+        </div>
+        <p style="margin-bottom: 0;">
+            Substituting $m = 5.00 \times 10^4\text{ kg}$ back into the energy equation at point $A$ yields $E \approx -1.00 \times 10^{12}\text{ J}$, and $u(p) = (5.02 \times 10^{-25}\text{ kg}^{-2}\text{m}^{-3}\text{s}^2)p^2 + 5.02 \times 10^{-8}\text{ m}^{-1}$.
+        </p>
+    </div>
+
+    <!-- SUBCHAPTER 1.2 PROBLEMS -->
+    <div class="problems-section-title">
+        <h3>Subchapter 1.2 Problems</h3>
+        <span class="problem-pts">12 Points Total</span>
+    </div>
+
+    <!-- PROBLEM 1.3 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 1.3 · Gravitational Focusing &amp; Planetary Capture Cross-Section</span>
+            <span class="problem-pts">[3 pts]</span>
+        </div>
+        <p>
+            An unpowered meteoroid approaches a planet of mass $M$ and radius $R$ from a very large distance ($r \to \infty$) with initial speed $v_\infty$ and impact parameter $b$ (the perpendicular distance between the planet's center and the initial velocity vector).
+        </p>
+        <ol type="a">
+            <li>Using conservation of specific angular momentum $h$ and specific mechanical energy $\epsilon$, express $h$ and $\epsilon$ in terms of $v_\infty$ and $b$.</li>
+            <li>By setting $\dot{r} = 0$ in the effective potential equation at grazing closest approach $r_p = R$, find the maximum impact parameter $b_{\max}$ for which the meteoroid impacts the planet, and show that the effective capture cross-section is $\sigma_{\mathrm{eff}} = \pi b_{\max}^2 = \pi R^2\left(1 + \frac{2GM}{Rv_\infty^2}\right)$.</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-1-3').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-1-3')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-1-3').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-1-3')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-1-3">
+            <strong>Hint:</strong> At $r \to \infty$, the potential energy is zero and the perpendicular lever arm to the velocity vector is $b$. At closest approach $r_p = R$, the radial velocity $\dot{r}$ vanishes, so $\epsilon = U_{\mathrm{eff}}(R)$.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-1-3">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> Evaluating $\vec{h} = \vec{r} \times \vec{v}$ and $\epsilon = \frac{1}{2}v^2 - \frac{GM}{r}$ at $r \to \infty$ (where $r\sin\psi = b$ and $U \to 0$):</p>
+            <div class="math-block">
+                \[
+                h = b v_\infty, \qquad \epsilon = \frac{1}{2}v_\infty^2
+                \]
+            </div>
+            <p><strong>(b)</strong> For a grazing collision, the periapsis distance where $\dot{r} = 0$ equals the planetary radius $r_p = R$. Substituting $h = b_{\max}v_\infty$ and $\epsilon = \frac{1}{2}v_\infty^2$ into $\epsilon = U_{\mathrm{eff}}(R)$ gives:</p>
+            <div class="math-block">
+                \[
+                \begin{aligned}
+                \frac{1}{2}v_\infty^2 &= \frac{b_{\max}^2 v_\infty^2}{2R^2} - \frac{GM}{R} \\
+                b_{\max} &= R\sqrt{1 + \frac{2GM}{Rv_\infty^2}} \implies \sigma_{\mathrm{eff}} = \pi b_{\max}^2 = \pi R^2\left(1 + \frac{2GM}{Rv_\infty^2}\right)
+                \end{aligned}
+                \]
+            </div>
+            <p style="margin-bottom: 0;">Notice that $\frac{2GM}{R} = v_{\mathrm{esc}}^2$, so gravitational attraction enhances the geometric cross-section $\pi R^2$ by the Safronov gravitational focusing factor $1 + (v_{\mathrm{esc}}/v_\infty)^2$.</p>
+        </div>
+    </div>
+
+    <!-- PROBLEM 1.4 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 1.4 · Relativistic Effective Potential &amp; Black Hole Photon Sphere (IOAA Theory)</span>
+            <span class="problem-pts">[4 pts]</span>
+        </div>
+        <p>
+            In General Relativity, the radial trajectory of a photon around a non-rotating Schwarzschild black hole of mass $M$ is governed by the exact effective potential equation (where $v_r = dr/dt$ and $b \equiv L/\sqrt{2E}$ is the impact parameter):
+        </p>
+        <div class="math-block">
+            \[
+            \frac{1}{2}v_r^2 + U_{\mathrm{eff}}(r) = \frac{1}{2}, \qquad \text{where} \qquad U_{\mathrm{eff}}(r) = \frac{b^2}{2r^2}\left(1 - \frac{2GM}{c^2 r}\right)
+            \]
+        </div>
+        <ol type="a">
+            <li>Differentiate the energy equation with respect to $t$ to show that $\frac{dv_r}{dt} - \frac{b^2}{r^3} + \frac{3GMb^2}{c^2 r^4} = 0$.</li>
+            <li>Circular photon trajectories (the <em>photon sphere</em>) exist where $U_{\mathrm{eff}}(r)$ has an extremum and $v_r = 0$. Find the photon sphere radius $r_{\mathrm{ph}}$ and critical impact parameter $b_{\mathrm{ph}}$ in terms of $G$, $M$, and $c$.</li>
+            <li>Evaluate $\frac{d^2 U_{\mathrm{eff}}}{dr^2}$ at $r = r_{\mathrm{ph}}$ to determine whether circular photon orbits are stable or unstable.</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-1-4').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-1-4')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-1-4').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-1-4')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-1-4">
+            <strong>Hint:</strong> Differentiate $\frac{1}{2}v_r^2 + U_{\mathrm{eff}}(r) = \frac{1}{2}$ with respect to $t$ and divide by $v_r = dr/dt$ to get $\frac{dv_r}{dt} + \frac{dU_{\mathrm{eff}}}{dr} = 0$. For a circular photon orbit at $r_{\mathrm{ph}}$, enforce both $\frac{dU_{\mathrm{eff}}}{dr} = 0$ and $U_{\mathrm{eff}}(r_{\mathrm{ph}}) = \frac{1}{2}$.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-1-4">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> Differentiating $\frac{1}{2}v_r^2 + \frac{b^2}{2r^2} - \frac{GMb^2}{c^2 r^3} = \frac{1}{2}$ with respect to time $t$ and dividing through by $v_r = \frac{dr}{dt} \neq 0$ gives:</p>
+            <div class="math-block">
+                \[
+                \frac{dv_r}{dt} + \frac{dU_{\mathrm{eff}}}{dr} = \frac{dv_r}{dt} - \frac{b^2}{r^3} + \frac{3GMb^2}{c^2 r^4} = 0
+                \]
+            </div>
+            <p><strong>(b)</strong> Setting $\frac{dU_{\mathrm{eff}}}{dr} = 0$ gives the photon sphere radius $r_{\mathrm{ph}}$:</p>
+            <div class="math-block">
+                \[
+                -\frac{b^2}{r_{\mathrm{ph}}^3} + \frac{3GMb^2}{c^2 r_{\mathrm{ph}}^4} = 0 \implies r_{\mathrm{ph}} = \frac{3GM}{c^2} = \frac{3}{2}R_S
+                \]
+            </div>
+            <p>Since $v_r = 0$ on the circular photon orbit, we also require $U_{\mathrm{eff}}(r_{\mathrm{ph}}) = \frac{1}{2}$:</p>
+            <div class="math-block">
+                \[
+                \frac{b_{\mathrm{ph}}^2}{2(3GM/c^2)^2}\left(1 - \frac{2}{3}\right) = \frac{1}{2} \implies b_{\mathrm{ph}} = \frac{3\sqrt{3}GM}{c^2}
+                \]
+            </div>
+            <p><strong>(c)</strong> Computing the second derivative at $r = r_{\mathrm{ph}} = \frac{3GM}{c^2}$:</p>
+            <div class="math-block">
+                \[
+                \left.\frac{d^2 U_{\mathrm{eff}}}{dr^2}\right|_{r_{\mathrm{ph}}} = \left[\frac{3b^2}{r^4} - \frac{12GMb^2}{c^2 r^5}\right]_{r = 3GM/c^2} = -\frac{b_{\mathrm{ph}}^2}{r_{\mathrm{ph}}^4} \lt 0
+                \]
+            </div>
+            <p style="margin-bottom: 0;">Because $U_{\mathrm{eff}}(r)$ has a local <strong>maximum</strong> at $r_{\mathrm{ph}}$, the circular photon orbit is <strong>unstable</strong>. Photons approaching from infinity with $b \lt b_{\mathrm{ph}}$ cross the barrier peak and spiral into the event horizon, while photons with $b > b_{\mathrm{ph}}$ reflect at periapsis and escape back to infinity.</p>
+        </div>
+    </div>
+
+    <!-- PROBLEM 1.5 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 1.5 · Apsidal Precession Under an Inverse-Cube Perturbation (IPhO Style)</span>
+            <span class="problem-pts">[5 pts]</span>
+        </div>
+        <p>
+            Suppose a planet of mass $m$ orbits a slightly oblate star whose gravitational potential per unit mass is $\Phi(r) = -\frac{GM}{r} - \frac{\beta}{r^3}$, where $\beta > 0$ is a small constant.
+        </p>
+        <ol type="a">
+            <li>Write down the effective potential $U_{\mathrm{eff}}(r)$ for a particle with specific angular momentum $h$, and find the relation between $h^2$, $GM$, $r_0$, and $\beta$ for a circular orbit of radius $r_0$.</li>
+            <li>If the planet is slightly perturbed radially so that $r(t) = r_0 + \delta r(t)$ with $|\delta r| \ll r_0$, show by expanding $U_{\mathrm{eff}}(r)$ around $r_0$ that $\delta r(t)$ executes simple harmonic oscillations with radial angular frequency $\omega_r = \sqrt{\left.\frac{d^2 U_{\mathrm{eff}}}{dr^2}\right|_{r_0}}$.</li>
+            <li>Compute the ratio $\frac{\omega_\theta}{\omega_r}$ (where $\omega_\theta = h/r_0^2$) to first order in the small dimensionless parameter $\eta = \frac{\beta}{GMr_0^2} \ll 1$, and deduce the angle $\Delta\theta_{\mathrm{prec}}$ by which the periapsis advances per revolution.</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-1-5').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-1-5')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-1-5').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-1-5')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-1-5">
+            <strong>Hint:</strong> Substitute $h^2 = GMr_0 + \frac{3\beta}{r_0}$ into $\left.\frac{d^2 U_{\mathrm{eff}}}{dr^2}\right|_{r_0}$ to express $\omega_r^2$ in terms of $GM$, $r_0$, and $\beta$. Then use the binomial expansion $(1 - x)^{-1/2} \approx 1 + \frac{1}{2}x$ to find the angle $\Delta\theta = \omega_\theta \left(\frac{2\pi}{\omega_r}\right)$ swept between two consecutive periapses.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-1-5">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> The effective potential is $U_{\mathrm{eff}}(r) = \frac{h^2}{2r^2} - \frac{GM}{r} - \frac{\beta}{r^3}$. At a circular orbit $r = r_0$, $\left.\frac{dU_{\mathrm{eff}}}{dr}\right|_{r_0} = 0$:</p>
+            <div class="math-block">
+                \[
+                -\frac{h^2}{r_0^3} + \frac{GM}{r_0^2} + \frac{3\beta}{r_0^4} = 0 \implies h^2 = GMr_0 + \frac{3\beta}{r_0} = GMr_0(1 + 3\eta)
+                \]
+            </div>
+            <p><strong>(b)</strong> Expanding $U_{\mathrm{eff}}(r_0 + \delta r) \approx U_{\mathrm{eff}}(r_0) + \frac{1}{2}U_{\mathrm{eff}}''(r_0)(\delta r)^2$ in $\epsilon = \frac{1}{2}(\delta\dot{r})^2 + U_{\mathrm{eff}}(r)$ and differentiating gives $\delta\ddot{r} + U_{\mathrm{eff}}''(r_0)\delta r = 0$. Evaluating $U_{\mathrm{eff}}''(r_0)$ and substituting $h^2 = GMr_0 + \frac{3\beta}{r_0}$:</p>
+            <div class="math-block">
+                \[
+                \omega_r^2 = \left.\frac{d^2 U_{\mathrm{eff}}}{dr^2}\right|_{r_0} = \frac{3h^2}{r_0^4} - \frac{2GM}{r_0^3} - \frac{12\beta}{r_0^5} = \frac{GM}{r_0^3}\left(1 - \frac{3\beta}{GMr_0^2}\right) = \frac{GM}{r_0^3}(1 - 3\eta)
+                \]
+            </div>
+            <p><strong>(c)</strong> Since $\omega_\theta^2 = \frac{h^2}{r_0^4} = \frac{GM}{r_0^3}(1 + 3\eta)$, the frequency ratio to first order in $\eta \ll 1$ is:</p>
+            <div class="math-block">
+                \[
+                \frac{\omega_\theta}{\omega_r} = \sqrt{\frac{1 + 3\eta}{1 - 3\eta}} \approx 1 + 3\eta
+                \]
+            </div>
+            <p style="margin-bottom: 0;">The time between consecutive periapses is one radial period $T_r = \frac{2\pi}{\omega_r}$, during which the planet sweeps through angle $\Delta\theta = \omega_\theta T_r = 2\pi\frac{\omega_\theta}{\omega_r} \approx 2\pi(1 + 3\eta)$. Thus, the periapsis advances by $\Delta\theta_{\mathrm{prec}} = \Delta\theta - 2\pi = \frac{6\pi\beta}{GMr_0^2}$ radians per revolution!</p>
+        </div>
     </div>
 
     <div class="subchapter-nav-bar">
@@ -393,14 +1097,14 @@
         \]
     </div>
     <p>
-        Working with the scalar potential $\Phi$ is mathematically much simpler than working with the vector field $\vec{g}$, especially when summing the contributions of multiple masses (since scalars simply add: $\Phi_{total} = \sum \Phi_i$).
+        Working with the scalar potential $\Phi$ is mathematically much simpler than working with the vector field $\vec{g}$, especially when summing the contributions of multiple masses (since scalars simply add: $\Phi_{\mathrm{total}} = \sum \Phi_i$).
     </p>
 
     <h3>1.3.2 Shell Theorem &amp; Spherical Distributions</h3>
     <p>For extended continuous bodies, we replace the mass $M$ with a volume integral over the density distribution $\rho(\vec{r}')$:</p>
     <div class="math-block">
         \[
-        \Phi(\vec{r}) = -G \iiint \frac{\rho(\vec{r}')}{|\vec{r} - \vec{r}'|} dV'
+        \Phi(\vec{r}) = -G \iiint \frac{\rho(\vec{r}')}{|\vec{r} - \vec{r}'|} \, dV'
         \]
     </div>
     <p>
@@ -414,7 +1118,7 @@
     </p>
     <div class="math-block">
         \[
-        \oint_S \vec{g} \cdot d\vec{A} = -4\pi G M_{encl}
+        \oint_S \vec{g} \cdot d\vec{A} = -4\pi G M_{\mathrm{encl}}
         \]
     </div>
     <p>
@@ -431,8 +1135,8 @@
             <em>Conclusion:</em> A spherically symmetric body affects external objects gravitationally as though all of its mass were concentrated at its exact center.
         </li>
         <li>
-            <strong>Inside the shell ($r < R$):</strong> The enclosed mass is $0$. Gauss's law gives $g(4\pi r^2) = 0$, so $\vec{g} = 0$.<br>
-            <em>Conclusion:</em> Inside a uniform spherical shell, the gravitational field is strictly zero everywhere. Consequently, the potential $\Phi$ inside the shell is constant and equals its value at the surface: $\Phi_{inside} = -\frac{GM}{R}$.
+            <strong>Inside the shell ($r \lt R$):</strong> The enclosed mass is $0$. Gauss's law gives $g(4\pi r^2) = 0$, so $\vec{g} = \vec{0}$.<br>
+            <em>Conclusion:</em> Inside a uniform spherical shell, the gravitational field is strictly zero everywhere. Consequently, the potential $\Phi$ inside the shell is constant and equals its value at the surface: $\Phi_{\mathrm{inside}} = -\frac{GM}{R}$.
         </li>
     </ol>
 
@@ -443,62 +1147,111 @@
             <strong>For external points ($r \ge R$):</strong> By the Shell Theorem, the sphere acts as a point mass.
             <div class="math-block">
                 \[
-                g_{out}(r) = -\frac{GM}{r^2}, \quad \Phi_{out}(r) = -\frac{GM}{r}
+                g_{\mathrm{out}}(r) = -\frac{GM}{r^2}, \qquad \Phi_{\mathrm{out}}(r) = -\frac{GM}{r}
                 \]
             </div>
         </li>
         <li>
-            <strong>For internal points ($r < R$):</strong> A test particle at radius $r$ only feels gravity from the mass <em>interior</em> to its radius. The outer shells exert no net force. The enclosed mass is $M(r) = M(r/R)^3$.
+            <strong>For internal points ($r \lt R$):</strong> A test particle at radius $r$ only feels gravity from the mass <em>interior</em> to its radius. The outer shells exert no net force. The enclosed mass is $M(r) = M(r/R)^3$.
             <div class="math-block">
                 \[
-                g_{in}(r) = -\frac{G M(r)}{r^2} = -\frac{G M (r/R)^3}{r^2} = -\frac{GM}{R^3} r
+                g_{\mathrm{in}}(r) = -\frac{G M(r)}{r^2} = -\frac{G M (r/R)^3}{r^2} = -\frac{GM}{R^3} r
                 \]
             </div>
             Notice that gravity inside a uniform planet increases linearly with distance from the center.<br>
-            To find the internal potential $\Phi_{in}(r)$, we integrate $g_{in}$ and match the boundary condition at the surface ($r=R$):
+            To find the internal potential $\Phi_{\mathrm{in}}(r)$, we integrate $g_{\mathrm{in}}$ and match the boundary condition at the surface ($r=R$):
             <div class="math-block">
                 \[
-                \Phi_{in}(r) = -\int g_{in}(r) dr = \frac{GM}{2R^3} r^2 + C
+                \Phi_{\mathrm{in}}(r) = -\int g_{\mathrm{in}}(r) \, dr = \frac{GM}{2R^3} r^2 + C
                 \]
             </div>
-            At $r=R$, $\Phi_{in}(R) = \frac{GM}{2R} + C = -\frac{GM}{R} \implies C = -\frac{3GM}{2R}$.
+            At $r=R$, $\Phi_{\mathrm{in}}(R) = \frac{GM}{2R} + C = -\frac{GM}{R} \implies C = -\frac{3GM}{2R}$.
             <div class="math-block">
                 \[
-                \Phi_{in}(r) = -\frac{GM}{2R^3} (3R^2 - r^2)
+                \Phi_{\mathrm{in}}(r) = -\frac{GM}{2R^3} (3R^2 - r^2)
                 \]
             </div>
         </li>
     </ul>
 
+    <figure class="handout-figure">
+        <svg viewBox="0 0 520 245" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <marker id="arr-g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#8A94A6"/>
+                </marker>
+            </defs>
+            <!-- Axes -->
+            <line x1="60" y1="225" x2="60" y2="15" stroke="#8A94A6" stroke-width="1.5" marker-end="url(#arr-g)"/>
+            <line x1="45" y1="40" x2="490" y2="40" stroke="#8A94A6" stroke-width="1.5" marker-end="url(#arr-g)"/>
+            <text x="496" y="44" fill="#8A94A6" font-family="Inter, sans-serif" font-size="13" font-weight="bold">r</text>
+            <text x="45" y="44" fill="#8A94A6" font-family="Inter, sans-serif" font-size="12">0</text>
+
+            <!-- Boundary line r = R -->
+            <line x1="210" y1="20" x2="210" y2="225" stroke="#8A94A6" stroke-width="1.2" stroke-dasharray="4,4"/>
+            <text x="205" y="28" fill="#FFFFFF" font-family="Inter, sans-serif" font-size="12" font-weight="bold">R</text>
+
+            <!-- |g(r)| curve (linear inside, 1/r^2 outside) in Green -->
+            <line x1="60" y1="40" x2="210" y2="145" stroke="#2BE38A" stroke-width="2.5"/>
+            <path d="M 210 145 Q 265 72 345 55 T 475 45" fill="none" stroke="#2BE38A" stroke-width="2.5"/>
+            <circle cx="210" cy="145" r="4" fill="#2BE38A"/>
+            <text x="100" y="108" fill="#2BE38A" font-family="Inter, sans-serif" font-size="11" font-weight="bold">g_in ∝ −r</text>
+            <text x="265" y="86" fill="#2BE38A" font-family="Inter, sans-serif" font-size="11" font-weight="bold">g_out ∝ −1/r²</text>
+            <text x="12" y="149" fill="#2BE38A" font-family="Inter, sans-serif" font-size="10">−GM/R²</text>
+
+            <!-- Phi(r) curve (parabola from -1.5 GM/R to -GM/R, then -1/r outside) in Cyan -->
+            <path d="M 60 210 Q 135 210 210 165" fill="none" stroke="#35E6FF" stroke-width="2.5"/>
+            <path d="M 210 165 Q 285 118 370 92 T 475 72" fill="none" stroke="#35E6FF" stroke-width="2.5"/>
+            <circle cx="60" cy="210" r="4" fill="#35E6FF"/>
+            <circle cx="210" cy="165" r="4" fill="#35E6FF"/>
+            <text x="95" y="196" fill="#35E6FF" font-family="Inter, sans-serif" font-size="11" font-weight="bold">Φ_in(r)</text>
+            <text x="335" y="115" fill="#35E6FF" font-family="Inter, sans-serif" font-size="11" font-weight="bold">Φ_out(r) = −GM/r</text>
+            <text x="6" y="214" fill="#35E6FF" font-family="Inter, sans-serif" font-size="10">−1.5GM/R</text>
+            <text x="14" y="170" fill="#35E6FF" font-family="Inter, sans-serif" font-size="10">−GM/R</text>
+        </svg>
+        <figcaption><strong>Figure 1.3:</strong> Radial profiles of the signed gravitational field $g_r(r)$ and scalar potential $\Phi(r)$ inside ($r \lt R$) and outside ($r \ge R$) a uniform solid planet of radius $R$.</figcaption>
+    </figure>
+
+    <div class="idea-box">
+        <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Idea: Superposition Trick for Off-Center Spherical Cavities</div>
+        <p style="margin: 0;">
+            Because the internal gravitational field $\vec{g}_{\mathrm{in}}(\vec{r}) = -\frac{4}{3}\pi G\rho\,\vec{r}$ is <strong>linear</strong> in the position vector $\vec{r}$, if a spherical cavity centered at $\vec{a}$ is hollowed out of a uniform planet of density $\rho$, we can model the hollowed planet as a complete sphere of density $+\rho$ centered at $O$ plus a smaller sphere of <em>negative density</em> $-\rho$ centered at $\vec{a}$. Inside the cavity, a point at position $\vec{r}$ relative to $O$ is at $\vec{r} - \vec{a}$ relative to the cavity's center, so the net field inside the cavity is:
+            \[
+            \vec{g}_{\mathrm{cav}}(\vec{r}) = -\frac{4}{3}\pi G\rho\,\vec{r} - \frac{4}{3}\pi G(-\rho)(\vec{r} - \vec{a}) = -\frac{4}{3}\pi G\rho\,\vec{a} = \text{constant!}
+            \]
+            The gravitational field inside any spherical cavity carved inside a uniform sphere is <strong>completely uniform</strong> everywhere inside the cavity!
+        </p>
+    </div>
+
     <h4>Gravitational Binding Energy ($U$)</h4>
     <p>
-        The gravitational binding energy is the total energy required to completely disassemble a celestial body into point masses at infinity. We calculate it by assembling the sphere shell by shell from the inside out. Let the current assembled mass be $M(r) = \frac{4}{3}\pi r^3 \rho$. The work $dU$ required to bring the next shell of mass $dm = 4\pi r^2 \rho dr$ from infinity to the surface $r$ is:
+        The gravitational binding energy is the total energy required to completely disassemble a celestial body into point masses at infinity. We calculate it by assembling the sphere shell by shell from the inside out. Let the current assembled mass be $M(r) = \frac{4}{3}\pi r^3 \rho$. The work $dU$ required to bring the next shell of mass $dm = 4\pi r^2 \rho \, dr$ from infinity to the surface $r$ is:
     </p>
     <div class="math-block">
         \[
-        dU = \Phi(r) dm = -\frac{GM(r)}{r} dm = -\frac{G (\frac{4}{3}\pi r^3 \rho) (4\pi r^2 \rho dr)}{r} = -\frac{16}{3}\pi^2 G \rho^2 r^4 dr
+        \begin{aligned}
+        dU = \Phi(r) \, dm = -\frac{GM(r)}{r} dm &= -\frac{G \left(\frac{4}{3}\pi r^3 \rho\right) (4\pi r^2 \rho \, dr)}{r} \\
+        &= -\frac{16}{3}\pi^2 G \rho^2 r^4 \, dr
+        \end{aligned}
         \]
     </div>
-    <p>Integrating from the center ($r=0$) to the total radius ($r=R$):</p>
+    <p>Integrating from the center ($r=0$) to the total radius ($r=R$) and substituting $\rho = \frac{3M}{4\pi R^3}$ back into the equation:</p>
     <div class="math-block">
         \[
-        U = \int_0^R -\frac{16}{3}\pi^2 G \rho^2 r^4 dr = -\frac{16}{3}\pi^2 G \rho^2 \frac{R^5}{5}
-        \]
-    </div>
-    <p>Substitute the density $\rho = \frac{3M}{4\pi R^3}$ back into the equation:</p>
-    <div class="math-block">
-        \[
-        U = -\frac{16}{3}\pi^2 G \left( \frac{9M^2}{16\pi^2 R^6} \right) \frac{R^5}{5} = -\frac{3GM^2}{5R}
+        \begin{aligned}
+        U = \int_0^R -\frac{16}{3}\pi^2 G \rho^2 r^4 \, dr &= -\frac{16}{3}\pi^2 G \rho^2 \frac{R^5}{5} \\
+        &= -\frac{16}{3}\pi^2 G \left( \frac{9M^2}{16\pi^2 R^6} \right) \frac{R^5}{5} = -\frac{3GM^2}{5R}
+        \end{aligned}
         \]
     </div>
 
     <div class="handout-note ioaa-note">
-        <strong>IOAA Note:</strong> The factor of $3/5$ is specific to a <em>uniform</em> sphere. Real stars are denser in the core, making their binding energy more negative. In astrophysics problems, binding energy is often generalized as $U = -\alpha \frac{GM^2}{R}$, where $\alpha \approx 3/5$ for uniform planets, but $\alpha > 1$ for centrally condensed stars like the Sun.
+        <strong>IOAA Note:</strong> The factor of $3/5$ is specific to a <em>uniform</em> sphere. Real stars are denser in the core, making their binding energy more negative. In astrophysics problems, binding energy is often generalized as $U = -\alpha \frac{GM^2}{R}$, where $\alpha = 3/5$ for uniform planets, $\alpha = 6/7$ for convective stars/white dwarfs ($n = 1.5$ polytrope), and $\alpha = 3/2$ for radiative stars like the Sun ($n = 3$ polytrope).
     </div>
 
     <h3>1.3.3 The Virial Theorem for Bound Systems</h3>
     <p>
-        While two-body systems are solved exactly (Section 2), systems containing $N$ interacting masses (like a star cluster or a galaxy) are chaotic. However, their global properties are strictly governed by the <strong>Virial Theorem</strong>.
+        While two-body systems are solved exactly (Chapter 2), systems containing $N$ interacting masses (like a star cluster or a galaxy) are chaotic. However, their global properties are strictly governed by the <strong>Virial Theorem</strong>.
     </p>
     <p>Consider a system of $N$ particles with masses $m_i$ and position vectors $\vec{r}_i$. We define a scalar quantity called the moment of inertia $I$:</p>
     <div class="math-block">
@@ -506,19 +1259,16 @@
         I = \sum_{i=1}^N m_i r_i^2 = \sum_{i=1}^N m_i (\vec{r}_i \cdot \vec{r}_i)
         \]
     </div>
-    <p>Taking the first time derivative:</p>
+    <p>Taking the first and second time derivatives, applying the product rule:</p>
     <div class="math-block">
         \[
-        \frac{dI}{dt} = 2 \sum_{i=1}^N m_i (\vec{r}_i \cdot \dot{\vec{r}}_i) = 2 \sum_{i=1}^N m_i (\vec{r}_i \cdot \vec{v}_i)
+        \begin{aligned}
+        \frac{dI}{dt} &= 2 \sum_{i=1}^N m_i (\vec{r}_i \cdot \dot{\vec{r}}_i) = 2 \sum_{i=1}^N m_i (\vec{r}_i \cdot \vec{v}_i) \\
+        \frac{d^2 I}{dt^2} &= 2 \sum_{i=1}^N m_i (\vec{v}_i \cdot \vec{v}_i + \vec{r}_i \cdot \dot{\vec{v}}_i)
+        \end{aligned}
         \]
     </div>
-    <p>Taking the second time derivative, applying the product rule:</p>
-    <div class="math-block">
-        \[
-        \frac{d^2 I}{dt^2} = 2 \sum_{i=1}^N m_i (\vec{v}_i \cdot \vec{v}_i + \vec{r}_i \cdot \dot{\vec{v}}_i)
-        \]
-    </div>
-    <p>Recognize that $\vec{v}_i \cdot \vec{v}_i = v_i^2$, and $m_i \dot{\vec{v}}_i = m_i \vec{a}_i = \vec{F}_i$ (the total force on particle $i$).</p>
+    <p>Recognize that $\vec{v}_i \cdot \vec{v}_i = v_i^2$, and $m_i \dot{\vec{v}}_i = m_i \vec{a}_i = \vec{F}_i$ (the total force on particle $i$):</p>
     <div class="math-block">
         \[
         \frac{1}{2} \frac{d^2 I}{dt^2} = \sum_{i=1}^N m_i v_i^2 + \sum_{i=1}^N \vec{r}_i \cdot \vec{F}_i
@@ -528,24 +1278,19 @@
     <ol>
         <li><strong>Kinetic Energy Term:</strong> We know kinetic energy is $K_i = \frac{1}{2} m_i v_i^2$. Therefore, the first sum is exactly twice the total kinetic energy of the system ($2K$).</li>
         <li>
-            <strong>Virial Term (Force Sum):</strong> The total force on particle $i$ is the sum of gravitational forces from all other particles $j$: $\vec{F}_i = \sum_{j \ne i} \vec{F}_{ij}$.<br>
-            The term is $\sum_{i} \vec{r}_i \cdot (\sum_{j \ne i} \vec{F}_{ij})$.<br>
-            By Newton's Third Law, $\vec{F}_{ji} = -\vec{F}_{ij}$. We can pair up the terms for any two interacting particles $i$ and $j$:
+            <strong>Virial Term (Force Sum):</strong> The total force on particle $i$ is the sum of gravitational forces from all other particles $j$: $\vec{F}_i = \sum_{j \ne i} \vec{F}_{ij}$. By Newton's Third Law, $\vec{F}_{ji} = -\vec{F}_{ij}$. We can pair up the terms for any two interacting particles $i$ and $j$:
             <div class="math-block">
                 \[
-                \vec{r}_i \cdot \vec{F}_{ij} + \vec{r}_j \cdot \vec{F}_{ji} = \vec{r}_i \cdot \vec{F}_{ij} - \vec{r}_j \cdot \vec{F}_{ij} = (\vec{r}_i - \vec{r}_j) \cdot \vec{F}_{ij}
-                \]
-            </div>
-            Substituting the gravitational force $\vec{F}_{ij} = -\frac{G m_i m_j}{|\vec{r}_i - \vec{r}_j|^3} (\vec{r}_i - \vec{r}_j)$:
-            <div class="math-block">
-                \[
-                (\vec{r}_i - \vec{r}_j) \cdot \vec{F}_{ij} = -\frac{G m_i m_j}{|\vec{r}_i - \vec{r}_j|^3} |\vec{r}_i - \vec{r}_j|^2 = -\frac{G m_i m_j}{|\vec{r}_i - \vec{r}_j|}
+                \begin{aligned}
+                \vec{r}_i \cdot \vec{F}_{ij} + \vec{r}_j \cdot \vec{F}_{ji} &= (\vec{r}_i - \vec{r}_j) \cdot \vec{F}_{ij} \\
+                &= -\frac{G m_i m_j}{|\vec{r}_i - \vec{r}_j|^3} |\vec{r}_i - \vec{r}_j|^2 = -\frac{G m_i m_j}{|\vec{r}_i - \vec{r}_j|} = U_{ij}
+                \end{aligned}
                 \]
             </div>
             This is exactly the gravitational potential energy $U_{ij}$ between the two particles! Summing over all unique pairs gives the total potential energy $U$.
         </li>
     </ol>
-    <p>Plugging these back into our second derivative equation yields the generalized Virial Theorem:</p>
+    <p>Plugging these back into our second derivative equation yields the generalized Virial Theorem (the <strong>Lagrange–Jacobi Identity</strong>):</p>
     <div class="math-block">
         \[
         \frac{1}{2} \frac{d^2 I}{dt^2} = 2K + U
@@ -554,23 +1299,318 @@
 
     <h4>The Steady-State Virial Theorem</h4>
     <p>
-        If a star cluster or galaxy is in a stable, bound, dynamically relaxed state (it is neither collapsing nor exploding), its moment of inertia $I$ fluctuates around a constant mean value. Therefore, the time-averaged second derivative $\langle \ddot{I} \rangle$ is zero.<br>
-        This yields the fundamental equation of statistical celestial mechanics:
+        If a star cluster or galaxy is in a stable, bound, dynamically relaxed state (it is neither collapsing nor exploding), its moment of inertia $I$ fluctuates around a constant mean value. Therefore, the time-averaged second derivative $\langle \ddot{I} \rangle$ is zero. This yields the fundamental equation of statistical celestial mechanics:
     </p>
     <div class="math-block">
         \[
-        2\langle K \rangle + \langle U \rangle = 0
-        \]
-    </div>
-    <p>Since the total energy is $E = K + U$, we can equivalently state:</p>
-    <div class="math-block">
-        \[
-        E = -K \quad \text{and} \quad E = \frac{1}{2}U
+        2\langle K \rangle + \langle U \rangle = 0 \quad \Longleftrightarrow \quad E = -\langle K \rangle = \frac{1}{2}\langle U \rangle
         \]
     </div>
     <p>
         This theorem is heavily tested in IOAA. It allows you to estimate the total mass of a galaxy cluster just by measuring the velocity dispersion (kinetic energy) of its galaxies and its approximate radius (potential energy), which historically provided the first evidence for Dark Matter.
     </p>
+
+    <div class="example-box">
+        <div class="box-title"><i class="fa-solid fa-compass-drafting"></i> Worked Example 1.3: Cluster Virial Mass &amp; 3D Velocity Dispersion (IOAA 2024 Theory)</div>
+        <p>
+            Spectroscopic observations of a spherical galaxy cluster of radius $R$ measure the line-of-sight radial velocity dispersion $\sigma_r = \sqrt{\langle (v_{i,r} - \bar{v}_r)^2 \rangle}$ of $N \gg 1$ member galaxies. Assuming isotropic galaxy velocities and a uniform spatial mass distribution of total mass $M$, prove that the virial mass of the cluster is $M = \frac{5R\sigma_r^2}{G}$.
+        </p>
+        <hr class="example-divider">
+        <p style="margin-bottom: 0;">
+            <strong>Solution:</strong><br>
+            In the cluster rest frame, each galaxy has 3D velocity $\vec{u}_i = (u_{i,x}, u_{i,y}, u_{i,z})$ where $u_{i,z} = v_{i,r} - \bar{v}_r$ is along the line of sight. By 3D isotropy, $\langle u_i^2 \rangle = \langle u_{i,x}^2 \rangle + \langle u_{i,y}^2 \rangle + \langle u_{i,z}^2 \rangle = 3\sigma_r^2$. Thus the total kinetic energy is $\langle K \rangle = \frac{1}{2}M\langle u_i^2 \rangle = \frac{3}{2}M\sigma_r^2$. For a uniform sphere of mass $M$ and radius $R$, $\langle U \rangle = -\frac{3}{5}\frac{GM^2}{R}$. Applying the Virial Theorem $2\langle K \rangle + \langle U \rangle = 0$ gives $3M\sigma_r^2 = \frac{3}{5}\frac{GM^2}{R} \implies M = \frac{5R\sigma_r^2}{G}$.
+        </p>
+    </div>
+
+    <!-- SUBCHAPTER 1.3 PROBLEMS -->
+    <div class="problems-section-title">
+        <h3>Subchapter 1.3 Problems</h3>
+        <span class="problem-pts">23 Points Total</span>
+    </div>
+
+    <!-- PROBLEM 1.6 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 1.6 · Gravity Train Chord Tunnel &amp; Off-Center Spherical Cavity</span>
+            <span class="problem-pts">[3 pts]</span>
+        </div>
+        <p>
+            A planet of radius $R$ has a uniform mass density $\rho$ and total mass $M = \frac{4}{3}\pi R^3\rho$.
+        </p>
+        <ol type="a">
+            <li>A straight, frictionless evacuated tunnel is bored along a chord connecting two surface points $A$ and $B$ at perpendicular distance $b \lt R$ from the planet's center $O$. Show that a test mass $m$ released from rest at $A$ executes simple harmonic motion along the tunnel, and find the travel time $T_{AB}$ from $A$ to $B$.</li>
+            <li>Now suppose a spherical cavity of radius $a \lt R/2$ is hollowed out inside the planet, with its center located at distance $d$ from $O$ ($d + a \le R$). Find the magnitude and direction of the gravitational field $\vec{g}$ inside the cavity, and compute the gravitational potential difference $\Delta\Phi = \Phi_{\mathrm{far}} - \Phi_{\mathrm{near}}$ between the points on the cavity wall farthest from and closest to $O$.</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-1-6').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-1-6')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-1-6').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-1-6')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-1-6">
+            <strong>Hint:</strong> Project $\vec{g}_{\mathrm{in}}(\vec{r}) = -\frac{GM}{R^3}\vec{r}$ onto the tunnel axis $x$. For part (b), use the cavity superposition formula $\vec{g}_{\mathrm{cav}} = -\frac{4}{3}\pi G\rho\,\vec{d} = -\frac{GM}{R^3}\vec{d}$.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-1-6">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> Let $x$ be the coordinate along the chord measured from its midpoint $M_c$. Since $\vec{r} = \vec{b} + x\hat{e}_x$ with $\vec{b} \perp \hat{e}_x$, the component of $\vec{g}_{\mathrm{in}}(\vec{r}) = -\frac{GM}{R^3}\vec{r}$ along the tunnel is:</p>
+            <div class="math-block">
+                \[
+                \ddot{x} = \vec{g}_{\mathrm{in}} \cdot \hat{e}_x = -\frac{GM}{R^3}x = -\omega_0^2 x, \qquad \omega_0 = \sqrt{\frac{GM}{R^3}} = \sqrt{\frac{4}{3}\pi G\rho}
+                \]
+            </div>
+            <p>Moving from $A$ to $B$ is half of a full harmonic oscillation, so $T_{AB} = \frac{\pi}{\omega_0} = \pi\sqrt{\frac{R^3}{GM}} = \sqrt{\frac{3\pi}{4G\rho}}$, completely independent of $b$!</p>
+            <p><strong>(b)</strong> By superposition, inside the cavity centered at $\vec{d}$ ($|\vec{d}| = d$), the field is uniform:</p>
+            <div class="math-block">
+                \[
+                \vec{g}_{\mathrm{cav}} = -\frac{4}{3}\pi G\rho\,\vec{d} = -\frac{GM}{R^3}\vec{d}
+                \]
+            </div>
+            <p style="margin-bottom: 0;">Since $\vec{g}_{\mathrm{cav}}$ points parallel to $-\vec{d}$ with constant magnitude $g_{\mathrm{cav}} = \frac{GMd}{R^3}$, integrating $-\vec{g}_{\mathrm{cav}} \cdot d\vec{r}$ across the cavity diameter $2a$ along $\vec{d}$ gives $\Delta\Phi = \Phi_{\mathrm{far}} - \Phi_{\mathrm{near}} = g_{\mathrm{cav}}(2a) = \frac{2GMad}{R^3}$.</p>
+        </div>
+    </div>
+
+    <!-- PROBLEM 1.7 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 1.7 · Centrally Condensed Exoplanet Interior Profile</span>
+            <span class="problem-pts">[3 pts]</span>
+        </div>
+        <p>
+            A rocky exoplanet of radius $R$ and total mass $M$ has a linear radial density profile $\rho(r) = \rho_c\left(1 - \frac{r}{R}\right)$ for $0 \le r \le R$.
+        </p>
+        <ol type="a">
+            <li>Express the central density $\rho_c$ in terms of $M$ and $R$, and find the enclosed mass $M(r)$ and gravitational field magnitude $g(r)$ for $0 \le r \le R$.</li>
+            <li>Find the internal radius $r_{\max}$ where $g(r)$ is maximized, and compute the ratio $g(r_{\max})/g(R)$.</li>
+            <li>Calculate the gravitational self-energy $U$ of the planet in units of $-\frac{GM^2}{R}$ (i.e., find $\alpha$).</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-1-7').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-1-7')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-1-7').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-1-7')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-1-7">
+            <strong>Hint:</strong> Integrate $M(r) = \int_0^r 4\pi r'^2\rho(r')\,dr'$. Set $M(R) = M$ to find $\rho_c = \frac{3M}{\pi R^3}$, and integrate $U = -\int_0^R \frac{GM(r)}{r} 4\pi r^2\rho(r)\,dr$ using the dimensionless variable $x = r/R$.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-1-7">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> Integrating the enclosed mass $M(r)$ from $0$ to $r$:</p>
+            <div class="math-block">
+                \[
+                M(r) = \int_0^r 4\pi r'^2 \rho_c\left(1 - \frac{r'}{R}\right)dr' = 4\pi\rho_c r^3\left(\frac{1}{3} - \frac{r}{4R}\right)
+                \]
+            </div>
+            <p>At $r = R$, $M = \frac{\pi}{3}\rho_c R^3 \implies \rho_c = \frac{3M}{\pi R^3}$ (four times the mean density!). Substituting $\rho_c$ gives:</p>
+            <div class="math-block">
+                \[
+                M(r) = M\left(\frac{r}{R}\right)^3\left(4 - \frac{3r}{R}\right), \qquad g(r) = \frac{GM(r)}{r^2} = \frac{GM}{R^2}\left(\frac{r}{R}\right)\left(4 - \frac{3r}{R}\right)
+                \]
+            </div>
+            <p><strong>(b)</strong> Differentiating $g(x) \propto 4x - 3x^2$ (where $x = r/R$) gives $4 - 6x = 0 \implies r_{\max} = \frac{2}{3}R$, where $\frac{g(r_{\max})}{g(R)} = \frac{2}{3}\left(4 - 2\right) = \frac{4}{3}$.</p>
+            <p><strong>(c)</strong> With $dm = 4\pi r^2\rho(r)\,dr = 12M x^2(1-x)\,dx$ and $M(x) = Mx^3(4-3x)$:</p>
+            <div class="math-block">
+                \[
+                U = -\frac{GM^2}{R}\int_0^1 12x^4(4 - 3x)(1 - x)\,dx = -12\frac{GM^2}{R}\left(\frac{4}{5} - \frac{7}{6} + \frac{3}{7}\right) = -\frac{26}{35}\frac{GM^2}{R}
+                \]
+            </div>
+            <p style="margin-bottom: 0;">Thus $\alpha = \frac{26}{35} \approx 0.743 > \frac{3}{5} = 0.600$, confirming that central condensation increases binding energy.</p>
+        </div>
+    </div>
+
+    <!-- PROBLEM 1.8 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 1.8 · White Dwarf Equilibrium &amp; Chandrasekhar Limit (APhO 2012, Theory Q2)</span>
+            <span class="problem-pts">[4 pts]</span>
+        </div>
+        <p>
+            A white dwarf star of mass $M$ and radius $R$ (modeled as a uniform sphere with gravitational potential energy $E_G = -\frac{3}{5}\frac{GM^2}{R}$) is supported against gravity by electron degeneracy kinetic energy $E_e$.
+        </p>
+        <ol type="a">
+            <li>In the non-relativistic regime, the total kinetic energy of the degenerate electrons is $E_e = \frac{C_1 M^{5/3}}{R^2}$, where $C_1$ is a constant. Write down the total energy $E(R) = E_e(R) + E_G(R)$, and find the equilibrium radius $R_{\mathrm{wd}}(M)$ where $\frac{dE}{dR} = 0$. How does $R_{\mathrm{wd}}$ scale with mass $M$?</li>
+            <li>In the extreme ultrarelativistic limit ($v \to c$), the electron kinetic energy scales as $E_e = \frac{C_2 M^{4/3}}{R}$, where $C_2$ is a constant. Write down $E(R)$ in this limit, deduce the critical Chandrasekhar mass $M_{\mathrm{Ch}}$ in terms of $C_2$ and $G$, and explain what happens if $M > M_{\mathrm{Ch}}$.</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-1-8').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-1-8')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-1-8').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-1-8')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-1-8">
+            <strong>Hint:</strong> Differentiate $E(R)$ with respect to $R$ and set $dE/dR = 0$. Notice that in part (b), both $E_e$ and $E_G$ scale as $1/R$!
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-1-8">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> In the non-relativistic regime, the total energy is $E(R) = \frac{C_1 M^{5/3}}{R^2} - \frac{3}{5}\frac{GM^2}{R}$. Setting $\frac{dE}{dR} = 0$ at $R = R_{\mathrm{wd}}$:</p>
+            <div class="math-block">
+                \[
+                \frac{dE}{dR} = -\frac{2C_1 M^{5/3}}{R_{\mathrm{wd}}^3} + \frac{3GM^2}{5R_{\mathrm{wd}}^2} = 0 \implies R_{\mathrm{wd}} = \frac{10 C_1}{3G}M^{-1/3}
+                \]
+            </div>
+            <p>Notice that this is equivalent to the Virial Theorem $2E_e + E_G = 0$, and shows that more massive white dwarfs are <em>smaller</em> ($R_{\mathrm{wd}} \propto M^{-1/3}$)!</p>
+            <p><strong>(b)</strong> In the ultrarelativistic limit, both $E_e$ and $E_G$ scale as $R^{-1}$:</p>
+            <div class="math-block">
+                \[
+                E(R) = \left(C_2 M^{4/3} - \frac{3}{5}GM^2\right)\frac{1}{R}
+                \]
+            </div>
+            <p style="margin-bottom: 0;">Equilibrium ($dE/dR = 0$, or the relativistic Virial Theorem $E_e + E_G = 0$) is only possible at the unique critical mass where the coefficient of $1/R$ vanishes: $M_{\mathrm{Ch}} = \left(\frac{5C_2}{3G}\right)^{3/2}$. If $M > M_{\mathrm{Ch}}$, the bracket is negative and $E(R) \to -\infty$ as $R \to 0$, so degeneracy pressure cannot halt gravitational collapse!</p>
+        </div>
+    </div>
+
+    <!-- PROBLEM 1.9 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 1.9 · Radial Free-Fall Collapse Time (IPhO 2012, Short Problem S3)</span>
+            <span class="problem-pts">[4 pts]</span>
+        </div>
+        <p>
+            Two point particles, one of large mass $M$ and one of negligible mass $m \ll M$, are initially held at rest at separation $r_0$ and released at $t = 0$ so that $m$ falls radially into $M$.
+        </p>
+        <ol type="a">
+            <li>Using conservation of specific mechanical energy $\epsilon$, show that the collapse time $t_{\mathrm{fall}}$ to reach $r = 0$ is given by $t_{\mathrm{fall}} = \int_0^{r_0} \frac{dr}{\sqrt{2GM\left(\frac{1}{r} - \frac{1}{r_0}\right)}}$.</li>
+            <li>Evaluate this integral exactly using the substitution $r = r_0\cos^2\psi$, and verify that your result matches half the period of a degenerate Keplerian ellipse of semi-major axis $a = r_0/2$.</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-1-9').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-1-9')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-1-9').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-1-9')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-1-9">
+            <strong>Hint:</strong> With $r = r_0\cos^2\psi$, we have $dr = -2r_0\cos\psi\sin\psi\,d\psi$ and $\sqrt{\frac{r}{r_0 - r}} = \frac{\cos\psi}{\sin\psi}$. Use $\int_0^{\pi/2}\cos^2\psi\,d\psi = \frac{\pi}{4}$.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-1-9">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> Since the particle starts from rest at $r_0$ with $h = 0$, $\epsilon = \frac{1}{2}\dot{r}^2 - \frac{GM}{r} = -\frac{GM}{r_0}$. Solving for $\dot{r} = \frac{dr}{dt} \lt 0$ gives:</p>
+            <div class="math-block">
+                \[
+                \frac{dr}{dt} = -\sqrt{2GM\left(\frac{1}{r} - \frac{1}{r_0}\right)} \implies t_{\mathrm{fall}} = \int_0^{r_0} \sqrt{\frac{r_0 r}{2GM(r_0 - r)}}\,dr
+                \]
+            </div>
+            <p><strong>(b)</strong> Substituting $r = r_0\cos^2\psi$ ($\psi: \frac{\pi}{2} \to 0$, $dr = -2r_0\cos\psi\sin\psi\,d\psi$) transforms the integral into:</p>
+            <div class="math-block">
+                \[
+                t_{\mathrm{fall}} = \sqrt{\frac{r_0^3}{2GM}}\int_0^{\pi/2} 2\cos^2\psi\,d\psi = \sqrt{\frac{r_0^3}{2GM}}\left(\frac{\pi}{2}\right) = \pi\sqrt{\frac{r_0^3}{8GM}}
+                \]
+            </div>
+            <p style="margin-bottom: 0;">Treating the straight-line fall as a degenerate ellipse of apoapsis $r_a = r_0$, periapsis $r_p = 0$, and semi-major axis $a = \frac{r_0 + 0}{2} = \frac{r_0}{2}$, half the Keplerian period is $\frac{1}{2}T = \pi\sqrt{\frac{a^3}{GM}} = \pi\sqrt{\frac{r_0^3}{8GM}}$, in exact agreement!</p>
+        </div>
+    </div>
+
+    <!-- PROBLEM 1.10 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 1.10 · Virial Mass &amp; Dark Matter in the Coma Cluster (IOAA 2019, Theory Q13)</span>
+            <span class="problem-pts">[4 pts]</span>
+        </div>
+        <p>
+            The Coma galaxy cluster (Abell 1656) has an angular diameter of $\theta = 100'$ and total luminosity $L_{\mathrm{Coma}} \approx 5 \times 10^{12}\,L_\odot$. The table below lists the measured radial velocities $v_r$ (in km/s) of $n = 20$ member galaxies ($H_0 = 70\text{ km}\cdot\text{s}^{-1}\cdot\text{Mpc}^{-1}$, $1\text{ Mpc} = 3.086 \times 10^{22}\text{ m}$, $M_\odot = 1.989 \times 10^{30}\text{ kg}$):
+        </p>
+        <div class="data-table-wrapper">
+            <table class="handout-table">
+                <thead>
+                    <tr><th>#</th><th>$v_r$</th><th>#</th><th>$v_r$</th><th>#</th><th>$v_r$</th><th>#</th><th>$v_r$</th><th>#</th><th>$v_r$</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>6001</td><td>5</td><td>5596</td><td>9</td><td>6954</td><td>13</td><td>7948</td><td>17</td><td>8292</td></tr>
+                    <tr><td>2</td><td>7666</td><td>6</td><td>7116</td><td>10</td><td>8953</td><td>14</td><td>4951</td><td>18</td><td>5358</td></tr>
+                    <tr><td>3</td><td>6624</td><td>7</td><td>7004</td><td>11</td><td>7156</td><td>15</td><td>7797</td><td>19</td><td>4957</td></tr>
+                    <tr><td>4</td><td>5952</td><td>8</td><td>4476</td><td>12</td><td>7522</td><td>16</td><td>7111</td><td>20</td><td>7183</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <ol type="a">
+            <li>Calculate the mean radial velocity $\bar{v}_r$, the cluster distance $D$ (in Mpc), and the physical radius $R$ (in Mpc).</li>
+            <li>Compute the radial velocity dispersion $\sigma_r = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (v_{r,i} - \bar{v}_r)^2}$ (in km/s).</li>
+            <li>Using $M = \frac{5R\sigma_r^2}{G}$, estimate the virial mass of the Coma cluster in solar masses ($M_\odot$) and its mass-to-light ratio $\Upsilon = (M/M_\odot)/(L_{\mathrm{Coma}}/L_\odot)$.</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-1-10').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-1-10')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-1-10').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-1-10')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-1-10">
+            <strong>Hint:</strong> Sum the 20 velocities and divide by 20 to get $\bar{v}_r \approx 6731\text{ km/s}$. Use $D = \bar{v}_r / H_0$ and $R = \frac{1}{2}D\theta$ (with $\theta$ in radians).
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-1-10">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> The sum of the 20 radial velocities is $134\,617\text{ km/s}$, giving a mean radial velocity $\bar{v}_r = 6730.85 \approx 6731\text{ km/s}$. From Hubble's Law:</p>
+            <div class="math-block">
+                \[
+                D = \frac{\bar{v}_r}{H_0} = \frac{6731}{70} \approx 96.16\text{ Mpc}, \qquad R = \frac{1}{2}D\theta = \frac{1}{2}(96.16\text{ Mpc})\left(\frac{100}{60 \times 57.296}\right) \approx 1.40\text{ Mpc}
+                \]
+            </div>
+            <p>In SI units, $R \approx 1.40 \times 3.086 \times 10^{22}\text{ m} = 4.32 \times 10^{22}\text{ m}$.</p>
+            <p><strong>(b)</strong> Computing the sample standard deviation of the 20 velocities around $\bar{v}_r = 6730.85\text{ km/s}$:</p>
+            <div class="math-block">
+                \[
+                \sum_{i=1}^{20}(v_{r,i} - \bar{v}_r)^2 = 2.785 \times 10^7\text{ km}^2\text{s}^{-2} \implies \sigma_r = \sqrt{\frac{2.785 \times 10^7}{19}} \approx 1211\text{ km/s} = 1.211 \times 10^6\text{ m/s}
+                \]
+            </div>
+            <p><strong>(c)</strong> Substituting $R$ and $\sigma_r$ into the virial mass formula:</p>
+            <div class="math-block">
+                \[
+                M = \frac{5R\sigma_r^2}{G} = \frac{5(4.32 \times 10^{22}\text{ m})(1.211 \times 10^6\text{ m/s})^2}{6.674 \times 10^{-11}} \approx 4.75 \times 10^{45}\text{ kg} \approx 2.39 \times 10^{15}\,M_\odot
+                \]
+            </div>
+            <p style="margin-bottom: 0;">The mass-to-light ratio is $\Upsilon = \frac{2.39 \times 10^{15}}{5 \times 10^{12}} \approx 477\,M_\odot/L_\odot$. Since normal stellar populations have $\Upsilon \sim 1\text{--}10\,M_\odot/L_\odot$, over $95\%$ of the Coma cluster's mass consists of non-luminous <strong>Dark Matter</strong>!</p>
+        </div>
+    </div>
+
+    <!-- PROBLEM 1.11 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 1.11 · [A] Generalized Power-Law Virial Theorem &amp; Negative Heat Capacity</span>
+            <span class="problem-pts">[5 pts]</span>
+        </div>
+        <p>
+            Suppose an isolated $N$-body system interacts via a central power-law pair potential $U_{ij} = \kappa m_i m_j |\vec{r}_i - \vec{r}_j|^n$, where $n \neq 0$ is a real exponent ($n = -1$ for Newtonian gravity, $n = +2$ for a 3D harmonic oscillator).
+        </p>
+        <ol type="a">
+            <li>By evaluating the virial force sum $\sum_i \vec{r}_i \cdot \vec{F}_i$, prove the generalized Lagrange–Jacobi identity $\frac{1}{2}\ddot{I} = 2K - nU$ and the steady-state generalized Virial Theorem $2\langle K \rangle = n\langle U \rangle$.</li>
+            <li>Express the total energy $E = \langle K \rangle + \langle U \rangle$ in terms of $\langle K \rangle$ alone. For what range of exponents $n$ does a bound system exhibit <em>negative heat capacity</em> ($\frac{dE}{d\langle K \rangle} \lt 0$)? What happens in the critical case $n = -2$?</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-1-11').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-1-11')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-1-11').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-1-11')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-1-11">
+            <strong>Hint:</strong> For pair distance $r_{ij} = |\vec{r}_i - \vec{r}_j|$, the force on $i$ due to $j$ is $\vec{F}_{ij} = -\nabla_i U_{ij} = -n\kappa m_i m_j r_{ij}^{n-2}(\vec{r}_i - \vec{r}_j) = -\frac{n U_{ij}}{r_{ij}^2}(\vec{r}_i - \vec{r}_j)$.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-1-11">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> Since $\vec{F}_{ij} = -\nabla_i U_{ij} = -n\kappa m_i m_j |\vec{r}_i - \vec{r}_j|^{n-2}(\vec{r}_i - \vec{r}_j)$, pairing $(i,j)$ via Newton's Third Law gives:</p>
+            <div class="math-block">
+                \[
+                \sum_{i=1}^N \vec{r}_i \cdot \vec{F}_i = \sum_{i \lt j} (\vec{r}_i - \vec{r}_j) \cdot \vec{F}_{ij} = -n\sum_{i \lt j} \kappa m_i m_j |\vec{r}_i - \vec{r}_j|^n = -nU
+                \]
+            </div>
+            <p>Substituting into $\frac{1}{2}\ddot{I} = 2K + \sum_i \vec{r}_i \cdot \vec{F}_i$ gives $\frac{1}{2}\ddot{I} = 2K - nU$. In a steady state ($\langle \ddot{I} \rangle = 0$), we obtain $2\langle K \rangle = n\langle U \rangle$.</p>
+            <p><strong>(b)</strong> Substituting $\langle U \rangle = \frac{2}{n}\langle K \rangle$ into $E = \langle K \rangle + \langle U \rangle$ gives:</p>
+            <div class="math-block">
+                \[
+                E = \left(1 + \frac{2}{n}\right)\langle K \rangle = \left(\frac{n + 2}{2}\right)\langle U \rangle
+                \]
+            </div>
+            <p style="margin-bottom: 0;">Thus $\frac{dE}{d\langle K \rangle} = 1 + \frac{2}{n} \lt 0$ whenever $-2 \lt n \lt 0$ (which includes Newtonian gravity $n = -1$!). In the borderline case $n = -2$ (an inverse-cube force $F \propto -1/r^3$), $\frac{1}{2}\ddot{I} = 2(K + U) = 2E$, so bound steady states can only exist at the single fine-tuned energy $E = 0$!</p>
+        </div>
+    </div>
 
     <div class="subchapter-nav-bar">
         <button class="btn-step" onclick="switchSubchapter('1.2')"><i class="fa-solid fa-arrow-left"></i> Prev: 1.2 Conservation Laws</button>
