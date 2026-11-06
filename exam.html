@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Exam Terminal — SAC 2026 | Supernova Guide</title>
+    <link rel="icon" type="image/png" href="assets/img/supernova_logo.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- MathJax 3 Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --bg-base: #0A0A0C;
+            --bg-sidebar: #101115;
+            --bg-card: #15161A;
+            --bg-card-hover: #1C1D22;
+
+            --accent-blue: #35E6FF;
+            --accent-green: #2BE38A;
+            --accent-purple: #B39CD0;
+            --accent-rose: #FFC1CC;
+            --accent-gold: #FFCF5C;
+            --accent-red: #FF5C5C;
+
+            --text-pure: #FFFFFF;
+            --text-main: #EDEDED;
+            --text-muted: #8A94A6;
+
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.16);
+
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+
+            --font-display: 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Ambient Background */
+        .sky-background {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 18% 20%, rgba(53, 230, 255, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 82% 80%, rgba(179, 156, 208, 0.05) 0%, transparent 45%),
+                var(--bg-base);
+            pointer-events: none;
+        }
+
+        /* =========================================================
+           1. GATEKEEPER & PRE-FLIGHT CHECK OVERLAY
+           ========================================================= */
+        #gatekeeper-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(10, 10, 12, 0.96);
+            backdrop-filter: blur(16px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .gate-card {
+            width: 100%;
+            max-width: 880px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.75);
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 28px;
+        }
+
+        @media (max-width: 820px) {
+            .gate-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .gate-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .gate-brand img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        .gate-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-blue);
+            display: block;
+        }
+
+        .gate-title {
+            font-family: var(--font-display);
+            font-size: 1.65rem;
+            color: var(--text-pure);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .gate-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.73rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 11px 14px;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-pure);
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            transition: border-color 0.2s;
+            user-select: text;
+            -webkit-user-select: text;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .preflight-box {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .preflight-step {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            margin-bottom: 10px;
+            font-size: 0.84rem;
+        }
+
+        .preflight-step.verified {
+            border-color: rgba(43, 227, 138, 0.4);
+            background: rgba(43, 227, 138, 0.06);
+        }
+
+        .step-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--accent-blue);
+            background: rgba(53, 230, 255, 0.1);
+            color: var(--accent-blue);
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .step-btn:hover:not(:disabled) {
+            background: var(--accent-blue);
+            color: var(--bg-base);
+        }
+
+        .step-btn:disabled {
+            border-color: var(--accent-green);
+            background: rgba(43, 227, 138, 0.15);
+            color: var(--accent-green);
+            cursor: default;
+        }
+
+        .gate-cam-preview {
+            width: 100%;
+            height: 155px;
+            background: #050507;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gate-cam-preview video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+
+        .cam-placeholder {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .pledge-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.79rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+            margin: 12px 0 16px;
+            cursor: pointer;
+        }
+
+        .pledge-label input {
+            margin-top: 3px;
+            accent-color: var(--accent-blue);
+        }
+
+        .btn-launch {
+            width: 100%;
+            padding: 13px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background-color: var(--accent-blue);
+            color: #050507;
+            font-family: var(--font-mono);
+            font-size: 0.86rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-launch:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .gate-error {
+            color: var(--accent-red);
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            margin-top: 8px;
+            min-height: 18px;
+        }
+
+        /* =========================================================
+           2. TOP EXAM HEADER & QUESTION RIBBON
+           ========================================================= */
+        .exam-header {
+            height: 64px;
+            background: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-left img {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+        }
+
+        .exam-phase-pill {
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            padding: 4px 10px;
+            border-radius: 99px;
+            background: rgba(53, 230, 255, 0.12);
+            color: var(--accent-blue);
+            border: 1px solid rgba(53, 230, 255, 0.3);
+            font-weight: 700;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .timer-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-pure);
+        }
+
+        .timer-box.warning {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        .timer-box.critical {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+            animation: pulseRed 1s infinite;
+        }
+
+        @keyframes pulseRed {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.55; }
+        }
+
+        .btn-constants {
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s;
+        }
+
+        .btn-constants:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .btn-submit-exam {
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            background: rgba(43, 227, 138, 0.14);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-submit-exam:hover {
+            background: var(--accent-green);
+            color: #050507;
+        }
+
+        /* Question Number Ribbon */
+        .question-ribbon {
+            background: var(--bg-base);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            flex-shrink: 0;
+        }
+
+        .q-nav-btn {
+            min-width: 36px;
+            height: 34px;
+            border-radius: 6px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s;
+            position: relative;
+        }
+
+        .q-nav-btn.active {
+            border-color: var(--accent-blue);
+            color: var(--text-pure);
+            box-shadow: 0 0 0 2px rgba(53, 230, 255, 0.25);
+        }
+
+        .q-nav-btn.answered {
+            background: rgba(43, 227, 138, 0.14);
+            border-color: rgba(43, 227, 138, 0.45);
+            color: var(--accent-green);
+        }
+
+        .q-nav-btn.flagged::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+        }
+
+        /* =========================================================
+           3. MAIN EXAM WORKSPACE & PROCTORING SIDEBAR
+           ========================================================= */
+        .exam-body {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            overflow: hidden;
+        }
+
+        .problem-pane {
+            padding: 28px 36px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .problem-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            max-width: 920px;
+        }
+
+        .problem-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .meta-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .q-num-badge {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-pure);
+        }
+
+        .q-module-badge {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            padding: 3px 9px;
+            border-radius: 6px;
+            background: rgba(179, 156, 208, 0.12);
+            color: var(--accent-purple);
+            border: 1px solid rgba(179, 156, 208, 0.3);
+        }
+
+        .q-pts-badge {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-blue);
+        }
+
+        .btn-flag {
+            background: transparent;
+            border: 1px solid var(--border-light);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-flag.flagged {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            background: rgba(255, 207, 92, 0.1);
+        }
+
+        .problem-statement {
+            font-size: 1.02rem;
+            line-height: 1.72;
+            color: var(--text-pure);
+            margin-bottom: 24px;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .option-row:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-light);
+        }
+
+        .option-row.selected {
+            background: rgba(53, 230, 255, 0.1);
+            border-color: var(--accent-blue);
+        }
+
+        .option-letter {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .option-row.selected .option-letter {
+            background: var(--accent-blue);
+            color: #050507;
+            border-color: var(--accent-blue);
+        }
+
+        .option-text {
+            font-size: 0.96rem;
+            color: var(--text-main);
+        }
+
+        .problem-footer-Actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 920px;
+            margin-top: 22px;
+            padding-top: 16px;
+        }
+
+        .btn-nav {
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            color: var(--text-pure);
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-nav:hover:not(:disabled) {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .btn-clear {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* Right Proctoring Telemetry Sidebar */
+        .proctor-sidebar {
+            background: var(--bg-sidebar);
+            border-left: 1px solid var(--border-subtle);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+        }
+
+        .proctor-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 14px;
+        }
+
+        .proctor-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            display: inline-block;
+            box-shadow: 0 0 8px var(--accent-green);
+        }
+
+        .pip-video-box {
+            width: 100%;
+            height: 150px;
+            background: #050507;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            position: relative;
+        }
+
+        .pip-video-box video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+
+        .pip-badge {
+            position: absolute;
+            bottom: 6px;
+            left: 6px;
+            background: rgba(10, 10, 12, 0.8);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--accent-green);
+        }
+
+        .telemetry-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .telemetry-row:last-child {
+            border-bottom: none;
+        }
+
+        .telemetry-val {
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            font-weight: 700;
+        }
+
+        /* =========================================================
+           4. FULL-SCREEN VIOLATION & IAU CONSTANTS MODALS
+           ========================================================= */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            background: rgba(10, 10, 12, 0.92);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .violation-box {
+            max-width: 520px;
+            width: 100%;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-red);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(255, 92, 92, 0.25);
+        }
+
+        .constants-box {
+            max-width: 760px;
+            width: 100%;
+            max-height: 82vh;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 26px;
+            overflow-y: auto;
+        }
+
+        .constants-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: 0.85rem;
+        }
+
+        .constants-table th,
+        .constants-table td {
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--border-subtle);
+            text-align: left;
+        }
+
+        .constants-table th {
+            font-family: var(--font-mono);
+            font-size: 0.73rem;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="sky-background"></div>
+
+    <!-- =========================================================
+         1. PASSWORD GATEKEEPER & PRE-FLIGHT PROCTORING MODAL
+         ========================================================= -->
+    <div id="gatekeeper-screen">
+        <div class="gate-card">
+            <!-- Left Column: Credentials & Password Authentication -->
+            <div>
+                <div class="gate-brand">
+                    <img src="assets/img/supernova_logo.png" alt="Supernova Guide" onerror="this.style.display='none'">
+                    <div>
+                        <span class="gate-eyebrow">Supernova Astrophysics Cup · Autumn 2026</span>
+                        <strong style="font-family:var(--font-display); color:var(--text-pure);">Proctored Exam Terminal</strong>
+                    </div>
+                </div>
+
+                <h1 class="gate-title">Candidate Authentication</h1>
+                <p class="gate-desc">
+                    Enter your registered Supernova Guide email, Candidate Bib ID, and the unique Exam Access Password sent to your email prior to 18:00 UT.
+                </p>
+
+                <div class="form-group">
+                    <label class="form-label" for="cand-email">Registered Account Email</label>
+                    <input type="email" id="cand-email" class="form-input" placeholder="candidate@supernovaguide.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="cand-bib">Candidate Bib ID</label>
+                    <input type="text" id="cand-bib" class="form-input" placeholder="SNG-2026-0142" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="cand-pass">Exam Access Password (Sent via Email)</label>
+                    <input type="password" id="cand-pass" class="form-input" placeholder="••••••••••••" required>
+                </div>
+
+                <label class="pledge-label">
+                    <input type="checkbox" id="pledge-check">
+                    <span>
+                        I confirm that I am using only a non-programmable scientific calculator and the built-in Supernova IAU Constants Sheet. I consent to continuous webcam monitoring, screen sharing, and full-screen lockdown.
+                    </span>
+                </label>
+
+                <div id="gate-error" class="gate-error"></div>
+            </div>
+
+            <!-- Right Column: Hardware Permissions (Camera + Screen Share + Fullscreen) -->
+            <div class="preflight-box">
+                <div>
+                    <span class="form-label" style="margin-bottom:10px;">Mandatory Proctoring Checks</span>
+
+                    <div class="gate-cam-preview">
+                        <video id="gate-webcam-video" autoplay playsinline muted style="display:none;"></video>
+                        <div id="gate-cam-placeholder" class="cam-placeholder">
+                            <i class="fa-solid fa-video-slash" style="font-size:1.4rem; margin-bottom:6px; display:block;"></i>
+                            Webcam feed inactive
+                        </div>
+                    </div>
+
+                    <!-- Check 1: Camera -->
+                    <div class="preflight-step" id="step-cam">
+                        <div class="step-info">
+                            <i class="fa-solid fa-camera" style="color:var(--accent-blue);"></i>
+                            <span>1. Webcam Feed Access</span>
+                        </div>
+                        <button type="button" class="step-btn" id="btn-enable-cam">Grant Camera</button>
+                    </div>
+
+                    <!-- Check 2: Screen Share -->
+                    <div class="preflight-step" id="step-screen">
+                        <div class="step-info">
+                            <i class="fa-solid fa-desktop" style="color:var(--accent-purple);"></i>
+                            <span>2. Entire Screen Share</span>
+                        </div>
+                        <button type="button" class="step-btn" id="btn-enable-screen">Share Screen</button>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="button" class="btn-launch" id="btn-start-exam" disabled>
+                        <i class="fa-solid fa-lock"></i> Unlock & Enter Fullscreen Exam
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         2. LIVE EXAM HEADER & NAVIGATION RIBBON
+         ========================================================= -->
+    <header class="exam-header">
+        <div class="header-left">
+            <img src="assets/img/supernova_logo.png" alt="Logo" onerror="this.style.display='none'">
+            <strong style="font-family:var(--font-display); font-size:1.05rem; color:var(--text-pure);">SUPERNOVA GUIDE</strong>
+            <span class="exam-phase-pill" id="header-phase-label">SAC 2026 · OPEN QUALIFIER</span>
+        </div>
+
+        <div class="header-right">
+            <button type="button" class="btn-constants" id="btn-open-constants">
+                <i class="fa-solid fa-square-root-variable"></i> IAU Constants Sheet
+            </button>
+            <div class="timer-box" id="exam-timer-box">
+                <i class="fa-regular fa-clock"></i>
+                <span id="exam-timer-display">60:00</span>
+            </div>
+            <button type="button" class="btn-submit-exam" id="btn-finish-exam">
+                <i class="fa-solid fa-paper-plane"></i> Finish & Submit
+            </button>
+        </div>
+    </header>
+
+    <nav class="question-ribbon" id="question-ribbon"></nav>
+
+    <!-- =========================================================
+         3. MAIN EXAM WORKSPACE & PROCTORING SIDEBAR
+         ========================================================= -->
+    <main class="exam-body">
+        <section class="problem-pane">
+            <div class="problem-card">
+                <div class="problem-meta">
+                    <div class="meta-left">
+                        <span class="q-num-badge" id="q-number-title">Question 1</span>
+                        <span class="q-module-badge" id="q-module-tag">Module T1</span>
+                        <span class="q-pts-badge" id="q-points-tag">1.0 Point</span>
+                    </div>
+                    <button type="button" class="btn-flag" id="btn-flag-q">
+                        <i class="fa-regular fa-flag"></i> Flag for Review
+                    </button>
+                </div>
+
+                <div class="problem-statement" id="q-statement-box">
+                    Loading problem statement...
+                </div>
+
+                <div class="options-list" id="q-options-box"></div>
+            </div>
+
+            <div class="problem-footer-Actions">
+                <button type="button" class="btn-nav" id="btn-prev-q">
+                    <i class="fa-solid fa-arrow-left"></i> Previous
+                </button>
+                <button type="button" class="btn-clear" id="btn-clear-ans">Clear Selected Answer</button>
+                <button type="button" class="btn-nav" id="btn-next-q">
+                    Next Problem <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Right Proctoring & Telemetry Sidebar -->
+        <aside class="proctor-sidebar">
+            <div class="proctor-card">
+                <div class="proctor-label">
+                    <span>Active Proctoring Feed</span>
+                    <span class="live-dot"></span>
+                </div>
+                <div class="pip-video-box">
+                    <video id="sidebar-webcam-video" autoplay playsinline muted></video>
+                    <span class="pip-badge">REC · SNAPSHOTS ACTIVE</span>
+                </div>
+                <canvas id="snapshot-canvas" width="320" height="240" style="display:none;"></canvas>
+            </div>
+
+            <div class="proctor-card">
+                <div class="proctor-label">Candidate Telemetry</div>
+                <div class="telemetry-row">
+                    <span style="color:var(--text-muted);">Bib ID</span>
+                    <span class="telemetry-val" id="tel-bib" style="color:var(--accent-blue);">SNG-2026-0000</span>
+                </div>
+                <div class="telemetry-row">
+                    <span style="color:var(--text-muted);">Account</span>
+                    <span class="telemetry-val" id="tel-email" style="font-size:0.7rem;">—</span>
+                </div>
+                <div class="telemetry-row">
+                    <span style="color:var(--text-muted);">Progress</span>
+                    <span class="telemetry-val" id="tel-answered" style="color:var(--accent-green);">0 / 5</span>
+                </div>
+                <div class="telemetry-row">
+                    <span style="color:var(--text-muted);">Fullscreen</span>
+                    <span class="telemetry-val" id="tel-fullscreen" style="color:var(--accent-green);">LOCKED</span>
+                </div>
+                <div class="telemetry-row">
+                    <span style="color:var(--text-muted);">Screen Share</span>
+                    <span class="telemetry-val" id="tel-screenshare" style="color:var(--accent-green);">ACTIVE</span>
+                </div>
+                <div class="telemetry-row">
+                    <span style="color:var(--text-muted);">Focus Strikes</span>
+                    <span class="telemetry-val" id="tel-strikes" style="color:var(--accent-gold);">0 / 3</span>
+                </div>
+            </div>
+
+            <div class="proctor-card">
+                <div class="proctor-label">Cloud Sync Status</div>
+                <div id="sync-status-text" style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-green);">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Auto-saved to Local & Cloud
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- =========================================================
+         4. ANTI-CHEAT FOCUS VIOLATION MODAL
+         ========================================================= -->
+    <div class="modal-overlay" id="violation-modal">
+        <div class="violation-box">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size:2.4rem; color:var(--accent-red); margin-bottom:12px;"></i>
+            <h2 style="font-family:var(--font-display); color:var(--text-pure); margin-bottom:8px;">Proctoring Lockdown Alert</h2>
+            <p id="violation-reason-text" style="font-size:0.9rem; color:var(--text-muted); line-height:1.55; margin-bottom:16px;">
+                You exited full-screen mode or switched browser focus. This event has been logged.
+            </p>
+            <div style="font-family:var(--font-mono); font-size:0.9rem; color:var(--accent-red); font-weight:700; margin-bottom:20px;">
+                Recorded Strike: <span id="modal-strike-count">1</span> / 3
+            </div>
+            <button type="button" class="btn-launch" id="btn-restore-lockdown">
+                Return to Fullscreen & Resume Exam
+            </button>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         5. OFFICIAL IAU CONSTANTS & FORMULA MODAL
+         ========================================================= -->
+    <div class="modal-overlay" id="constants-modal">
+        <div class="constants-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                <h3 style="font-family:var(--font-display); color:var(--text-pure);">Supernova Guide · Official IAU Constants Sheet</h3>
+                <button type="button" id="btn-close-constants" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <table class="constants-table">
+                <thead>
+                    <tr>
+                        <th>Quantity</th>
+                        <th>Symbol</th>
+                        <th>IAU Recommended Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Speed of Light</td><td>$c$</td><td>$2.99792458 \times 10^8\text{ m s}^{-1}$</td></tr>
+                    <tr><td>Gravitational Constant</td><td>$G$</td><td>$6.67430 \times 10^{-11}\text{ m}^3\text{ kg}^{-1}\text{ s}^{-2}$</td></tr>
+                    <tr><td>Planck Constant</td><td>$h$</td><td>$6.62607015 \times 10^{-34}\text{ J s}$</td></tr>
+                    <tr><td>Boltzmann Constant</td><td>$k_B$</td><td>$1.380649 \times 10^{-23}\text{ J K}^{-1}$</td></tr>
+                    <tr><td>Stefan-Boltzmann Constant</td><td>$\sigma$</td><td>$5.670374 \times 10^{-8}\text{ W m}^{-2}\text{ K}^{-4}$</td></tr>
+                    <tr><td>Astronomical Unit</td><td>$\text{AU}$</td><td>$1.495978707 \times 10^{11}\text{ m}$</td></tr>
+                    <tr><td>Parsec</td><td>$\text{pc}$</td><td>$3.085677581 \times 10^{16}\text{ m} = 3.26156\text{ ly}$</td></tr>
+                    <tr><td>Solar Mass Parameter</td><td>$(GM)_\odot$</td><td>$1.3271244 \times 10^{20}\text{ m}^3\text{ s}^{-2}$</td></tr>
+                    <tr><td>Nominal Solar Mass</td><td>$M_\odot$</td><td>$1.98841 \times 10^{30}\text{ kg}$</td></tr>
+                    <tr><td>Nominal Solar Radius</td><td>$R_\odot$</td><td>$6.957 \times 10^8\text{ m}$</td></tr>
+                    <tr><td>Nominal Solar Luminosity</td><td>$L_\odot$</td><td>$3.828 \times 10^{26}\text{ W}$</td></tr>
+                    <tr><td>Nominal Solar Effective Temp.</td><td>$T_{\text{eff},\odot}$</td><td>$5772\text{ K}$</td></tr>
+                    <tr><td>Earth Mass</td><td>$M_\oplus$</td><td>$5.97217 \times 10^{24}\text{ kg}$</td></tr>
+                    <tr><td>Earth Equatorial Radius</td><td>$R_{\oplus,\text{eq}}$</td><td>$6.3781 \times 10^6\text{ m}$</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         6. FIREBASE & PROCTORING ENGINE SCRIPT
+         ========================================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, update, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // 1. Firebase Configuration (supernova-auth-92414)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBZT_CK1nA24qYSzkQ2iNCwCDPiouR-uv8",
+            authDomain: "supernova-auth-92414.firebaseapp.com",
+            databaseURL: "https://supernova-auth-92414-default-rtdb.europe-west1.firebasedatabase.app/",
+            projectId: "supernova-auth-92414",
+            storageBucket: "supernova-auth-92414.firebasestorage.app",
+            messagingSenderId: "761827551286",
+            appId: "1:761827551286:web:e4bdb744264402c1f61097"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // =========================================================
+        // 2. ADMIN ACCESS KEYS & EXAM PAYLOAD CONFIGURATION
+        // =========================================================
+        const MASTER_EXAM_PASSWORDS = [
+            "SAC2026-QUALIFIER-KEY",
+            "SUPERNOVA-R1-8842"
+        ];
+
+        const EXAM_DURATION_SECONDS = 60 * 60; // 60 Minutes
+        const MAX_STRIKES = 3;
+
+        // Sample Olympiad Problem Payload (Replace at 18:00 UT or load via Firebase)
+        let EXAM_QUESTIONS = [
+            {
+                id: "Q1",
+                module: "T1 · Celestial Mechanics",
+                points: "1.0 Point",
+                statement: "A test particle orbits a central star of mass $M$ in a highly eccentric elliptical orbit with semi-major axis $a$ and eccentricity $e = 0.8$. What is the ratio of its orbital speed at periastron ($v_p$) to its orbital speed at apastron ($v_a$)?",
+                options: [
+                    "$3:1$",
+                    "$5:1$",
+                    "$9:1$",
+                    "$81:1$",
+                    "$\\sqrt{5}:1$"
+                ]
+            },
+            {
+                id: "Q2",
+                module: "T2 · Radiation & Relativity",
+                points: "1.0 Point",
+                statement: "An isotropic main-sequence star of radius $R_\\star$ and effective temperature $T_\\star$ is orbited by a rapidly rotating, zero-albedo spherical exoplanet at distance $d \\gg R_\\star$. Assuming thermal equilibrium, the planet's equilibrium temperature $T_{\\text{eq}}$ scales as:",
+                options: [
+                    "$T_\\star \\sqrt{\\frac{R_\\star}{2d}}$",
+                    "$T_\\star \\sqrt{\\frac{R_\\star}{d}}$",
+                    "$T_\\star \\left(\\frac{R_\\star}{2d}\\right)^{1/4}$",
+                    "$T_\\star \\left(\\frac{R_\\star}{4d}\\right)$",
+                    "$T_\\star \\left(\\frac{R_\\star}{d}\\right)^2$"
+                ]
+            },
+            {
+                id: "Q3",
+                module: "T3 · Instrumentation",
+                points: "1.0 Point",
+                statement: "A diffraction-limited optical space telescope with aperture diameter $D = 2.4\\text{ m}$ observes a binary star at wavelength $\\lambda = 550\\text{ nm}$. According to the Rayleigh criterion, what is the minimum angular separation $\\theta$ it can resolve?",
+                options: [
+                    "$0.029''$",
+                    "$0.058''$",
+                    "$0.116''$",
+                    "$0.232''$",
+                    "$0.504''$"
+                ]
+            },
+            {
+                id: "Q4",
+                module: "T4 · Stellar Physics",
+                points: "1.0 Point",
+                statement: "Two stars have identical bolometric luminosities, but Star A has an effective temperature twice that of Star B ($T_A = 2 T_B$). What is the ratio of their radii $R_A / R_B$?",
+                options: [
+                    "$1/16$",
+                    "$1/8$",
+                    "$1/4$",
+                    "$1/2$",
+                    "$1/\\sqrt{2}$"
+                ]
+            },
+            {
+                id: "Q5",
+                module: "T12 · Cosmology",
+                points: "1.0 Point",
+                statement: "A high-redshift quasar is observed at cosmological redshift $z = 3.0$. What was the temperature of the Cosmic Microwave Background (CMB) at the epoch when the light was emitted by the quasar, given $T_0 = 2.725\\text{ K}$ today?",
+                options: [
+                    "$5.45\\text{ K}$",
+                    "$8.18\\text{ K}$",
+                    "$10.90\\text{ K}$",
+                    "$13.63\\text{ K}$",
+                    "$21.80\\text{ K}$"
+                ]
+            }
+        ];
+
+        // =========================================================
+        // 3. STATE VARIABLES
+        // =========================================================
+        let webcamStream = null;
+        let screenStream = null;
+        let camVerified = false;
+        let screenVerified = false;
+
+        let examActive = false;
+        let currentIdx = 0;
+        let candidateBib = "";
+        let candidateEmail = "";
+        let answers = {};
+        let flagged = {};
+        let strikes = 0;
+        let remainingSeconds = EXAM_DURATION_SECONDS;
+        let timerInterval = null;
+        let snapshotInterval = null;
+
+        const gateScreen = document.getElementById('gatekeeper-screen');
+        const btnEnableCam = document.getElementById('btn-enable-cam');
+        const btnEnableScreen = document.getElementById('btn-enable-screen');
+        const btnStartExam = document.getElementById('btn-start-exam');
+        const pledgeCheck = document.getElementById('pledge-check');
+        const gateError = document.getElementById('gate-error');
+
+        function checkGateReady() {
+            const emailVal = document.getElementById('cand-email').value.trim();
+            const bibVal = document.getElementById('cand-bib').value.trim();
+            const passVal = document.getElementById('cand-pass').value.trim();
+            btnStartExam.disabled = !(camVerified && screenVerified && pledgeCheck.checked && emailVal && bibVal && passVal);
+        }
+
+        ['cand-email', 'cand-bib', 'cand-pass'].forEach(id => {
+            document.getElementById(id).addEventListener('input', checkGateReady);
+        });
+        pledgeCheck.addEventListener('change', checkGateReady);
+
+        // =========================================================
+        // 4. WEBCAM & SCREEN SHARE PERMISSIONS
+        // =========================================================
+        btnEnableCam.addEventListener('click', async () => {
+            gateError.textContent = "";
+            try {
+                webcamStream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: "user" },
+                    audio: false
+                });
+                const gateVideo = document.getElementById('gate-webcam-video');
+                const sideVideo = document.getElementById('sidebar-webcam-video');
+                gateVideo.srcObject = webcamStream;
+                sideVideo.srcObject = webcamStream;
+                gateVideo.style.display = 'block';
+                document.getElementById('gate-cam-placeholder').style.display = 'none';
+
+                camVerified = true;
+                document.getElementById('step-cam').classList.add('verified');
+                btnEnableCam.textContent = "Verified ✓";
+                btnEnableCam.disabled = true;
+                checkGateReady();
+            } catch (err) {
+                gateError.textContent = "Camera permission denied. A functional webcam is mandatory.";
+            }
+        });
+
+        btnEnableScreen.addEventListener('click', async () => {
+            gateError.textContent = "";
+            try {
+                screenStream = await navigator.mediaDevices.getDisplayMedia({
+                    video: { displaySurface: "monitor" },
+                    audio: false
+                });
+
+                const videoTrack = screenStream.getVideoTracks()[0];
+                videoTrack.onended = () => {
+                    if (examActive) {
+                        document.getElementById('tel-screenshare').textContent = "STOPPED";
+                        document.getElementById('tel-screenshare').style.color = "var(--accent-red)";
+                        recordStrike("Screen sharing was terminated during the live exam.");
+                    } else {
+                        screenVerified = false;
+                        document.getElementById('step-screen').classList.remove('verified');
+                        btnEnableScreen.textContent = "Share Screen";
+                        btnEnableScreen.disabled = false;
+                        checkGateReady();
+                    }
+                };
+
+                screenVerified = true;
+                document.getElementById('step-screen').classList.add('verified');
+                btnEnableScreen.textContent = "Sharing ✓";
+                btnEnableScreen.disabled = true;
+                checkGateReady();
+            } catch (err) {
+                gateError.textContent = "Screen share permission denied. You must share your screen to enter.";
+            }
+        });
+
+        // =========================================================
+        // 5. AUTHENTICATE PASSWORD & LAUNCH FULLSCREEN EXAM
+        // =========================================================
+        btnStartExam.addEventListener('click', async () => {
+            gateError.textContent = "";
+            const emailVal = document.getElementById('cand-email').value.trim();
+            const bibVal = document.getElementById('cand-bib').value.trim().toUpperCase();
+            const passVal = document.getElementById('cand-pass').value.trim();
+
+            if (!/^SNG-2026-\d{4}$/i.test(bibVal)) {
+                gateError.textContent = "Invalid Bib format. Expected format: SNG-2026-XXXX";
+                return;
+            }
+
+            let passwordValid = MASTER_EXAM_PASSWORDS.includes(passVal);
+            if (!passwordValid) {
+                try {
+                    const keySnap = await get(ref(db, `sac2026/keys/${bibVal}`));
+                    if (keySnap.exists() && keySnap.val() === passVal) {
+                        passwordValid = true;
+                    }
+                } catch (e) {
+                    console.warn("Firebase key lookup fallback:", e);
+                }
+            }
+
+            if (!passwordValid) {
+                gateError.textContent = "Invalid Exam Access Password. Check the email sent prior to 18:00 UT.";
+                return;
+            }
+
+            try {
+                const qSnap = await get(ref(db, `sac2026/questions`));
+                if (qSnap.exists() && Array.isArray(qSnap.val())) {
+                    EXAM_QUESTIONS = qSnap.val();
+                }
+            } catch (e) {
+                console.info("Using built-in exam question bank.");
+            }
+
+            candidateEmail = emailVal;
+            candidateBib = bibVal;
+
+            try {
+                if (document.documentElement.requestFullscreen) {
+                    await document.documentElement.requestFullscreen();
+                }
+            } catch (e) {
+                console.warn("Fullscreen request warning:", e);
+            }
+
+            initializeExamSession();
+        });
+
+        // =========================================================
+        // 6. EXAM SESSION INITIALIZATION & AUTO-SAVE RECOVERY
+        // =========================================================
+        function getStorageKey() {
+            return `sac_2026_exam_state_${candidateBib}`;
+        }
+
+        function initializeExamSession() {
+            gateScreen.style.display = 'none';
+            examActive = true;
+
+            document.getElementById('tel-bib').textContent = candidateBib;
+            document.getElementById('tel-email').textContent = candidateEmail;
+
+            const savedRaw = localStorage.getItem(getStorageKey());
+            if (savedRaw) {
+                try {
+                    const parsed = JSON.parse(savedRaw);
+                    answers = parsed.answers || {};
+                    flagged = parsed.flagged || {};
+                    strikes = parsed.strikes || 0;
+                    if (parsed.endTimeMs) {
+                        const diffSec = Math.floor((parsed.endTimeMs - Date.now()) / 1000);
+                        remainingSeconds = Math.max(0, diffSec);
+                    }
+                } catch (e) {
+                    console.error("Session recovery error:", e);
+                }
+            } else {
+                const endTimeMs = Date.now() + EXAM_DURATION_SECONDS * 1000;
+                localStorage.setItem(getStorageKey(), JSON.stringify({
+                    bib: candidateBib,
+                    email: candidateEmail,
+                    answers,
+                    flagged,
+                    strikes,
+                    endTimeMs
+                }));
+            }
+
+            updateStrikeUI();
+            buildQuestionRibbon();
+            renderQuestion(0);
+            startCountdownTimer();
+            startPeriodicSnapshots();
+            syncStateToCloud("session_started");
+        }
+
+        function saveState(eventTag = "auto_save") {
+            if (!candidateBib) return;
+            const existingRaw = localStorage.getItem(getStorageKey());
+            let endTimeMs = Date.now() + remainingSeconds * 1000;
+            if (existingRaw) {
+                try {
+                    endTimeMs = JSON.parse(existingRaw).endTimeMs || endTimeMs;
+                } catch (e) {}
+            }
+
+            const payload = {
+                bib: candidateBib,
+                email: candidateEmail,
+                answers,
+                flagged,
+                strikes,
+                remainingSeconds,
+                endTimeMs,
+                lastUpdatedUTC: new Date().toISOString(),
+                lastEvent: eventTag
+            };
+
+            localStorage.setItem(getStorageKey(), JSON.stringify(payload));
+            syncStateToCloud(eventTag);
+        }
+
+        async function syncStateToCloud(eventTag) {
+            const syncEl = document.getElementById('sync-status-text');
+            try {
+                await update(ref(db, `sac2026/submissions/${candidateBib}`), {
+                    bib: candidateBib,
+                    email: candidateEmail,
+                    answers,
+                    flagged,
+                    strikes,
+                    remainingSeconds,
+                    lastEvent: eventTag,
+                    updatedAt: new Date().toISOString()
+                });
+                if (syncEl) {
+                    syncEl.innerHTML = `<i class="fa-solid fa-check-circle"></i> Synced (${new Date().toLocaleTimeString()})`;
+                    syncEl.style.color = "var(--accent-green)";
+                }
+            } catch (e) {
+                if (syncEl) {
+                    syncEl.innerHTML = `<i class="fa-solid fa-hard-drive"></i> Saved Locally (Offline Backup)`;
+                    syncEl.style.color = "var(--accent-gold)";
+                }
+            }
+        }
+
+        // =========================================================
+        // 7. QUESTION RENDERING & NAVIGATION
+        // =========================================================
+        function buildQuestionRibbon() {
+            const ribbon = document.getElementById('question-ribbon');
+            ribbon.innerHTML = '';
+            EXAM_QUESTIONS.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'q-nav-btn';
+                btn.id = `ribbon-btn-${idx}`;
+                btn.textContent = idx + 1;
+                btn.addEventListener('click', () => renderQuestion(idx));
+                ribbon.appendChild(btn);
+            });
+            updateRibbonStates();
+        }
+
+        function updateRibbonStates() {
+            let answeredCount = 0;
+            EXAM_QUESTIONS.forEach((q, idx) => {
+                const btn = document.getElementById(`ribbon-btn-${idx}`);
+                if (!btn) return;
+                btn.className = 'q-nav-btn';
+                if (idx === currentIdx) btn.classList.add('active');
+                if (answers[q.id] !== undefined) {
+                    btn.classList.add('answered');
+                    answeredCount++;
+                }
+                if (flagged[q.id]) btn.classList.add('flagged');
+            });
+            document.getElementById('tel-answered').textContent = `${answeredCount} / ${EXAM_QUESTIONS.length}`;
+        }
+
+        function renderQuestion(idx) {
+            currentIdx = idx;
+            const q = EXAM_QUESTIONS[idx];
+
+            document.getElementById('q-number-title').textContent = `Question ${idx + 1} of ${EXAM_QUESTIONS.length}`;
+            document.getElementById('q-module-tag').textContent = q.module;
+            document.getElementById('q-points-tag').textContent = q.points;
+            document.getElementById('q-statement-box').innerHTML = q.statement;
+
+            const flagBtn = document.getElementById('btn-flag-q');
+            if (flagged[q.id]) {
+                flagBtn.classList.add('flagged');
+                flagBtn.innerHTML = `<i class="fa-solid fa-flag"></i> Flagged`;
+            } else {
+                flagBtn.classList.remove('flagged');
+                flagBtn.innerHTML = `<i class="fa-regular fa-flag"></i> Flag for Review`;
+            }
+
+            const optsContainer = document.getElementById('q-options-box');
+            optsContainer.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D', 'E'];
+
+            q.options.forEach((optText, optIdx) => {
+                const row = document.createElement('div');
+                row.className = 'option-row' + (answers[q.id] === optIdx ? ' selected' : '');
+                row.innerHTML = `
+                    <div class="option-letter">${letters[optIdx]}</div>
+                    <div class="option-text">${optText}</div>
+                `;
+                row.addEventListener('click', () => {
+                    answers[q.id] = optIdx;
+                    renderQuestion(currentIdx);
+                    saveState(`answered_${q.id}`);
+                });
+                optsContainer.appendChild(row);
+            });
+
+            document.getElementById('btn-prev-q').disabled = (idx === 0);
+            document.getElementById('btn-next-q').disabled = (idx === EXAM_QUESTIONS.length - 1);
+
+            updateRibbonStates();
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([
+                    document.getElementById('q-statement-box'),
+                    optsContainer
+                ]).catch(err => console.warn('MathJax error:', err));
+            }
+        }
+
+        document.getElementById('btn-prev-q').addEventListener('click', () => {
+            if (currentIdx > 0) renderQuestion(currentIdx - 1);
+        });
+
+        document.getElementById('btn-next-q').addEventListener('click', () => {
+            if (currentIdx < EXAM_QUESTIONS.length - 1) renderQuestion(currentIdx + 1);
+        });
+
+        document.getElementById('btn-clear-ans').addEventListener('click', () => {
+            const q = EXAM_QUESTIONS[currentIdx];
+            delete answers[q.id];
+            renderQuestion(currentIdx);
+            saveState(`cleared_${q.id}`);
+        });
+
+        document.getElementById('btn-flag-q').addEventListener('click', () => {
+            const q = EXAM_QUESTIONS[currentIdx];
+            flagged[q.id] = !flagged[q.id];
+            renderQuestion(currentIdx);
+            saveState(`flagged_${q.id}`);
+        });
+
+        // =========================================================
+        // 8. TIMER & PERIODIC WEBCAM SNAPSHOTS
+        // =========================================================
+        function startCountdownTimer() {
+            const timerDisplay = document.getElementById('exam-timer-display');
+            const timerBox = document.getElementById('exam-timer-box');
+
+            timerInterval = setInterval(() => {
+                if (!examActive) return;
+                remainingSeconds--;
+
+                const m = Math.floor(remainingSeconds / 60);
+                const s = remainingSeconds % 60;
+                timerDisplay.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
+                if (remainingSeconds <= 300 && remainingSeconds > 60) {
+                    timerBox.className = 'timer-box warning';
+                } else if (remainingSeconds <= 60) {
+                    timerBox.className = 'timer-box critical';
+                }
+
+                if (remainingSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finalizeAndSubmitExam("Time Expired — Auto-Submitted");
+                }
+            }, 1000);
+        }
+
+        function startPeriodicSnapshots() {
+            const canvas = document.getElementById('snapshot-canvas');
+            const video = document.getElementById('sidebar-webcam-video');
+            const ctx = canvas.getContext('2d');
+
+            snapshotInterval = setInterval(async () => {
+                if (!examActive || !webcamStream) return;
+                try {
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const jpegBase64 = canvas.toDataURL('image/jpeg', 0.45);
+                    await update(ref(db, `sac2026/snapshots/${candidateBib}`), {
+                        latestFrame: jpegBase64,
+                        timestampUTC: new Date().toISOString()
+                    });
+                } catch (e) {}
+            }, 60000);
+        }
+
+        // =========================================================
+        // 9. ANTI-CHEAT LOCKDOWN & STRIKE LISTENERS
+        // =========================================================
+        function updateStrikeUI() {
+            const strikeEl = document.getElementById('tel-strikes');
+            strikeEl.textContent = `${strikes} / ${MAX_STRIKES}`;
+            strikeEl.style.color = strikes > 0 ? "var(--accent-red)" : "var(--accent-gold)";
+        }
+
+        function recordStrike(reason) {
+            if (!examActive) return;
+            strikes++;
+            updateStrikeUI();
+            saveState(`strike_${strikes}_${reason}`);
+
+            if (strikes >= MAX_STRIKES) {
+                finalizeAndSubmitExam(`Auto-Submitted: Reached ${MAX_STRIKES}/${MAX_STRIKES} Proctoring Violations (${reason})`);
+                return;
+            }
+
+            document.getElementById('violation-reason-text').textContent = reason;
+            document.getElementById('modal-strike-count').textContent = strikes;
+            document.getElementById('violation-modal').classList.add('active');
+        }
+
+        document.addEventListener('fullscreenchange', () => {
+            if (!examActive) return;
+            const fsEl = document.getElementById('tel-fullscreen');
+            if (!document.fullscreenElement) {
+                fsEl.textContent = "UNLOCKED";
+                fsEl.style.color = "var(--accent-red)";
+                recordStrike("Exited Full-Screen Browser Lockdown.");
+            } else {
+                fsEl.textContent = "LOCKED";
+                fsEl.style.color = "var(--accent-green)";
+            }
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (examActive && document.hidden) {
+                recordStrike("Switched browser tab or minimized exam window.");
+            }
+        });
+
+        window.addEventListener('blur', () => {
+            if (examActive && !document.hidden) {
+                recordStrike("Lost exam window focus (clicked outside browser or opened external application).");
+            }
+        });
+
+        document.getElementById('btn-restore-lockdown').addEventListener('click', async () => {
+            try {
+                if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+                    await document.documentElement.requestFullscreen();
+                }
+            } catch (e) {}
+            document.getElementById('violation-modal').classList.remove('active');
+        });
+
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (
+                e.key === 'F12' ||
+                (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) ||
+                (e.ctrlKey && ['C', 'V', 'U', 'P'].includes(e.key.toUpperCase()))
+            ) {
+                e.preventDefault();
+            }
+        });
+
+        document.getElementById('btn-open-constants').addEventListener('click', () => {
+            document.getElementById('constants-modal').classList.add('active');
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([document.getElementById('constants-modal')]);
+            }
+        });
+        document.getElementById('btn-close-constants').addEventListener('click', () => {
+            document.getElementById('constants-modal').classList.remove('active');
+        });
+
+        // =========================================================
+        // 10. FINAL SUBMISSION & RECEIPT GENERATION
+        // =========================================================
+        document.getElementById('btn-finish-exam').addEventListener('click', () => {
+            const answeredCount = Object.keys(answers).length;
+            const confirmMsg = `You have answered ${answeredCount} of ${EXAM_QUESTIONS.length} questions. Are you sure you want to finalize and submit your exam?`;
+            if (confirm(confirmMsg)) {
+                finalizeAndSubmitExam("Candidate Manual Submission");
+            }
+        });
+
+        async function finalizeAndSubmitExam(reason) {
+            examActive = false;
+            clearInterval(timerInterval);
+            clearInterval(snapshotInterval);
+
+            const receiptId = `SAC26-${candidateBib.split('-').pop()}-${Date.now().toString(36).toUpperCase()}`;
+            const finalPayload = {
+                bib: candidateBib,
+                email: candidateEmail,
+                answers,
+                strikes,
+                remainingSeconds,
+                submissionReason: reason,
+                receiptId,
+                submittedAtUTC: new Date().toISOString()
+            };
+
+            localStorage.setItem(`${getStorageKey()}_submitted`, JSON.stringify(finalPayload));
+            localStorage.removeItem(getStorageKey());
+
+            try {
+                await set(ref(db, `sac2026/final_submissions/${candidateBib}`), finalPayload);
+            } catch (e) {
+                console.warn("Final submission cloud error:", e);
+            }
+
+            if (webcamStream) webcamStream.getTracks().forEach(t => t.stop());
+            if (screenStream) screenStream.getTracks().forEach(t => t.stop());
+            if (document.fullscreenElement && document.exitFullscreen) {
+                document.exitFullscreen().catch(() => {});
+            }
+
+            document.body.innerHTML = `
+                <div style="height:100vh; display:flex; align-items:center; justify-content:center; background:var(--bg-base); padding:24px;">
+                    <div style="max-width:560px; width:100%; background:var(--bg-card); border:1px solid var(--accent-green); border-radius:16px; padding:36px; text-align:center;">
+                        <i class="fa-solid fa-circle-check" style="font-size:3rem; color:var(--accent-green); margin-bottom:16px;"></i>
+                        <h1 style="font-family:var(--font-display); color:var(--text-pure); margin-bottom:8px;">Exam Submitted Successfully</h1>
+                        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:22px;">${reason}</p>
+                        <div style="background:var(--bg-sidebar); border:1px solid var(--border-subtle); border-radius:10px; padding:16px; text-align:left; font-family:var(--font-mono); font-size:0.8rem; margin-bottom:24px; line-height:1.8;">
+                            <div><span style="color:var(--text-muted);">RECEIPT ID:</span> <strong style="color:var(--accent-blue);">${receiptId}</strong></div>
+                            <div><span style="color:var(--text-muted);">CANDIDATE BIB:</span> ${candidateBib}</div>
+                            <div><span style="color:var(--text-muted);">ANSWERED:</span> ${Object.keys(answers).length} / ${EXAM_QUESTIONS.length}</div>
+                            <div><span style="color:var(--text-muted);">PROCTOR STRIKES:</span> ${strikes} / ${MAX_STRIKES}</div>
+                            <div><span style="color:var(--text-muted);">TIMESTAMP (UT):</span> ${finalPayload.submittedAtUTC}</div>
+                        </div>
+                        <a href="competitions.html" style="display:inline-block; padding:12px 24px; border-radius:8px; background:var(--accent-blue); color:#050507; font-family:var(--font-mono); font-weight:700; font-size:0.84rem; text-decoration:none;">
+                            Return to Competitor Dashboard
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

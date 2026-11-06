@@ -946,6 +946,343 @@ Setting \\(A(u) = 2.0\\) and squaring both sides:</p>
 <p>$$ \\left(\\frac{t}{t_E}\\right)^2 = 0.30940 - 0.0400 = 0.26940 \\implies \\frac{t}{t_E} = \\pm 0.5190 $$</p>
 <p>The total duration spent above \\(A = 2.0\\) is symmetric around \\(t = 0\\):</p>
 <p>$$ \\Delta t = 2|t| = 2(0.5190)\\,t_E = 1.038\\,t_E \\approx 1.038 \\times 32.95\\text{ days} \\approx \\mathbf{34.2\\text{ days}} $$</p>`
+    },
+
+    // Day 22 — 09.11.2026
+    {
+        uniqueId: "potd_2026_11_09",
+        dayNumber: 22,
+        scheduledDate: "09.11.2026",
+        title: "The Braking of the Crab Pulsar: Magnetic Dipoles and Nebular Power",
+        author: "Matei",
+        module: "T8 · Neutron Stars & Pulsar Electrodynamics",
+        difficultyClass: "medium",
+        difficultyText: "3.8 / 10.0",
+        description: `<p>A rotation-powered radio and X-ray pulsar at the center of a young supernova remnant is modeled as a uniform sphere of mass \\(M = 1.40\\,M_\\odot\\) and radius \\(R = 10.0\\text{ km}\\). Pulse-timing observations in the year 2026 measure a rotation period of \\(P = 33.1\\text{ ms}\\) and a steady spin-down rate of \\(\\dot{P} = 4.21 \\times 10^{-13}\\ \\mathrm{s\\,s^{-1}}\\). Surrounding the pulsar is a synchrotron plerion nebula whose total bolometric luminosity is \\(L_{\\mathrm{neb}} = 1.00 \\times 10^{31}\\text{ W}\\). Use \\(M_\\odot = 1.989 \\times 10^{30}\\text{ kg}\\), \\(L_\\odot = 3.828 \\times 10^{26}\\text{ W}\\), \\(\\mu_0 = 4\\pi \\times 10^{-7}\\ \\mathrm{N\\,A^{-2}}\\), and \\(1\\text{ yr} = 3.1558 \\times 10^7\\text{ s}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the pulsar's moment of inertia \\(I = \\frac{2}{5}MR^2\\), its current rotational kinetic energy \\(E_{\\mathrm{rot}}\\), and the theoretical minimum rotation period \\(P_{\\min}\\) before centrifugal forces at the equator exceed surface gravity. <em>(2.0 points)</em></li>
+    <li>Derive the expression for the rotational spin-down power \\(L_{\\mathrm{sd}} = -\\dot{E}_{\\mathrm{rot}}\\) in terms of \\(I, P\\), and \\(\\dot{P}\\). Calculate \\(L_{\\mathrm{sd}}\\) in Watts and solar luminosities, and determine the percentage of the pulsar's spin-down power that is converted into the radiation of the surrounding nebula. <em>(2.5 points)</em></li>
+    <li>Assuming the spin-down is driven entirely by vacuum magnetic dipole radiation from an orthogonal rotator (magnetic inclination \\(\\alpha = 90^\\circ\\)):
+    $$ L_{\\mathrm{dip}} = \\frac{2\\pi^4 B_p^2 R^6 \\sin^2\\alpha}{3 \\mu_0 c^3 P^4} $$
+    calculate the polar surface magnetic field strength \\(B_p\\) in Tesla (\\(\\text{T}\\)) and in Gauss (\\(1\\text{ T} = 10^4\\text{ G}\\)). <em>(2.5 points)</em></li>
+    <li>For pure magnetic dipole braking where the angular velocity obeys \\(\\dot{\\Omega} = -k\\Omega^3\\), integrate the spin-down law from birth (period \\(P_0\\) at \\(t = 0\\)) to the present epoch \\(t\\) to show that \\(t = \\frac{P}{2\\dot{P}}\\left[1 - \\left(\\frac{P_0}{P}\\right)^2\\right]\\). Calculate the characteristic age \\(\\tau_c = \\frac{P}{2\\dot{P}}\\) in years, and given that the historical supernova was observed in \\(1054\\text{ AD}\\) (\\(t = 972\\text{ years}\\) before 2026), determine the pulsar's initial birth period \\(P_0\\) in milliseconds. <em>(3.0 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Neutron star rotational energetics, centrifugal break-up limit, magneto-dipole spin-down torque, and pulsar characteristic age vs. true chronological age.</p>
+
+<p><strong>(a) Moment of Inertia, Rotational Energy &amp; Centrifugal Break-up Period (2.0 points):</strong><br>
+With \\(M = 1.40 \\times 1.989 \\times 10^{30}\\text{ kg} = 2.785 \\times 10^{30}\\text{ kg}\\) and \\(R = 1.00 \\times 10^4\\text{ m}\\):</p>
+<p>$$ I = \\frac{2}{5}MR^2 = 0.4(2.785 \\times 10^{30}\\text{ kg})(1.00 \\times 10^4\\text{ m})^2 \\approx \\mathbf{1.114 \\times 10^{38}\\ \\mathrm{kg\\,m^2}} $$</p>
+<p>At angular frequency \\(\\Omega = \\frac{2\\pi}{P} = \\frac{2\\pi}{0.0331\\text{ s}} \\approx 189.82\\ \\mathrm{rad\\,s^{-1}}\\), the stored rotational kinetic energy is:</p>
+<p>$$ E_{\\mathrm{rot}} = \\frac{1}{2}I\\Omega^2 = \\frac{2\\pi^2 I}{P^2} = \\frac{1}{2}(1.114 \\times 10^{38})(189.82)^2 \\approx \\mathbf{2.01 \\times 10^{42}\\text{ J}} $$</p>
+<p>Equating equatorial centripetal acceleration to surface gravity \\(\\Omega_{\\max}^2 R = \\frac{GM}{R^2}\\) gives the minimum shedding period:</p>
+<p>$$ P_{\\min} = 2\\pi\\sqrt{\\frac{R^3}{GM}} = 2\\pi\\sqrt{\\frac{(1.00 \\times 10^4)^3}{(6.674 \\times 10^{-11})(2.785 \\times 10^{30})}} \\approx 4.61 \\times 10^{-4}\\text{ s} = \\mathbf{0.461\\text{ ms}} $$</p>
+
+<p><strong>(b) Spin-Down Luminosity &amp; Nebular Power Efficiency (2.5 points):</strong><br>
+Differentiating \\(E_{\\mathrm{rot}} = \\frac{2\\pi^2 I}{P^2}\\) with respect to time yields the spin-down power:</p>
+<p>$$ L_{\\mathrm{sd}} = -\\frac{dE_{\\mathrm{rot}}}{dt} = \\mathbf{\\frac{4\\pi^2 I \\dot{P}}{P^3}} $$</p>
+<p>Substituting the numerical values:</p>
+<p>$$ L_{\\mathrm{sd}} = \\frac{4\\pi^2(1.114 \\times 10^{38}\\ \\mathrm{kg\\,m^2})(4.21 \\times 10^{-13}\\ \\mathrm{s\\,s^{-1}})}{(0.0331\\text{ s})^3} \\approx \\mathbf{5.10 \\times 10^{31}\\text{ W}} \\approx \\mathbf{1.33 \\times 10^5\\,L_\\odot} $$</p>
+<p>The fraction of spin-down power converted into nebular emission is:</p>
+<p>$$ \\eta_{\\mathrm{neb}} = \\frac{L_{\\mathrm{neb}}}{L_{\\mathrm{sd}}} \\times 100\\% = \\frac{1.00 \\times 10^{31}\\text{ W}}{5.105 \\times 10^{31}\\text{ W}} \\times 100\\% \\approx \\mathbf{19.6\\%} $$</p>
+
+<p><strong>(c) Polar Surface Magnetic Field \\(B_p\\) (2.5 points):</strong><br>
+Equating \\(L_{\\mathrm{dip}} = L_{\\mathrm{sd}}\\) with \\(\\sin\\alpha = 1\\) and solving for \\(B_p\\):</p>
+<p>$$ B_p = \\sqrt{\\frac{3\\mu_0 c^3 I P \\dot{P}}{2\\pi^2 R^6}} = \\sqrt{\\frac{3(4\\pi \\times 10^{-7})(2.998 \\times 10^8)^3(1.114 \\times 10^{38})(0.0331)(4.21 \\times 10^{-13})}{2\\pi^2(1.00 \\times 10^4)^6}} $$</p>
+<p>$$ B_p \\approx \\mathbf{8.94 \\times 10^8\\text{ T}} = \\mathbf{8.94 \\times 10^{12}\\text{ G}} $$</p>
+
+<p><strong>(d) Braking Integration, Characteristic Age &amp; Birth Spin Period \\(P_0\\) (3.0 points):</strong><br>
+Since \\(\\Omega = 2\\pi / P\\) and \\(\\dot{\\Omega} = -\\frac{2\\pi \\dot{P}}{P^2}\\), the dipole braking law \\(\\dot{\\Omega} = -k\\Omega^3\\) becomes \\(\\frac{\\dot{P}}{P^2} = \\frac{4\\pi^2 k}{P^3} \\implies P\\,\\dot{P} = 4\\pi^2 k = \\text{const.}\\). Integrating \\(P'\\,dP' = (P\\dot{P})\\,dt'\\) from \\(t' = 0\\) (\\(P' = P_0\\)) to \\(t' = t\\) (\\(P' = P\\)):</p>
+<p>$$ \\frac{1}{2}\\left(P^2 - P_0^2\\right) = P\\dot{P}\\,t \\implies t = \\frac{P}{2\\dot{P}}\\left[1 - \\left(\\frac{P_0}{P}\\right)^2\\right] $$</p>
+<p>In the limit \\(P_0 \\ll P\\), the characteristic spin-down age is:</p>
+<p>$$ \\tau_c = \\frac{P}{2\\dot{P}} = \\frac{0.0331\\text{ s}}{2(4.21 \\times 10^{-13}\\ \\mathrm{s\\,s^{-1}})} \\approx 3.931 \\times 10^{10}\\text{ s} \\approx \\mathbf{1246\\text{ years}} $$</p>
+<p>Using the known historical age \\(t = 2026 - 1054 = 972\\text{ years}\\), we solve \\(t = \\tau_c\\left[1 - (P_0/P)^2\\right]\\) for the birth period \\(P_0\\):</p>
+<p>$$ P_0 = P\\sqrt{1 - \\frac{t}{\\tau_c}} = 33.1\\text{ ms} \\times \\sqrt{1 - \\frac{972}{1245.7}} = 33.1\\text{ ms} \\times \\sqrt{0.2197} \\approx \\mathbf{15.5\\text{ ms}} $$</p>`
+    },
+
+    // Day 23 — 10.11.2026
+    {
+        uniqueId: "potd_2026_11_10",
+        dayNumber: 23,
+        scheduledDate: "10.11.2026",
+        title: "The Illusion of Superluminal Quasar Jets",
+        author: "Matei",
+        module: "T2 & T11 · Special Relativity & Active Galactic Nuclei",
+        difficultyClass: "medium",
+        difficultyText: "3.9 / 10.0",
+        description: `<p>Very Long Baseline Interferometry (VLBI) radio observations of a core-dominated quasar at distance \\(D = 400\\text{ Mpc}\\) reveal a bright plasma knot ejected from the central supermassive black hole. The knot travels along a straight relativistic jet at constant speed \\(v = \\beta c\\) inclined at a small angle \\(\\theta\\) toward the observer's line of sight, exhibiting an apparent proper motion on the sky of \\(\\mu_{\\mathrm{app}} = 1.265\\ \\mathrm{mas\\,yr^{-1}}\\) (milliarcseconds per year). Neglect cosmological redshift corrections to the local geometry and take \\(1\\text{ pc} = 3.0857 \\times 10^{16}\\text{ m}\\), \\(c = 2.9979 \\times 10^8\\ \\mathrm{m\\,s^{-1}}\\), and \\(1\\text{ yr} = 3.1558 \\times 10^7\\text{ s}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>By considering two radio wavefronts emitted by the knot separated by an intrinsic time interval \\(\\Delta t_{\\mathrm{em}}\\) and accounting for the reduced light-travel time as the knot approaches the observer, derive the formula for the dimensionless apparent transverse speed:
+    $$ \\beta_{\\mathrm{app}} \\equiv \\frac{v_{\\mathrm{app}}}{c} = \\frac{\\beta\\sin\\theta}{1 - \\beta\\cos\\theta} $$
+    and calculate the numerical value of \\(\\beta_{\\mathrm{app}}\\) for this quasar. <em>(3.0 points)</em></li>
+    <li>By maximizing \\(\\beta_{\\mathrm{app}}(\\theta)\\) with respect to \\(\\theta\\) at fixed \\(\\beta\\), show that the maximum apparent speed occurs at \\(\\cos\\theta_{\\mathrm{opt}} = \\beta\\) and equals \\(\\beta_{\\mathrm{app,\\max}} = \\beta\\gamma\\) (where \\(\\gamma = (1-\\beta^2)^{-1/2}\\)). Hence determine the minimum intrinsic Lorentz factor \\(\\gamma_{\\min}\\), the minimum speed \\(\\beta_{\\min}\\), and the optimal viewing angle \\(\\theta_{\\mathrm{opt}}\\) required to produce the observed \\(\\beta_{\\mathrm{app}}\\). <em>(2.5 points)</em></li>
+    <li>Independent X-ray inverse-Compton constraints show that the true bulk Lorentz factor of the knot is \\(\\gamma = 10.0\\). Calculate the two viewing angles \\(\\theta_1 < \\theta_2\\) consistent with the observed \\(\\beta_{\\mathrm{app}}\\). <em>(2.5 points)</em></li>
+    <li>Assuming the jet is oriented at the narrower angle \\(\\theta_1\\), calculate the relativistic Doppler boosting factor \\(\\delta_D = \\frac{1}{\\gamma(1 - \\beta\\cos\\theta_1)}\\) and the apparent flux-density ratio \\(\\frac{F_{\\mathrm{jet}}}{F_{\\mathrm{counter}}} = \\left(\\frac{1 + \\beta\\cos\\theta_1}{1 - \\beta\\cos\\theta_1}\\right)^{3+\\alpha}\\) between the approaching knot and an identical twin knot ejected along the receding counter-jet (with optically thin synchrotron spectral index \\(\\alpha = 0.70\\)). <em>(2.0 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Kinematic light-travel time illusion in relativistic AGN jets, Lorentz factor optimization, and Doppler beaming asymmetry.</p>
+
+<p><strong>(a) Derivation &amp; Calculation of Apparent Transverse Speed \\(\\beta_{\\mathrm{app}}\\) (3.0 points):</strong><br>
+In a time interval \\(\\Delta t_{\\mathrm{em}}\\), the knot advances a distance \\(v\\,\\Delta t_{\\mathrm{em}}\\), which has component \\(\\Delta x_\\perp = v\\sin\\theta\\,\\Delta t_{\\mathrm{em}}\\) perpendicular to the line of sight and component \\(\\Delta x_\\parallel = v\\cos\\theta\\,\\Delta t_{\\mathrm{em}}\\) toward the observer. Because the second signal has a shorter propagation path by \\(\\Delta x_\\parallel\\), the arrival time interval measured at Earth is:</p>
+<p>$$ \\Delta t_{\\mathrm{obs}} = \\Delta t_{\\mathrm{em}} - \\frac{v\\cos\\theta\\,\\Delta t_{\\mathrm{em}}}{c} = \\Delta t_{\\mathrm{em}}(1 - \\beta\\cos\\theta) $$</p>
+<p>Dividing the transverse displacement by \\(c\\,\\Delta t_{\\mathrm{obs}}\\) yields the dimensionless apparent speed:</p>
+<p>$$ \\beta_{\\mathrm{app}} = \\frac{\\Delta x_\\perp}{c\\,\\Delta t_{\\mathrm{obs}}} = \\mathbf{\\frac{\\beta\\sin\\theta}{1 - \\beta\\cos\\theta}} $$</p>
+<p>With \\(\\mu_{\\mathrm{app}} = 1.265 \\times 10^{-3}\\ \\mathrm{arcsec\\,yr^{-1}} = 6.133 \\times 10^{-9}\\ \\mathrm{rad\\,yr^{-1}}\\) at \\(D = 400\\text{ Mpc} = 1.2343 \\times 10^{25}\\text{ m}\\), the apparent transverse speed is:</p>
+<p>$$ v_{\\mathrm{app}} = \\mu_{\\mathrm{app}} D = \\frac{(6.133 \\times 10^{-9}\\text{ rad})(1.2343 \\times 10^{25}\\text{ m})}{3.1558 \\times 10^7\\text{ s}} \\approx 2.398 \\times 10^9\\ \\mathrm{m\\,s^{-1}} \\implies \\beta_{\\mathrm{app}} = \\frac{v_{\\mathrm{app}}}{c} = \\mathbf{8.00} $$</p>
+
+<p><strong>(b) Minimum Lorentz Factor \\(\\gamma_{\\min}\\) &amp; Optimal Viewing Angle \\(\\theta_{\\mathrm{opt}}\\) (2.5 points):</strong><br>
+Setting \\(\\frac{d\\beta_{\\mathrm{app}}}{d\\theta} = \\frac{\\beta(\\cos\\theta - \\beta)}{(1 - \\beta\\cos\\theta)^2} = 0\\) gives \\(\\cos\\theta_{\\mathrm{opt}} = \\beta\\) and \\(\\sin\\theta_{\\mathrm{opt}} = \\sqrt{1 - \\beta^2} = \\frac{1}{\\gamma}\\). Substituting back into \\(\\beta_{\\mathrm{app}}\\):</p>
+<p>$$ \\beta_{\\mathrm{app,\\max}} = \\frac{\\beta / \\gamma}{1 - \\beta^2} = \\beta\\gamma = \\sqrt{\\gamma^2 - 1} \\implies \\gamma_{\\min} = \\sqrt{1 + \\beta_{\\mathrm{app}}^2} $$</p>
+<p>For \\(\\beta_{\\mathrm{app}} = 8.00\\):</p>
+<p>$$ \\gamma_{\\min} = \\sqrt{1 + 8.00^2} = \\sqrt{65} \\approx \\mathbf{8.062}, \\qquad \\beta_{\\min} = \\frac{8.00}{\\sqrt{65}} \\approx \\mathbf{0.9923}, \\qquad \\theta_{\\mathrm{opt}} = \\arctan\\!\\left(\\frac{1}{8.00}\\right) \\approx \\mathbf{7.125^\\circ} $$</p>
+
+<p><strong>(c) Viewing Angles \\(\\theta_1, \\theta_2\\) for \\(\\gamma = 10.0\\) (2.5 points):</strong><br>
+For \\(\\gamma = 10.0\\), the intrinsic velocity is \\(\\beta = \\sqrt{1 - \\gamma^{-2}} = \\sqrt{0.99} \\approx 0.994987\\). Substituting the half-angle tangent \\(t = \\tan(\\theta/2)\\) into \\(\\beta\\sin\\theta = 8.00(1 - \\beta\\cos\\theta)\\) gives the quadratic equation:</p>
+<p>$$ 8.00(1 + \\beta)t^2 - 2\\beta t + 8.00(1 - \\beta) = 0 \\implies 15.9599\\,t^2 - 1.98997\\,t + 0.0401005 = 0 $$</p>
+<p>Solving for \\(t\\) yields \\(t_1 = 0.025274\\) and \\(t_2 = 0.099411\\), corresponding to the two viewing angles:</p>
+<p>$$ \\theta_1 = 2\\arctan(0.025274) \\approx \\mathbf{2.90^\\circ}, \\qquad \\theta_2 = 2\\arctan(0.099411) \\approx \\mathbf{11.35^\\circ} $$</p>
+
+<p><strong>(d) Doppler Boosting Factor &amp; Jet-to-Counter-Jet Flux Ratio (2.0 points):</strong><br>
+At \\(\\theta_1 = 2.896^\\circ\\), \\(\\beta\\cos\\theta_1 = 0.994987\\cos(2.896^\\circ) \\approx 0.993716\\), so \\(1 - \\beta\\cos\\theta_1 = 0.006284\\):</p>
+<p>$$ \\delta_D = \\frac{1}{\\gamma(1 - \\beta\\cos\\theta_1)} = \\frac{1}{10.0(0.006284)} \\approx \\mathbf{15.9} $$</p>
+<p>With \\(3 + \\alpha = 3.70\\), the flux ratio between the approaching knot and the receding counter-knot (\\(\\theta_{\\mathrm{counter}} = 180^\\circ - \\theta_1\\)) is:</p>
+<p>$$ \\frac{F_{\\mathrm{jet}}}{F_{\\mathrm{counter}}} = \\left(\\frac{1 + 0.993716}{0.006284}\\right)^{3.70} = (317.3)^{3.70} \\approx \\mathbf{1.83 \\times 10^9} $$</p>
+<p>This extreme relativistic beaming explains why relativistic quasar jets almost always appear one-sided on VLBI maps.</p>`
+    },
+
+    // Day 24 — 11.11.2026
+    {
+        uniqueId: "potd_2026_11_11",
+        dayNumber: 24,
+        scheduledDate: "11.11.2026",
+        title: "Poynting–Robertson Drag and Radiation Blowout of Zodiacal Dust",
+        author: "Matei",
+        module: "T9 & T2 · Solar System Dynamics & Radiation Forces",
+        difficultyClass: "medium",
+        difficultyText: "4.1 / 10.0",
+        description: `<p>Spherical silicate dust grains of material density \\(\\rho_s = 3000\\ \\mathrm{kg\\,m^{-3}}\\) and bond albedo \\(A = 0\\) (perfectly absorbing blackbodies) are released from collisions between main-belt asteroids orbiting a solar-type star of mass \\(M_\\star = 1.00\\,M_\\odot\\) and luminosity \\(L_\\star = 1.00\\,L_\\odot = 3.828 \\times 10^{26}\\text{ W}\\). Use \\(M_\\odot = 1.989 \\times 10^{30}\\text{ kg}\\), \\(1\\text{ AU} = 1.496 \\times 10^{11}\\text{ m}\\), and \\(\\sigma_{\\mathrm{SB}} = 5.670 \\times 10^{-8}\\ \\mathrm{W\\,m^{-2}\\,K^{-4}}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Derive the dimensionless ratio \\(\\beta \\equiv \\frac{F_{\\mathrm{rad}}}{F_{\\mathrm{grav}}}\\) of outward radial radiation-pressure force to inward stellar gravity for a spherical grain of radius \\(s\\). If a parent asteroid moves on a circular orbit of radius \\(r_0\\), show that newly released daughter grains with \\(\\beta \\ge 0.50\\) are immediately blown out of the system on unbound orbits, and calculate the critical blowout radius \\(s_{\\mathrm{blow}}\\) in micrometers (\\(\\mu\\text{m}\\)). <em>(2.5 points)</em></li>
+    <li>A larger grain of radius \\(s = 25.0\\ \\mu\\text{m}\\) remains bound on a quasi-circular orbit of radius \\(r\\) and orbital speed \\(v = \\sqrt{G M_\\star / r}\\). Because of stellar aberration at angle \\(\\alpha \\simeq v/c\\), the absorbed and isotropically re-emitted stellar radiation exerts an azimuthal Poynting–Robertson drag force \\(F_{\\mathrm{PR}} = -F_{\\mathrm{rad}}\\frac{v}{c}\\). Equating the torque \\(r F_{\\mathrm{PR}}\\) to the rate of change of orbital angular momentum \\(\\frac{d}{dt}\\left(m\\sqrt{G M_\\star r}\\right)\\), prove that the orbital radius decays at rate:
+    $$ \\frac{dr}{dt} = -\\frac{2 G M_\\star \\beta}{c r} $$ <em>(3.0 points)</em></li>
+    <li>Calculate the dimensionless parameter \\(\\beta\\) for the \\(s = 25.0\\ \\mu\\text{m}\\) grain, and integrate \\(\\frac{dr}{dt}\\) to determine its Poynting–Robertson inspiral lifetime \\(t_{\\mathrm{PR}}\\) (in years) from the main asteroid belt at \\(r_0 = 2.50\\text{ AU}\\) down to the silicate sublimation zone at \\(r_{\\mathrm{sub}} = 0.050\\text{ AU}\\). <em>(2.5 points)</em></li>
+    <li>Calculate the grain's radiative equilibrium temperature \\(T_{\\mathrm{sub}}\\) at \\(r_{\\mathrm{sub}} = 0.050\\text{ AU}\\), and integrate \\(dN_{\\mathrm{rev}} = \\frac{\\Omega}{2\\pi}\\,dt\\) to find the total number of heliocentric revolutions completed by the grain during its inward spiral from \\(r_0\\) to \\(r_{\\mathrm{sub}}\\). <em>(2.0 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Radiation pressure blowout limit (\\(\\beta = 1/2\\)), relativistic Poynting–Robertson angular momentum drain, and secular dust inspiral.</p>
+
+<p><strong>(a) Radiation-to-Gravity Ratio \\(\\beta\\) &amp; Blowout Radius \\(s_{\\mathrm{blow}}\\) (2.5 points):</strong><br>
+A perfectly absorbing spherical grain of radius \\(s\\), cross-section \\(\\pi s^2\\), and mass \\(m = \\frac{4}{3}\\pi s^3 \\rho_s\\) at distance \\(r\\) experiences outward radiation force \\(F_{\\mathrm{rad}} = \\frac{L_\\star}{4\\pi r^2 c}\\pi s^2\\) and inward gravitational force \\(F_{\\mathrm{grav}} = \\frac{G M_\\star m}{r^2}\\). Their ratio is independent of distance \\(r\\):</p>
+<p>$$ \\beta \\equiv \\frac{F_{\\mathrm{rad}}}{F_{\\mathrm{grav}}} = \\mathbf{\\frac{3 L_\\star}{16\\pi c G M_\\star \\rho_s s}} $$</p>
+<p>When released at rest relative to a parent body on a circular orbit of speed \\(v_0 = \\sqrt{G M_\\star / r_0}\\), the grain moves in an effective central gravitational field \\(G_{\\mathrm{eff}} = (1 - \\beta)G\\). Its specific mechanical energy is:</p>
+<p>$$ \\epsilon = \\frac{1}{2}v_0^2 - \\frac{(1 - \\beta)G M_\\star}{r_0} = \\frac{G M_\\star}{r_0}\\left(\\beta - \\frac{1}{2}\\right) $$</p>
+<p>For \\(\\beta \\ge 0.50\\), \\(\\epsilon \\ge 0\\) and the grain escapes on a parabolic or hyperbolic trajectory. Setting \\(\\beta = 0.50\\) gives the blowout radius:</p>
+<p>$$ s_{\\mathrm{blow}} = \\frac{3 L_\\star}{8\\pi c G M_\\star \\rho_s} = \\frac{3(3.828 \\times 10^{26})}{(8\\pi)(2.998 \\times 10^8)(6.674 \\times 10^{-11})(1.989 \\times 10^{30})(3000)} \\approx 3.83 \\times 10^{-7}\\text{ m} = \\mathbf{0.383\\ \\mu\\text{m}} $$</p>
+
+<p><strong>(b) Derivation of the Poynting–Robertson Radial Decay Rate (3.0 points):</strong><br>
+For a quasi-circular orbit (\\(\\beta \\ll 1\\)), the specific orbital angular momentum is \\(h = \\sqrt{G M_\\star r}\\), with time derivative \\(\\frac{dh}{dt} = \\frac{1}{2}\\sqrt{\\frac{G M_\\star}{r}}\\frac{dr}{dt} = \\frac{1}{2}v\\frac{dr}{dt}\\). The specific torque exerted by the retarding drag acceleration \\(a_{\\mathrm{PR}} = -\\frac{F_{\\mathrm{rad}}}{m}\\frac{v}{c} = -\\beta\\frac{G M_\\star}{r^2}\\frac{v}{c}\\) is:</p>
+<p>$$ \\frac{dh}{dt} = r\\,a_{\\mathrm{PR}} = -\\beta\\frac{G M_\\star}{r}\\frac{v}{c} $$</p>
+<p>Equating the two expressions for \\(\\frac{dh}{dt}\\) and cancelling \\(v\\) yields:</p>
+<p>$$ \\frac{1}{2}v\\frac{dr}{dt} = -\\beta\\frac{G M_\\star}{r}\\frac{v}{c} \\implies \\mathbf{\\frac{dr}{dt} = -\\frac{2 G M_\\star \\beta}{c r}} $$</p>
+
+<p><strong>(c) Parameter \\(\\beta\\) &amp; Inspiral Lifetime \\(t_{\\mathrm{PR}}\\) for \\(s = 25.0\\ \\mu\\text{m}\\) (2.5 points):</strong><br>
+Scaling from \\(\\beta(s_{\\mathrm{blow}}) = 0.50\\):</p>
+<p>$$ \\beta = 0.50 \\times \\frac{s_{\\mathrm{blow}}}{s} = 0.50 \\times \\frac{0.3825\\ \\mu\\text{m}}{25.0\\ \\mu\\text{m}} \\approx \\mathbf{7.65 \\times 10^{-3}} $$</p>
+<p>Separating variables \\(r\\,dr = -\\frac{2 G M_\\star \\beta}{c}\\,dt\\) and integrating from \\(r_0 = 2.50\\text{ AU}\\) to \\(r_{\\mathrm{sub}} = 0.050\\text{ AU}\\):</p>
+<p>$$ t_{\\mathrm{PR}} = \\frac{c\\left(r_0^2 - r_{\\mathrm{sub}}^2\\right)}{4 G M_\\star \\beta} = \\frac{(2.998 \\times 10^8)\\big[(2.50^2 - 0.050^2)(1.496 \\times 10^{11})^2\\big]}{4(1.3271 \\times 10^{20})(7.651 \\times 10^{-3})} \\approx 1.032 \\times 10^{13}\\text{ s} \\approx \\mathbf{3.27 \\times 10^5\\text{ years}} $$</p>
+
+<p><strong>(d) Sublimation Temperature &amp; Total Number of Revolutions (2.0 points):</strong><br>
+Balancing absorbed solar flux \\(\\pi s^2 \\frac{L_\\star}{4\\pi r_{\\mathrm{sub}}^2}\\) against thermal emission \\(4\\pi s^2 \\sigma_{\\mathrm{SB}} T_{\\mathrm{sub}}^4\\) at \\(r_{\\mathrm{sub}} = 0.050\\text{ AU} = 7.480 \\times 10^9\\text{ m}\\):</p>
+<p>$$ T_{\\mathrm{sub}} = \\left(\\frac{L_\\star}{16\\pi \\sigma_{\\mathrm{SB}} r_{\\mathrm{sub}}^2}\\right)^{1/4} \\approx \\mathbf{1245\\text{ K}} $$</p>
+<p>Using \\(\\Omega = \\sqrt{G M_\\star / r^3}\\) and \\(dt = -\\frac{c r}{2 G M_\\star \\beta}\\,dr\\), the number of orbits completed during the inspiral is:</p>
+<p>$$ N_{\\mathrm{rev}} = \\int_{r_{\\mathrm{sub}}}^{r_0} \\frac{\\Omega}{2\\pi}\\frac{c r}{2 G M_\\star \\beta}\\,dr = \\frac{c}{4\\pi \\beta \\sqrt{G M_\\star}}\\int_{r_{\\mathrm{sub}}}^{r_0} r^{-1/2}\\,dr = \\frac{c\\left(\\sqrt{r_0} - \\sqrt{r_{\\mathrm{sub}}}\\right)}{2\\pi \\beta \\sqrt{G M_\\star}} \\approx \\mathbf{2.84 \\times 10^5\\text{ revolutions}} $$</p>`
+    },
+
+    // Day 25 — 12.11.2026
+    {
+        uniqueId: "potd_2026_11_12",
+        dayNumber: 25,
+        scheduledDate: "12.11.2026",
+        title: "Algol's Paradox: Conservative Mass Transfer in a Semidetached Binary",
+        author: "Matei",
+        module: "T4 & T7 · Interacting Binaries & Stellar Evolution",
+        difficultyClass: "medium",
+        difficultyText: "3.7 / 10.0",
+        description: `<p>In an eclipsing Algol-type semidetached binary moving on a circular orbit, an evolved subgiant donor star of mass \\(M_1 = 0.80\\,M_\\odot\\) fills its Roche lobe and transfers mass conservatively onto a main-sequence companion of mass \\(M_2 = 3.20\\,M_\\odot\\). The current orbital period is \\(P_0 = 2.50\\text{ days}\\), and the donor loses mass at a steady rate of \\(\\dot{M}_1 = -4.00 \\times 10^{-7}\\,M_\\odot\\,\\mathrm{yr^{-1}}\\) (with \\(\\dot{M}_2 = -\\dot{M}_1\\)). Neglect stellar spin angular momentum and any mass or angular momentum loss from the binary system. Use \\(1\\text{ AU} = 215.0\\,R_\\odot\\) and \\(1\\text{ yr} = 365.25\\text{ days}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the current orbital separation \\(a_0\\) in Astronomical Units (\\(\\text{AU}\\)) and solar radii (\\(R_\\odot\\)), and use Paczyński's Roche-lobe formula \\(R_{L,1} \\simeq 0.462\\,a_0\\left(\\frac{M_1}{M_1 + M_2}\\right)^{1/3}\\) to find the radius \\(R_1\\) of the subgiant donor star in solar radii. <em>(2.0 points)</em></li>
+    <li>Starting from the total orbital angular momentum of a circular binary \\(J = M_1 M_2 \\sqrt{\\frac{G a}{M_1 + M_2}}\\), apply conservation of total mass (\\(M_1 + M_2 = M_{\\mathrm{tot}} = \\text{const.}\\)) and angular momentum (\\(\\dot{J} = 0\\)) to prove that:
+    $$ \\frac{\\dot{a}}{a} = -2\\left(1 - \\frac{M_1}{M_2}\\right)\\frac{\\dot{M}_1}{M_1}, \\qquad \\frac{\\dot{P}}{P} = -3\\left(1 - \\frac{M_1}{M_2}\\right)\\frac{\\dot{M}_1}{M_1} $$
+    State whether the binary orbit is currently widening or shrinking. <em>(3.0 points)</em></li>
+    <li>Calculate the current rate of change of the orbital period \\(\\dot{P}\\) in seconds per year (\\(\\mathrm{s\\,yr^{-1}}\\)), and determine the cumulative eclipse arrival-time shift \\(\\Delta t_{\\mathrm{OC}} = \\frac{1}{2}\\left(\\frac{\\dot{P}}{P}\\right)T^2\\) (in minutes) accumulated over \\(T = 30.0\\text{ years}\\) of timing observations. <em>(2.5 points)</em></li>
+    <li>Earlier in the mass-transfer phase, the binary passed through the point of equal stellar masses (\\(M_{1,\\mathrm{eq}} = M_{2,\\mathrm{eq}} = 2.00\\,M_\\odot\\)). Calculate the minimum orbital separation \\(a_{\\min}\\) (in \\(R_\\odot\\)) and minimum orbital period \\(P_{\\min}\\) (in days) that the binary had at that epoch. <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Conservative Roche-lobe overflow, orbital angular momentum evolution, O–C eclipse timing parabolas, and minimum orbital separation at mass-ratio inversion.</p>
+
+<p><strong>(a) Current Orbital Separation \\(a_0\\) &amp; Donor Radius \\(R_1\\) (2.0 points):</strong><br>
+With total mass \\(M_{\\mathrm{tot}} = M_1 + M_2 = 4.00\\,M_\\odot\\) and \\(P_0 = \frac{2.50}{365.25}\\text{ yr} = 6.8446 \\times 10^{-3}\\text{ yr}\\), Kepler's Third Law yields:</p>
+<p>$$ a_0 = \\left(M_{\\mathrm{tot}} P_0^2\\right)^{1/3} = \\left[4.00 \\times (6.8446 \\times 10^{-3})^2\\right]^{1/3}\\text{ AU} \\approx \\mathbf{0.0572\\text{ AU}} \\approx \\mathbf{12.31\\,R_\\odot} $$</p>
+<p>Since the subgiant fills its Roche lobe (\\(R_1 = R_{L,1}\\)), Paczyński's approximation gives:</p>
+<p>$$ R_1 = 0.462\\,a_0\\left(\\frac{0.80}{4.00}\\right)^{1/3} = 0.462(12.31\\,R_\\odot)(0.20)^{1/3} \\approx \\mathbf{3.33\\,R_\\odot} $$</p>
+
+<p><strong>(b) Derivation of \\(\\dot{a}/a\\) and \\(\\dot{P}/P\\) (3.0 points):</strong><br>
+Taking the logarithmic time derivative of \\(J^2 = G M_{\\mathrm{tot}}^{-1} M_1^2 M_2^2 a = \\text{const.}\\) at constant \\(M_{\\mathrm{tot}}\\) gives:</p>
+<p>$$ 2\\frac{\\dot{M}_1}{M_1} + 2\\frac{\\dot{M}_2}{M_2} + \\frac{\\dot{a}}{a} = 0 $$</p>
+<p>Substituting conservative mass transfer \\(\\dot{M}_2 = -\\dot{M}_1\\):</p>
+<p>$$ \\frac{\\dot{a}}{a} = -2\\left(\\frac{1}{M_1} - \\frac{1}{M_2}\\right)\\dot{M}_1 = \\mathbf{-2\\left(1 - \\frac{M_1}{M_2}\\right)\\frac{\\dot{M}_1}{M_1}} $$</p>
+<p>By Kepler's Third Law (\\(P \\propto a^{3/2}\\)), \\(\\frac{\\dot{P}}{P} = \\frac{3}{2}\\frac{\\dot{a}}{a}\\), which immediately gives:</p>
+<p>$$ \\frac{\\dot{P}}{P} = \\mathbf{-3\\left(1 - \\frac{M_1}{M_2}\\right)\\frac{\\dot{M}_1}{M_1}} $$</p>
+<p>Because mass flows from the less massive donor to the more massive accretor (\\(M_1 < M_2\\) and \\(\\dot{M}_1 < 0\\)), both \\(\\dot{a} > 0\\) and \\(\\dot{P} > 0\\): the binary orbit is <strong>widening</strong>.</p>
+
+<p><strong>(c) Period Derivative \\(\\dot{P}\\) &amp; 30-Year Eclipse Timing Drift (2.5 points):</strong><br>
+Evaluating \\(\\frac{\\dot{P}}{P}\\) for \\(M_1 = 0.80\\,M_\\odot\\), \\(M_2 = 3.20\\,M_\\odot\\), and \\(\\dot{M}_1 = -4.00 \\times 10^{-7}\\,M_\\odot\\,\\mathrm{yr^{-1}}\\):</p>
+<p>$$ \\frac{\\dot{P}}{P} = -3\\left(1 - \\frac{0.80}{3.20}\\right)\\left(\\frac{-4.00 \\times 10^{-7}}{0.80}\\right)\\ \\mathrm{yr^{-1}} = +1.125 \\times 10^{-6}\\ \\mathrm{yr^{-1}} $$</p>
+<p>Multiplying by \\(P_0 = 2.50 \\times 86,400\\text{ s} = 2.160 \\times 10^5\\text{ s}\\):</p>
+<p>$$ \\dot{P} = (1.125 \\times 10^{-6}\\ \\mathrm{yr^{-1}})(2.160 \\times 10^5\\text{ s}) = \\mathbf{+0.243\\ \\mathrm{s\\,yr^{-1}}} $$</p>
+<p>Over a baseline of \\(T = 30.0\\text{ years}\\), the quadratic O\\(-\\)C eclipse arrival delay is:</p>
+<p>$$ \\Delta t_{\\mathrm{OC}} = \\frac{1}{2}\\left(\\frac{\\dot{P}}{P}\\right)T^2 = \\frac{1}{2}(1.125 \\times 10^{-6}\\ \\mathrm{yr^{-1}})(30.0\\text{ yr})(30.0 \\times 365.25 \\times 86,400\\text{ s}) \\approx 1598\\text{ s} \\approx \\mathbf{26.6\\text{ minutes}} $$</p>
+
+<p><strong>(d) Minimum Separation &amp; Period at Mass Equality (2.5 points):</strong><br>
+Since \\(J = \\text{const.}\\) implies \\(a \\propto (M_1 M_2)^{-2}\\) and \\(P \\propto a^{3/2} \\propto (M_1 M_2)^{-3}\\), at \\(M_{1,\\mathrm{eq}} = M_{2,\\mathrm{eq}} = 2.00\\,M_\\odot\\):</p>
+<p>$$ a_{\\min} = a_0\\left(\\frac{M_1 M_2}{M_{1,\\mathrm{eq}} M_{2,\\mathrm{eq}}}\\right)^2 = 12.31\\,R_\\odot \\times \\left(\\frac{0.80 \\times 3.20}{2.00 \\times 2.00}\\right)^2 = 12.31\\,R_\\odot \\times (0.64)^2 \\approx \\mathbf{5.04\\,R_\\odot} $$</p>
+<p>$$ P_{\\min} = P_0\\left(\\frac{M_1 M_2}{M_{1,\\mathrm{eq}} M_{2,\\mathrm{eq}}}\\right)^3 = 2.50\\text{ d} \\times (0.64)^3 = 2.50\\text{ d} \\times 0.262144 \\approx \\mathbf{0.655\\text{ days}} \\ (15.73\\text{ hours}) $$</p>`
+    },
+
+    // Day 26 — 13.11.2026
+    {
+        uniqueId: "potd_2026_11_13",
+        dayNumber: 26,
+        scheduledDate: "13.11.2026",
+        title: "Sunyaev–Zel'dovich Shadow and X-Ray Hydrostatic Mass of a Galaxy Cluster",
+        author: "Matei",
+        module: "T11 & T12 · Extragalactic Astrophysics & Galaxy Clusters",
+        difficultyClass: "medium",
+        difficultyText: "4.3 / 10.0",
+        description: `<p>A relaxed, spherically symmetric galaxy cluster at angular diameter distance \\(D_A\\) is filled with hot, isothermal intracluster plasma of electron temperature \\(k_B T_e = 8.50\\text{ keV}\\). X-ray surface-brightness imaging shows that the electron number density follows a standard \\(\\beta\\)-profile with \\(\\beta = \\frac{2}{3}\\):</p>
+<p>$$ n_e(r) = n_{e,0}\\left(1 + \\frac{r^2}{r_c^2}\\right)^{-3\\beta/2} = \\frac{n_{e,0}}{1 + r^2 / r_c^2} $$</p>
+<p>where the central electron density is \\(n_{e,0} = 6.00 \\times 10^{-3}\\ \\mathrm{cm^{-3}}\\) and the angular core radius on the sky is \\(\\theta_c = 1.20'\\). Millimeter-wave observations of the Cosmic Microwave Background (\\(T_{\\mathrm{CMB}} = 2.725\\text{ K}\\)) through the cluster center measure a thermal Sunyaev–Zel'dovich (SZ) Comptonization parameter of \\(y_0 = 2.34 \\times 10^{-4}\\). Use \\(m_e c^2 = 511.0\\text{ keV}\\), \\(\\sigma_T = 6.652 \\times 10^{-25}\\ \\mathrm{cm^2}\\), \\(m_p = 1.673 \\times 10^{-27}\\text{ kg}\\), \\(1\\text{ keV} = 1.6022 \\times 10^{-16}\\text{ J}\\), and \\(1\\text{ pc} = 3.0857 \\times 10^{18}\\text{ cm}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>By integrating \\(n_e(r)\\) along the line of sight \\(l \\in (-\\infty, +\\infty)\\) through the cluster center, show that the central electron column density is \\(N_{e,0} = \\pi n_{e,0} r_c\\) (given \\(\\int_{-\\infty}^{\\infty} \\frac{dx}{1+x^2} = \\pi\\)). Using the definition \\(y_0 = \\left(\\frac{k_B T_e}{m_e c^2}\\right)\\sigma_T N_{e,0}\\), determine the physical core radius \\(r_c\\) (in \\(\\text{kpc}\\)) and the cluster's angular diameter distance \\(D_A\\) (in \\(\\text{Mpc}\\)). <em>(3.0 points)</em></li>
+    <li>In the low-frequency Rayleigh–Jeans regime of the CMB (\\(h\\nu \\ll k_B T_{\\mathrm{CMB}}\\)), inverse-Compton scattering of CMB photons by hot intracluster electrons produces a temperature decrement \\(\\frac{\\Delta T_{\\mathrm{CMB}}}{T_{\\mathrm{CMB}}} = -2y_0\\). Calculate \\(\\Delta T_{\\mathrm{CMB}}\\) in microkelvin (\\(\\mu\\text{K}\\)). <em>(1.5 points)</em></li>
+    <li>Assuming the intracluster plasma has mean molecular weight \\(\\mu = 0.60\\) and is in spherical hydrostatic equilibrium \\(\\frac{1}{\\rho_{\\mathrm{gas}}}\\frac{dP_{\\mathrm{gas}}}{dr} = -\\frac{G M_{\\mathrm{tot}}(r)}{r^2}\\) at uniform temperature \\(T_e\\), derive the formula for the total enclosed gravitating mass \\(M_{\\mathrm{tot}}(r)\\) in terms of \\(r, r_c, T_e\\), and \\(\\mu\\). <em>(3.0 points)</em></li>
+    <li>Calculate the total gravitating mass \\(M_{\\mathrm{tot}}(5r_c)\\) enclosed within radius \\(R = 5r_c\\) (in solar masses \\(M_\\odot\\)). Using \\(\\rho_{\\mathrm{gas}}(r) = 1.17\\,m_p n_e(r)\\) and \\(\\int_0^5 \\frac{x^2\\,dx}{1+x^2} = 5 - \\arctan 5 \\approx 3.627\\), calculate the enclosed gas mass \\(M_{\\mathrm{gas}}(5r_c)\\) and the cluster's baryon gas fraction \\(f_{\\mathrm{gas}} = \\frac{M_{\\mathrm{gas}}(5r_c)}{M_{\\mathrm{tot}}(5r_c)}\\). <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Sunyaev–Zel'dovich CMB Comptonization, redshift-independent X-ray/SZ distance scale, hydrostatic cluster mass profile, and cosmic baryon fraction.</p>
+
+<p><strong>(a) Central Column Density, Physical Core Radius \\(r_c\\) &amp; Distance \\(D_A\\) (3.0 points):</strong><br>
+Along the central line of sight (impact parameter \\(b = 0\\)), \\(r = |l|\\). Substituting \\(l = r_c x\\) gives the column density:</p>
+<p>$$ N_{e,0} = \\int_{-\\infty}^{+\\infty} \\frac{n_{e,0}\\,dl}{1 + (l/r_c)^2} = n_{e,0} r_c \\int_{-\\infty}^{+\\infty} \\frac{dx}{1 + x^2} = \\pi n_{e,0} r_c $$</p>
+<p>Substituting \\(N_{e,0} = \\pi n_{e,0} r_c\\) into the Compton-\\(y\\) parameter formula and solving for \\(r_c\\):</p>
+<p>$$ r_c = \\frac{y_0}{\\pi n_{e,0} \\sigma_T (k_B T_e / m_e c^2)} = \\frac{2.34 \\times 10^{-4}}{\\pi(6.00 \\times 10^{-3}\\ \\mathrm{cm^{-3}})(6.652 \\times 10^{-25}\\ \\mathrm{cm^2})(8.50 / 511.0)} $$</p>
+<p>$$ r_c \\approx 1.123 \\times 10^{24}\\text{ cm} \\approx \\mathbf{363.8\\text{ kpc}} $$</p>
+<p>With angular core radius \\(\\theta_c = 1.20' = 72'' = 3.491 \\times 10^{-4}\\text{ rad}\\), the angular diameter distance is:</p>
+<p>$$ D_A = \\frac{r_c}{\\theta_c} = \\frac{0.3638\\text{ Mpc}}{3.491 \\times 10^{-4}\\text{ rad}} \\approx \\mathbf{1042\\text{ Mpc}} \\ (1.042\\text{ Gpc}) $$</p>
+
+<p><strong>(b) Rayleigh–Jeans CMB Temperature Decrement (1.5 points):</strong></p>
+<p>$$ \\Delta T_{\\mathrm{CMB}} = -2 y_0 T_{\\mathrm{CMB}} = -2(2.34 \\times 10^{-4})(2.725\\text{ K}) \\approx -1.275 \\times 10^{-3}\\text{ K} = \\mathbf{-1275\\ \\mu\\text{K}} \\ (-1.28\\text{ mK}) $$</p>
+
+<p><strong>(c) Hydrostatic Total Gravitating Mass Profile \\(M_{\\mathrm{tot}}(r)\\) (3.0 points):</strong><br>
+For an isothermal ideal gas \\(P_{\\mathrm{gas}}(r) = \\frac{\\rho_{\\mathrm{gas}}(r) k_B T_e}{\\mu m_p}\\), where \\(\\rho_{\\mathrm{gas}}(r) \\propto n_e(r) = n_{e,0}(1 + r^2/r_c^2)^{-1}\\), the logarithmic pressure gradient is:</p>
+<p>$$ \\frac{1}{\\rho_{\\mathrm{gas}}}\\frac{dP_{\\mathrm{gas}}}{dr} = \\frac{k_B T_e}{\\mu m_p}\\frac{d\\ln n_e}{dr} = -\\frac{k_B T_e}{\\mu m_p}\\left(\\frac{2r}{r_c^2 + r^2}\\right) $$</p>
+<p>Equating this to \\(-\\frac{G M_{\\mathrm{tot}}(r)}{r^2}\\) yields the total enclosed mass profile:</p>
+<p>$$ M_{\\mathrm{tot}}(r) = \\mathbf{\\frac{2 k_B T_e}{G \\mu m_p}\\frac{r^3}{r_c^2 + r^2}} \\qquad \\left(\\text{or } \\frac{3\\beta k_B T_e}{G \\mu m_p}\\frac{r^3}{r_c^2 + r^2}\\text{ for general }\\beta\\right) $$</p>
+
+<p><strong>(d) Total Mass, Gas Mass &amp; Baryon Fraction within \\(R = 5r_c\\) (2.5 points):</strong><br>
+At \\(R = 5r_c\\), \\(\\frac{R^3}{r_c^2 + R^2} = \\frac{125}{26}r_c \\approx 4.808\\,r_c = 5.398 \\times 10^{22}\\text{ m}\\). With \\(k_B T_e = 8.50\\text{ keV} = 1.362 \\times 10^{-15}\\text{ J}\\):</p>
+<p>$$ M_{\\mathrm{tot}}(5r_c) = \\frac{2(1.362 \\times 10^{-15}\\text{ J})(5.398 \\times 10^{22}\\text{ m})}{(6.674 \\times 10^{-11})(0.60 \\times 1.673 \\times 10^{-27}\\text{ kg})} \\approx 2.195 \\times 10^{45}\\text{ kg} \\approx \\mathbf{1.10 \\times 10^{15}\\,M_\\odot} $$</p>
+<p>Integrating the gas density \\(\\rho_{\\mathrm{gas}}(r) = 1.17\\,m_p n_e(r)\\) over spherical shells out to \\(R = 5r_c\\) (with \\(\\rho_{\\mathrm{gas},0} = 1.17(1.673 \\times 10^{-27}\\text{ kg})(6.00 \\times 10^3\\ \\mathrm{m^{-3}}) = 1.174 \\times 10^{-23}\\ \\mathrm{kg\\,m^{-3}}\\)):</p>
+<p>$$ M_{\\mathrm{gas}}(5r_c) = 4\\pi \\rho_{\\mathrm{gas},0} r_c^3 \\int_0^5 \\frac{x^2\\,dx}{1+x^2} = 4\\pi(1.174 \\times 10^{-23})(1.123 \\times 10^{22}\\text{ m})^3(3.627) \\approx 2.67 \\times 10^{44}\\text{ kg} \\approx \\mathbf{1.34 \\times 10^{14}\\,M_\\odot} $$</p>
+<p>$$ f_{\\mathrm{gas}}(5r_c) = \\frac{M_{\\mathrm{gas}}(5r_c)}{M_{\\mathrm{tot}}(5r_c)} = \\frac{1.34 \\times 10^{14}\\,M_\\odot}{1.10 \\times 10^{15}\\,M_\\odot} \\approx \\mathbf{0.122} \\ (\\mathbf{12.2\\%}) $$</p>`
+    },
+
+    // Day 27 — 14.11.2026
+    {
+        uniqueId: "potd_2026_11_14",
+        dayNumber: 27,
+        scheduledDate: "14.11.2026",
+        title: "Gravitational-Wave Siren: Inspiral and Merger of a Binary Neutron Star",
+        author: "Matei",
+        module: "T8 & T12 · Gravitational Waves & Standard Sirens",
+        difficultyClass: "medium",
+        difficultyText: "4.2 / 10.0",
+        description: `<p>A ground-based gravitational-wave interferometer detects the inspiral signal of a binary neutron star (BNS) system consisting of two equal-mass neutron stars (\\(m_1 = m_2 = 1.40\\,M_\\odot\\)) on a quasi-circular orbit. The quadrupolar gravitational-wave frequency \\(f_{\\mathrm{GW}} = 2f_{\\mathrm{orb}}\\) enters the high-sensitivity band at \\(f_0 = 40.0\\text{ Hz}\\). Use \\(G = 6.674 \\times 10^{-11}\\ \\mathrm{m^3\\,kg^{-1}\\,s^{-2}}\\), \\(c = 2.998 \\times 10^8\\ \\mathrm{m\\,s^{-1}}\\), \\(M_\\odot = 1.989 \\times 10^{30}\\text{ kg}\\), and \\(1\\text{ Mpc} = 3.0857 \\times 10^{22}\\text{ m}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the binary's chirp mass \\(\\mathcal{M}_c \\equiv \\frac{(m_1 m_2)^{3/5}}{(m_1 + m_2)^{1/5}}\\) in solar masses. At the instant when \\(f_{\\mathrm{GW}} = 40.0\\text{ Hz}\\), determine the orbital frequency \\(f_{\\mathrm{orb}}\\) and the orbital separation \\(a\\) in kilometers. <em>(2.5 points)</em></li>
+    <li>In the Einstein quadrupole approximation, gravitational waves carry away power \\(L_{\\mathrm{GW}} = \\frac{32}{5}\\frac{G^4}{c^5}\\frac{m_1^2 m_2^2(m_1 + m_2)}{a^5}\\) at the expense of the Newtonian orbital energy \\(E_{\\mathrm{orb}} = -\\frac{G m_1 m_2}{2a}\\). Prove that the gravitational-wave frequency chirps upward at rate:
+    $$ \\dot{f}_{\\mathrm{GW}} = \\frac{96}{5}\\pi^{8/3}\\left(\\frac{G\\mathcal{M}_c}{c^3}\\right)^{5/3} f_{\\mathrm{GW}}^{11/3} $$
+    and calculate both \\(\\dot{f}_{\\mathrm{GW}}\\) (in \\(\\mathrm{Hz\\,s^{-1}}\\)) and the remaining time to coalescence \\(t_{\\mathrm{coal}} = \\int_{f_0}^{\\infty} \\frac{df_{\\mathrm{GW}}}{\\dot{f}_{\\mathrm{GW}}}\\) (in seconds) starting from \\(f_0 = 40.0\\text{ Hz}\\). <em>(3.0 points)</em></li>
+    <li>By integrating \\(\\mathcal{N}_{\\mathrm{GW}} = \\int_{f_0}^{\\infty} f_{\\mathrm{GW}}\\,dt = \\int_{f_0}^{\\infty} \\frac{f_{\\mathrm{GW}}}{\\dot{f}_{\\mathrm{GW}}}\\,df_{\\mathrm{GW}}\\), calculate the total number of gravitational-wave cycles observed between \\(f_0 = 40.0\\text{ Hz}\\) and merger. <em>(2.0 points)</em></li>
+    <li>For a face-on binary (\\(i = 0^\\circ\\)) at luminosity distance \\(D_L\\), the characteristic strain amplitude is \\(h_0 = \\frac{4}{D_L}\\left(\\frac{G\\mathcal{M}_c}{c^2}\\right)^{5/3}\\left(\\frac{\\pi f_{\\mathrm{GW}}}{c}\\right)^{2/3}\\). Given a measured strain of \\(h_0 = 4.58 \\times 10^{-23}\\) at \\(f_{\\mathrm{GW}} = 40.0\\text{ Hz}\\) and an optical kilonova host galaxy with recession velocity \\(v_{\\mathrm{rec}} = 3010\\ \\mathrm{km\\,s^{-1}}\\), determine \\(D_L\\) (in \\(\\text{Mpc}\\)) and the Hubble constant \\(H_0\\) (in \\(\\mathrm{km\\,s^{-1}\\,Mpc^{-1}}\\)). <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Quadrupolar gravitational-wave radiation reaction, chirp mass scaling, inspiral waveform phase cycles, and standard siren Hubble constant measurement.</p>
+
+<p><strong>(a) Chirp Mass \\(\\mathcal{M}_c\\), Orbital Frequency &amp; Separation at \\(f_{\\mathrm{GW}} = 40.0\\text{ Hz}\\) (2.5 points):</strong><br>
+For equal masses \\(m_1 = m_2 = 1.40\\,M_\\odot\\) (total mass \\(M = 2.80\\,M_\\odot = 5.569 \\times 10^{30}\\text{ kg}\\)):</p>
+<p>$$ \\mathcal{M}_c = \\frac{(1.40^2)^{3/5}}{(2.80)^{1/5}}\\,M_\\odot = 2^{-1/5}(1.40\\,M_\\odot) \\approx \\mathbf{1.219\\,M_\\odot} \\quad (2.424 \\times 10^{30}\\text{ kg}) $$</p>
+<p>At \\(f_{\\mathrm{GW}} = 40.0\\text{ Hz}\\), the orbital frequency is \\(f_{\\mathrm{orb}} = \\frac{1}{2}f_{\\mathrm{GW}} = \\mathbf{20.0\\text{ Hz}}\\) (\\(\\Omega = 2\\pi f_{\\mathrm{orb}} = 125.66\\ \\mathrm{rad\\,s^{-1}}\\)). By Kepler's Third Law:</p>
+<p>$$ a = \\left(\\frac{G M}{\\Omega^2}\\right)^{1/3} = \\left[\\frac{(6.674 \\times 10^{-11})(5.569 \\times 10^{30})}{(125.66)^2}\\right]^{1/3} \\approx 2.866 \\times 10^5\\text{ m} = \\mathbf{286.6\\text{ km}} $$</p>
+
+<p><strong>(b) Derivation of Chirp Rate \\(\\dot{f}_{\\mathrm{GW}}\\) &amp; Coalescence Time \\(t_{\\mathrm{coal}}\\) (3.0 points):</strong><br>
+Using \\(\\frac{dE_{\\mathrm{orb}}}{dt} = \\frac{G m_1 m_2}{2a^2}\\dot{a} = -L_{\\mathrm{GW}}\\) and \\(\\frac{\\dot{f}_{\\mathrm{GW}}}{f_{\\mathrm{GW}}} = -\\frac{3}{2}\\frac{\\dot{a}}{a}\\) with \\(a = G^{1/3}M^{1/3}(\\pi f_{\\mathrm{GW}})^{-2/3}\\) and \\(\\frac{m_1 m_2}{M^{1/3}} = \\mathcal{M}_c^{5/3}\\):</p>
+<p>$$ \\frac{\\dot{f}_{\\mathrm{GW}}}{f_{\\mathrm{GW}}} = \\frac{96}{5}\\frac{G^3}{c^5}\\frac{m_1 m_2 M}{a^4} = \\frac{96}{5}\\pi^{8/3}\\left(\\frac{G\\mathcal{M}_c}{c^3}\\right)^{5/3} f_{\\mathrm{GW}}^{8/3} \\implies \\mathbf{\\dot{f}_{\\mathrm{GW}} = \\frac{96}{5}\\pi^{8/3}\\left(\\frac{G\\mathcal{M}_c}{c^3}\\right)^{5/3} f_{\\mathrm{GW}}^{11/3}} $$</p>
+<p>With \\(\\frac{G\\mathcal{M}_c}{c^3} = \\frac{(6.674 \\times 10^{-11})(2.424 \\times 10^{30})}{(2.998 \\times 10^8)^3} \\approx 6.003 \\times 10^{-6}\\text{ s}\\) and \\(f_0 = 40.0\\text{ Hz}\\):</p>
+<p>$$ \\dot{f}_{\\mathrm{GW}}(40\\text{ Hz}) = \\frac{96}{5}\\pi^{8/3}(6.003 \\times 10^{-6}\\text{ s})^{5/3}(40.0\\text{ Hz})^{11/3} \\approx \\mathbf{6.87\\ \\mathrm{Hz\\,s^{-1}}} $$</p>
+<p>Integrating \\(dt = \\frac{df_{\\mathrm{GW}}}{\\dot{f}_{\\mathrm{GW}}} \\propto f_{\\mathrm{GW}}^{-11/3}\\,df_{\\mathrm{GW}}\\) from \\(f_0\\) to \\(\\infty\\) gives:</p>
+<p>$$ t_{\\mathrm{coal}} = \\frac{3}{8}\\frac{f_0}{\\dot{f}_{\\mathrm{GW}}(f_0)} = \\frac{3}{8}\\left(\\frac{40.0\\text{ Hz}}{6.869\\ \\mathrm{Hz\\,s^{-1}}}\\right) \\approx \\mathbf{2.18\\text{ s}} $$</p>
+
+<p><strong>(c) Total Number of Gravitational-Wave Cycles \\(\\mathcal{N}_{\\mathrm{GW}}\\) (2.0 points):</strong><br>
+Since \\(\\frac{f_{\\mathrm{GW}}}{\\dot{f}_{\\mathrm{GW}}} = \\frac{f_0}{\\dot{f}_0}\\left(\\frac{f_{\\mathrm{GW}}}{f_0}\\right)^{-8/3}\\), integrating from \\(f_0\\) to \\(\\infty\\) yields:</p>
+<p>$$ \\mathcal{N}_{\\mathrm{GW}} = \\int_{f_0}^{\\infty} \\frac{f_{\\mathrm{GW}}}{\\dot{f}_{\\mathrm{GW}}}\\,df_{\\mathrm{GW}} = \\frac{3}{5}\\frac{f_0^2}{\\dot{f}_0} = \\frac{8}{5}f_0\\,t_{\\mathrm{coal}} = 1.6(40.0\\text{ Hz})(2.184\\text{ s}) \\approx \\mathbf{140\\text{ cycles}} $$</p>
+
+<p><strong>(d) Luminosity Distance \\(D_L\\) &amp; Standard-Siren Hubble Constant \\(H_0\\) (2.5 points):</strong><br>
+With \\(\\frac{G\\mathcal{M}_c}{c^2} = 1800\\text{ m}\\), the numerator factor at \\(f_0 = 40.0\\text{ Hz}\\) is \\(4(1800\\text{ m})\\big[\\pi(6.003 \\times 10^{-6}\\text{ s})(40.0\\text{ Hz})\\big]^{2/3} \\approx 59.68\\text{ m}\\). Solving for \\(D_L\\):</p>
+<p>$$ D_L = \\frac{59.68\\text{ m}}{4.58 \\times 10^{-23}} \\approx 1.303 \\times 10^{24}\\text{ m} \\approx \\mathbf{42.2\\text{ Mpc}} $$</p>
+<p>Applying Hubble's Law \\(v_{\\mathrm{rec}} = H_0 D_L\\):</p>
+<p>$$ H_0 = \\frac{v_{\\mathrm{rec}}}{D_L} = \\frac{3010\\ \\mathrm{km\\,s^{-1}}}{42.2\\text{ Mpc}} \\approx \\mathbf{71.3\\ \\mathrm{km\\,s^{-1}\\,Mpc^{-1}}} $$</p>`
+    },
+
+    // Day 28 — 15.11.2026
+    {
+        uniqueId: "potd_2026_11_15",
+        dayNumber: 28,
+        scheduledDate: "15.11.2026",
+        title: "The Eddington–Barbier Limb Darkening Law and Solar Rosseland Photosphere",
+        author: "Matei",
+        module: "T2 & T5 · Radiative Transfer & Stellar Atmospheres",
+        difficultyClass: "medium",
+        difficultyText: "4.5 / 10.0",
+        description: `<p>In a plane-parallel stellar photosphere in local thermodynamic equilibrium (LTE) and grey radiative equilibrium, the bolometric source function \\(S(\\tau) = \\frac{\\sigma_{\\mathrm{SB}}}{\\pi}T(\\tau)^4\\) increases linearly with vertical Rosseland optical depth \\(\\tau\\) (measured inward from \\(\\tau = 0\\) at the top of the atmosphere) according to the Milne–Eddington law:</p>
+<p>$$ S(\\tau) = \\frac{3}{4}\\frac{F_{\\mathrm{bol}}}{\\pi}\\left(\\tau + \\frac{2}{3}\\right) $$</p>
+<p>where \\(F_{\\mathrm{bol}} = \\sigma_{\\mathrm{SB}} T_{\\mathrm{eff}}^4\\) is the constant outward bolometric flux and \\(T_{\\mathrm{eff}} = 5772\\text{ K}\\) for the Sun. A distant observer views a point on the solar disk where the line of sight makes an angle \\(\\theta\\) to the outward surface normal (with direction cosine \\(\\mu \\equiv \\cos\\theta \\in (0, 1]\\)).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Using the formal solution for the emergent specific intensity \\(I(0, \\mu) = \\int_0^\\infty S(\\tau)\\,e^{-\\tau/\\mu}\\,\\frac{d\\tau}{\\mu}\\), evaluate the integral to derive the linear limb-darkening law \\(\\frac{I(0, \\mu)}{I(0, 1)} = 1 - u(1 - \\mu)\\). Determine the exact theoretical limb-darkening coefficient \\(u\\) and the limb-to-center intensity ratio \\(\\frac{I(0, 0^+)}{I(0, 1)}\\). <em>(3.0 points)</em></li>
+    <li>Verify the <strong>Eddington–Barbier relation</strong> \\(I(0, \\mu) = S(\\tau = \\mu)\\). Hence find the exact optical depth \\(\\tau_{\\mathrm{eff}}\\) where the local kinetic temperature equals \\(T_{\\mathrm{eff}}\\), and calculate the Sun's boundary "skin" temperature \\(T_0 \\equiv T(\\tau = 0)\\) in Kelvin. <em>(2.0 points)</em></li>
+    <li>Prove explicitly that integrating the emergent intensity over the outward hemisphere \\(F_{\\mathrm{out}} = 2\\pi \\int_0^1 I(0, \\mu)\\,\\mu\\,d\\mu\\) recovers \\(F_{\\mathrm{bol}} = \\sigma_{\\mathrm{SB}} T_{\\mathrm{eff}}^4\\). <em>(1.5 points)</em></li>
+    <li>In the upper solar photosphere (surface gravity \\(g_\\odot = 274\\ \\mathrm{m\\,s^{-2}}\\), mean molecular weight \\(\\mu_m = 1.26\\), temperature approximated as \\(T_0\\)), hydrostatic balance \\(\\frac{dP}{dz} = -\\rho g_\\odot\\) holds while the negative hydrogen (\\(\\text{H}^-\\)) opacity scales with gas density as \\(\\kappa(\\rho) = \\kappa_0\\left(\\frac{\\rho}{\\rho_0}\\right)^\\alpha\\) with \\(\\alpha = 0.50\\), \\(\\rho_0 = 2.50 \\times 10^{-4}\\ \\mathrm{kg\\,m^{-3}}\\), and \\(\\kappa_0 = 0.030\\ \\mathrm{m^2\\,kg^{-1}}\\). Calculate the isothermal pressure scale height \\(H_P = \\frac{k_B T_0}{\\mu_m m_H g_\\odot}\\) (in km), integrate \\(d\\tau = -\\kappa(\\rho)\\rho\\,dz\\) to find the photospheric gas density \\(\\rho_{\\mathrm{phot}}\\) at \\(\\tau_{\\mathrm{eff}} = \\frac{2}{3}\\), and determine the optical-depth scale height \\(H_\\tau = \\frac{H_P}{1 + \\alpha}\\) (in km and in arcseconds at \\(1\\text{ AU}\\)) that governs the sharpness of the solar limb. <em>(3.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Milne–Eddington radiative transfer, Laplace transform of the source function, Eddington–Barbier limb darkening, and \\(\\text{H}^-\\) photospheric scale height.</p>
+
+<p><strong>(a) Emergent Intensity &amp; Linear Limb-Darkening Law (3.0 points):</strong><br>
+Substituting \\(u' = \\tau / \\mu\\) (\\(d\\tau / \\mu = du'\\)) into the formal transfer integral and using \\(\\int_0^\\infty e^{-u'}du' = 1\\) and \\(\\int_0^\\infty u' e^{-u'}du' = 1\\):</p>
+<p>$$ I(0, \\mu) = \\frac{3 F_{\\mathrm{bol}}}{4\\pi}\\int_0^\\infty \\left(\\mu u' + \\frac{2}{3}\\right)e^{-u'}\\,du' = \\frac{3 F_{\\mathrm{bol}}}{4\\pi}\\left(\\mu + \\frac{2}{3}\\right) $$</p>
+<p>At the center of the solar disk (\\(\\mu = 1\\)), \\(I(0, 1) = \\frac{3 F_{\\mathrm{bol}}}{4\\pi}\\left(\\frac{5}{3}\\right) = \\frac{5 F_{\\mathrm{bol}}}{4\\pi}\\). Dividing \\(I(0, \\mu)\\) by \\(I(0, 1)\\) gives:</p>
+<p>$$ \\frac{I(0, \\mu)}{I(0, 1)} = \\frac{3\\mu + 2}{5} = 1 - \\frac{3}{5}(1 - \\mu) \\implies u = \\mathbf{\\frac{3}{5} = 0.60}, \\qquad \\frac{I(0, 0^+)}{I(0, 1)} = 1 - u = \\mathbf{\\frac{2}{5} = 0.40} $$</p>
+
+<p><strong>(b) Eddington–Barbier Relation, Photospheric Depth \\(\\tau_{\\mathrm{eff}}\\) &amp; Skin Temperature \\(T_0\\) (2.0 points):</strong><br>
+Comparing \\(I(0, \\mu) = \\frac{3 F_{\\mathrm{bol}}}{4\\pi}(\\mu + 2/3)\\) with \\(S(\\tau) = \\frac{3 F_{\\mathrm{bol}}}{4\\pi}(\\tau + 2/3)\\) shows immediately that \\(\\mathbf{I(0, \\mu) = S(\\tau = \\mu)}\\): the intensity emerging at viewing cosine \\(\\mu\\) equals the source function at vertical optical depth \\(\\tau = \\mu\\). Since \\(S(\\tau) = \\frac{\\sigma_{\\mathrm{SB}}}{\\pi}T(\\tau)^4\\), the temperature profile is:</p>
+<p>$$ T(\\tau)^4 = \\frac{3}{4}T_{\\mathrm{eff}}^4\\left(\\tau + \\frac{2}{3}\\right) $$</p>
+<p>Setting \\(T(\\tau_{\\mathrm{eff}}) = T_{\\mathrm{eff}}\\) gives \\(\\frac{3}{4}(\\tau_{\\mathrm{eff}} + 2/3) = 1 \\implies \\mathbf{\\tau_{\\mathrm{eff}} = \\frac{2}{3}}\\). At the boundary \\(\\tau = 0\\):</p>
+<p>$$ T_0 = 2^{-1/4} T_{\\mathrm{eff}} = 0.8409 \\times 5772\\text{ K} \\approx \\mathbf{4854\\text{ K}} $$</p>
+
+<p><strong>(c) Verification of Bolometric Flux Conservation (1.5 points):</strong></p>
+<p>$$ F_{\\mathrm{out}} = 2\\pi \\int_0^1 I(0, \\mu)\\,\\mu\\,d\\mu = \\frac{3}{2}F_{\\mathrm{bol}}\\int_0^1 \\left(\\mu^2 + \\frac{2}{3}\\mu\\right)d\\mu = \\frac{3}{2}F_{\\mathrm{bol}}\\left[\\frac{\\mu^3}{3} + \\frac{\\mu^2}{3}\\right]_0^1 = \\frac{3}{2}F_{\\mathrm{bol}}\\left(\\frac{2}{3}\\right) = \\mathbf{F_{\\mathrm{bol}} = \\sigma_{\\mathrm{SB}} T_{\\mathrm{eff}}^4} $$</p>
+
+<p><strong>(d) Photospheric Scale Height, Density \\(\\rho_{\\mathrm{phot}}\\) &amp; Sharpness of the Solar Limb (3.5 points):</strong><br>
+For an isothermal ideal gas at \\(T_0 = 4854\\text{ K}\\) with \\(\\mu_m = 1.26\\) and \\(m_H = 1.6736 \\times 10^{-27}\\text{ kg}\\), the pressure scale height is:</p>
+<p>$$ H_P = \\frac{k_B T_0}{\\mu_m m_H g_\\odot} = \\frac{(1.3806 \\times 10^{-23})(4854)}{1.26(1.6736 \\times 10^{-27})(274)} \\approx 1.160 \\times 10^5\\text{ m} = \\mathbf{116.0\\text{ km}} $$</p>
+<p>Since \\(\\rho(z) \\propto e^{-z/H_P}\\), we have \\(d\\rho = -\\frac{\\rho}{H_P}\\,dz \\implies -\\rho\\,dz = H_P\\,d\\rho\\). Integrating \\(d\\tau = \\kappa_0\\left(\\frac{\\rho}{\\rho_0}\\right)^\\alpha H_P\\,d\\rho\\) from \\(\\rho = 0\\) (\\(z = \\infty\\)) to \\(\\rho_{\\mathrm{phot}}\\):</p>
+<p>$$ \\tau(\\rho) = \\frac{\\kappa_0 H_P \\rho_0}{1 + \\alpha}\\left(\\frac{\\rho}{\\rho_0}\\right)^{1+\\alpha} $$</p>
+<p>With \\(\\alpha = 0.50\\) and \\(\\frac{\\kappa_0 H_P \\rho_0}{1.50} = \\frac{(0.030)(1.160 \\times 10^5)(2.50 \\times 10^{-4})}{1.50} = 0.5800\\), setting \\(\\tau_{\\mathrm{eff}} = \\frac{2}{3}\\) yields:</p>
+<p>$$ \\rho_{\\mathrm{phot}} = \\rho_0\\left(\\frac{2/3}{0.5800}\\right)^{2/3} = 2.50 \\times 10^{-4} \\times (1.1494)^{2/3} \\approx \\mathbf{2.74 \\times 10^{-4}\\ \\mathrm{kg\\,m^{-3}}} $$</p>
+<p>Because \\(\\tau(z) \\propto \\rho(z)^{1+\\alpha} \\propto e^{-(1+\\alpha)z/H_P} = e^{-z/H_\\tau}\\), the optical depth e-folds over the scale height:</p>
+<p>$$ H_\\tau = \\frac{H_P}{1 + \\alpha} = \\frac{116.0\\text{ km}}{1.50} \\approx \\mathbf{77.3\\text{ km}} \\quad \\left(\\theta_{\\mathrm{limb}} = \\frac{77.3\\text{ km}}{1.496 \\times 10^8\\text{ km}} \\times 206,265'' \\approx \\mathbf{0.107''}\\right) $$</p>`
     }
 ];
 

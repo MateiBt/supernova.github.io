@@ -1,4 +1,221 @@
 <!-- =========================================================
+     CHAPTER 2 SCOPED STYLES (ZERO SCROLLBARS + SUPERHANDOUT UI)
+     ========================================================= -->
+<style>
+    /* Eliminate unnecessary horizontal/vertical scrollbars on MathJax & figures */
+    .subchapter-panel .math-block {
+        overflow-x: auto;
+        overflow-y: hidden !important;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 14px 18px;
+        margin: 16px 0;
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+        border-radius: var(--radius-md, 12px);
+    }
+    .subchapter-panel .math-block::-webkit-scrollbar,
+    .subchapter-panel mjx-container::-webkit-scrollbar {
+        display: none;
+    }
+    .subchapter-panel mjx-container[jax="CHTML"][display="true"] {
+        margin: 0.4em 0 !important;
+        overflow-x: auto;
+        overflow-y: hidden !important;
+        scrollbar-width: none;
+    }
+
+    /* Idea Boxes, Worked Examples & Remarks */
+    .idea-box {
+        background: rgba(53, 230, 255, 0.05);
+        border: 1px solid rgba(53, 230, 255, 0.22);
+        border-left: 4px solid var(--accent-blue, #35E6FF);
+        border-radius: var(--radius-md, 12px);
+        padding: 16px 20px;
+        margin: 20px 0;
+    }
+    .idea-box .box-title {
+        font-family: var(--font-mono, monospace);
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--accent-blue, #35E6FF);
+        font-weight: 700;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .example-box {
+        background: rgba(43, 227, 138, 0.04);
+        border: 1px solid rgba(43, 227, 138, 0.22);
+        border-left: 4px solid var(--accent-green, #2BE38A);
+        border-radius: var(--radius-md, 12px);
+        padding: 18px 20px;
+        margin: 22px 0;
+    }
+    .example-box .box-title {
+        font-family: var(--font-mono, monospace);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--accent-green, #2BE38A);
+        font-weight: 700;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .example-divider {
+        border: none;
+        border-top: 1px dashed rgba(43, 227, 138, 0.25);
+        margin: 12px 0;
+    }
+
+    /* Responsive Zero-Scrollbar Figure Cards */
+    .handout-figure {
+        background: var(--bg-sidebar, #101115);
+        border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+        border-radius: var(--radius-md, 12px);
+        padding: 18px;
+        margin: 22px 0;
+        text-align: center;
+        overflow: hidden;
+    }
+    .handout-figure svg {
+        width: 100%;
+        max-width: 560px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        overflow: visible;
+    }
+    .handout-figure figcaption {
+        font-size: 0.83rem;
+        color: var(--text-muted, #8A94A6);
+        margin-top: 10px;
+        line-height: 1.5;
+    }
+
+    /* Olympiad Problem Cards & Collapsible Solution Drawers */
+    .problems-section-title {
+        margin-top: 36px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-light, rgba(255, 255, 255, 0.15));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .problem-card {
+        background: var(--bg-card, #15161A);
+        border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+        border-left: 4px solid var(--accent-purple, #B39CD0);
+        border-radius: var(--radius-md, 12px);
+        padding: 18px 20px;
+        margin: 18px 0;
+    }
+    .problem-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+    .problem-title {
+        font-family: var(--font-display, sans-serif);
+        font-size: 1.02rem;
+        font-weight: 700;
+        color: var(--text-pure, #FFFFFF);
+    }
+    .problem-pts {
+        font-family: var(--font-mono, monospace);
+        font-size: 0.74rem;
+        font-weight: 700;
+        padding: 3px 9px;
+        border-radius: 6px;
+        background: rgba(179, 156, 208, 0.14);
+        color: var(--accent-purple, #B39CD0);
+        border: 1px solid rgba(179, 156, 208, 0.3);
+    }
+    .problem-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+    }
+    .btn-prob-toggle {
+        background: var(--bg-sidebar, #101115);
+        color: var(--text-main, #EDEDED);
+        border: 1px solid var(--border-light, rgba(255, 255, 255, 0.15));
+        padding: 7px 14px;
+        border-radius: var(--radius-sm, 8px);
+        font-family: var(--font-mono, monospace);
+        font-size: 0.76rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        transition: all 0.2s ease;
+    }
+    .btn-prob-toggle:hover {
+        border-color: var(--accent-blue, #35E6FF);
+        color: var(--accent-blue, #35E6FF);
+    }
+    .btn-prob-toggle.sol-btn:hover,
+    .btn-prob-toggle.sol-btn.open {
+        border-color: var(--accent-green, #2BE38A);
+        color: var(--accent-green, #2BE38A);
+        background: rgba(43, 227, 138, 0.08);
+    }
+    .prob-drawer {
+        display: none;
+        margin-top: 14px;
+        padding: 16px 18px;
+        border-radius: var(--radius-sm, 8px);
+        background: var(--bg-sidebar, #101115);
+        border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+        font-size: 0.92rem;
+        line-height: 1.65;
+    }
+    .prob-drawer.hint-drawer {
+        border-left: 3px solid #F59E0B;
+    }
+    .prob-drawer.sol-drawer {
+        border-left: 3px solid var(--accent-green, #2BE38A);
+    }
+    .prob-drawer.active {
+        display: block;
+    }
+    .data-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        scrollbar-width: none;
+        margin: 14px 0;
+    }
+    .data-table-wrapper::-webkit-scrollbar { display: none; }
+    .handout-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: var(--font-mono, monospace);
+        font-size: 0.8rem;
+    }
+    .handout-table th, .handout-table td {
+        padding: 9px 10px;
+        border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+        text-align: left;
+    }
+    .handout-table th {
+        color: var(--accent-blue, #35E6FF);
+        background: rgba(255, 255, 255, 0.03);
+        text-transform: uppercase;
+        font-size: 0.72rem;
+    }
+</style>
+
+<!-- =========================================================
      SUBCHAPTER 2.1: TWO-BODY PROBLEM REDUCTION
      ========================================================= -->
 <article class="subchapter-panel" id="sub-2-1" data-sub="2.1">
@@ -6,128 +223,402 @@
     <h2>2.1 Two-Body Problem Reduction</h2>
 
     <p>
-        The foundational model of orbital mechanics is the isolated gravitational interaction of two point masses (or spherically symmetric bodies by the Shell Theorem), $m_1$ and $m_2$. By exploiting the symmetries of Newton's Law of Universal Gravitation, the coupled six-degree-of-freedom motion of two interacting bodies can be decomposed into the trivial uniform motion of their common center of mass and the three-degree-of-freedom motion of a single fictitious particle in a static central field.
+        In Chapter 1, we cheated slightly: we assumed the central star $M$ was bolted rigidly to the origin while the smaller planet $m$ orbited around it. That is a great approximation when the Sun is $333\,000$ times heavier than the Earth, but it fails completely for binary stars, binary black holes, or even the Pluto–Charon system. In reality, both bodies pull on each other and both move.
+    </p>
+    <p>
+        At first glance, tracking two moving masses in 3D space looks like a six-degree-of-freedom nightmare. Fortunately, by exploiting the symmetries of Newton's Law of Universal Gravitation, we can split this coupled two-body system into two much simpler pieces: the trivial straight-line motion of their common center of mass, and the motion of a single fictitious particle orbiting a fixed center.
     </p>
 
     <h3>2.1.1 Center of Mass (Barycenter) Frame</h3>
     <p>
-        Ok, now let's just consider two point masses $m_1$ and $m_2$ located at position vectors $\vec{r}_1$ and $\vec{r}_2$ with respect to an arbitrary inertial reference frame. The relative separation vector pointing from $m_2$ (often chosen as the primary body) to $m_1$ (the secondary body) is defined as:
+        Let us consider two point masses $m_1$ and $m_2$ (or spherically symmetric bodies, by the Shell Theorem) located at position vectors $\vec{r}_1$ and $\vec{r}_2$ in an arbitrary inertial reference frame. To track where $m_1$ is relative to $m_2$, we need a vector connecting them. Thus we define:
     </p>
     <div class="math-block">
-        \begin{equation}
-            \vec{r} = \vec{r}_1 - \vec{r}_2, \qquad r = |\vec{r}| = |\vec{r}_1 - \vec{r}_2|
-        \end{equation}
-    </div>
-    <p>with the corresponding radial unit vector pointing from $m_2$ toward $m_1$ given by $\hat{r} = \frac{\vec{r}}{r}$.</p>
-    <p>By Newton's Second Law and Newton's Law of Universal Gravitation, the equations of motion for the two masses in the inertial frame are:</p>
-    <div class="math-block">
-        \begin{align}
-            m_1 \ddot{\vec{r}}_1 &= -\frac{G m_1 m_2}{r^2}\hat{r} = -\frac{G m_1 m_2}{r^3}(\vec{r}_1 - \vec{r}_2) \label{eq:m1_inertial} \\
-            m_2 \ddot{\vec{r}}_2 &= +\frac{G m_1 m_2}{r^2}\hat{r} = +\frac{G m_1 m_2}{r^3}(\vec{r}_1 - \vec{r}_2) \label{eq:m2_inertial}
-        \end{align}
-    </div>
-    <p>Adding Equations $\eqref{eq:m1_inertial}$ and $\eqref{eq:m2_inertial}$ yields zero net internal force on the system:</p>
-    <div class="math-block">
-        \begin{equation}
-            m_1 \ddot{\vec{r}}_1 + m_2 \ddot{\vec{r}}_2 = \vec{0} \implies \frac{d^2}{dt^2}\left(m_1 \vec{r}_1 + m_2 \vec{r}_2\right) = \vec{0}
-        \end{equation}
-    </div>
-    <p>We define the position vector of the <strong>center of mass (barycenter)</strong> $\vec{R}_{\mathrm{cm}}$ as the mass-weighted average of the individual position vectors:</p>
-    <div class="math-block">
-        \begin{equation}
-            \vec{R}_{\mathrm{cm}} \equiv \frac{m_1 \vec{r}_1 + m_2 \vec{r}_2}{m_1 + m_2} = \frac{m_1 \vec{r}_1 + m_2 \vec{r}_2}{M}
-        \end{equation}
+        \[
+        \vec{r} = \vec{r}_1 - \vec{r}_2, \qquad r = |\vec{r}| = |\vec{r}_1 - \vec{r}_2|
+        \]
     </div>
     <p>
-        where $M = m_1 + m_2$ denotes the total mass of the binary system. Because $\ddot{\vec{R}}_{\mathrm{cm}} = \vec{0}$, the barycenter moves at a constant velocity $\vec{V}_{\mathrm{cm}} = \dot{\vec{R}}_{\mathrm{cm}} = \mathrm{const}$, and therefore constitutes a valid inertial reference frame.
+        Here, $\vec{r}$ is the <strong>relative separation vector</strong> pointing from $m_2$ (usually chosen as the primary body) toward $m_1$ (the secondary body), and $\hat{e}_r = \frac{\vec{r}}{r}$ is the unit vector pointing along that line.
     </p>
     <p>
-        Transforming into the <strong>barycentric reference frame</strong> (where the origin is fixed at the center of mass, $\vec{R}_{\mathrm{cm}} = \vec{0}$), the position vectors of the individual bodies $\vec{r}_1' = \vec{r}_1 - \vec{R}_{\mathrm{cm}}$ and $\vec{r}_2' = \vec{r}_2 - \vec{R}_{\mathrm{cm}}$ satisfy the linear system:
+        By Newton's Second Law and Newton's Law of Universal Gravitation, the equations of motion for the two masses in our inertial frame are:
     </p>
     <div class="math-block">
-        \begin{equation}
-            m_1 \vec{r}_1' + m_2 \vec{r}_2' = \vec{0} \qquad \text{and} \qquad \vec{r}_1' - \vec{r}_2' = \vec{r}
-        \end{equation}
+        \[
+        \begin{aligned}
+        m_1 \ddot{\vec{r}}_1 &= -\frac{G m_1 m_2}{r^2}\hat{e}_r = -\frac{G m_1 m_2}{r^3}(\vec{r}_1 - \vec{r}_2) \\
+        m_2 \ddot{\vec{r}}_2 &= +\frac{G m_1 m_2}{r^2}\hat{e}_r = +\frac{G m_1 m_2}{r^3}(\vec{r}_1 - \vec{r}_2)
+        \end{aligned}
+        \]
     </div>
-    <p>Solving this linear system expresses each body's barycentric position vector purely in terms of the relative separation vector $\vec{r}$:</p>
+    <p>
+        Notice that the two gravitational forces are equal in magnitude and opposite in direction (Newton's Third Law). Adding these two equations together cancels the internal gravitational forces completely:
+    </p>
     <div class="math-block">
-        \begin{align}
-            \vec{r}_1' &= \left(\frac{m_2}{m_1 + m_2}\right)\vec{r} = \frac{m_2}{M}\vec{r} \\
-            \vec{r}_2' &= -\left(\frac{m_1}{m_1 + m_2}\right)\vec{r} = -\frac{m_1}{M}\vec{r}
-        \end{align}
+        \[
+        m_1 \ddot{\vec{r}}_1 + m_2 \ddot{\vec{r}}_2 = \vec{0} \implies \frac{d^2}{dt^2}\left(m_1 \vec{r}_1 + m_2 \vec{r}_2\right) = \vec{0}
+        \]
     </div>
-
-    <h4>Physical Consequences of the Barycentric Decomposition:</h4>
+    <p>
+        Just like with linear momentum conservation in basic mechanics, seeing a second time derivative equal to zero tells us that a weighted combination of the positions moves at constant velocity. Thus we define the position vector of the <strong>center of mass (barycenter)</strong> $\vec{R}_{\mathrm{cm}}$ as the mass-weighted average of $\vec{r}_1$ and $\vec{r}_2$:
+    </p>
+    <div class="math-block">
+        \[
+        \vec{R}_{\mathrm{cm}} \equiv \frac{m_1 \vec{r}_1 + m_2 \vec{r}_2}{m_1 + m_2} = \frac{m_1 \vec{r}_1 + m_2 \vec{r}_2}{M}
+        \]
+    </div>
+    <p>
+        where $M = m_1 + m_2$ is the <strong>total mass</strong> of the binary system. Because $\ddot{\vec{R}}_{\mathrm{cm}} = \vec{0}$, the barycenter drifts through space at a constant velocity $\vec{V}_{\mathrm{cm}} = \dot{\vec{R}}_{\mathrm{cm}} = \text{constant}$. That means the barycenter itself is a valid inertial reference frame!
+    </p>
+    <p>
+        Let's shift our origin right onto the barycenter ($\vec{R}_{\mathrm{cm}} = \vec{0}$). In this <strong>barycentric reference frame</strong>, we denote the position vectors of the two bodies with primes: $\vec{r}_1' = \vec{r}_1 - \vec{R}_{\mathrm{cm}}$ and $\vec{r}_2' = \vec{r}_2 - \vec{R}_{\mathrm{cm}}$. By definition, these primed vectors satisfy two simple linear equations:
+    </p>
+    <div class="math-block">
+        \[
+        m_1 \vec{r}_1' + m_2 \vec{r}_2' = \vec{0} \qquad \text{and} \qquad \vec{r}_1' - \vec{r}_2' = \vec{r}
+        \]
+    </div>
+    <p>
+        Solving this $2 \times 2$ linear system expresses each body's barycentric position vector purely in terms of the relative separation vector $\vec{r}$:
+    </p>
+    <div class="math-block">
+        \[
+        \begin{aligned}
+        \vec{r}_1' &= +\left(\frac{m_2}{m_1 + m_2}\right)\vec{r} = +\frac{m_2}{M}\vec{r} \\
+        \vec{r}_2' &= -\left(\frac{m_1}{m_1 + m_2}\right)\vec{r} = -\frac{m_1}{M}\vec{r}
+        \end{aligned}
+        \]
+    </div>
+    <p>
+        This is an important result. Once we know the relative vector $\vec{r}(t)$, we immediately know where both stars are in space:
+    </p>
     <ul>
-        <li><strong>Opposite Phase:</strong> The vectors $\vec{r}_1'$ and $\vec{r}_2'$ are strictly anti-parallel ($\vec{r}_1' / r_1' = -\vec{r}_2' / r_2'$), meaning the two bodies always lie on opposite sides of the barycenter along a common line passing through it.</li>
-        <li><strong>Inverse Mass Scaling:</strong> The distances from the barycenter satisfy $m_1 r_1' = m_2 r_2'$ and $r_1' + r_2' = r$, so the more massive body remains proportionally closer to the center of mass.</li>
-        <li><strong>Homothetic Orbits:</strong> Once the relative trajectory $\vec{r}(t)$ is found, the individual barycentric orbits $\vec{r}_1'(t)$ and $\vec{r}_2'(t)$ are geometrically similar conic sections with the exact same eccentricity $e$, scaled by factors of $m_2/M$ and $m_1/M$, respectively.</li>
+        <li><strong>Opposite Phase:</strong> The vectors $\vec{r}_1'$ and $\vec{r}_2'$ have opposite signs, meaning the two bodies always lie on opposite sides of the barycenter along a straight line passing through it.</li>
+        <li><strong>Inverse Mass Lever Arm:</strong> Taking magnitudes gives $m_1 r_1' = m_2 r_2'$ and $r_1' + r_2' = r$. Basically, the heavier star hugs the barycenter closely, while the lighter star swings wide.</li>
+        <li><strong>Homothetic Orbits:</strong> Because $\vec{r}_1'(t)$ and $\vec{r}_2'(t)$ are just constant scalar multiples of $\vec{r}(t)$, both bodies trace out geometrically similar conic sections with the <strong>exact same eccentricity $e$</strong> and orbital period $T$, with semi-major axes $a_1 = \frac{m_2}{M}a$ and $a_2 = \frac{m_1}{M}a$ ($a_1 + a_2 = a$).</li>
     </ul>
 
+    <figure class="handout-figure">
+        <svg viewBox="0 0 500 245" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <marker id="arr-cm-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#35E6FF"/>
+                </marker>
+                <marker id="arr-cm-r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#FFC1CC"/>
+                </marker>
+                <marker id="arr-cm-g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2BE38A"/>
+                </marker>
+            </defs>
+            <!-- Major axis line -->
+            <line x1="30" y1="125" x2="470" y2="125" stroke="#8A94A6" stroke-width="1" stroke-dasharray="4,4"/>
+
+            <!-- Orbit of m_1 (larger ellipse, cyan, focus at CM x=230, y=125, e=0.5, a1=150, c1=75 -> center at 305, b1=130) -->
+            <ellipse cx="290" cy="125" rx="135" ry="98" fill="none" stroke="#35E6FF" stroke-width="1.8" stroke-dasharray="6,4"/>
+            <!-- Orbit of m_2 (smaller ellipse, rose, focus at CM x=230, y=125, e=0.5, a2=75 -> center at 197, b2=54) -->
+            <ellipse cx="195" cy="125" rx="75" ry="54" fill="none" stroke="#FFC1CC" stroke-width="1.8" stroke-dasharray="4,3"/>
+
+            <!-- Barycenter CM cross at (230, 125) -->
+            <line x1="224" y1="125" x2="236" y2="125" stroke="#FFFFFF" stroke-width="2"/>
+            <line x1="230" y1="119" x2="230" y2="131" stroke="#FFFFFF" stroke-width="2"/>
+            <text x="212" y="146" fill="#FFFFFF" font-family="Inter, sans-serif" font-size="11" font-weight="bold">CM (Focus)</text>
+
+            <!-- Position vector r_2' from CM to m_2 at (167, 86) -->
+            <line x1="230" y1="125" x2="167" y2="86" stroke="#FFC1CC" stroke-width="2.3" marker-end="url(#arr-cm-r)"/>
+            <!-- Position vector r_1' from CM to m_1 at (343, 195) -->
+            <line x1="230" y1="125" x2="343" y2="195" stroke="#35E6FF" stroke-width="2.3" marker-end="url(#arr-cm-b)"/>
+
+            <!-- Bodies m_2 (heavy) and m_1 (light) -->
+            <circle cx="163" cy="83" r="8" fill="#FFC1CC"/>
+            <text x="115" y="75" fill="#FFC1CC" font-family="Inter, sans-serif" font-size="12" font-weight="bold">m₂ (Primary)</text>
+            <text x="172" y="109" fill="#FFC1CC" font-family="Inter, sans-serif" font-size="11" font-weight="bold">r⃗₂'</text>
+
+            <circle cx="347" cy="197" r="5.5" fill="#35E6FF"/>
+            <text x="358" y="205" fill="#35E6FF" font-family="Inter, sans-serif" font-size="12" font-weight="bold">m₁ (Secondary)</text>
+            <text x="285" y="155" fill="#35E6FF" font-family="Inter, sans-serif" font-size="11" font-weight="bold">r⃗₁'</text>
+
+            <!-- Velocity vectors at m_1 and m_2 -->
+            <line x1="347" y1="197" x2="392" y2="148" stroke="#2BE38A" stroke-width="2" marker-end="url(#arr-cm-g)"/>
+            <text x="398" y="150" fill="#2BE38A" font-family="Inter, sans-serif" font-size="11" font-weight="bold">v⃗₁'</text>
+            <line x1="163" y1="83" x2="138" y2="110" stroke="#2BE38A" stroke-width="2" marker-end="url(#arr-cm-g)"/>
+            <text x="116" y="116" fill="#2BE38A" font-family="Inter, sans-serif" font-size="11" font-weight="bold">v⃗₂'</text>
+        </svg>
+        <figcaption><strong>Figure 2.1:</strong> Barycentric orbits of a binary system ($m_2 > m_1$). Both masses move in homothetic ellipses of identical eccentricity $e$ that share a common focus at the center of mass (CM), always remaining $180^\circ$ out of phase ($\vec{r}_1' = \frac{m_2}{M}\vec{r}$, $\vec{r}_2' = -\frac{m_1}{M}\vec{r}$).</figcaption>
+    </figure>
+
     <h3>2.1.2 Reduced Mass &amp; Equation of Relative Motion</h3>
-    <p>To isolate the relative motion $\vec{r}(t)$, divide the inertial equations of motion $\eqref{eq:m1_inertial}$ and $\eqref{eq:m2_inertial}$ by $m_1$ and $m_2$, respectively:</p>
+    <p>
+        Now let's find the differential equation for the relative separation vector $\vec{r} = \vec{r}_1 - \vec{r}_2$. Dividing the inertial equations of motion by $m_1$ and $m_2$, respectively, gives the individual accelerations:
+    </p>
     <div class="math-block">
-        \begin{equation}
-            \ddot{\vec{r}}_1 = -\frac{G m_2}{r^2}\hat{r}, \qquad \ddot{\vec{r}}_2 = +\frac{G m_1}{r^2}\hat{r}
-        \end{equation}
+        \[
+        \ddot{\vec{r}}_1 = -\frac{G m_2}{r^2}\hat{e}_r, \qquad \ddot{\vec{r}}_2 = +\frac{G m_1}{r^2}\hat{e}_r
+        \]
     </div>
-    <p>Subtracting $\ddot{\vec{r}}_2$ from $\ddot{\vec{r}}_1$ yields the differential equation governing the separation vector $\vec{r} = \vec{r}_1 - \vec{r}_2$:</p>
+    <p>
+        Subtracting $\ddot{\vec{r}}_2$ from $\ddot{\vec{r}}_1$ gives the relative acceleration $\ddot{\vec{r}} = \ddot{\vec{r}}_1 - \ddot{\vec{r}}_2$:
+    </p>
     <div class="math-block">
-        \begin{equation}
-            \ddot{\vec{r}} = \ddot{\vec{r}}_1 - \ddot{\vec{r}}_2 = -\frac{G(m_1 + m_2)}{r^2}\hat{r}
-        \end{equation}
+        \[
+        \ddot{\vec{r}} = -\frac{G(m_1 + m_2)}{r^2}\hat{e}_r
+        \]
     </div>
-    <p>We introduce two fundamental parameters to cast this equation into standard mechanical and astrodynamical forms:</p>
+    <p>
+        Look closely at that equation: it has the exact same mathematical form as a test mass orbiting a fixed star, except the central mass is now the sum of both masses, $M = m_1 + m_2$! Thus we define two fundamental quantities:
+    </p>
     <ol>
         <li>
-            <strong>The Reduced Mass ($\mu$):</strong> Defined as the harmonic product of the two masses:
+            <strong>The Reduced Mass ($\mu$):</strong>
             <div class="math-block">
-                \begin{equation}
-                    \mu \equiv \frac{m_1 m_2}{m_1 + m_2} = \frac{m_1 m_2}{M} \implies \frac{1}{\mu} = \frac{1}{m_1} + \frac{1}{m_2}
-                \end{equation}
+                \[
+                \mu \equiv \frac{m_1 m_2}{m_1 + m_2} = \frac{m_1 m_2}{M} \implies \frac{1}{\mu} = \frac{1}{m_1} + \frac{1}{m_2}
+                \]
             </div>
         </li>
         <li>
-            <strong>The Standard Gravitational Parameter ($\mu_0$):</strong> Defined as the product of the gravitational constant and the total system mass:
+            <strong>The Standard Gravitational Parameter ($\mu_0$):</strong>
             <div class="math-block">
-                \begin{equation}
-                    \mu_0 \equiv G(m_1 + m_2) = G M
-                \end{equation}
+                \[
+                \mu_0 \equiv G(m_1 + m_2) = GM
+                \]
             </div>
         </li>
     </ol>
-    <p>Multiplying the relative acceleration equation by the reduced mass $\mu$ gives the <strong>Newtonian force form</strong> of the relative two-body problem:</p>
-    <div class="math-block">
-        \begin{equation}
-            \mu \ddot{\vec{r}} = -\frac{G m_1 m_2}{r^2}\hat{r} \Longleftrightarrow \ddot{\vec{r}} = -\frac{\mu_0}{r^2}\hat{r}
-        \end{equation}
-    </div>
     <p>
-        Thus, the relative motion of two bodies with masses $m_1$ and $m_2$ is mathematically identical to the motion of a single fictitious particle of mass $\mu$ at position $\vec{r}$ orbiting a stationary central mass $M = m_1 + m_2$ fixed at the origin.
+        Multiplying our relative acceleration equation by $\mu$ casts the two-body problem into an exact <strong>effective one-body Newton's Second Law</strong>:
     </p>
+    <div class="math-block">
+        \[
+        \mu \ddot{\vec{r}} = -\frac{G m_1 m_2}{r^2}\hat{e}_r \quad \Longleftrightarrow \quad \ddot{\vec{r}} = -\frac{\mu_0}{r^2}\hat{e}_r
+        \]
+    </div>
 
-    <h4>Total Energy and Angular Momentum in the Barycentric Frame:</h4>
+    <h4>Total Energy and Angular Momentum in the Barycentric Frame</h4>
     <p>
-        In the center-of-mass frame ($\vec{R}_{\mathrm{cm}} = \vec{0}$), the total orbital angular momentum $\vec{L}_{\mathrm{tot}}$ and total mechanical energy $E_{\mathrm{tot}}$ of the two-body system simplify directly into the properties of the reduced-mass particle:
+        Why did we define $\mu$ as $\frac{m_1 m_2}{m_1 + m_2}$? Let's check what happens when we compute the total angular momentum $\vec{L}_{\mathrm{tot}}$ and total mechanical energy $E_{\mathrm{tot}}$ of the binary in the center-of-mass frame ($\vec{v} = \dot{\vec{r}}$):
     </p>
     <ul>
         <li>
             <strong>Total Angular Momentum:</strong> Substituting $\vec{r}_1' = \frac{m_2}{M}\vec{r}$ and $\vec{r}_2' = -\frac{m_1}{M}\vec{r}$ into $\vec{L}_{\mathrm{tot}} = m_1(\vec{r}_1' \times \dot{\vec{r}}_1') + m_2(\vec{r}_2' \times \dot{\vec{r}}_2')$ gives:
             <div class="math-block">
-                \begin{equation}
-                    \vec{L}_{\mathrm{tot}} = \left[m_1\left(\frac{m_2}{M}\right)^2 + m_2\left(\frac{m_1}{M}\right)^2\right](\vec{r} \times \dot{\vec{r}}) = \frac{m_1 m_2(m_2 + m_1)}{M^2}(\vec{r} \times \vec{v}) = \mu(\vec{r} \times \vec{v}) = \mu \vec{h}
-                \end{equation}
+                \[
+                \begin{aligned}
+                \vec{L}_{\mathrm{tot}} &= \left[m_1\left(\frac{m_2}{M}\right)^2 + m_2\left(\frac{m_1}{M}\right)^2\right](\vec{r} \times \vec{v}) \\
+                &= \frac{m_1 m_2(m_2 + m_1)}{M^2}(\vec{r} \times \vec{v}) = \mu(\vec{r} \times \vec{v}) = \mu \vec{h}
+                \end{aligned}
+                \]
             </div>
         </li>
         <li>
-            <strong>Total Mechanical Energy:</strong> Similarly, substituting $\dot{\vec{r}}_1'$ and $\dot{\vec{r}}_2'$ into the total kinetic and potential energy yields:
+            <strong>Total Mechanical Energy:</strong> Similarly, substituting $\dot{\vec{r}}_1' = \frac{m_2}{M}\vec{v}$ and $\dot{\vec{r}}_2' = -\frac{m_1}{M}\vec{v}$ into the total kinetic plus potential energy yields:
             <div class="math-block">
-                \begin{equation}
-                    E_{\mathrm{tot}} = \frac{1}{2}m_1 |\dot{\vec{r}}_1'|^2 + \frac{1}{2}m_2 |\dot{\vec{r}}_2'|^2 - \frac{G m_1 m_2}{r} = \frac{1}{2}\mu v^2 - \frac{G M \mu}{r} = \mu\left(\frac{1}{2}v^2 - \frac{\mu_0}{r}\right) = \mu \epsilon
-                \end{equation}
+                \[
+                \begin{aligned}
+                E_{\mathrm{tot}} &= \frac{1}{2}m_1 |\dot{\vec{r}}_1'|^2 + \frac{1}{2}m_2 |\dot{\vec{r}}_2'|^2 - \frac{G m_1 m_2}{r} \\
+                &= \frac{1}{2}\mu v^2 - \frac{G M \mu}{r} = \mu\left(\frac{1}{2}v^2 - \frac{\mu_0}{r}\right) = \mu \epsilon
+                \end{aligned}
+                \]
             </div>
         </li>
     </ul>
+    <p>
+        which concludes the reduction. Every single formula from Chapter 1 carries over unchanged simply by replacing the central mass with $M = m_1 + m_2$ and multiplying specific quantities ($\vec{h}, \epsilon$) by the reduced mass $\mu$!
+    </p>
+
+    <div class="idea-box">
+        <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Idea: How to Avoid the #1 Binary Star Trap on Olympiads</div>
+        <p style="margin: 0;">
+            Contestants frequently mix up the <em>individual</em> orbit radius $a_1$ with the <em>total</em> separation $a = a_1 + a_2$ in gravitational force equations. Always remember: the gravitational force depends on the <strong>full separation</strong> $r = r_1' + r_2'$ ($F = G m_1 m_2 / r^2$), whereas the centripetal acceleration of star $1$ in the barycentric frame depends on its <strong>smaller barycentric radius</strong> $r_1' = \frac{m_2}{M}r$. The safest workflow is to solve the problem first for the relative orbit of semi-major axis $a = a_1 + a_2$ using total mass $M = m_1 + m_2$ (for instance, $T^2 = \frac{4\pi^2}{G(m_1 + m_2)}a^3$), and then scale back to individual orbits at the very end via $a_1 = \frac{m_2}{M}a$ and $a_2 = \frac{m_1}{M}a$.
+        </p>
+    </div>
+
+    <div class="example-box">
+        <div class="box-title"><i class="fa-solid fa-compass-drafting"></i> Worked Example 2.1: Astrometric Binary Mass &amp; Eccentricity (4th IOAA 2010, Short Problem 4)</div>
+        <p>
+            A visual binary star system lies at a distance $d = 10\text{ pc}$ from Earth, with its orbital plane perpendicular to our line of sight and an orbital period $T = 100\text{ years}$. The largest angular separation between the two components is $\theta_{\max} = 7.0''$ and the smallest angular separation is $\theta_{\min} = 1.0''$. If the semi-major axis of the primary star's barycentric orbit subtends an angle $\alpha_1 = 3.0''$, determine the orbital eccentricity $e$ and the mass of each star ($m_1$ and $m_2$) in solar masses ($M_\odot$).
+        </p>
+        <hr class="example-divider">
+        <p>
+            <strong>Solution:</strong><br>
+            Because the orbital plane is face-on, the maximum and minimum angular separations correspond directly to apastron $\theta_{\max} = \theta_a = \frac{a(1+e)}{d}$ and periastron $\theta_{\min} = \theta_p = \frac{a(1-e)}{d}$ of the relative orbit. Thus the angular semi-major axis $\alpha = a/d$ and eccentricity $e$ are:
+        </p>
+        <div class="math-block">
+            \[
+            \alpha = \frac{\theta_{\max} + \theta_{\min}}{2} = \frac{7.0'' + 1.0''}{2} = 4.0'', \qquad e = \frac{\theta_{\max} - \theta_{\min}}{\theta_{\max} + \theta_{\min}} = \frac{7.0 - 1.0}{7.0 + 1.0} = 0.75
+            \]
+        </div>
+        <p>
+            At distance $d = 10\text{ pc}$, an angle of $4.0''$ corresponds to a physical relative semi-major axis of $a = \alpha(\text{in arcsec}) \times d(\text{in pc}) = 4.0 \times 10 = 40\text{ AU}$. By Kepler's Third Law in solar units ($a$ in AU, $T$ in yr, $M$ in $M_\odot$):
+        </p>
+        <div class="math-block">
+            \[
+            M = m_1 + m_2 = \frac{a^3}{T^2} = \frac{40^3}{100^2} = \frac{64\,000}{10\,000} = 6.4\,M_\odot
+            \]
+        </div>
+        <p style="margin-bottom: 0;">
+            Since $\alpha_1 + \alpha_2 = \alpha = 4.0''$ and $\alpha_1 = 3.0''$, the secondary's barycentric semi-major axis is $\alpha_2 = 1.0''$. Using the barycentric lever-arm relation $m_1 = \frac{\alpha_2}{\alpha}M$ and $m_2 = \frac{\alpha_1}{\alpha}M$, we obtain $m_1 = \frac{1.0}{4.0}(6.4\,M_\odot) = 1.6\,M_\odot$ and $m_2 = \frac{3.0}{4.0}(6.4\,M_\odot) = 4.8\,M_\odot$.
+        </p>
+    </div>
+
+    <!-- SUBCHAPTER 2.1 PROBLEMS -->
+    <div class="problems-section-title">
+        <h3>Subchapter 2.1 Problems</h3>
+        <span class="problem-pts">9 Points Total</span>
+    </div>
+
+    <!-- PROBLEM 2.1 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 2.1 · Where Is the Unseen Companion? (USAAAO 2024 First Round, Q13 Extended)</span>
+            <span class="problem-pts">[2 pts]</span>
+        </div>
+        <p>
+            Samvit observes a binary star system consisting of a bright star of mass $M_1$ and a dim, unseen companion of mass $M_2$. Over a full orbital period, the bright star $M_1$ traces out an ellipse in the $xy$-plane with semi-major axis $a_1$ along the $x$-axis, semi-minor axis $b_1$ along the $y$-axis ($a_1 > b_1$), and geometric center at the origin $(0,0)$. At the snapshot instant shown in his telescope, star $M_1$ is passing through the top of its minor axis at $(0, +b_1)$, and the center of mass of the binary lies on the positive $x$-axis.
+        </p>
+        <ol type="a">
+            <li>Without knowing the value of $M_2$ or the orbital period $T$, determine the exact coordinates $(x_{\mathrm{cm}}, y_{\mathrm{cm}})$ of the system's center of mass.</li>
+            <li>Express the instantaneous coordinates $(x_2, y_2)$ of the unseen star $M_2$ at this snapshot in terms of $a_1, b_1, M_1$, and $M_2$, and find the ratio of the two stars' instantaneous speeds $v_2 / v_1$ and kinetic energies $K_2 / K_1$ in the barycentric frame.</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-2-1').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-2-1')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-2-1').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-2-1')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-2-1">
+            <strong>Hint:</strong> In any two-body system, the center of mass must sit at a <em>focus</em> of each star's elliptical orbit! Recall that for an ellipse centered at $(0,0)$ with semi-axes $a_1$ and $b_1$, the focal distance from the center is $c_1 = \sqrt{a_1^2 - b_1^2}$. Then use $M_1(\vec{r}_1 - \vec{R}_{\mathrm{cm}}) + M_2(\vec{r}_2 - \vec{R}_{\mathrm{cm}}) = \vec{0}$.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-2-1">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> By Kepler's First Law in the barycentric frame, the center of mass (barycenter) of the binary system must lie at a focus of the elliptical orbit of $M_1$. Since the ellipse is centered at $(0,0)$ with semi-major axis $a_1$ along the $x$-axis and semi-minor axis $b_1$ along the $y$-axis, the focus on the positive $x$-axis lies at distance $c_1 = \sqrt{a_1^2 - b_1^2}$ from the origin:</p>
+            <div class="math-block">
+                \[
+                (x_{\mathrm{cm}}, y_{\mathrm{cm}}) = \left(\sqrt{a_1^2 - b_1^2},\, 0\right)
+                \]
+            </div>
+            <p><strong>(b)</strong> At the snapshot instant, star $M_1$ is at $\vec{r}_1 = (0, b_1)$, so its barycentric position vector is $\vec{r}_1' = \vec{r}_1 - \vec{R}_{\mathrm{cm}} = \left(-\sqrt{a_1^2 - b_1^2},\, b_1\right)$. Using $M_1 \vec{r}_1' + M_2 \vec{r}_2' = \vec{0}$, we have $\vec{r}_2 - \vec{R}_{\mathrm{cm}} = -\frac{M_1}{M_2}\vec{r}_1'$, which gives the coordinates of $M_2$:</p>
+            <div class="math-block">
+                \[
+                (x_2, y_2) = \vec{R}_{\mathrm{cm}} - \frac{M_1}{M_2}\vec{r}_1' = \left(\left(1 + \frac{M_1}{M_2}\right)\sqrt{a_1^2 - b_1^2},\, -\frac{M_1}{M_2}b_1\right)
+                \]
+            </div>
+            <p style="margin-bottom: 0;">In the barycentric frame, the momenta are equal and opposite ($M_1 \vec{v}_1' + M_2 \vec{v}_2' = \vec{0}$), so the speed and kinetic energy ratios are $\frac{v_2}{v_1} = \frac{M_1}{M_2}$ and $\frac{K_2}{K_1} = \frac{p^2 / (2M_2)}{p^2 / (2M_1)} = \frac{M_1}{M_2}$.</p>
+        </div>
+    </div>
+
+    <!-- PROBLEM 2.2 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 2.2 · Reduced Mass Energy &amp; Gravitational-Wave Binary Inspiral</span>
+            <span class="problem-pts">[3 pts]</span>
+        </div>
+        <p>
+            Two compact stars of masses $M_1$ and $M_2$ move on circular orbits of radii $r_1$ and $r_2$ (with total separation $L = r_1 + r_2$) at angular velocity $\Omega$ around their common center of mass. Let $M \equiv M_1 + M_2$ be the total mass and $\mu \equiv \frac{M_1 M_2}{M_1 + M_2}$ be the reduced mass.
+        </p>
+        <ol type="a">
+            <li>Using the barycentric condition $M_1 r_1 = M_2 r_2$, prove the algebraic identity $M_1 r_1^2 + M_2 r_2^2 = \mu L^2$, and show that the total mechanical energy of the binary is $E = \frac{1}{2}\mu L^2 \Omega^2 - \frac{GM\mu}{L}$.</li>
+            <li>By equating the gravitational acceleration to the centripetal acceleration, find $\Omega^2$ in terms of $G, M, L$ and determine the numerical coefficient $\beta$ in $E = \beta\frac{GM\mu}{L}$.</li>
+            <li>In General Relativity, the orbiting binary emits gravitational waves that carry away energy at rate $P_{\mathrm{GW}} = -\frac{dE}{dt} = \frac{32}{5}\frac{G^4}{c^5}\frac{M^3 \mu^2}{L^5}$. Assuming the orbit remains quasi-circular as it shrinks, derive the inspiral rate $\frac{dL}{dt}$ and integrate it to find the time $t_{\mathrm{merge}}$ required for the binary to coalesce from initial separation $L_0$ to $L \to 0$.</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-2-2').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-2-2')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-2-2').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-2-2')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-2-2">
+            <strong>Hint:</strong> Substitute $r_1 = \frac{M_2}{M}L$ and $r_2 = \frac{M_1}{M}L$ into $M_1 r_1^2 + M_2 r_2^2$. For part (c), differentiate $E(L) = -\frac{GM\mu}{2L}$ with respect to $t$ to get $\frac{dE}{dt} = \frac{GM\mu}{2L^2}\frac{dL}{dt} = -P_{\mathrm{GW}}$.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-2-2">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> Since $M_1 r_1 = M_2 r_2$ and $r_1 + r_2 = L$, we have $r_1 = \frac{M_2}{M}L$ and $r_2 = \frac{M_1}{M}L$. Substituting these into the moment of inertia $I = M_1 r_1^2 + M_2 r_2^2$ gives:</p>
+            <div class="math-block">
+                \[
+                M_1 r_1^2 + M_2 r_2^2 = M_1\left(\frac{M_2}{M}\right)^2 L^2 + M_2\left(\frac{M_1}{M}\right)^2 L^2 = \frac{M_1 M_2(M_2 + M_1)}{M^2}L^2 = \mu L^2
+                \]
+            </div>
+            <p>Since $v_1 = r_1\Omega$, $v_2 = r_2\Omega$, and $G M_1 M_2 = GM\mu$, the total mechanical energy is $E = \frac{1}{2}(M_1 r_1^2 + M_2 r_2^2)\Omega^2 - \frac{G M_1 M_2}{L} = \frac{1}{2}\mu L^2 \Omega^2 - \frac{GM\mu}{L}$.</p>
+            <p><strong>(b)</strong> For the reduced-mass particle in a circular orbit of radius $L$, $\Omega^2 L = \frac{GM}{L^2} \implies \Omega^2 = \frac{GM}{L^3}$. Substituting this into $E$ yields:</p>
+            <div class="math-block">
+                \[
+                E = \frac{1}{2}\mu L^2\left(\frac{GM}{L^3}\right) - \frac{GM\mu}{L} = -\frac{1}{2}\frac{GM\mu}{L} \implies \beta = -\frac{1}{2}
+                \]
+            </div>
+            <p><strong>(c)</strong> Differentiating $E(L) = -\frac{GM\mu}{2L}$ with respect to time $t$ and equating to $-P_{\mathrm{GW}}$:</p>
+            <div class="math-block">
+                \[
+                \begin{aligned}
+                \frac{dE}{dt} = \frac{GM\mu}{2L^2}\frac{dL}{dt} &= -\frac{32}{5}\frac{G^4}{c^5}\frac{M^3 \mu^2}{L^5} \implies \frac{dL}{dt} = -\frac{64}{5}\frac{G^3 M^2 \mu}{c^5 L^3} \\
+                t_{\mathrm{merge}} &= \frac{5c^5}{64 G^3 M^2 \mu}\int_0^{L_0} L^3\,dL = \frac{5 c^5 L_0^4}{256 G^3 M^2 \mu}
+                \end{aligned}
+                \]
+            </div>
+        </div>
+    </div>
+
+    <!-- PROBLEM 2.3 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 2.3 · Astrometric &amp; Accreting Neutron Star Binary (IPhO 2001, Theory Q2)</span>
+            <span class="problem-pts">[4 pts]</span>
+        </div>
+        <p>
+            A binary system at unknown distance $d$ from Earth consists of an ordinary star of mass $m_0$ and radius $R$, and a compact neutron star of mass $M$, orbiting their common center of mass in circular orbits seen edge-on. Observations reveal:
+        </p>
+        <ul>
+            <li>The maximum angular displacement of the ordinary star on the sky is $\Delta\theta$, while that of the neutron star is $\Delta\phi$, occurring over a time interval $\tau$ (half an orbital period).</li>
+            <li>The ordinary star has effective surface temperature $T$, and its bolometric energy flux incident per unit area per unit time at Earth is $P$.</li>
+            <li>A calcium spectral line of rest wavelength $\lambda_0$ emitted from the ordinary star's surface is gravitationally redshifted by $\Delta\lambda \ll \lambda_0$, where $\frac{\Delta\lambda}{\lambda_0} = \frac{Gm_0}{Rc^2}$.</li>
+        </ul>
+        <ol type="a">
+            <li>Find an expression for the distance $d$ from Earth to the binary system purely in terms of the observed quantities ($\Delta\theta, \Delta\phi, \tau, T, P, \lambda_0, \Delta\lambda$) and universal constants ($G, c, \sigma$).</li>
+            <li>Now assume $M \gg m_0$ so that the ordinary star orbits the neutron star at radius $r_0$ with circular speed $u_0 = \sqrt{GM/r_0}$. If the ordinary star ejects a narrow stream of gas radially inward toward the neutron star with speed $v_0$ relative to the ordinary star, find the closest approach distance $r_f$ of the gas stream to the neutron star.</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-2-3').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-2-3')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-2-3').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-2-3')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-2-3">
+            <strong>Hint:</strong> For (a), note that $r_1 = \frac{1}{2}d\Delta\theta$, $r_2 = \frac{1}{2}d\Delta\phi$, $\omega = \frac{\pi}{\tau}$, $M/m_0 = \Delta\theta/\Delta\phi$, and $R/d = \sqrt{\frac{P}{\sigma T^4}}$. For (b), in the neutron star's frame, the gas leaves $r_0$ with radial velocity $-v_0$ and transverse velocity $u_0 = \sqrt{GM/r_0}$; apply conservation of specific energy $\epsilon$ and angular momentum $h = r_0 u_0$.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-2-3">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> Since $\Delta\theta$ and $\Delta\phi$ are the full angular diameters ($2r_1/d$ and $2r_2/d$) swept over half a period $\tau = \pi/\omega$, the total orbital separation is $a = r_1 + r_2 = \frac{d}{2}(\Delta\theta + \Delta\phi)$, and the mass ratio is $\frac{M}{m_0} = \frac{r_1}{r_2} = \frac{\Delta\theta}{\Delta\phi}$, so $M + m_0 = m_0\left(\frac{\Delta\theta + \Delta\phi}{\Delta\phi}\right)$. By Kepler's Third Law $\omega^2 a^3 = G(M + m_0)$:</p>
+            <div class="math-block">
+                \[
+                \left(\frac{\pi}{\tau}\right)^2 \frac{d^3(\Delta\theta + \Delta\phi)^3}{8} = Gm_0\left(\frac{\Delta\theta + \Delta\phi}{\Delta\phi}\right) \implies Gm_0 = \frac{\pi^2 d^3(\Delta\theta + \Delta\phi)^2 \Delta\phi}{8\tau^2}
+                \]
+            </div>
+            <p>Meanwhile, from the bolometric flux $P = \frac{4\pi R^2 \sigma T^4}{4\pi d^2}$, we have $R = d\sqrt{\frac{P}{\sigma T^4}}$. Substituting $Gm_0$ and $R$ into the gravitational redshift relation $\frac{\Delta\lambda}{\lambda_0} = \frac{Gm_0}{Rc^2}$ and solving for $d$ yields:</p>
+            <div class="math-block">
+                \[
+                d = \sqrt{\frac{8 c^2 \tau^2 \Delta\lambda}{\pi^2 \lambda_0 (\Delta\theta + \Delta\phi)^2 \Delta\phi}\left(\frac{P}{\sigma T^4}\right)^{1/2}}
+                \]
+            </div>
+            <p><strong>(b)</strong> In the rest frame of the neutron star $M$, the gas parcel is launched at $r = r_0$ with radial velocity $v_r = -v_0$ and transverse velocity $v_\theta = u_0 = \sqrt{GM/r_0}$. Its specific angular momentum is $h = r_0 u_0 = \sqrt{GMr_0}$. At closest approach $r = r_f$, its speed is purely transverse ($v_f = h/r_f = u_0 r_0 / r_f$). By conservation of specific mechanical energy:</p>
+            <div class="math-block">
+                \[
+                \frac{1}{2}(u_0^2 + v_0^2) - \frac{GM}{r_0} = \frac{1}{2}u_0^2\left(\frac{r_0}{r_f}\right)^2 - \frac{GM}{r_f}
+                \]
+            </div>
+            <p>Dividing by $\frac{1}{2}u_0^2 = \frac{GM}{2r_0}$ gives the quadratic equation $\left(\frac{r_0}{r_f}\right)^2 - 2\left(\frac{r_0}{r_f}\right) + \left(1 - \frac{v_0^2}{u_0^2}\right) = 0$, or $\left(\frac{r_0}{r_f} - 1\right)^2 = \frac{v_0^2}{u_0^2}$. Taking the root with $r_f \lt r_0$ gives:</p>
+            <div class="math-block">
+                \[
+                r_f = \frac{r_0}{1 + \frac{v_0}{u_0}} = \frac{r_0}{1 + v_0\sqrt{\frac{r_0}{GM}}}
+                \]
+            </div>
+        </div>
+    </div>
 
     <div class="subchapter-nav-bar">
         <button class="btn-step" onclick="switchSubchapter('1.3')"><i class="fa-solid fa-arrow-left"></i> Prev: 1.3 Gravitational Potential</button>
@@ -143,129 +634,316 @@
     <h2>2.2 Conserved Vectors of the Motion</h2>
 
     <p>
-        Because the equation of relative motion $\ddot{\vec{r}} = -\frac{\mu_0}{r^2}\hat{r}$ depends only on the mass sum $\mu_0 = G(m_1 + m_2)$, it is standard in celestial mechanics to work with <strong>specific</strong> (per unit reduced mass $\mu$) conserved quantities.
+        Because the equation of relative motion $\ddot{\vec{r}} = -\frac{\mu_0}{r^2}\hat{e}_r$ depends only on the standard gravitational parameter $\mu_0 = G(m_1 + m_2)$, it is much cleaner in celestial mechanics to work with <strong>specific</strong> (per unit reduced mass $\mu$) conserved vectors. In fact, an unperturbed Keplerian orbit is completely locked in place by two conserved vectors: $\vec{h}$, which fixes the <em>orbital plane</em>, and $\vec{e}$, which fixes the <em>orientation and shape</em> of the conic within that plane.
     </p>
 
     <h3>2.2.1 Specific Angular Momentum Vector ($\vec{h}$)</h3>
     <p>
-        The <strong>specific relative angular momentum vector</strong> $\vec{h}$ is defined as the cross product of the relative position vector $\vec{r}$ and relative velocity vector $\vec{v} = \dot{\vec{r}}$:
+        Just like in Section 1.2, we define the <strong>specific relative angular momentum vector</strong> $\vec{h}$ as the cross product of the relative position vector $\vec{r}$ and relative velocity vector $\vec{v} = \dot{\vec{r}}$:
     </p>
     <div class="math-block">
-        \begin{equation}
-            \vec{h} \equiv \frac{\vec{L}_{\mathrm{tot}}}{\mu} = \vec{r} \times \vec{v} = \vec{r} \times \dot{\vec{r}}
-        \end{equation}
-    </div>
-
-    <h4>Proof of Conservation and Planar Motion:</h4>
-    <p>Differentiating $\vec{h}$ with respect to time $t$ and applying the product rule for cross products yields:</p>
-    <div class="math-block">
-        \begin{equation}
-            \frac{d\vec{h}}{dt} = \frac{d}{dt}(\vec{r} \times \dot{\vec{r}}) = (\dot{\vec{r}} \times \dot{\vec{r}}) + (\vec{r} \times \ddot{\vec{r}})
-        \end{equation}
+        \[
+        \vec{h} \equiv \frac{\vec{L}_{\mathrm{tot}}}{\mu} = \vec{r} \times \vec{v} = \vec{r} \times \dot{\vec{r}}
+        \]
     </div>
     <p>
-        The first term vanishes identically because the cross product of any vector with itself is zero ($\dot{\vec{r}} \times \dot{\vec{r}} = \vec{0}$). Substituting the equation of motion $\ddot{\vec{r}} = -\frac{\mu_0}{r^3}\vec{r}$ into the second term gives:
+        To see how $\vec{h}$ changes over time, we take its time derivative using the product rule for cross products:
     </p>
     <div class="math-block">
-        \begin{equation}
-            \frac{d\vec{h}}{dt} = \vec{r} \times \left(-\frac{\mu_0}{r^3}\vec{r}\right) = -\frac{\mu_0}{r^3}(\vec{r} \times \vec{r}) = \vec{0} \implies \vec{h} = \mathrm{const}
-        \end{equation}
+        \[
+        \frac{d\vec{h}}{dt} = \frac{d}{dt}(\vec{r} \times \dot{\vec{r}}) = (\dot{\vec{r}} \times \dot{\vec{r}}) + (\vec{r} \times \ddot{\vec{r}})
+        \]
     </div>
     <p>
-        Because $\vec{h} = \vec{r} \times \vec{v}$ is strictly constant in both magnitude and direction, taking the scalar dot product of $\vec{r}$ and $\vec{v}$ with $\vec{h}$ at any instant $t$ yields:
+        Let's evaluate these two terms: the first term vanishes because any vector crossed with itself is zero ($\dot{\vec{r}} \times \dot{\vec{r}} = \vec{0}$), and substituting $\ddot{\vec{r}} = -\frac{\mu_0}{r^3}\vec{r}$ into the second term gives:
     </p>
     <div class="math-block">
-        \begin{equation}
-            \vec{r} \cdot \vec{h} = \vec{r} \cdot (\vec{r} \times \vec{v}) = 0 \qquad \text{and} \qquad \vec{v} \cdot \vec{h} = \vec{v} \cdot (\vec{r} \times \vec{v}) = 0
-        \end{equation}
+        \[
+        \frac{d\vec{h}}{dt} = \vec{r} \times \left(-\frac{\mu_0}{r^3}\vec{r}\right) = -\frac{\mu_0}{r^3}(\vec{r} \times \vec{r}) = \vec{0} \implies \vec{h} = \text{constant vector}
+        \]
     </div>
     <p>
-        Consequently, the position vector $\vec{r}$ and velocity vector $\vec{v}$ are forever perpendicular to the fixed direction of $\vec{h}$. <strong>All unperturbed two-body orbits are strictly planar</strong>, confined to the invariant <strong>orbital plane</strong> passing through the barycenter with normal unit vector $\hat{k} = \vec{h}/h$.
-    </p>
-    <p>
-        In planar polar coordinates $(r, \theta)$ within the orbital plane, where $\vec{r} = r\hat{r}$ and $\vec{v} = \dot{r}\hat{r} + r\dot{\theta}\hat{\theta}$, the specific angular momentum simplifies to:
+        Because $\vec{h} = \vec{r} \times \vec{v}$ is perpendicular to both $\vec{r}$ and $\vec{v}$ ($\vec{r} \cdot \vec{h} = 0$ and $\vec{v} \cdot \vec{h} = 0$), the relative trajectory $\vec{r}(t)$ and both individual orbits $\vec{r}_1'(t), \vec{r}_2'(t)$ are forever confined to a single fixed plane—the <strong>invariant orbital plane</strong>—with unit normal $\hat{k} = \vec{h}/h$. In planar polar coordinates $(r, \theta)$ within that plane:
     </p>
     <div class="math-block">
-        \begin{equation}
-            \vec{h} = (r\hat{r}) \times (\dot{r}\hat{r} + r\dot{\theta}\hat{\theta}) = r^2\dot{\theta}(\hat{r} \times \hat{\theta}) = r^2\dot{\theta}\hat{k} \implies h = r^2\dot{\theta} = 2\frac{dA}{dt} = \mathrm{const}
-        \end{equation}
+        \[
+        \vec{h} = (r\hat{e}_r) \times (\dot{r}\hat{e}_r + r\dot{\theta}\hat{e}_\theta) = r^2\dot{\theta}\hat{k} \implies h = r^2\dot{\theta} = 2\frac{dA}{dt} = \text{constant}
+        \]
     </div>
 
     <h3>2.2.2 Laplace-Runge-Lenz (LRL) Vector ($\vec{e}$)</h3>
     <p>
-        While rotational invariance in any central force field $F(r)\hat{r}$ guarantees the conservation of $\vec{h}$, the inverse-square gravitational field $F(r) \propto r^{-2}$ possesses an additional hidden dynamical symmetry ($SO(4)$ for bound orbits) that prevents the orbit from precessing. This symmetry is encoded in the dimensionless <strong>Laplace-Runge-Lenz (LRL) vector</strong> (or <strong>eccentricity vector</strong>) $\vec{e}$.
+        Conservation of angular momentum $\vec{h}$ holds for <em>any</em> central force $F(r)\hat{e}_r$ because of spherical rotational symmetry. However, as we saw in Problem 1.5, a generic central force causes the orbit's periapsis to precess! Why do orbits in a pure $1/r^2$ gravitational field close on themselves into perfect, non-precessing ellipses? Because the inverse-square law possesses a hidden dynamical symmetry<sup>[1]</sup> encoded in a second conserved vector: the dimensionless <strong>Laplace-Runge-Lenz (LRL) vector</strong> (or <strong>eccentricity vector</strong>) $\vec{e}$.
     </p>
 
-    <h4>Derivation from the Equation of Motion:</h4>
-    <p>Take the cross product of the relative equation of motion $\ddot{\vec{r}} = -\frac{\mu_0}{r^2}\hat{r}$ with the constant angular momentum vector $\vec{h}$:</p>
-    <div class="math-block">
-        \begin{equation}
-            \ddot{\vec{r}} \times \vec{h} = -\frac{\mu_0}{r^2}(\hat{r} \times \vec{h})
-        \end{equation}
-    </div>
-    <p>Since $\vec{h}$ is constant ($\dot{\vec{h}} = \vec{0}$), the left-hand side can be written as a total time derivative:</p>
-    <div class="math-block">
-        \begin{equation}
-            \ddot{\vec{r}} \times \vec{h} = \frac{d}{dt}(\vec{v} \times \vec{h})
-        \end{equation}
-    </div>
+    <h4>Derivation from the Equation of Motion</h4>
     <p>
-        On the right-hand side, substitute $\vec{h} = r^2\dot{\theta}\hat{k}$ (or equivalently expand the vector triple product $\hat{r} \times (\vec{r} \times \dot{\vec{r}})$). Using the polar unit vector derivative identity $\frac{d\hat{r}}{dt} = \dot{\theta}\hat{\theta} = \frac{\vec{h}}{r^2} \times \hat{r} = -\frac{1}{r^2}(\hat{r} \times \vec{h})$:
+        To construct this conserved vector, we take the cross product of the relative equation of motion $\ddot{\vec{r}} = -\frac{\mu_0}{r^2}\hat{e}_r$ with the constant vector $\vec{h}$:
     </p>
     <div class="math-block">
-        \begin{equation}
-            -\frac{\mu_0}{r^2}(\hat{r} \times \vec{h}) = \mu_0 \frac{d\hat{r}}{dt}
-        \end{equation}
+        \[
+        \ddot{\vec{r}} \times \vec{h} = -\frac{\mu_0}{r^2}(\hat{e}_r \times \vec{h})
+        \]
     </div>
     <p>
-        <em>(Alternatively, in coordinate-free vector algebra: $\hat{r} \times (\vec{r} \times \dot{\vec{r}}) = \frac{1}{r}\left[(\vec{r}\cdot\dot{\vec{r}})\vec{r} - r^2\dot{\vec{r}}\right] = \dot{r}\vec{r} - r\dot{\vec{r}} = -r^2\frac{d}{dt}\left(\frac{\vec{r}}{r}\right) = -r^2\frac{d\hat{r}}{dt}$.)</em>
+        Let's evaluate both sides of this equation:
     </p>
-    <p>Equating the left- and right-hand sides gives:</p>
-    <div class="math-block">
-        \begin{equation}
-            \frac{d}{dt}(\vec{v} \times \vec{h}) = \mu_0 \frac{d\hat{r}}{dt} \implies \frac{d}{dt}\left(\frac{\vec{v} \times \vec{h}}{\mu_0} - \hat{r}\right) = \vec{0}
-        \end{equation}
-    </div>
-    <p>Integrating with respect to time defines the conserved <strong>Laplace-Runge-Lenz eccentricity vector</strong> $\vec{e}$:</p>
-    <div class="math-block">
-        \begin{equation}
-            \vec{e} \equiv \frac{\vec{v} \times \vec{h}}{\mu_0} - \hat{r} = \mathrm{const}
-        \end{equation}
-    </div>
-
-    <h4>Geometric Interpretation and Magnitude Proof:</h4>
     <ol>
-        <li><strong>Coplanarity:</strong> Because $\vec{v} \times \vec{h}$ is perpendicular to $\vec{h}$ and $\hat{r}$ lies in the orbital plane (perpendicular to $\vec{h}$), $\vec{e} \cdot \vec{h} = 0$. Thus, $\vec{e}$ lies entirely within the orbital plane.</li>
         <li>
-            <strong>Direction and Polar Orbit Equation:</strong> Let $\theta$ be the polar angle in the orbital plane and $\theta_0$ be the fixed angular direction of $\vec{e}$, so that the angle between $\vec{r}$ and $\vec{e}$ is $f = \theta - \theta_0$. Taking the scalar dot product of $\vec{r}$ with $\vec{e}$ yields:
+            <strong>Left-Hand Side:</strong> Because $\vec{h}$ is constant in time ($\dot{\vec{h}} = \vec{0}$), we can pull $\vec{h}$ inside the time derivative:
             <div class="math-block">
-                \begin{equation}
-                    \vec{r} \cdot \vec{e} = \vec{r} \cdot \left(\frac{\vec{v} \times \vec{h}}{\mu_0}\right) - \vec{r} \cdot \hat{r}
-                \end{equation}
+                \[
+                \ddot{\vec{r}} \times \vec{h} = \frac{d}{dt}(\vec{v} \times \vec{h})
+                \]
             </div>
-            Using the cyclic invariance of the scalar triple product, $\vec{r} \cdot (\vec{v} \times \vec{h}) = (\vec{r} \times \vec{v}) \cdot \vec{h} = \vec{h} \cdot \vec{h} = h^2$, and noting that $\vec{r} \cdot \vec{e} = r e \cos(\theta - \theta_0)$ and $\vec{r} \cdot \hat{r} = r$, we obtain:
-            <div class="math-block">
-                \begin{equation}
-                    r e \cos(\theta - \theta_0) = \frac{h^2}{\mu_0} - r \implies r(\theta) = \frac{h^2 / \mu_0}{1 + e\cos(\theta - \theta_0)}
-                \end{equation}
-            </div>
-            Since the denominator $1 + e\cos(\theta - \theta_0)$ is maximized—and the radial distance $r(\theta)$ is minimized—when $\cos(\theta - \theta_0) = +1$ ($\theta = \theta_0$), <strong>the vector $\vec{e}$ points strictly from the focus toward periapsis</strong> (the point of closest approach), and its magnitude $e = |\vec{e}|$ is the <strong>orbital eccentricity</strong>.
         </li>
         <li>
-            <strong>Relation Between Energy, Angular Momentum, and Eccentricity:</strong> Squaring the LRL vector ($\vec{e} \cdot \vec{e} = e^2$) links $e$ directly to the specific mechanical energy $\epsilon = \frac{1}{2}v^2 - \frac{\mu_0}{r}$:
+            <strong>Right-Hand Side:</strong> Recall from Section 1.1 that in polar coordinates, $\vec{h} = r^2\dot{\theta}\hat{k}$ and the radial unit vector rotates at rate $\frac{d\hat{e}_r}{dt} = \dot{\theta}\hat{e}_\theta$. Since $\hat{e}_r \times \hat{k} = -\hat{e}_\theta$, we have:
             <div class="math-block">
-                \begin{equation}
-                    e^2 = \left(\frac{\vec{v} \times \vec{h}}{\mu_0} - \hat{r}\right) \cdot \left(\frac{\vec{v} \times \vec{h}}{\mu_0} - \hat{r}\right) = \frac{|\vec{v} \times \vec{h}|^2}{\mu_0^2} - \frac{2}{\mu_0}\hat{r}\cdot(\vec{v}\times\vec{h}) + |\hat{r}|^2
-                \end{equation}
+                \[
+                -\frac{\mu_0}{r^2}(\hat{e}_r \times \vec{h}) = -\frac{\mu_0}{r^2}\left(\hat{e}_r \times r^2\dot{\theta}\hat{k}\right) = \mu_0 \dot{\theta}\hat{e}_\theta = \mu_0 \frac{d\hat{e}_r}{dt}
+                \]
             </div>
-            Since $\vec{v} \perp \vec{h}$, we have $|\vec{v} \times \vec{h}|^2 = v^2 h^2$, and $\hat{r}\cdot(\vec{v}\times\vec{h}) = \frac{1}{r}(\vec{r}\times\vec{v})\cdot\vec{h} = \frac{h^2}{r}$. Substituting these gives:
-            <div class="math-block">
-                \begin{equation}
-                    e^2 = \frac{v^2 h^2}{\mu_0^2} - \frac{2h^2}{\mu_0 r} + 1 = 1 + \frac{2h^2}{\mu_0^2}\left(\frac{1}{2}v^2 - \frac{\mu_0}{r}\right) = 1 + \frac{2\epsilon h^2}{\mu_0^2} \implies e = \sqrt{1 + \frac{2\epsilon h^2}{\mu_0^2}}
-                \end{equation}
-            </div>
+            <em>(Notice how the $r^2$ in $\vec{h} = r^2\dot{\theta}\hat{k}$ canceled the $1/r^2$ in Newton's law of gravity! That exact cancellation only happens for an inverse-square force.)</em>
         </li>
     </ol>
+    <p>
+        Equating the two sides and dividing by $\mu_0$ gives a total time derivative equal to zero:
+    </p>
+    <div class="math-block">
+        \[
+        \frac{d}{dt}(\vec{v} \times \vec{h}) = \mu_0 \frac{d\hat{e}_r}{dt} \implies \frac{d}{dt}\left(\frac{\vec{v} \times \vec{h}}{\mu_0} - \hat{e}_r\right) = \vec{0}
+        \]
+    </div>
+    <p>
+        Thus we define the conserved <strong>Laplace-Runge-Lenz (eccentricity) vector</strong> $\vec{e}$:
+    </p>
+    <div class="math-block">
+        \[
+        \vec{e} \equiv \frac{\vec{v} \times \vec{h}}{\mu_0} - \hat{e}_r = \text{constant vector}
+        \]
+    </div>
+
+    <div class="footnote-box">
+        <sup>[1]</sup> In typical physics fashion, the Laplace-Runge-Lenz vector was discovered by neither Laplace, Runge, nor Lenz! It was first derived in 1710 by Jakob Hermann and generalized by Johann Bernoulli, rediscovered by Laplace in 1799, used as a vector calculus example by Carl Runge in 1919, and applied to the quantum hydrogen atom by Wilhelm Lenz in 1924.
+    </div>
+
+    <h4>Geometric Meaning of $\vec{e}$ and the Orbit Equation</h4>
+    <p>
+        What does the vector $\vec{e}$ actually represent in physical space? Let's check its three fundamental properties:
+    </p>
+    <ol>
+        <li>
+            <strong>It lies in the orbital plane:</strong> Since $\vec{v} \times \vec{h}$ is perpendicular to $\vec{h}$ and $\hat{e}_r$ lies in the orbital plane, $\vec{e} \cdot \vec{h} = 0$.
+        </li>
+        <li>
+            <strong>It points directly toward periapsis:</strong> Let $\theta_0$ be the fixed angle of $\vec{e}$ in the orbital plane, and define the <strong>true anomaly</strong> $f \equiv \theta - \theta_0$ as the angle between $\vec{r}$ and $\vec{e}$. Taking the dot product of $\vec{r}$ with $\vec{e}$ yields:
+            <div class="math-block">
+                \[
+                \vec{r} \cdot \vec{e} = r e \cos f = \vec{r} \cdot \left(\frac{\vec{v} \times \vec{h}}{\mu_0}\right) - \vec{r} \cdot \hat{e}_r
+                \]
+            </div>
+            Using the cyclic property of the scalar triple product, $\vec{r} \cdot (\vec{v} \times \vec{h}) = (\vec{r} \times \vec{v}) \cdot \vec{h} = \vec{h} \cdot \vec{h} = h^2$, and noting that $\vec{r} \cdot \hat{e}_r = r$, we get:
+            <div class="math-block">
+                \[
+                r e \cos f = \frac{h^2}{\mu_0} - r \implies r(f) = \frac{h^2 / \mu_0}{1 + e\cos f}
+                \]
+            </div>
+            Basically, the denominator $1 + e\cos f$ is largest—and the distance $r(f)$ is smallest—when $f = 0$ ($\theta = \theta_0$). Therefore, <strong>$\vec{e}$ points strictly from the focus toward periapsis</strong>, and its magnitude $e = |\vec{e}|$ is the <strong>orbital eccentricity</strong>!
+        </li>
+        <li>
+            <strong>Its magnitude links $e$ to $\epsilon$ and $h$:</strong> Taking the dot product of $\vec{e}$ with itself ($e^2 = \vec{e} \cdot \vec{e}$) and using $|\vec{v} \times \vec{h}|^2 = v^2 h^2$ (since $\vec{v} \perp \vec{h}$) gives:
+            <div class="math-block">
+                \[
+                \begin{aligned}
+                e^2 &= \left(\frac{\vec{v} \times \vec{h}}{\mu_0} - \hat{e}_r\right) \cdot \left(\frac{\vec{v} \times \vec{h}}{\mu_0} - \hat{e}_r\right) \\
+                &= \frac{v^2 h^2}{\mu_0^2} - \frac{2}{\mu_0}\hat{e}_r \cdot (\vec{v} \times \vec{h}) + 1 \\
+                &= 1 + \frac{2h^2}{\mu_0^2}\left(\frac{1}{2}v^2 - \frac{\mu_0}{r}\right) = 1 + \frac{2\epsilon h^2}{\mu_0^2} \implies e = \sqrt{1 + \frac{2\epsilon h^2}{\mu_0^2}}
+                \end{aligned}
+                \]
+            </div>
+            which concludes the derivation.
+        </li>
+    </ol>
+
+    <figure class="handout-figure">
+        <svg viewBox="0 0 480 240" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <marker id="arr-lrl-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#35E6FF"/>
+                </marker>
+                <marker id="arr-lrl-g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2BE38A"/>
+                </marker>
+                <marker id="arr-lrl-p" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#B39CD0"/>
+                </marker>
+                <marker id="arr-lrl-r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#FFC1CC"/>
+                </marker>
+            </defs>
+            <!-- Ellipse centered at (210, 120), rx=160, ry=96, c=128 -> Focus F at (338, 120) -->
+            <line x1="25" y1="120" x2="455" y2="120" stroke="#8A94A6" stroke-width="1" stroke-dasharray="4,4"/>
+            <ellipse cx="210" cy="120" rx="160" ry="96" fill="none" stroke="#8A94A6" stroke-width="1.6"/>
+
+            <!-- Focus F at (300, 120), Periapsis P_0 at (370, 120) -->
+            <circle cx="300" cy="120" r="6" fill="#F59E0B"/>
+            <text x="285" y="142" fill="#F59E0B" font-family="Inter, sans-serif" font-size="12" font-weight="bold">F (Focus)</text>
+
+            <!-- LRL vector e pointing from F (300, 120) to Periapsis (370, 120) and beyond -->
+            <line x1="300" y1="120" x2="415" y2="120" stroke="#FFC1CC" stroke-width="2.8" marker-end="url(#arr-lrl-r)"/>
+            <text x="382" y="140" fill="#FFC1CC" font-family="Inter, sans-serif" font-size="12" font-weight="bold">e⃗ (to Periapsis)</text>
+
+            <!-- Particle position P at angle f = 115 deg -> x=242, y=38 -->
+            <line x1="300" y1="120" x2="242" y2="38" stroke="#35E6FF" stroke-width="2.2" marker-end="url(#arr-lrl-b)"/>
+            <text x="242" y="88" fill="#35E6FF" font-family="Inter, sans-serif" font-size="12" font-weight="bold">r⃗</text>
+
+            <!-- True anomaly arc f -->
+            <path d="M 332 120 A 32 32 0 0 0 282 94" fill="none" stroke="#FFFFFF" stroke-width="1.4"/>
+            <text x="318" y="98" fill="#FFFFFF" font-family="Inter, sans-serif" font-size="12" font-weight="bold">f</text>
+
+            <!-- Velocity vector v at P (242, 38) tangent to ellipse -->
+            <line x1="242" y1="38" x2="155" y2="27" stroke="#2BE38A" stroke-width="2.2" marker-end="url(#arr-lrl-g)"/>
+            <text x="148" y="22" fill="#2BE38A" font-family="Inter, sans-serif" font-size="12" font-weight="bold">v⃗</text>
+
+            <!-- Vector (v x h)/mu_0 from F -->
+            <line x1="300" y1="120" x2="358" y2="38" stroke="#B39CD0" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arr-lrl-p)"/>
+            <text x="348" y="32" fill="#B39CD0" font-family="Inter, sans-serif" font-size="11" font-weight="bold">(v⃗ × h⃗)/μ₀ = e⃗ + ê_r</text>
+            <circle cx="242" cy="38" r="4.5" fill="#FFFFFF"/>
+        </svg>
+        <figcaption><strong>Figure 2.2:</strong> The conserved Laplace-Runge-Lenz vector $\vec{e} = \frac{\vec{v}\times\vec{h}}{\mu_0} - \hat{e}_r$ always points from the focus $F$ toward periapsis ($f = 0$) with magnitude equal to the orbital eccentricity $e$.</figcaption>
+    </figure>
+
+    <div class="idea-box">
+        <div class="box-title"><i class="fa-solid fa-lightbulb"></i> Idea: Using the LRL Vector to Solve Impulsive Thruster Burns in Two Lines</div>
+        <p style="margin: 0;">
+            Whenever a spacecraft at position $\vec{r}_0$ executes an instantaneous thruster burn $\Delta\vec{v}$ (so its velocity jumps from $\vec{v}_0$ to $\vec{v}_1 = \vec{v}_0 + \Delta\vec{v}$ while $\vec{r}_0$ stays fixed), brute-force geometry requires messy systems of equations to find how much the periapsis rotated. Instead, just evaluate $\vec{h}_1 = \vec{r}_0 \times \vec{v}_1$ and plug it straight into $\vec{e}_1 = \frac{\vec{v}_1 \times \vec{h}_1}{\mu_0} - \hat{e}_r$! The magnitude $|\vec{e}_1|$ immediately gives the new eccentricity, and the components $(e_{1x}, e_{1y})$ immediately tell you the exact direction of the new periapsis $\tan\theta_0 = e_{1y}/e_{1x}$.
+        </p>
+    </div>
+
+    <div class="example-box">
+        <div class="box-title"><i class="fa-solid fa-compass-drafting"></i> Worked Example 2.2: Angular Momentum of Intersecting Orbits (USAAAO 2024 First Round, Q6)</div>
+        <p>
+            Newly discovered planets DDP and CJ orbit a star of mass $M_\star$. Planet CJ moves in a circular orbit of radius $r_{\mathrm{CJ}} = 2d$, while planet DDP moves in a coplanar elliptical orbit with perihelion $r_p = d$ and aphelion $r_a = 5d$. Their orbits intersect at point $B$. External analysis shows that planet DDP is three times as massive as planet CJ ($m_{\mathrm{DDP}} = 3m_{\mathrm{CJ}} \ll M_\star$). Find the ratio of the angular momentum of planet DDP to that of planet CJ when each passes through intersection point $B$, and determine the acute angle $\psi$ between their velocity vectors at $B$.
+        </p>
+        <hr class="example-divider">
+        <p>
+            <strong>Solution:</strong><br>
+            Don't be fooled by the phrasing "when it passes through point $B$"—angular momentum $L = mh = m\sqrt{\mu_0 p}$ is constant everywhere along each planet's orbit! For planet CJ's circle, the semi-latus rectum is $p_{\mathrm{CJ}} = 2d$. For planet DDP's ellipse, the semi-major axis is $a = \frac{r_p + r_a}{2} = \frac{d + 5d}{2} = 3d$, the eccentricity is $e = \frac{r_a - r_p}{r_a + r_p} = \frac{4d}{6d} = \frac{2}{3}$, and the semi-latus rectum is $p_{\mathrm{DDP}} = a(1 - e^2) = 3d\left(1 - \frac{4}{9}\right) = \frac{5}{3}d$. Therefore, the angular momentum ratio is:
+        </p>
+        <div class="math-block">
+            \[
+            \frac{L_{\mathrm{DDP}}}{L_{\mathrm{CJ}}} = \frac{m_{\mathrm{DDP}}\sqrt{\mu_0 p_{\mathrm{DDP}}}}{m_{\mathrm{CJ}}\sqrt{\mu_0 p_{\mathrm{CJ}}}} = 3\sqrt{\frac{5d / 3}{2d}} = \sqrt{\frac{15}{2}} \approx 2.74
+            \]
+        </div>
+        <p style="margin-bottom: 0;">
+            At the intersection point $B$, both planets are at distance $r_B = 2d$ from the star. Planet CJ's velocity is purely transverse ($\vec{v}_{\mathrm{CJ}} = v_{\mathrm{CJ}}\hat{e}_\theta$), so the angle $\psi$ between their velocities satisfies $\cos\psi = \frac{v_{\mathrm{DDP},\theta}}{v_{\mathrm{DDP}}}$. At $r_B = 2d$, planet DDP has $v_{\mathrm{DDP},\theta} = \frac{h_{\mathrm{DDP}}}{2d} = \frac{\sqrt{\mu_0(5d/3)}}{2d} = \sqrt{\frac{5\mu_0}{12d}}$, while energy conservation $\frac{1}{2}v_{\mathrm{DDP}}^2 - \frac{\mu_0}{2d} = -\frac{\mu_0}{2(3d)}$ gives $v_{\mathrm{DDP}} = \sqrt{\frac{2\mu_0}{3d}}$. Thus $\cos\psi = \sqrt{\frac{5/12}{2/3}} = \sqrt{\frac{5}{8}} \implies \psi = \arccos\left(\sqrt{\frac{5}{8}}\right) \approx 37.8^\circ$.
+        </p>
+    </div>
+
+    <!-- SUBCHAPTER 2.2 PROBLEMS -->
+    <div class="problems-section-title">
+        <h3>Subchapter 2.2 Problems</h3>
+        <span class="problem-pts">7 Points Total</span>
+    </div>
+
+    <!-- PROBLEM 2.4 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 2.4 · An Ill-Fated Satellite: Conic Elements via $\vec{h}$ &amp; $\vec{e}$ (IPhO 2005, Theory Q1 Parts 1–2)</span>
+            <span class="problem-pts">[3 pts]</span>
+        </div>
+        <p>
+            A geosynchronous communications satellite of mass $m$ moves in a circular equatorial orbit of radius $r_0$ and speed $v_0$ around the Earth (radius $R_T = 6.37 \times 10^6\text{ m}$, surface gravity $g = 9.81\text{ m/s}^2$, sidereal rotation period $T_0 = 24.0\text{ h}$). Due to an onboard computer error at position $\vec{r}_0 = r_0\hat{e}_r$, the apogee engine fires radially outward instead of tangentially, imparting an instantaneous outward radial velocity boost $\Delta\vec{v} = \beta v_0\hat{e}_r$ with $0 \lt \beta \lt 1$.
+        </p>
+        <ol type="a">
+            <li>Give analytical expressions for the initial circular radius $r_0$ and speed $v_0$ in terms of $g, R_T$, and $T_0$, and calculate their numerical values.</li>
+            <li>Using conservation of $\vec{h}$ and the Laplace-Runge-Lenz vector $\vec{e}$, determine the semi-latus rectum $l$ and eccentricity $\varepsilon$ of the new orbit in terms of $r_0$ and $\beta$, and find the angle $\alpha$ between the major axis of the new orbit and the position vector $\vec{r}_0$ at the misfire.</li>
+            <li>Derive analytical expressions for the perigee distance $r_{\min}$ and apogee distance $r_{\max}$ in terms of $r_0$ and $\beta$, and compute their numerical values for $\beta = 1/4$.</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-2-4').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-2-4')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-2-4').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-2-4')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-2-4">
+            <strong>Hint:</strong> Use $\mu_0 = GM_\oplus = gR_T^2$. Since the impulse $\Delta\vec{v} = \beta v_0\hat{e}_r$ is purely radial, $\vec{h} = \vec{r}_0 \times (\vec{v}_0 + \Delta\vec{v}) = r_0 v_0\hat{k}$ does not change! Then compute $\vec{e} = \frac{(\vec{v}_0 + \Delta\vec{v})\times\vec{h}}{\mu_0} - \hat{e}_r$ using $\vec{v}_0 = v_0\hat{e}_\theta$ and $\mu_0 = r_0 v_0^2$.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-2-4">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> With $\mu_0 = GM_\oplus = gR_T^2$ and angular speed $\omega_0 = \frac{2\pi}{T_0}$, Kepler's Third Law $\omega_0^2 r_0^3 = gR_T^2$ gives:</p>
+            <div class="math-block">
+                \[
+                r_0 = \left(\frac{g R_T^2 T_0^2}{4\pi^2}\right)^{1/3} \approx 4.22 \times 10^7\text{ m}, \qquad v_0 = \sqrt{\frac{gR_T^2}{r_0}} = \left(\frac{2\pi g R_T^2}{T_0}\right)^{1/3} \approx 3.07 \times 10^3\text{ m/s}
+                \]
+            </div>
+            <p><strong>(b)</strong> Immediately after the radial burn at $\vec{r}_0 = r_0\hat{e}_r$, the velocity is $\vec{v} = \beta v_0\hat{e}_r + v_0\hat{e}_\theta$. Because $\hat{e}_r \times \hat{e}_r = \vec{0}$, the specific angular momentum is unchanged: $\vec{h} = r_0 v_0\hat{k}$, so the new semi-latus rectum is $l = \frac{h^2}{\mu_0} = \frac{r_0^2 v_0^2}{r_0 v_0^2} = r_0$. Evaluating the LRL vector $\vec{e}$ right after the burn (using $\hat{e}_\theta \times \hat{k} = \hat{e}_r$ and $\hat{e}_r \times \hat{k} = -\hat{e}_\theta$):</p>
+            <div class="math-block">
+                \[
+                \vec{e} = \frac{(\beta v_0\hat{e}_r + v_0\hat{e}_\theta) \times (r_0 v_0\hat{k})}{r_0 v_0^2} - \hat{e}_r = (-\beta\hat{e}_\theta + \hat{e}_r) - \hat{e}_r = -\beta\hat{e}_\theta
+                \]
+            </div>
+            <p>Thus the eccentricity is $\varepsilon = |\vec{e}| = \beta$, and since $\vec{e} = -\beta\hat{e}_\theta$ is perpendicular to $\hat{e}_r$, the major axis makes an angle $\alpha = \frac{\pi}{2} = 90^\circ$ with $\vec{r}_0$!</p>
+            <p><strong>(c)</strong> With $l = r_0$ and $\varepsilon = \beta$, the perigee and apogee distances for $\beta = 1/4$ are:</p>
+            <div class="math-block">
+                \[
+                r_{\min} = \frac{r_0}{1 + \beta} = \frac{4}{5}r_0 \approx 3.38 \times 10^7\text{ m}, \qquad r_{\max} = \frac{r_0}{1 - \beta} = \frac{4}{3}r_0 \approx 5.63 \times 10^7\text{ m}
+                \]
+            </div>
+        </div>
+    </div>
+
+    <!-- PROBLEM 2.5 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 2.5 · Escape Threshold &amp; Asymptotic Deflection After a Radial Boost (IPhO 2005, Theory Q1 Parts 3–4)</span>
+            <span class="problem-pts">[4 pts]</span>
+        </div>
+        <p>
+            Continuing the scenario of Problem 2.4, suppose the outward radial impulse $\Delta\vec{v} = \beta v_0\hat{e}_r$ applied to the satellite in its circular orbit of radius $r_0$ and speed $v_0$ is made arbitrarily strong ($\beta \ge 1$).
+        </p>
+        <ol type="a">
+            <li>Determine the minimum boost parameter $\beta_{\mathrm{esc}}$ needed for the satellite to escape Earth's gravity, and find the closest approach distance $r_{\min}'$ to the Earth's center along this parabolic trajectory in terms of $r_0$.</li>
+            <li>For a hyperbolic boost $\beta > \beta_{\mathrm{esc}}$, express the residual speed at infinity $v_\infty$ in terms of $v_0$ and $\beta$.</li>
+            <li>Using the LRL vector $\vec{e} = -\beta\hat{e}_\theta$, find the angle $\Phi_\infty$ between the outgoing asymptote at $r \to \infty$ and the burn position vector $\vec{r}_0$ in terms of $\beta$.</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-2-5').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-2-5')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-2-5').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-2-5')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-2-5">
+            <strong>Hint:</strong> From Problem 2.4(b), $\varepsilon = \beta$ and $l = r_0$ hold for <em>all</em> values of $\beta > 0$! Escape occurs when $\varepsilon = 1$. Remember that the satellite already has an outward radial velocity $\dot{r} > 0$ at the burn point, so $r_{\min}'$ is the actual distance of closest approach <em>after</em> the burn ($t \ge 0$), or the vertex distance of the parabola.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-2-5">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> Since $\varepsilon = \beta$ and $l = r_0$ for any radial impulse $\beta$, parabolic escape ($\varepsilon = 1$) requires:</p>
+            <div class="math-block">
+                \[
+                \beta_{\mathrm{esc}} = 1
+                \]
+            </div>
+            <p>Along the mathematical parabola $r(f) = \frac{r_0}{1 + \cos f}$, the geometric periapsis (at $f = 0$, which occurred <em>prior</em> to the burn at $f = \pi/2$) has distance $q = \frac{r_0}{2}$. However, since the burn at $r = r_0$ shoots the satellite <em>outward</em> ($\dot{r} = +v_0 > 0$), $r(t)$ increases monotonically for all $t \ge 0$, so the closest physical distance to Earth after the burn is $r_{\min}' = r_0$ (while the extrapolated parabolic vertex is $q = r_0/2$).</p>
+            <p><strong>(b)</strong> For $\beta > 1$, conservation of specific mechanical energy between the burn point $r_0$ (where $v^2 = v_0^2 + \beta^2 v_0^2$ and $\frac{\mu_0}{r_0} = v_0^2$) and $r \to \infty$ gives:</p>
+            <div class="math-block">
+                \[
+                \epsilon = \frac{1}{2}v_0^2(1 + \beta^2) - v_0^2 = \frac{1}{2}v_\infty^2 \implies v_\infty = v_0\sqrt{\beta^2 - 1}
+                \]
+            </div>
+            <p><strong>(c)</strong> At the burn point $\vec{r}_0$, the true anomaly measured from periapsis ($\vec{e} = -\beta\hat{e}_\theta$) is $f_0 = +\frac{\pi}{2}$. As $r \to \infty$, $1 + \beta\cos f_\infty = 0 \implies \cos f_\infty = -\frac{1}{\beta}$, so $f_\infty = \frac{\pi}{2} + \arcsin\left(\frac{1}{\beta}\right)$. Therefore, the angle swept from the burn vector $\vec{r}_0$ to the outgoing asymptote is:</p>
+            <div class="math-block">
+                \[
+                \Phi_\infty = f_\infty - f_0 = \arcsin\left(\frac{1}{\beta}\right) = \arctan\left(\frac{1}{\sqrt{\beta^2 - 1}}\right)
+                \]
+            </div>
+        </div>
+    </div>
 
     <div class="subchapter-nav-bar">
         <button class="btn-step" onclick="switchSubchapter('2.1')"><i class="fa-solid fa-arrow-left"></i> Prev: 2.1 Two-Body Reduction</button>
@@ -281,135 +959,189 @@
     <h2>2.3 The Orbit Equation (Derivation)</h2>
 
     <p>
-        While the scalar product $\vec{r} \cdot \vec{e}$ provides an algebraic route to the orbit equation, the differential calculus derivation via <strong>Binet's Equation</strong> is essential in Olympiad astrophysics because it generalizes to arbitrary central forces (such as general relativistic $r^{-3}$ perturbations or $J_2$ oblateness corrections).
+        In Section 2.2, we found the polar equation of a Keplerian orbit algebraically by dotting $\vec{r}$ into the Laplace-Runge-Lenz vector $\vec{e}$. While that vector trick is slick, you also need to master the differential calculus derivation via <strong>Binet's Equation</strong>. Why? Because if an Olympiad problem adds a general-relativistic $1/r^3$ force, a $J_2$ planetary oblateness term, or a power-law potential, the LRL vector is no longer constant—whereas Binet's differential equation works for <em>any</em> central force!
     </p>
 
     <h3>2.3.1 Binet's Equation</h3>
-    <p>In planar polar coordinates $(r, \theta)$, the radial and azimuthal components of the equation of motion $\ddot{\vec{r}} = -\frac{\mu_0}{r^2}\hat{r}$ are:</p>
-    <div class="math-block">
-        \begin{align}
-            \text{Radial:} \quad & \ddot{r} - r\dot{\theta}^2 = -\frac{\mu_0}{r^2} \label{eq:radial_polar} \\
-            \text{Azimuthal:} \quad & r\ddot{\theta} + 2\dot{r}\dot{\theta} = \frac{1}{r}\frac{d}{dt}(r^2\dot{\theta}) = 0 \implies r^2\dot{\theta} = h = \mathrm{const} \label{eq:azimuthal_polar}
-        \end{align}
-    </div>
-    <p>To eliminate time $t$ and solve for the geometric trajectory $r(\theta)$, introduce the reciprocal radial variable:</p>
-    <div class="math-block">
-        \begin{equation}
-            u(\theta) \equiv \frac{1}{r(\theta)} \implies r = \frac{1}{u}
-        \end{equation}
-    </div>
     <p>
-        Using the angular momentum conservation law $\dot{\theta} = \frac{h}{r^2} = h u^2$, the time derivative operator $\frac{d}{dt}$ transforms into a spatial angular derivative operator $\frac{d}{d\theta}$ via the chain rule:
+        Let's write out the radial and azimuthal components of the relative equation of motion $\ddot{\vec{r}} = -\frac{\mu_0}{r^2}\hat{e}_r$ in planar polar coordinates $(r, \theta)$:
     </p>
     <div class="math-block">
-        \begin{equation}
-            \frac{d}{dt} = \dot{\theta}\frac{d}{d\theta} = h u^2 \frac{d}{d\theta}
-        \end{equation}
+        \[
+        \begin{aligned}
+        \text{Radial:} \quad & \ddot{r} - r\dot{\theta}^2 = -\frac{\mu_0}{r^2} \\
+        \text{Azimuthal:} \quad & r\ddot{\theta} + 2\dot{r}\dot{\theta} = \frac{1}{r}\frac{d}{dt}(r^2\dot{\theta}) = 0 \implies r^2\dot{\theta} = h = \text{constant}
+        \end{aligned}
+        \]
+    </div>
+    <p>
+        Right now, $r(t)$ and $\theta(t)$ are functions of time $t$, and the radial equation looks horribly nonlinear because of the $r\dot{\theta}^2 = h^2/r^3$ and $-\mu_0/r^2$ terms. To eliminate time $t$ and linearize the equation for the geometric path $r(\theta)$, we introduce the reciprocal radial variable<sup>[2]</sup>. Thus we define:
+    </p>
+    <div class="math-block">
+        \[
+        u(\theta) \equiv \frac{1}{r(\theta)} \implies r = \frac{1}{u}
+        \]
+    </div>
+    <p>
+        Using conservation of specific angular momentum $\dot{\theta} = \frac{h}{r^2} = h u^2$, we can convert any time derivative $\frac{d}{dt}$ into an angular derivative $\frac{d}{d\theta}$ via the chain rule:
+    </p>
+    <div class="math-block">
+        \[
+        \frac{d}{dt} = \dot{\theta}\frac{d}{d\theta} = h u^2 \frac{d}{d\theta}
+        \]
     </div>
 
-    <h4>First and Second Radial Time Derivatives:</h4>
+    <h4>Evaluating the Radial Time Derivatives</h4>
+    <p>
+        Let's apply this operator twice to $r = 1/u$:
+    </p>
     <ol>
         <li>
-            Differentiating $r = u^{-1}$ once with respect to time $t$ yields the radial velocity $\dot{r}$:
+            <strong>First Derivative (Radial Velocity $\dot{r}$):</strong> Differentiating $r = u^{-1}$ with respect to $t$ gives:
             <div class="math-block">
-                \begin{equation}
-                    \dot{r} = \frac{dr}{dt} = \frac{dr}{du}\frac{du}{d\theta}\dot{\theta} = \left(-\frac{1}{u^2}\right)\frac{du}{d\theta}(h u^2) = -h \frac{du}{d\theta}
-                \end{equation}
+                \[
+                \dot{r} = \frac{dr}{dt} = \frac{dr}{du}\frac{du}{d\theta}\dot{\theta} = \left(-\frac{1}{u^2}\right)\frac{du}{d\theta}(h u^2) = -h \frac{du}{d\theta}
+                \]
             </div>
+            Notice that the $u^2$ factors cancel completely! That is the magic of the $u = 1/r$ substitution: $\dot{r} = -h\frac{du}{d\theta}$ is linear in $u$.
         </li>
         <li>
-            Differentiating $\dot{r}$ a second time with respect to $t$ yields the radial acceleration component $\ddot{r}$:
+            <strong>Second Derivative ($\ddot{r}$):</strong> Differentiating $\dot{r} = -h\frac{du}{d\theta}$ a second time with respect to $t$ using $\frac{d}{dt} = hu^2\frac{d}{d\theta}$ yields:
             <div class="math-block">
-                \begin{equation}
-                    \ddot{r} = \frac{d}{dt}\left(-h\frac{du}{d\theta}\right) = h u^2 \frac{d}{d\theta}\left(-h\frac{du}{d\theta}\right) = -h^2 u^2 \frac{d^2 u}{d\theta^2}
-                \end{equation}
+                \[
+                \ddot{r} = \frac{d}{dt}\left(-h\frac{du}{d\theta}\right) = h u^2 \frac{d}{d\theta}\left(-h\frac{du}{d\theta}\right) = -h^2 u^2 \frac{d^2 u}{d\theta^2}
+                \]
             </div>
         </li>
     </ol>
-    <p>Meanwhile, the centripetal acceleration term $r\dot{\theta}^2$ in terms of $u$ becomes:</p>
+    <p>
+        Meanwhile, the centripetal term $r\dot{\theta}^2$ in terms of $u$ is simply:
+    </p>
     <div class="math-block">
-        \begin{equation}
-            r\dot{\theta}^2 = \left(\frac{1}{u}\right)(h u^2)^2 = h^2 u^3
-        \end{equation}
+        \[
+        r\dot{\theta}^2 = \left(\frac{1}{u}\right)(h u^2)^2 = h^2 u^3
+        \]
     </div>
-    <p>Substituting $\ddot{r}$, $r\dot{\theta}^2$, and $r^{-2} = u^2$ into the radial equation of motion $\eqref{eq:radial_polar}$ gives:</p>
+    <p>
+        Substituting $\ddot{r}$, $r\dot{\theta}^2$, and $1/r^2 = u^2$ into the radial equation of motion $\ddot{r} - r\dot{\theta}^2 = -\frac{\mu_0}{r^2}$ gives:
+    </p>
     <div class="math-block">
-        \begin{equation}
-            -h^2 u^2 \frac{d^2 u}{d\theta^2} - h^2 u^3 = -\mu_0 u^2
-        \end{equation}
+        \[
+        -h^2 u^2 \frac{d^2 u}{d\theta^2} - h^2 u^3 = -\mu_0 u^2
+        \]
     </div>
-    <p>Dividing through by $-h^2 u^2$ (for non-rectilinear orbits where $h \neq 0$ and $u \neq 0$) produces <strong>Binet's Differential Equation</strong> for Keplerian motion:</p>
+    <p>
+        Dividing both sides by $-h^2 u^2$ (for any non-rectilinear orbit where $h \neq 0$) produces <strong>Binet's Differential Equation</strong>:
+    </p>
     <div class="math-block">
-        \begin{equation}
-            \frac{d^2 u}{d\theta^2} + u = \frac{\mu_0}{h^2} \label{eq:binet_kepler}
-        \end{equation}
+        \[
+        \frac{d^2 u}{d\theta^2} + u = \frac{\mu_0}{h^2}
+        \]
     </div>
-    <p><em>(Note: For a general central force per unit mass $f(r)\hat{r}$, Binet's equation takes the universal form $\frac{d^2 u}{d\theta^2} + u = -\frac{f(1/u)}{h^2 u^2}$.)</em></p>
+    <p>
+        This is an important result. By switching from $r(t)$ to $u(\theta) = 1/r(\theta)$, a nonlinear inverse-square differential equation has turned into the simplest linear equation in physics: a simple harmonic oscillator with a constant offset!
+    </p>
+
+    <div class="handout-note ioaa-note">
+        <strong>IOAA Note (General Central Force Binet Formula):</strong> If a particle moves under an arbitrary central acceleration $\vec{a} = f(r)\hat{e}_r$ (where $f(r) \lt 0$ for an attractive force), the exact same steps yield the universal <strong>Binet Equation</strong>:
+        \[
+        \frac{d^2 u}{d\theta^2} + u = -\frac{f(1/u)}{h^2 u^2}
+        \]
+        Furthermore, the total squared speed $v^2 = \dot{r}^2 + r^2\dot{\theta}^2$ takes the compact Binet form $v^2 = h^2\left[\left(\frac{du}{d\theta}\right)^2 + u^2\right]$.
+    </div>
+
+    <div class="footnote-box">
+        <sup>[2]</sup> Although named after Jacques Philippe Marie Binet (1812), the reciprocal radius substitution $u = 1/r$ was actually introduced by Isaac Newton in Book I, Proposition 11 of the <em>Principia</em> (1687) to prove geometrically that an ellipse around a focus requires an inverse-square force.
+    </div>
 
     <h3>2.3.2 Polar Equation for Conic Sections</h3>
     <p>
-        Binet's equation $\eqref{eq:binet_kepler}$ is a second-order linear inhomogeneous ordinary differential equation with constant coefficients, mathematically identical to a simple harmonic oscillator subject to a constant driving offset.
+        Solving Binet's equation $\frac{d^2 u}{d\theta^2} + u = \frac{\mu_0}{h^2}$ takes just two steps:
     </p>
-
-    <h4>Step 1: Homogeneous and Particular Solutions</h4>
-    <ul>
+    <ol>
         <li>
-            <strong>Particular Solution ($u_p$):</strong> Since the right-hand side $\frac{\mu_0}{h^2}$ is constant, a constant trial solution $u_p = C$ gives:
-            <div class="math-block">
-                \begin{equation}
-                    0 + u_p = \frac{\mu_0}{h^2} \implies u_p = \frac{\mu_0}{h^2}
-                \end{equation}
-            </div>
+            <strong>Particular Solution ($u_p$):</strong> Since the right-hand side $\frac{\mu_0}{h^2}$ is constant, a constant particular solution is simply $u_p = \frac{\mu_0}{h^2}$.
         </li>
         <li>
-            <strong>Homogeneous Solution ($u_h$):</strong> The homogeneous equation $\frac{d^2 u_h}{d\theta^2} + u_h = 0$ has the general harmonic solution:
-            <div class="math-block">
-                \begin{equation}
-                    u_h(\theta) = A\cos(\theta - \theta_0)
-                \end{equation}
-            </div>
-            where $A \ge 0$ and $\theta_0$ are the two integration constants determined by boundary conditions.
+            <strong>Homogeneous Solution ($u_h$):</strong> The homogeneous harmonic oscillator equation $\frac{d^2 u_h}{d\theta^2} + u_h = 0$ has the general solution $u_h(\theta) = A\cos(\theta - \theta_0)$, where $A \ge 0$ and $\theta_0$ are constants of integration.
         </li>
-    </ul>
-    <p>Combining both solutions gives the general solution for $u(\theta) = \frac{1}{r(\theta)}$:</p>
-    <div class="math-block">
-        \begin{equation}
-            u(\theta) = \frac{1}{r(\theta)} = \frac{\mu_0}{h^2} + A\cos(\theta - \theta_0) = \frac{\mu_0}{h^2}\left[1 + \left(\frac{A h^2}{\mu_0}\right)\cos(\theta - \theta_0)\right]
-        \end{equation}
-    </div>
-
-    <h4>Step 2: Identifying the Orbital Parameters</h4>
+    </ol>
     <p>
-        Define the dimensionless constant $e \equiv \frac{A h^2}{\mu_0} \ge 0$ (the <strong>eccentricity</strong>) and the characteristic length scale $p$ (the <strong>semi-latus rectum</strong> or parameter of the conic):
+        Adding $u_p$ and $u_h$ gives the general solution for $u(\theta) = 1/r(\theta)$:
     </p>
     <div class="math-block">
-        \begin{equation}
-            p \equiv \frac{h^2}{\mu_0} = \frac{h^2}{G(m_1 + m_2)}
-        \end{equation}
+        \[
+        u(\theta) = \frac{1}{r(\theta)} = \frac{\mu_0}{h^2} + A\cos(\theta - \theta_0) = \frac{\mu_0}{h^2}\left[1 + \left(\frac{A h^2}{\mu_0}\right)\cos(\theta - \theta_0)\right]
+        \]
     </div>
-    <p>Inverting $u(\theta)$ yields the <strong>Polar Equation for Conic Sections</strong> (establishing <strong>Kepler's First Law generalized to all conic trajectories</strong>):</p>
-    <div class="math-block">
-        \begin{equation}
-            r(\theta) = \frac{p}{1 + e\cos(\theta - \theta_0)} = \frac{p}{1 + e\cos f}
-        \end{equation}
-    </div>
-    <p>where $f \equiv \theta - \theta_0$ is the <strong>true anomaly</strong> (the angular displacement measured from periapsis $\theta_0$).</p>
-
-    <h4>Geometric Interpretation of $p$ and Classification of Conic Orbits:</h4>
     <p>
-        Evaluating $r(f)$ at $f = \pm \frac{\pi}{2}$ (perpendicular to the major axis through the focus) gives $r(\pm \pi/2) = p$. For elliptic ($0 \le e < 1$) and hyperbolic ($e > 1$) orbits of semi-major axis $a$, evaluating periapsis $r_p = \frac{p}{1+e}$ and apoapsis/asymptotic vertex $r_a = \frac{p}{|1-e|}$ connects $p$ directly to $a$ and $e$:
+        Comparing this with our LRL orbit equation from Section 2.2, we identify the dimensionless <strong>eccentricity</strong> $e \equiv \frac{A h^2}{\mu_0} \ge 0$ and the characteristic length scale $p$, called the <strong>semi-latus rectum</strong> (or conic parameter):
     </p>
     <div class="math-block">
-        \begin{equation}
-            p = \frac{h^2}{\mu_0} = a|1 - e^2| = \begin{cases}
-                a(1 - e^2) & \text{for ellipses } (0 \le e < 1) \\
-                2q & \text{for parabolas } (e = 1, \text{ periapsis } q = r_p) \\
-                |a|(e^2 - 1) & \text{for hyperbolas } (e > 1)
-            \end{cases}
-        \end{equation}
+        \[
+        p \equiv \frac{h^2}{\mu_0} = \frac{h^2}{G(m_1 + m_2)}
+        \]
+    </div>
+    <p>
+        Inverting $u(\theta)$ gives the universal <strong>Polar Equation for Conic Sections</strong> (generalizing <strong>Kepler's First Law</strong> to all bound and unbound two-body trajectories):
+    </p>
+    <div class="math-block">
+        \[
+        r(\theta) = \frac{p}{1 + e\cos(\theta - \theta_0)} = \frac{p}{1 + e\cos f}
+        \]
+    </div>
+    <p>
+        where $f \equiv \theta - \theta_0$ is the <strong>true anomaly</strong> measured from periapsis ($r_p = \frac{p}{1 + e}$ at $f = 0$). Notice that when $f = \pm\frac{\pi}{2}$ (90° from periapsis), $\cos(\pm\pi/2) = 0$ and $r(\pm\pi/2) = p$: the semi-latus rectum $p$ is literally the half-width of the conic section measured perpendicular to the major axis right through the focus!
+    </p>
+    <p>
+        Connecting $r_p = \frac{p}{1+e}$ and $r_a = \frac{p}{|1-e|}$ to the semi-major axis $a$ links $p$ and specific energy $\epsilon$ across all four conic families:
+    </p>
+    <div class="math-block">
+        \[
+        p = \frac{h^2}{\mu_0} = \begin{cases}
+        a(1 - e^2) & \text{for circles } (e = 0) \text{ and ellipses } (0 \lt e \lt 1) \\
+        2q & \text{for parabolas } (e = 1, \text{ periapsis } q = r_p) \\
+        |a|(e^2 - 1) & \text{for hyperbolas } (e > 1)
+        \end{cases}
+        \]
     </div>
 
-    <div class="table-wrapper">
+    <figure class="handout-figure">
+        <svg viewBox="0 0 500 265" xmlns="http://www.w3.org/2000/svg">
+            <!-- Major Axis -->
+            <line x1="25" y1="132" x2="475" y2="132" stroke="#8A94A6" stroke-width="1.2" stroke-dasharray="4,4"/>
+            <!-- Semi-latus rectum vertical line through Focus F at x=310 -->
+            <line x1="310" y1="20" x2="310" y2="244" stroke="#8A94A6" stroke-width="1.2" stroke-dasharray="3,3"/>
+
+            <!-- 1. Circle (e = 0, radius p = 68, centered at F(310, 132)) -->
+            <circle cx="310" cy="132" r="68" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-dasharray="3,3"/>
+            <text x="275" y="78" fill="#FFFFFF" font-family="Inter, sans-serif" font-size="11" font-weight="bold">Circle (e = 0)</text>
+
+            <!-- 2. Ellipse (e = 0.5, p = 68 -> r_p = 45.3 (x=355.3), r_a = 136 (x=174), a = 90.7, b = 78.5, center at x=264.7) -->
+            <ellipse cx="264.7" cy="132" rx="90.7" ry="78.5" fill="none" stroke="#2BE38A" stroke-width="2.2"/>
+            <text x="165" y="55" fill="#2BE38A" font-family="Inter, sans-serif" font-size="11" font-weight="bold">Ellipse (0 &lt; e &lt; 1)</text>
+
+            <!-- 3. Parabola (e = 1, p = 68 -> r_p = 34 at x=344, passes through (310, 64) and (310, 200)) -->
+            <path d="M 95 18 Q 452 132 95 246" fill="none" stroke="#35E6FF" stroke-width="2.2"/>
+            <text x="82" y="34" fill="#35E6FF" font-family="Inter, sans-serif" font-size="11" font-weight="bold">Parabola (e = 1)</text>
+
+            <!-- 4. Hyperbola (e = 1.4, p = 68 -> r_p = 28.3 at x=338.3, passes through (310, 64) and (310, 200)) -->
+            <path d="M 215 14 Q 422 132 215 250" fill="none" stroke="#FFC1CC" stroke-width="2.2"/>
+            <text x="210" y="28" fill="#FFC1CC" font-family="Inter, sans-serif" font-size="11" font-weight="bold">Hyperbola (e &gt; 1)</text>
+
+            <!-- Semi-latus rectum segment p from (310, 132) to (310, 64) -->
+            <line x1="310" y1="132" x2="310" y2="64" stroke="#B39CD0" stroke-width="2.6"/>
+            <circle cx="310" cy="64" r="4.5" fill="#B39CD0"/>
+            <text x="317" y="102" fill="#B39CD0" font-family="Inter, sans-serif" font-size="12" font-weight="bold">p = h²/μ₀</text>
+
+            <!-- Focus F -->
+            <circle cx="310" cy="132" r="5.5" fill="#F59E0B"/>
+            <text x="292" y="150" fill="#F59E0B" font-family="Inter, sans-serif" font-size="12" font-weight="bold">F</text>
+        </svg>
+        <figcaption><strong>Figure 2.3:</strong> The family of four Keplerian conic sections ($r = \frac{p}{1 + e\cos f}$) sharing the same focus $F$ and the exact same semi-latus rectum $p = h^2/\mu_0$ at $f = \pm 90^\circ$.</figcaption>
+    </figure>
+
+    <div class="data-table-wrapper">
         <table class="handout-table">
             <thead>
                 <tr>
@@ -417,7 +1149,7 @@
                     <th>Eccentricity ($e$)</th>
                     <th>Specific Energy ($\epsilon$)</th>
                     <th>Semi-Major Axis ($a$)</th>
-                    <th>Parameter ($p$)</th>
+                    <th>Parameter ($p = h^2/\mu_0$)</th>
                     <th>Physical Orbit Regime</th>
                 </tr>
             </thead>
@@ -425,15 +1157,15 @@
                 <tr>
                     <td><strong>Circle</strong></td>
                     <td>$e = 0$</td>
-                    <td>$\epsilon = -\frac{\mu_0}{2r_0} < 0$</td>
+                    <td>$\epsilon = -\frac{\mu_0}{2r_0} \lt 0$</td>
                     <td>$a = r_0 > 0$</td>
                     <td>$p = r_0$</td>
                     <td>Bound minimum-energy orbit for given $h$</td>
                 </tr>
                 <tr>
                     <td><strong>Ellipse</strong></td>
-                    <td>$0 < e < 1$</td>
-                    <td>$-\frac{\mu_0}{2p} < \epsilon < 0$</td>
+                    <td>$0 \lt e \lt 1$</td>
+                    <td>$\epsilon = -\frac{\mu_0}{2a} \lt 0$</td>
                     <td>$a = \frac{p}{1 - e^2} > 0$</td>
                     <td>$p = a(1 - e^2)$</td>
                     <td>Bound periodic closed trajectory</td>
@@ -444,18 +1176,202 @@
                     <td>$\epsilon = 0$</td>
                     <td>$a \to \infty$</td>
                     <td>$p = 2q$ ($q = r_p$)</td>
-                    <td>Marginal unbound escape trajectory ($v = v_{\mathrm{esc}}$)</td>
+                    <td>Marginal unbound escape ($v = v_{\mathrm{esc}}$, $v_\infty = 0$)</td>
                 </tr>
                 <tr>
                     <td><strong>Hyperbola</strong></td>
                     <td>$e > 1$</td>
                     <td>$\epsilon = +\frac{\mu_0}{2|a|} > 0$</td>
-                    <td>$a < 0$ ($|a| = \frac{p}{e^2 - 1}$)</td>
+                    <td>$|a| = \frac{p}{e^2 - 1}$</td>
                     <td>$p = |a|(e^2 - 1)$</td>
                     <td>Unbound gravitational flyby / scattering ($v_\infty > 0$)</td>
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="example-box">
+        <div class="box-title"><i class="fa-solid fa-compass-drafting"></i> Worked Example 2.3: Interstellar Comet Hyperbolic Flyby (USAAAO 2023 Second Round, Q2)</div>
+        <p>
+            An interstellar comet ("Scratcher Crab") enters the Solar System with speed at infinity $v_\infty = 29.8\text{ km/s}$ (equal to Earth's circular orbital speed $v_\oplus = \sqrt{GM_\odot / \text{AU}}$) and impact parameter $b = 1.00\text{ AU}$. Determine the comet's semi-latus rectum $p$, hyperbolic semi-major axis $|a|$, orbital eccentricity $e$, perihelion distance $r_p$, and the total deflection angle $\Delta\phi$ between its incoming and outgoing asymptotes.
+        </p>
+        <hr class="example-divider">
+        <p>
+            <strong>Solution:</strong><br>
+            Let $r_\oplus = 1.00\text{ AU}$ so that $\mu_0 = GM_\odot = r_\oplus v_\oplus^2$. Since the comet approaches with $v_\infty = v_\oplus$ and impact parameter $b = r_\oplus$, its specific angular momentum is $h = b v_\infty = r_\oplus v_\oplus$, and its specific energy is $\epsilon = \frac{1}{2}v_\infty^2 = \frac{1}{2}v_\oplus^2$. Thus the semi-latus rectum $p$ and hyperbolic semi-major axis $|a|$ are:
+        </p>
+        <div class="math-block">
+            \[
+            p = \frac{h^2}{\mu_0} = \frac{r_\oplus^2 v_\oplus^2}{r_\oplus v_\oplus^2} = 1.00\text{ AU}, \qquad |a| = \frac{\mu_0}{2\epsilon} = \frac{r_\oplus v_\oplus^2}{v_\oplus^2} = 1.00\text{ AU}
+            \]
+        </div>
+        <p>
+            From $p = |a|(e^2 - 1)$ with $p = |a| = 1.00\text{ AU}$, we immediately find $e^2 - 1 = 1 \implies e = \sqrt{2} \approx 1.414$ (a rectangular hyperbola!), with perihelion distance $r_p = \frac{p}{1 + e} = \frac{1.00\text{ AU}}{1 + \sqrt{2}} = (\sqrt{2} - 1)\text{ AU} \approx 0.414\text{ AU}$.<br>
+            The asymptotes ($r \to \infty$) occur where the denominator $1 + e\cos f_\infty = 0 \implies \cos f_\infty = -\frac{1}{\sqrt{2}} \implies f_\infty = \pm 135^\circ$. Thus the total angle swept between the incoming and outgoing asymptotes is $2f_\infty = 270^\circ$, corresponding to a velocity deflection angle of $\Delta\phi = 2f_\infty - 180^\circ = 90.0^\circ$!
+        </p>
+    </div>
+
+    <!-- SUBCHAPTER 2.3 PROBLEMS -->
+    <div class="problems-section-title">
+        <h3>Subchapter 2.3 Problems</h3>
+        <span class="problem-pts">12 Points Total</span>
+    </div>
+
+    <!-- PROBLEM 2.6 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 2.6 · Recovering an Asteroid's Conic Elements at Opposition (Olympiad POTD)</span>
+            <span class="problem-pts">[3 pts]</span>
+        </div>
+        <p>
+            An asteroid is observed at opposition while moving in a prograde heliocentric orbit in Earth's orbital plane ($\mu_0 = GM_\odot = 1.327 \times 10^{20}\text{ m}^3\text{s}^{-2}$, $1\text{ AU} = 1.496 \times 10^{11}\text{ m}$). At the instant of observation, its geocentric distance is $\Delta = 1.20\text{ AU}$, its apparent angular motion relative to the background stars is retrograde at rate $\omega_{\mathrm{obs}} = 0.30^\circ\text{ day}^{-1}$, and its measured line-of-sight Doppler velocity relative to Earth is $v_{\mathrm{los}} = +5.0\text{ km/s}$ (receding). Assume Earth moves in a circular orbit of radius $r_\oplus = 1.00\text{ AU}$ with speed $v_\oplus = 29.78\text{ km/s}$.
+        </p>
+        <ol type="a">
+            <li>Determine the asteroid's heliocentric distance $r$, heliocentric transverse velocity $v_\theta$, heliocentric radial velocity $v_r$, and total orbital speed $v$.</li>
+            <li>Calculate the asteroid's specific angular momentum $h$, semi-latus rectum $p$ (in AU), specific energy $\epsilon$, semi-major axis $a$ (in AU), and eccentricity $e$.</li>
+            <li>Using the polar conic equation, find its perihelion distance $r_p$ (in AU) and true anomaly $f$ at the instant of observation.</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-2-6').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-2-6')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-2-6').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-2-6')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-2-6">
+            <strong>Hint:</strong> At opposition, the Sun, Earth, and asteroid are collinear, so $r = r_\oplus + \Delta = 2.20\text{ AU}$, $v_r = v_{\mathrm{los}}$, and the apparent retrograde angular speed is $\omega_{\mathrm{obs}} = \frac{v_\oplus - v_\theta}{\Delta}$!
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-2-6">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> At opposition, the Sun, Earth, and asteroid lie on a straight line, so the heliocentric distance is $r = r_\oplus + \Delta = 1.00 + 1.20 = 2.20\text{ AU} = 3.291 \times 10^{11}\text{ m}$. Converting $\omega_{\mathrm{obs}} = 0.30^\circ\text{ d}^{-1} = 6.06 \times 10^{-8}\text{ rad/s}$ and noting that retrograde apparent motion at opposition means $v_\theta - v_\oplus = -\omega_{\mathrm{obs}}\Delta$:</p>
+            <div class="math-block">
+                \[
+                v_\theta = v_\oplus - \omega_{\mathrm{obs}}\Delta = 29.78\text{ km/s} - (6.06 \times 10^{-8}\text{ s}^{-1})(1.795 \times 10^{11}\text{ m}) \approx 18.90\text{ km/s}
+                \]
+            </div>
+            <p>Since Earth's radial velocity is zero, $v_r = v_{\mathrm{los}} = +5.00\text{ km/s}$, and the total speed is $v = \sqrt{v_r^2 + v_\theta^2} = \sqrt{5.00^2 + 18.90^2} \approx 19.55\text{ km/s}$.</p>
+            <p><strong>(b)</strong> The specific angular momentum, semi-latus rectum, specific energy, semi-major axis, and eccentricity are:</p>
+            <div class="math-block">
+                \[
+                \begin{aligned}
+                h &= r v_\theta = (3.291 \times 10^{11}\text{ m})(1.890 \times 10^4\text{ m/s}) = 6.220 \times 10^{15}\text{ m}^2\text{s}^{-1} \\
+                p &= \frac{h^2}{\mu_0} = 2.915 \times 10^{11}\text{ m} = 1.949\text{ AU} \\
+                \epsilon &= \frac{1}{2}v^2 - \frac{\mu_0}{r} = -2.121 \times 10^8\text{ J/kg} \implies a = -\frac{\mu_0}{2\epsilon} = 3.128 \times 10^{11}\text{ m} = 2.091\text{ AU} \\
+                e &= \sqrt{1 - \frac{p}{a}} = \sqrt{1 - \frac{1.949}{2.091}} \approx 0.261
+                \end{aligned}
+                \]
+            </div>
+            <p style="margin-bottom: 0;"><strong>(c)</strong> The perihelion distance is $r_p = a(1 - e) = 2.091(1 - 0.261) \approx 1.546\text{ AU}$. From $r = \frac{p}{1 + e\cos f}$, we have $\cos f = \frac{p/r - 1}{e} = \frac{1.949/2.20 - 1}{0.261} = -0.437 \implies f \approx +115.9^\circ$ (positive since $v_r = +5.0\text{ km/s} > 0$, moving away from perihelion).</p>
+        </div>
+    </div>
+
+    <!-- PROBLEM 2.7 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 2.7 · Jovian Hyperbolic Slingshot &amp; Scattering Angle (IPhO 1999, Theory Q3)</span>
+            <span class="problem-pts">[4 pts]</span>
+        </div>
+        <p>
+            In the reference frame of Jupiter (mass $M$), a space probe of mass $m \ll M$ approaches from a great distance with initial speed $v'$ and impact parameter $b$ (the perpendicular distance between Jupiter and the incoming asymptote).
+        </p>
+        <ol type="a">
+            <li>Using Binet's solution and the LRL eccentricity formula, prove that the polar equation of the space probe's hyperbolic trajectory around Jupiter (with $\theta = 0$ at periapsis) is given by:
+            \[
+            \frac{1}{r(\theta)} = \frac{GM}{b^2 v'^2}\left(1 + \sqrt{1 + \frac{2Eb^2}{G^2 M^2 m^3}}\cos\theta\right)
+            \]
+            where $E = \frac{1}{2}mv'^2$ is the probe's total mechanical energy in Jupiter's frame.</li>
+            <li>Determine the asymptotic angles $\pm\theta_{\mathrm{asym}}$ where $r \to \infty$, and prove that the angle $\Delta\psi$ by which the probe's velocity vector is deflected by Jupiter's gravity satisfies:
+            \[
+            \sin\left(\frac{\Delta\psi}{2}\right) = \frac{1}{e} = \frac{1}{\sqrt{1 + \left(\frac{bv'^2}{GM}\right)^2}}
+            \]</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-2-7').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-2-7')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-2-7').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-2-7')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-2-7">
+            <strong>Hint:</strong> Express specific angular momentum $h = b v'$ and specific energy $\epsilon = E/m$ in the conic formula $\frac{1}{r} = \frac{\mu_0}{h^2}(1 + e\cos\theta)$ with $e = \sqrt{1 + \frac{2\epsilon h^2}{\mu_0^2}}$. For part (b), note that $2\theta_{\mathrm{asym}} = \pi + \Delta\psi$, so $\cos\theta_{\mathrm{asym}} = -\sin(\Delta\psi / 2)$.
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-2-7">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> At $r \to \infty$, the probe has specific angular momentum $h = bv'$ and specific mechanical energy $\epsilon = \frac{E}{m} = \frac{1}{2}v'^2$. Substituting $p = \frac{h^2}{GM} = \frac{b^2 v'^2}{GM}$ and $e = \sqrt{1 + \frac{2\epsilon h^2}{G^2 M^2}} = \sqrt{1 + \frac{2(E/m)(b^2 v'^2)}{G^2 M^2}} = \sqrt{1 + \frac{2E^2 b^2}{G^2 M^2 m^2 (\frac{1}{2}mv'^2)}} = \sqrt{1 + \frac{2Eb^2}{G^2 M^2 m^3}}$ (where $2E = mv'^2$ is absorbed if $L = mbv'$) into $\frac{1}{r(\theta)} = \frac{1}{p}(1 + e\cos\theta)$ directly gives:</p>
+            <div class="math-block">
+                \[
+                \frac{1}{r(\theta)} = \frac{GM}{b^2 v'^2}\left(1 + \sqrt{1 + \left(\frac{bv'^2}{GM}\right)^2}\cos\theta\right)
+                \]
+            </div>
+            <p><strong>(b)</strong> The asymptotes ($r \to \infty$, $\frac{1}{r} \to 0$) occur at $\cos\theta_{\mathrm{asym}} = -\frac{1}{e}$. Since the incoming and outgoing asymptotes are symmetric about periapsis ($\theta = 0$), the total angle swept by the radius vector from $t \to -\infty$ to $t \to +\infty$ is $2\theta_{\mathrm{asym}} = \pi + \Delta\psi$, where $\Delta\psi$ is the turning angle of the velocity vector. Therefore, $\theta_{\mathrm{asym}} = \frac{\pi}{2} + \frac{\Delta\psi}{2}$, and:</p>
+            <div class="math-block">
+                \[
+                -\frac{1}{e} = \cos\left(\frac{\pi}{2} + \frac{\Delta\psi}{2}\right) = -\sin\left(\frac{\Delta\psi}{2}\right) \implies \sin\left(\frac{\Delta\psi}{2}\right) = \frac{1}{e} = \frac{1}{\sqrt{1 + \left(\frac{bv'^2}{GM}\right)^2}}
+                \]
+            </div>
+        </div>
+    </div>
+
+    <!-- PROBLEM 2.8 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-title">Problem 2.8 · [A] Cotes' Spirals &amp; Exact Binet Orbits for an Inverse-Cube Force</span>
+            <span class="problem-pts">[5 pts]</span>
+        </div>
+        <p>
+            Suppose a particle of unit mass with non-zero specific angular momentum $h > 0$ moves in a central force field consisting of Newtonian gravity plus an attractive inverse-cube force of arbitrary strength $\kappa > 0$:
+        </p>
+        <div class="math-block">
+            \[
+            f(r) = -\frac{\mu_0}{r^2} - \frac{\kappa}{r^3}
+            \]
+        </div>
+        <ol type="a">
+            <li>Using the general Binet equation $\frac{d^2 u}{d\theta^2} + u = -\frac{f(1/u)}{h^2 u^2}$ for $u(\theta) = 1/r(\theta)$, show that $u(\theta)$ satisfies the linear differential equation:
+            \[
+            \frac{d^2 u}{d\theta^2} + (1 - \gamma)u = \frac{\mu_0}{h^2}, \qquad \text{where} \qquad \gamma \equiv \frac{\kappa}{h^2}
+            \]</li>
+            <li>Solve this differential equation explicitly for $r(\theta) = 1/u(\theta)$ (assuming initial condition $\dot{r} = 0$ at $\theta = 0$, $u(0) = u_0$) in all three physical regimes: (i) the <strong>sub-critical precessing regime</strong> ($\gamma \lt 1$), (ii) the <strong>critical algebraic spiral regime</strong> ($\gamma = 1$), and (iii) the <strong>super-critical plunging regime</strong> ($\gamma > 1$, where the $-\kappa/r^3$ attraction overwhelms the centrifugal barrier $h^2/r^3$).</li>
+        </ol>
+        <div class="problem-actions">
+            <button class="btn-prob-toggle" onclick="this.classList.toggle('open');document.getElementById('hint-2-8').classList.toggle('active');if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('hint-2-8')]);">
+                <i class="fa-regular fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="btn-prob-toggle sol-btn" onclick="this.classList.toggle('open');document.getElementById('sol-2-8').classList.toggle('active');this.innerHTML=this.classList.contains('open')?'<i class=\'fa-solid fa-eye-slash\'></i> Hide Solution':'<i class=\'fa-solid fa-check-double\'></i> Show Full Solution';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([document.getElementById('sol-2-8')]);">
+                <i class="fa-solid fa-check-double"></i> Show Full Solution
+            </button>
+        </div>
+        <div class="prob-drawer hint-drawer" id="hint-2-8">
+            <strong>Hint:</strong> Substitute $f(1/u) = -\mu_0 u^2 - \kappa u^3$ into Binet's equation. For part (b), note that $1 - \gamma$ is positive for $\gamma \lt 1$ (giving $\cos(\sqrt{1-\gamma}\,\theta)$), zero for $\gamma = 1$ (giving a quadratic parabola in $\theta$), and negative for $\gamma > 1$ (giving $\cosh(\sqrt{\gamma - 1}\,\theta)$).
+        </div>
+        <div class="prob-drawer sol-drawer" id="sol-2-8">
+            <strong>Full Solution:</strong>
+            <p><strong>(a)</strong> Substituting $f(1/u) = -\mu_0 u^2 - \kappa u^3$ into the universal Binet equation gives:</p>
+            <div class="math-block">
+                \[
+                \frac{d^2 u}{d\theta^2} + u = -\frac{-\mu_0 u^2 - \kappa u^3}{h^2 u^2} = \frac{\mu_0}{h^2} + \frac{\kappa}{h^2}u \implies \frac{d^2 u}{d\theta^2} + (1 - \gamma)u = \frac{\mu_0}{h^2}
+                \]
+            </div>
+            <p><strong>(b)</strong> With $\dot{r}(0) = -h u'(0) = 0$ and $u(0) = u_0$, the exact solutions in the three regimes are:</p>
+            <ul>
+                <li><strong>(i) Sub-critical regime ($\gamma \lt 1$, let $k \equiv \sqrt{1 - \gamma}$):</strong> The general solution with $u'(0) = 0$ is a precessing rosette conic:
+                \[
+                r(\theta) = \frac{1}{\frac{\mu_0}{k^2 h^2} + \left(u_0 - \frac{\mu_0}{k^2 h^2}\right)\cos(k\theta)}
+                \]
+                whose periapsis advances by $\Delta\theta_{\mathrm{prec}} = \frac{2\pi}{\sqrt{1 - \kappa/h^2}} - 2\pi$ per radial period.</li>
+                <li><strong>(ii) Critical regime ($\gamma = 1$, so $\kappa = h^2$):</strong> The $u$ term cancels the centrifugal barrier completely, leaving $\frac{d^2 u}{d\theta^2} = \frac{\mu_0}{h^2}$. Integrating twice with $u'(0) = 0$ gives an algebraic spiral that winds into the origin ($r \to 0$) as $\theta \to \infty$:
+                \[
+                r(\theta) = \frac{1}{u_0 + \frac{\mu_0}{2h^2}\theta^2}
+                \]</li>
+                <li><strong>(iii) Super-critical regime ($\gamma > 1$, let $\lambda \equiv \sqrt{\gamma - 1}$):</strong> The equation becomes $\frac{d^2 u}{d\theta^2} - \lambda^2 u = \frac{\mu_0}{h^2}$, whose solution with $u'(0) = 0$ is a hyperbolic Cotes' spiral:
+                \[
+                r(\theta) = \frac{1}{-\frac{\mu_0}{\lambda^2 h^2} + \left(u_0 + \frac{\mu_0}{\lambda^2 h^2}\right)\cosh(\lambda\theta)}
+                \]
+                which plunges into the central singularity $r \to 0$ ($u \to \infty$) exponentially fast as $\theta$ increases!</li>
+            </ul>
+        </div>
     </div>
 
     <div class="subchapter-nav-bar">
