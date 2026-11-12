@@ -1,0 +1,2642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin & Chief Proctor Console — SAC 2026 | Supernova Guide</title>
+    <link rel="icon" type="image/png" href="assets/img/supernova_logo.png">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Canonical Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #0A0A0C;
+            --bg-sidebar: #101115;
+            --bg-card: #15161A;
+            --bg-card-hover: #1C1D22;
+
+            --accent-green: #2BE38A;
+            --accent-blue: #35E6FF;
+            --accent-purple: #B39CD0;
+            --accent-rose: #FFC1CC;
+            --accent-gold: #FFCF5C;
+            --accent-red: #FF5C5C;
+
+            --text-pure: #FFFFFF;
+            --text-main: #EDEDED;
+            --text-muted: #8A94A6;
+
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.16);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+
+            --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 260px; background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+            display: flex; flex-direction: column;
+            padding: 24px 20px; flex-shrink: 0;
+            overflow-y: auto;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 16px;
+            font-family: var(--font-display); font-size: 1.3rem;
+            font-weight: 700; color: var(--text-pure);
+            margin-bottom: 32px; padding-left: 4px; line-height: 1.2;
+            text-decoration: none;
+        }
+        .brand img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+
+        .menu-label {
+            font-family: var(--font-mono); font-size: 0.68rem;
+            color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.05em; margin: 18px 0 8px 8px;
+        }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 9px 12px; border-radius: var(--radius-sm);
+            color: var(--text-muted); text-decoration: none;
+            font-weight: 500; font-size: 0.88rem; transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.05rem; }
+        .nav-item:hover { background-color: rgba(255,255,255,0.04); color: var(--text-main); }
+        .nav-item.active { background-color: rgba(255, 207, 92, 0.14); color: var(--accent-gold); border-left: 3px solid var(--accent-gold); }
+
+        /* --- ADMIN AUTH GATE OVERLAY --- */
+        #admin-auth-gate {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            background: rgba(10, 10, 12, 0.96);
+            backdrop-filter: blur(14px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .auth-gate-card {
+            max-width: 480px;
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-top: 3px solid var(--accent-gold);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8);
+        }
+        .form-input {
+            width: 100%;
+            padding: 11px 14px;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-pure);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            margin-top: 6px;
+            margin-bottom: 14px;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        /* --- MAIN AREA --- */
+        .dashboard-main {
+            flex: 1; overflow-y: auto; padding: 28px 38px 60px;
+            display: flex; flex-direction: column; gap: 24px;
+        }
+
+        .top-header {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 16px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .header-title h1 {
+            font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; color: var(--text-pure);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .header-title p { color: var(--text-muted); font-size: 0.88rem; margin-top: 4px; }
+
+        .admin-badge {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            padding: 5px 12px;
+            border-radius: 99px;
+            background: rgba(255, 207, 92, 0.14);
+            color: var(--accent-gold);
+            border: 1px solid rgba(255, 207, 92, 0.4);
+            font-weight: 700;
+        }
+
+        /* --- KPI ROW --- */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+        }
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+        }
+        .kpi-lbl {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: block;
+        }
+        .kpi-val {
+            font-family: var(--font-display);
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--text-pure);
+        }
+        .kpi-sub {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* --- ADMIN TABS --- */
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .admin-tab-btn {
+            padding: 10px 18px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .admin-tab-btn.active {
+            background: rgba(255, 207, 92, 0.14);
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        .admin-pane {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .admin-pane.active {
+            display: flex;
+        }
+
+        /* --- WEBCAM PROCTOR WALL --- */
+        .webcam-wall {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+            gap: 16px;
+        }
+        .proctor-tile {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .proctor-tile.strike-warn {
+            border-color: var(--accent-gold);
+        }
+        .proctor-tile.strike-crit {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 20px rgba(255, 92, 92, 0.2);
+        }
+        .tile-snap {
+            height: 155px;
+            background: #050507;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tile-snap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .tile-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(10, 10, 12, 0.85);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+        .tile-strike-pill {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(10, 10, 12, 0.85);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 700;
+        }
+        .tile-body {
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 0.82rem;
+        }
+        .tile-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        /* --- MASTER TABLE --- */
+        .panel-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 22px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .table-scroll {
+            max-height: 540px;
+            overflow: auto;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            background: var(--bg-sidebar);
+        }
+        .master-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .master-table th, .master-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-subtle);
+            text-align: left;
+            white-space: nowrap;
+        }
+        .master-table th {
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+            font-family: var(--font-mono);
+            font-size: 0.69rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            z-index: 2;
+        }
+        .master-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .btn-action {
+            padding: 7px 13px;
+            border-radius: 6px;
+            border: 1px solid var(--border-light);
+            background: var(--bg-sidebar);
+            color: var(--text-pure);
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.15s;
+        }
+        .btn-action:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+        .btn-gold {
+            background: var(--accent-gold);
+            color: #050507;
+            border-color: var(--accent-gold);
+        }
+        .btn-gold:hover {
+            opacity: 0.9;
+            color: #050507;
+        }
+        .btn-green {
+            background: rgba(43, 227, 138, 0.15);
+            color: var(--accent-green);
+            border-color: var(--accent-green);
+        }
+
+        /* --- MODAL --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 4000;
+            background: rgba(5, 5, 7, 0.9);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            max-width: 780px;
+            width: 100%;
+            max-height: 88vh;
+            overflow-y: auto;
+            padding: 28px;
+        }
+
+        @media (max-width: 1100px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 800px) {
+            .sidebar { display: none; }
+            .dashboard-main { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =========================================================
+         ADMIN AUTHENTICATION GATE (MATEI · ALBERT · MIHAI)
+         ========================================================= -->
+    <div id="admin-auth-gate">
+        <div class="auth-gate-card">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                <img src="assets/img/supernova_logo.png" alt="Logo" style="width:42px; height:42px; border-radius:8px;" onerror="this.style.display='none'">
+                <div>
+                    <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--accent-gold); text-transform:uppercase;">Restricted Scientific Committee Terminal</span>
+                    <h2 style="font-family:var(--font-display); font-size:1.35rem; color:var(--text-pure);">Admin &amp; Proctor Access</h2>
+                </div>
+            </div>
+
+            <p style="font-size:0.84rem; color:var(--text-muted); line-height:1.55; margin-bottom:18px;">
+                Authorized strictly for <strong>Matei Butnaru</strong> (<code>matei.butnaru@yahoo.com</code>), <strong>Albert Voicu Olteanu</strong> (<code>albert_voicu_olteanu@yahoo.com</code>), and <strong>Mihai Teșileanu</strong> (<code>mihai.tesileanu2@gmail.com</code>).
+            </p>
+
+            <div id="gate-firebase-login">
+                <label style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted); text-transform:uppercase;">Organizer Email Address</label>
+                <input type="email" id="admin-login-email" class="form-input" placeholder="albert_voicu_olteanu@yahoo.com">
+
+                <label style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted); text-transform:uppercase;">Account Password</label>
+                <input type="password" id="admin-login-pass" class="form-input" placeholder="••••••••••••">
+
+                <button type="button" class="btn-action btn-gold" style="width:100%; justify-content:center; padding:12px;" id="btn-admin-signin">
+                    <i class="fa-solid fa-unlock-keyhole"></i> Sign In With Organizer Account
+                </button>
+            </div>
+
+            <div style="margin: 16px 0; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
+                <label style="font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;">Or Enter Committee Master Key (Matei / Albert / Mihai)</label>
+                <div style="display:flex; gap:8px; margin-top:6px;">
+                    <input type="password" id="admin-master-pin" class="form-input" style="margin:0;" placeholder="Committee Master Key">
+                    <button type="button" class="btn-action" id="btn-admin-pin-unlock">Unlock</button>
+                </div>
+            </div>
+
+            <div id="admin-auth-error" style="font-family:var(--font-mono); font-size:0.76rem; color:var(--accent-red); min-height:18px; margin-top:8px;"></div>
+        </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <a href="dashboard.html" class="brand">
+            <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span>SUPERNOVA<br>ADMIN</span>
+        </a>
+
+        <div class="menu-label">Proctor Console</div>
+        <ul class="nav-menu">
+            <li><a href="admin_proctor.html" class="nav-item active"><i class="fa-solid fa-shield-halved"></i> SAC 2026 Admin</a></li>
+            <li><a href="competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitor View</a></li>
+            <li><a href="exam.html" class="nav-item"><i class="fa-solid fa-terminal"></i> Live Exam Terminal</a></li>
+        </ul>
+
+        <div class="menu-label">Platform Pages</div>
+        <ul class="nav-menu">
+            <li><a href="dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="challenges.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
+            <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="tools.html" class="nav-item"><i class="fa-solid fa-calculator"></i> Formula &amp; Tools</a></li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+        <header class="top-header">
+            <div class="header-title">
+                <div>
+                    <h1>
+                        <i class="fa-solid fa-tower-broadcast" style="color:var(--accent-gold);"></i>
+                        SAC 2026 Chief Proctor &amp; Organizer Console
+                    </h1>
+                    <p>Real-time Firebase telemetry, webcam snapshot monitoring, 43-competitor uncensored database, password dispatch, and automated grading.</p>
+                </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                <span class="admin-badge" id="active-admin-identity">
+                    <i class="fa-solid fa-user-check"></i> Organizer Session Active
+                </span>
+                <span class="admin-badge" style="color:var(--accent-green); border-color:rgba(43,227,138,0.4); background:rgba(43,227,138,0.1);" id="admin-utc-clock">
+                    UTC: Loading...
+                </span>
+            </div>
+        </header>
+
+        <!-- TOP 5 KPI CARDS -->
+        <section class="kpi-grid">
+            <div class="kpi-card">
+                <span class="kpi-lbl">Verified Competitors</span>
+                <div class="kpi-val" style="color:var(--accent-blue);">43</div>
+                <div class="kpi-sub">33 Solo · 10 Duo (5 Teams)</div>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-lbl">Live Active in Exam</span>
+                <div class="kpi-val" id="kpi-live-active" style="color:var(--accent-green);">0</div>
+                <div class="kpi-sub">Streaming to /sac2026/submissions</div>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-lbl">Final Submissions</span>
+                <div class="kpi-val" id="kpi-final-submitted" style="color:var(--text-pure);">0</div>
+                <div class="kpi-sub">Recorded in /sac2026/final_submissions</div>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-lbl">Focus / Lockdown Strikes</span>
+                <div class="kpi-val" id="kpi-flagged-strikes" style="color:var(--accent-gold);">0</div>
+                <div class="kpi-sub">Candidates with ≥ 1 strike</div>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-lbl">Auto-Submitted (3/3 Strikes)</span>
+                <div class="kpi-val" id="kpi-max-strikes" style="color:var(--accent-red);">0</div>
+                <div class="kpi-sub">Reached maximum violation threshold</div>
+            </div>
+        </section>
+
+        <!-- 4 ADMIN MODULE TABS -->
+        <div class="admin-tabs">
+            <button type="button" class="admin-tab-btn active" onclick="window.switchAdminTab('proctor', this)">
+                <i class="fa-solid fa-video"></i> 1. Live Webcam &amp; Proctor Telemetry Wall
+            </button>
+            <button type="button" class="admin-tab-btn" onclick="window.switchAdminTab('master', this)">
+                <i class="fa-solid fa-database"></i> 2. Master Competitor Database (All 43 · Uncensored)
+            </button>
+            <button type="button" class="admin-tab-btn" onclick="window.switchAdminTab('keys', this)">
+                <i class="fa-solid fa-key"></i> 3. Exam Password &amp; Email Dispatch
+            </button>
+            <button type="button" class="admin-tab-btn" onclick="window.switchAdminTab('grader', this)">
+                <i class="fa-solid fa-Calculator"></i> 4. Answer Key Auto-Grader &amp; Standings
+            </button>
+        </div>
+
+        <!-- =========================================================
+             TAB 1: LIVE WEBCAM & PROCTOR TELEMETRY WALL
+             ========================================================= -->
+        <section class="admin-pane active" id="admin-pane-proctor">
+            <div class="panel-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                    <div>
+                        <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Real-Time Candidate Proctoring Wall</h3>
+                        <p style="font-size:0.82rem; color:var(--text-muted);">Automatically updates whenever a candidate unlocks <code>exam.html</code>, answers a problem, triggers a fullscreen/focus strike, or uploads a 60s webcam snapshot.</p>
+                    </div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button type="button" class="btn-action" onclick="window.filterProctorWall('all')">Show All Active/Submitted</button>
+                        <button type="button" class="btn-action" onclick="window.filterProctorWall('strikes')" style="border-color:var(--accent-red); color:var(--accent-red);">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Only With Strikes
+                        </button>
+                        <button type="button" class="btn-action" onclick="window.filterProctorWall('all43')">Show All 43 Roster Slots</button>
+                    </div>
+                </div>
+
+                <div class="webcam-wall" id="proctor-webcam-wall"></div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             TAB 2: MASTER COMPETITOR DATABASE (ALL 43 UNCENSORED)
+             ========================================================= -->
+        <section class="admin-pane" id="admin-pane-master">
+            <div class="panel-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                    <div>
+                        <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Uncensored Master Competitor Roster (43 Competitors + 3 Organizers)</h3>
+                        <p style="font-size:0.82rem; color:var(--text-muted);">Includes full legal names, emails, aliases, Discord handles, DOBs, schools, cities, grades, experience, consents, and live exam telemetry.</p>
+                    </div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button type="button" class="btn-action btn-green" id="btn-copy-all-emails">
+                            <i class="fa-regular fa-copy"></i> Copy All 43 Emails (BCC List)
+                        </button>
+                        <button type="button" class="btn-action btn-gold" id="btn-export-master-csv">
+                            <i class="fa-solid fa-file-csv"></i> Export Master CSV
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <input type="text" id="master-search-input" class="form-input" style="margin:0; max-width:360px;" placeholder="Search by Bib, Name, Email, Discord, School, Country...">
+                    <select id="master-country-filter" class="form-input" style="margin:0; max-width:200px;">
+                        <option value="">All 12 Countries (43)</option>
+                        <option value="Romania">Romania (13)</option>
+                        <option value="Indonesia">Indonesia (9)</option>
+                        <option value="India">India (6)</option>
+                        <option value="USA">USA (3)</option>
+                        <option value="Türkiye">Türkiye (3)</option>
+                        <option value="Australia">Australia (2)</option>
+                        <option value="Ethiopia">Ethiopia (2)</option>
+                        <option value="Moldova">Moldova (1)</option>
+                        <option value="Algeria">Algeria (1)</option>
+                        <option value="Philippines">Philippines (1)</option>
+                        <option value="Mongolia">Mongolia (1)</option>
+                        <option value="Brazil">Brazil (1)</option>
+                    </select>
+                </div>
+
+                <div class="table-scroll">
+                    <table class="master-table">
+                        <thead>
+                            <tr>
+                                <th>Bib ID</th>
+                                <th>Full Legal Name</th>
+                                <th>Account Email</th>
+                                <th>SNG User</th>
+                                <th>Discord</th>
+                                <th>DOB</th>
+                                <th>Country</th>
+                                <th>Educational Institution</th>
+                                <th>City</th>
+                                <th>Academic Grade</th>
+                                <th>Prior Experience</th>
+                                <th>Format / Callsign</th>
+                                <th>Assigned Partner</th>
+                                <th>Privacy</th>
+                                <th>Referred By</th>
+                                <th>Exam Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="master-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             TAB 3: EXAM PASSWORD & EMAIL DISPATCH MANAGER
+             ========================================================= -->
+        <section class="admin-pane" id="admin-pane-keys">
+            <div class="panel-card">
+                <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Exam Access Password &amp; Cloud Key Dispatch</h3>
+                <p style="font-size:0.84rem; color:var(--text-muted); line-height:1.55;">
+                    Set the active round password below and push it to Firebase (<code>/sac2026/keys/{bib}</code>). When pushed, every registered Bib ID (`SNG-2026-1001` through `SNG-2026-1043`) can unlock <code>exam.html</code> using this password (in addition to the built-in master keys <code>SAC2026-QUALIFIER-KEY</code> and <code>SUPERNOVA-R1-8842</code>).
+                </p>
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                    <div style="background:var(--bg-sidebar); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:20px;">
+                        <label style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-gold); text-transform:uppercase;">Active Round Access Password</label>
+                        <input type="text" id="input-round-password" class="form-input" value="SAC2026-QUALIFIER-KEY">
+
+                        <button type="button" class="btn-action btn-gold" id="btn-push-keys-firebase" style="width:100%; justify-content:center; padding:11px;">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Push Password for All 43 Bibs to Firebase
+                        </button>
+                        <div id="key-push-status" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-green); margin-top:10px;"></div>
+                    </div>
+
+                    <div style="background:var(--bg-sidebar); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:20px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-blue); text-transform:uppercase;">Ready-to-Send Pre-Round Email Template</span>
+                            <button type="button" class="btn-action" id="btn-copy-email-template">
+                                <i class="fa-regular fa-copy"></i> Copy Email Body
+                            </button>
+                        </div>
+                        <textarea id="email-template-box" class="form-input" style="height:170px; font-size:0.76rem; line-height:1.5; resize:vertical;" readonly>Subject: [SAC 2026] Phase 1 Exam Access Password & Terminal Link (Opens 18:00 UT)
+
+Dear Competitor,
+
+Phase 1 (Open Qualifier) of the Supernova Astrophysics Cup — Autumn 2026 (SAC 2026) opens today between 18:00 UT and 19:00 UT (duration: 60 minutes, 30 MCQs).
+
+1. Official Exam Terminal: https://supernovaguide.com/exam.html
+2. Your Candidate Bib ID: Find your SNG-2026-10XX Bib ID on https://supernovaguide.com/competitions.html
+3. Exam Access Password: SAC2026-QUALIFIER-KEY
+
+Please ensure your webcam is connected, close all external tabs, and launch the terminal between 18:00 UT and 19:00 UT.
+
+Best of luck,
+Matei, Albert, & Mihai
+Supernova Guide Scientific Committee</textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             TAB 4: ANSWER KEY AUTO-GRADER & STANDINGS
+             ========================================================= -->
+        <section class="admin-pane" id="admin-pane-grader">
+            <div class="panel-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                    <div>
+                        <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Official Answer Key Auto-Grader &amp; Tie-Breaker Engine</h3>
+                        <p style="font-size:0.82rem; color:var(--text-muted);">Enter comma-separated correct option letters (`A, B, C, D, E`) for Q1–Q30. The engine computes raw scores (`+1.0 pt`) and difficulty-weighted tie-breaker scores automatically.</p>
+                    </div>
+                    <button type="button" class="btn-action btn-gold" id="btn-save-grade-key">
+                        <i class="fa-solid fa-calculator"></i> Save Answer Key &amp; Re-Grade All Submissions
+                    </button>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 2fr 1fr; gap:14px;">
+                    <div>
+                        <label style="font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;">Official Answer Key (Comma-Separated Letters A–E for Q1, Q2, Q3...)</label>
+                        <input type="text" id="grader-key-input" class="form-input" value="C, A, B, C, C" placeholder="e.g. C, A, B, C, C, D, A, B...">
+                    </div>
+                    <div>
+                        <label style="font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;">Difficulty Weights (Comma-Separated 1–10)</label>
+                        <input type="text" id="grader-weights-input" class="form-input" value="1, 2, 1, 1, 3" placeholder="e.g. 1, 2, 1, 1, 3...">
+                    </div>
+                </div>
+
+                <div class="table-scroll">
+                    <table class="master-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Bib ID</th>
+                                <th>Competitor</th>
+                                <th>Country</th>
+                                <th>Format / Team</th>
+                                <th>Raw Score</th>
+                                <th>Tie-Breaker (Avg Diff.)</th>
+                                <th>Answered</th>
+                                <th>Strikes</th>
+                                <th>Receipt / Status</th>
+                                <th>Promote Stage</th>
+                            </tr>
+                        </thead>
+                        <tbody id="grader-leaderboard-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- CANDIDATE DOSSIER & ANSWER SHEET MODAL -->
+    <div class="modal-overlay" id="dossier-modal">
+        <div class="modal-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--border-subtle);">
+                <h3 style="font-family:var(--font-display); color:var(--text-pure);" id="modal-cand-title">Candidate Dossier</h3>
+                <button type="button" id="btn-close-dossier" style="background:none; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="modal-cand-body" style="font-size:0.85rem; line-height:1.65;"></div>
+        </div>
+    </div>
+
+    <script type="module" src="js/auth.js"></script>
+    <script type="module">
+        import { getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, onValue, set, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const REGISTERED_PARTICIPANTS = [
+            {
+                        "bib": "SNG-ADMIN-01",
+                        "email": "matei.butnaru@yahoo.com",
+                        "aliasEmails": [
+                                    "contact.supernovaguide@gmail.com",
+                                    "contact@supernovaguide.com",
+                                    "matei.butnaru@yahoo.ro",
+                                    "mateibutnaru5@gmail.com"
+                        ],
+                        "sngUser": "Matei",
+                        "name": "Matei Butnaru",
+                        "discord": "matei_admin",
+                        "dob": "2008-01-01",
+                        "country": "Romania",
+                        "school": "Supernova Guide Scientific Committee",
+                        "city": "Botoșani, Romania",
+                        "grade": "Lead Organizer & Scientific Committee",
+                        "experience": "IOAA / National Astronomy & Physics Olympiad",
+                        "mode": "Organizer & Chief Proctor",
+                        "teamType": "admin",
+                        "callsign": "Supernova Staff",
+                        "partner": "Albert Voicu Olteanu & Mihai Teșileanu",
+                        "partnerBib": "SNG-ADMIN-02 / 03",
+                        "partnerDiscord": "Albert / Mihai",
+                        "partnerCountry": "Romania",
+                        "partnerSchool": "Supernova Guide Scientific Committee",
+                        "publicPrivacy": "full",
+                        "ageConsent": "Organizer",
+                        "sponsorConsent": true,
+                        "referredBy": "Founder",
+                        "regTimestamp": "2026-10-19 00:00:00",
+                        "stage": "qualifier",
+                        "isAdmin": true
+            },
+            {
+                        "bib": "SNG-ADMIN-02",
+                        "email": "albert_voicu_olteanu@yahoo.com",
+                        "aliasEmails": [],
+                        "sngUser": "Albert",
+                        "name": "Albert Voicu Olteanu",
+                        "discord": "albert_admin",
+                        "dob": "2008-01-01",
+                        "country": "Romania",
+                        "school": "Supernova Guide Scientific Committee",
+                        "city": "Romania",
+                        "grade": "Co-Founder & Scientific Committee",
+                        "experience": "IOAA / National Astronomy & Physics Olympiad",
+                        "mode": "Organizer & Proctor",
+                        "teamType": "admin",
+                        "callsign": "Supernova Staff",
+                        "partner": "Matei Butnaru & Mihai Teșileanu",
+                        "partnerBib": "SNG-ADMIN-01 / 03",
+                        "partnerDiscord": "Matei / Mihai",
+                        "partnerCountry": "Romania",
+                        "partnerSchool": "Supernova Guide Scientific Committee",
+                        "publicPrivacy": "full",
+                        "ageConsent": "Organizer",
+                        "sponsorConsent": true,
+                        "referredBy": "Co-Founder",
+                        "regTimestamp": "2026-10-19 00:00:00",
+                        "stage": "qualifier",
+                        "isAdmin": true
+            },
+            {
+                        "bib": "SNG-ADMIN-03",
+                        "email": "mihai.tesileanu2@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Mihai",
+                        "name": "Mihai Teșileanu",
+                        "discord": "mihai_admin",
+                        "dob": "2008-01-01",
+                        "country": "Romania",
+                        "school": "Supernova Guide Scientific Committee",
+                        "city": "Romania",
+                        "grade": "Co-Founder & Scientific Committee",
+                        "experience": "IOAA / National Astronomy & Physics Olympiad",
+                        "mode": "Organizer & Proctor",
+                        "teamType": "admin",
+                        "callsign": "Supernova Staff",
+                        "partner": "Matei Butnaru & Albert Voicu Olteanu",
+                        "partnerBib": "SNG-ADMIN-01 / 02",
+                        "partnerDiscord": "Matei / Albert",
+                        "partnerCountry": "Romania",
+                        "partnerSchool": "Supernova Guide Scientific Committee",
+                        "publicPrivacy": "full",
+                        "ageConsent": "Organizer",
+                        "sponsorConsent": true,
+                        "referredBy": "Co-Founder",
+                        "regTimestamp": "2026-10-19 00:00:00",
+                        "stage": "qualifier",
+                        "isAdmin": true
+            },
+            {
+                        "bib": "SNG-2026-1001",
+                        "email": "alex.mihai.barbu11@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Regele",
+                        "name": "Barbu Mihai Alexandru",
+                        "discord": "alex3r8101",
+                        "dob": "2011-09-02",
+                        "country": "Romania",
+                        "school": "Colegiul National \"Ion C. Bratianu\"",
+                        "city": "Pitesti, Arges, Romania",
+                        "grade": "High School — Grade 9 (or equivalent)",
+                        "experience": "USAAAO / National Astronomy Olympiad",
+                        "mode": "Team of 2 (Matchmaking Pair #3)",
+                        "teamType": "duo_random",
+                        "callsign": "Pair #3 · Eurasia",
+                        "partner": "Bayar Enkhbold",
+                        "partnerBib": "SNG-2026-1019",
+                        "partnerDiscord": "bay.mp8",
+                        "partnerCountry": "Mongolia",
+                        "partnerSchool": "English School of Mongolia",
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-19 14:23:14",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1002",
+                        "email": "lucadariusflorin2012@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Darius S.",
+                        "name": "Solcan-Luca Darius-Florin",
+                        "discord": "cgl6",
+                        "dob": "2012-07-24",
+                        "country": "Romania , Botoşani",
+                        "school": "Școala gimnazială numărul 7 Botoșani",
+                        "city": "Botoșani România",
+                        "grade": "Middle School / Junior High (Grades 5–8)",
+                        "experience": "IOAA / IOAA-Jr",
+                        "mode": "Solo (Dar!u$)",
+                        "teamType": "solo",
+                        "callsign": "Dar!u$",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-19 17:12:26",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1003",
+                        "email": "robyan2044@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Badea Robert",
+                        "name": "Badea Robert Yannis",
+                        "discord": "robert_24735",
+                        "dob": "2010-10-22",
+                        "country": "Romania",
+                        "school": "Colegiul National \"Ion C. Bratianu\"",
+                        "city": "Pitesti, Romania",
+                        "grade": "High School — Grade 10 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Team of 2 (Astrobros · Pair #1)",
+                        "teamType": "duo_random",
+                        "callsign": "Astrobros",
+                        "partner": "Dumitrescu Sebastian Gabriel",
+                        "partnerBib": "SNG-2026-1031",
+                        "partnerDiscord": "Pruna",
+                        "partnerCountry": "Romania",
+                        "partnerSchool": "Colegiul Național \"Ion C. Brătianu\"",
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-21 22:11:05",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1004",
+                        "email": "alexaionescu32@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "ioana25",
+                        "name": "Ionescu Alexa Ioana",
+                        "discord": "al11exxa_12883",
+                        "dob": "2008-01-25",
+                        "country": "Romania",
+                        "school": "Colegiul National \"Ion C. Bratianu\"",
+                        "city": "Pitesti, Romania",
+                        "grade": "High School — Grade 12 / Final Secondary Year",
+                        "experience": "USAAAO / National Astronomy Olympiad",
+                        "mode": "Solo",
+                        "teamType": "solo",
+                        "callsign": "Solo",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Adult (18+ / Self-Consented)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-23 10:47:53",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1005",
+                        "email": "divyaispresenthere@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Divya",
+                        "name": "Divya Yadav",
+                        "discord": "divyayadav777999___",
+                        "dob": "2012-06-22",
+                        "country": "India",
+                        "school": "Central public school jafarpur",
+                        "city": "Azamgarh india",
+                        "grade": "High School — Grade 10 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo (Divya)",
+                        "teamType": "solo",
+                        "callsign": "Divya",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-26 11:23:48",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1006",
+                        "email": "riteshkumarmohapatra11902@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Ritesh Kumar Mohapatra",
+                        "name": "Ritesh Kumar Mohapatra",
+                        "discord": "Ritesh31",
+                        "dob": "2009-04-14",
+                        "country": "India",
+                        "school": "DAV Public School",
+                        "city": "Bhubaneswar India",
+                        "grade": "High School — Grade 12 / Final Secondary Year",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo",
+                        "teamType": "solo",
+                        "callsign": "Solo",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-26 11:35:50",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1007",
+                        "email": "bogus.daria@orizont.md",
+                        "aliasEmails": [
+                                    "darincabogus@gmail.com"
+                        ],
+                        "sngUser": "Bogus Daria",
+                        "name": "Boguș Daria",
+                        "discord": "bogusdaria_50528",
+                        "dob": "2009-11-05",
+                        "country": "Moldova",
+                        "school": "Orizont",
+                        "city": "Durlesti",
+                        "grade": "High School — Grade 11 (or equivalent)",
+                        "experience": "IOAA / IOAA-Jr, USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad)",
+                        "mode": "Solo (ABDIELFANCLUB67)",
+                        "teamType": "solo",
+                        "callsign": "ABDIELFANCLUB67",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": false,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-11-08 12:40:17",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1008",
+                        "email": "mirunateodora0204@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "81miruna",
+                        "name": "Păduraru Miruna-Teodora",
+                        "discord": "miruna0452",
+                        "dob": "2009-02-04",
+                        "country": "Romania",
+                        "school": "Colegiul Național 'Emil Racoviţă', Iaşi",
+                        "city": "IASI",
+                        "grade": "High School — Grade 11 (or equivalent)",
+                        "experience": "USAAAO / National Astronomy Olympiad, First Astronomy / Astrophysics Competition",
+                        "mode": "Solo",
+                        "teamType": "solo",
+                        "callsign": "Solo",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": false,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-26 14:05:43",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1009",
+                        "email": "mohdfaisalabdulcarim@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Mohammad Faisal T. Abdulcarim",
+                        "name": "Mohammad Faisal T. Abdulcarim",
+                        "discord": "Mosalman",
+                        "dob": "2009-01-18",
+                        "country": "Philippines",
+                        "school": "Mindanao State University - Marawi Senior High School",
+                        "city": "Marawi City, Lanao Del Sur, Mindanao, Philippines",
+                        "grade": "High School — Grade 11 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo (INSAN)",
+                        "teamType": "solo_unmatched",
+                        "callsign": "INSAN",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": "Selected Team of 2 (INSAN), but partner did not register prior to deadline; competing as Solo.",
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": false,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-26 14:25:09",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1010",
+                        "email": "paunescuadrian713@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Livansky",
+                        "name": "Păunescu Liviu-Nicolae",
+                        "discord": "Livansky",
+                        "dob": "2009-02-19",
+                        "country": "Romania",
+                        "school": "Colegiul Național Pedagogic ,, Ștefan Velovan”",
+                        "city": "Craiova, Romania",
+                        "grade": "High School — Grade 11 (or equivalent)",
+                        "experience": "IOAA / IOAA-Jr, USAAAO / National Astronomy Olympiad",
+                        "mode": "Solo",
+                        "teamType": "solo",
+                        "callsign": "Solo",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-26 20:24:06",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1011",
+                        "email": "faeeboii@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Khalfani Xavier Kamil Susanto",
+                        "name": "Khalfani Xavier Kamil Susanto",
+                        "discord": "user_41612",
+                        "dob": "2010-03-24",
+                        "country": "Indonesia",
+                        "school": "SMAN 1 Tanjungpinang",
+                        "city": "Tanjungpinang, Indonesia",
+                        "grade": "High School — Grade 11 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo",
+                        "teamType": "solo",
+                        "callsign": "Solo",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-27 05:55:54",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1012",
+                        "email": "aminedjformsg@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Amine",
+                        "name": "Amine Djerrare",
+                        "discord": "amine_92382",
+                        "dob": "2009-08-02",
+                        "country": "Algeria",
+                        "school": "Lycée M'Hamed Bougherra",
+                        "city": "Khemis Miliana",
+                        "grade": "High School — Grade 12 / Final Secondary Year",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo (Amine)",
+                        "teamType": "solo",
+                        "callsign": "Amine",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-27 08:11:23",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1013",
+                        "email": "bertea.matei2010@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "BMatei19",
+                        "name": "Bertea Matei",
+                        "discord": "Matei_Gaming",
+                        "dob": "2010-02-19",
+                        "country": "Romania",
+                        "school": "Colegiul National \"Ferdinand 1\" Bacau",
+                        "city": "Bacau Romania",
+                        "grade": "High School — Grade 10 (or equivalent)",
+                        "experience": "USAAAO / National Astronomy Olympiad",
+                        "mode": "Solo (Patei)",
+                        "teamType": "solo",
+                        "callsign": "Patei",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-27 10:49:06",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1014",
+                        "email": "namanvrocks@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "namanvrocks",
+                        "name": "Naman Verma",
+                        "discord": "wio9776",
+                        "dob": "2012-02-06",
+                        "country": "Australia",
+                        "school": "Melbourne High School",
+                        "city": "Melbourne, Victoria, Australia",
+                        "grade": "High School — Grade 9 (or equivalent)",
+                        "experience": "USAAAO / National Astronomy Olympiad",
+                        "mode": "Solo (Twiggy)",
+                        "teamType": "solo",
+                        "callsign": "Twiggy",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-28 03:47:38",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1015",
+                        "email": "aryanver21@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "aryanver21",
+                        "name": "Aryan Verma",
+                        "discord": "Ħämşťêř (username is hamster_9087)",
+                        "dob": "2013-11-26",
+                        "country": "USA",
+                        "school": "William Hopkins Middle School",
+                        "city": "Fremont USA",
+                        "grade": "Middle School / Junior High (Grades 5–8)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo",
+                        "teamType": "solo",
+                        "callsign": "Solo",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-28 05:54:38",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1016",
+                        "email": "niranjanbarhate64@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "NiranX",
+                        "name": "Niranjan Barhate",
+                        "discord": "niranx0564",
+                        "dob": "2010-12-05",
+                        "country": "India",
+                        "school": "st.Aloysius Convent high school",
+                        "city": "Bhusawal , India",
+                        "grade": "High School — Grade 10 (or equivalent)",
+                        "experience": "USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad)",
+                        "mode": "Solo (Stellar NeXus)",
+                        "teamType": "solo",
+                        "callsign": "Stellar NeXus",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "Discord",
+                        "regTimestamp": "2026-10-28 14:19:24",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1017",
+                        "email": "bilalabiyu025@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "@bilal",
+                        "name": "Bilal Abiyu Gemo",
+                        "discord": "@bilal",
+                        "dob": "2008-10-02",
+                        "country": "Ethiopia",
+                        "school": "Tokuma secondary school",
+                        "city": "Ethiopia, Asella",
+                        "grade": "High School — Grade 12 / Final Secondary Year",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo (Best thinker)",
+                        "teamType": "solo",
+                        "callsign": "Best thinker",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Adult (18+ / Self-Consented)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-28 16:01:20",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1018",
+                        "email": "bilanabiyu@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "begesu",
+                        "name": "Begesu Tefera",
+                        "discord": "@begasu",
+                        "dob": "2006-10-09",
+                        "country": "Ethiopia",
+                        "school": "ODA SPECIAL BOARDING school",
+                        "city": "Ethiopia, Adama",
+                        "grade": "High School — Grade 12 / Final Secondary Year",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo (Boruf)",
+                        "teamType": "solo",
+                        "callsign": "Boruf",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Adult (18+ / Self-Consented)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-28 16:09:46",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1019",
+                        "email": "bayar.e100@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Bayar.E",
+                        "name": "Bayar Enkhbold",
+                        "discord": "bay.mp8",
+                        "dob": "2010-08-26",
+                        "country": "Mongolia",
+                        "school": "English School of Mongolia",
+                        "city": "Ulaanbaatar, Mongolia",
+                        "grade": "High School — Grade 11 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Team of 2 (ƛ𝛆μμ⍺ · Pair #3)",
+                        "teamType": "duo_random",
+                        "callsign": "ƛ𝛆μμ⍺ · Pair #3",
+                        "partner": "Barbu Mihai Alexandru",
+                        "partnerBib": "SNG-2026-1001",
+                        "partnerDiscord": "alex3r8101",
+                        "partnerCountry": "Romania",
+                        "partnerSchool": "Colegiul Național \"Ion C. Brătianu\"",
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-29 14:20:44",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1020",
+                        "email": "fawwazihanan@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Fawwazi Hanan Zia",
+                        "name": "Fawwazi Hanan Zia",
+                        "discord": "mr.y7176",
+                        "dob": "2011-03-18",
+                        "country": "Indonesia",
+                        "school": "SMP Islam De Green Camp",
+                        "city": "Tanjungpinang, Indonesia",
+                        "grade": "Middle School / Junior High (Grades 5–8)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo",
+                        "teamType": "solo",
+                        "callsign": "Solo",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "@user_41612",
+                        "regTimestamp": "2026-10-29 14:51:12",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1021",
+                        "email": "rymbie99@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Rymbie",
+                        "name": "Arimbi",
+                        "discord": "shadowuwu8440",
+                        "dob": "2010-02-02",
+                        "country": "Indonesia",
+                        "school": "SMAN 1 Tanjungpinang",
+                        "city": "Tanjungpinang, Indonesia",
+                        "grade": "High School — Grade 10 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo",
+                        "teamType": "solo",
+                        "callsign": "Solo",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "@user_41612",
+                        "regTimestamp": "2026-10-29 14:56:54",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1022",
+                        "email": "michaelngg@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "michaelngg",
+                        "name": "Michael Ng",
+                        "discord": "michaelnggg",
+                        "dob": "2008-06-13",
+                        "country": "Indonesia",
+                        "school": "SMAK 2 Penabur",
+                        "city": "Jakarta, Indonesia",
+                        "grade": "High School — Grade 12 / Final Secondary Year",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo",
+                        "teamType": "solo",
+                        "callsign": "Solo",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "@user_41612",
+                        "regTimestamp": "2026-10-29 15:04:33",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1023",
+                        "email": "dolanbaytuna1@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Tuna Dolanbay",
+                        "name": "Mehmet Tuna Dolanbay",
+                        "discord": "tunadolanbay1",
+                        "dob": "2009-03-23",
+                        "country": "Türkiye",
+                        "school": "TÜBİTAK Science High School",
+                        "city": "Gebze, Turkey",
+                        "grade": "High School — Grade 11 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo",
+                        "teamType": "solo",
+                        "callsign": "Solo",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "kerem_45.sjk_37712",
+                        "regTimestamp": "2026-10-30 17:48:49",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1024",
+                        "email": "shaaravayachit4@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Schrodinger's cat",
+                        "name": "Shaarav Ayachit",
+                        "discord": "Schrodinger's cat",
+                        "dob": "2008-12-04",
+                        "country": "India",
+                        "school": "DAIS",
+                        "city": "Mumbai",
+                        "grade": "High School — Grade 12 / Final Secondary Year",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo (Barça Boys)",
+                        "teamType": "solo_unmatched",
+                        "callsign": "Barça Boys",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": "Selected Team of 2 (Barça Boys), but partner did not register prior to deadline; competing as Solo.",
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-30 18:19:49",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1025",
+                        "email": "keremkaragol1299@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Kerem K",
+                        "name": "Kerem Karagöl",
+                        "discord": "kerem_45.sjk_37712",
+                        "dob": "2011-01-08",
+                        "country": "Türkiye",
+                        "school": "TÜBİTAK Science High School",
+                        "city": "Kocaeli İstanbul",
+                        "grade": "High School — Grade 10 (or equivalent)",
+                        "experience": "USAAAO / National Astronomy Olympiad",
+                        "mode": "Team of 2 (Tefla)",
+                        "teamType": "duo_set",
+                        "callsign": "Tefla",
+                        "partner": "Yusuf Kerem Kuru",
+                        "partnerBib": "SNG-2026-1030",
+                        "partnerDiscord": "ysf55 (SNG)",
+                        "partnerCountry": "Türkiye",
+                        "partnerSchool": "TÜBİTAK Science High School",
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "Discord",
+                        "regTimestamp": "2026-10-31 22:32:52",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1026",
+                        "email": "alexanderyu780@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Alexander Y",
+                        "name": "Alexander Yu",
+                        "discord": "alexa_is_",
+                        "dob": "2010-05-18",
+                        "country": "USA",
+                        "school": "Camas High School",
+                        "city": "Camas, Washington, USA",
+                        "grade": "High School — Grade 11 (or equivalent)",
+                        "experience": "USAAAO / National Astronomy Olympiad",
+                        "mode": "Team of 2 (iono bro · Pair #2)",
+                        "teamType": "duo_random",
+                        "callsign": "iono bro · Pair #2",
+                        "partner": "Bernardo Miguel de Souza",
+                        "partnerBib": "SNG-2026-1028",
+                        "partnerDiscord": "aspmega",
+                        "partnerCountry": "Brazil",
+                        "partnerSchool": "Gap Year (Curitiba)",
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-10-31 06:12:06",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1027",
+                        "email": "mohoreadavidcristian@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "CrisDav007",
+                        "name": "Mohorea David-Cristian",
+                        "discord": "crisdav007",
+                        "dob": "2012-10-04",
+                        "country": "Romania",
+                        "school": "Colegiul National \"Gh. M. Murgoci\"",
+                        "city": "Braila",
+                        "grade": "Middle School / Junior High (Grades 5–8)",
+                        "experience": "USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad)",
+                        "mode": "Solo (¯\\_(ツ)_/¯)",
+                        "teamType": "solo",
+                        "callsign": "¯\\_(ツ)_/¯",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-11-01 22:26:46",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1028",
+                        "email": "souzaestudosevida@outlook.com",
+                        "aliasEmails": [],
+                        "sngUser": "Benhard",
+                        "name": "Bernardo Miguel de Souza",
+                        "discord": "aspmega",
+                        "dob": "2007-11-15",
+                        "country": "Brazil",
+                        "school": "Gap Year",
+                        "city": "Curitiba, Paraná",
+                        "grade": "Gap Year Student (Age < 21)",
+                        "experience": "Physics Olympiad (IPhO / National Physics Olympiad)",
+                        "mode": "Team of 2 (Stellaris · Pair #2)",
+                        "teamType": "duo_random",
+                        "callsign": "Stellaris · Pair #2",
+                        "partner": "Alexander Yu",
+                        "partnerBib": "SNG-2026-1026",
+                        "partnerDiscord": "alexa_is_",
+                        "partnerCountry": "USA",
+                        "partnerSchool": "Camas High School",
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Adult (18+ / Self-Consented)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-11-02 22:59:13",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1029",
+                        "email": "lukegeltner@ufl.edu",
+                        "aliasEmails": [],
+                        "sngUser": "Luke Geltner",
+                        "name": "Luke Patrick Geltner",
+                        "discord": "lukegeltner",
+                        "dob": "2008-05-23",
+                        "country": "USA",
+                        "school": "University of Florida",
+                        "city": "Gainesville, Florida, USA",
+                        "grade": "University Undergraduate (Age < 21)",
+                        "experience": "USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad)",
+                        "mode": "Solo (Geltner)",
+                        "teamType": "solo",
+                        "callsign": "Geltner",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Adult (18+ / Self-Consented)",
+                        "sponsorConsent": true,
+                        "referredBy": "Physics Olympiad discord server",
+                        "regTimestamp": "2026-11-03 02:14:10",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1030",
+                        "email": "yusufkeremkuru@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "ysf55",
+                        "name": "Yusuf Kerem Kuru",
+                        "discord": "—",
+                        "dob": "2010-12-23",
+                        "country": "Türkiye",
+                        "school": "TÜBİTAK Science High School",
+                        "city": "Kocaeli, Türkiye",
+                        "grade": "High School — Grade 10 (or equivalent)",
+                        "experience": "USAAAO / National Astronomy Olympiad",
+                        "mode": "Team of 2 (Tefla)",
+                        "teamType": "duo_set",
+                        "callsign": "Tefla",
+                        "partner": "Kerem Karagöl",
+                        "partnerBib": "SNG-2026-1025",
+                        "partnerDiscord": "kerem_45.sjk_37712",
+                        "partnerCountry": "Türkiye",
+                        "partnerSchool": "TÜBİTAK Science High School",
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": false,
+                        "referredBy": "Me",
+                        "regTimestamp": "2026-11-03 09:54:04",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1031",
+                        "email": "sebydumitrescu10@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Dumitrescu Sebastian",
+                        "name": "Dumitrescu Sebastian Gabriel",
+                        "discord": "Pruna",
+                        "dob": "2010-07-09",
+                        "country": "Romania",
+                        "school": "Colegiul National Ion C Bratianu",
+                        "city": "Pitesti Romania",
+                        "grade": "High School — Grade 10 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Team of 2 (Astrobros · Pair #1)",
+                        "teamType": "duo_random",
+                        "callsign": "Astrobros",
+                        "partner": "Badea Robert Yannis",
+                        "partnerBib": "SNG-2026-1003",
+                        "partnerDiscord": "robert_24735",
+                        "partnerCountry": "Romania",
+                        "partnerSchool": "Colegiul Național \"Ion C. Brătianu\"",
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-11-06 15:55:02",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1032",
+                        "email": "whodisval@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Val",
+                        "name": "Selma Hanifah",
+                        "discord": "selmama.h",
+                        "dob": "2010-10-19",
+                        "country": "Indonesia",
+                        "school": "MAN 2 Pekanbaru",
+                        "city": "Pekanbaru, Indonesia",
+                        "grade": "High School — Grade 11 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo",
+                        "teamType": "solo",
+                        "callsign": "Solo",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-11-07 15:22:03",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1033",
+                        "email": "seanangelo0980@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "D'angelo Sean Antoni",
+                        "name": "D'angelo Sean Antoni",
+                        "discord": "thebigbrainfish",
+                        "dob": "2010-05-29",
+                        "country": "Indonesia",
+                        "school": "SMA Negeri 1 Tanjungpinang",
+                        "city": "Tanjungpinang Kota, Indonesia",
+                        "grade": "High School — Grade 11 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo (Astronomical levels of larp)",
+                        "teamType": "solo",
+                        "callsign": "Astronomical levels of larp",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "@user_41612",
+                        "regTimestamp": "2026-11-07 20:15:37",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1034",
+                        "email": "galvanizingpolymath@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "galvanizingpolymath",
+                        "name": "Ambrose Lim",
+                        "discord": "big brose",
+                        "dob": "2012-05-29",
+                        "country": "Australia",
+                        "school": "north sydney boy high school",
+                        "city": "sydney australia",
+                        "grade": "High School — Grade 9 (or equivalent)",
+                        "experience": "IOAA / IOAA-Jr, USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad), First Astronomy / Astrophysics Competition",
+                        "mode": "Solo (a)",
+                        "teamType": "solo",
+                        "callsign": "a",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": false,
+                        "referredBy": "discord",
+                        "regTimestamp": "2026-11-08 02:04:52",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1035",
+                        "email": "kusumdodiya901@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Yash chavda",
+                        "name": "Yash Shaileshkumar Chavda",
+                        "discord": "—",
+                        "dob": "2012-01-18",
+                        "country": "India",
+                        "school": "Shri S.J. Chaudhary vardhman vidhyaya",
+                        "city": "Mehsana, gujarat",
+                        "grade": "High School — Grade 9 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo (Coco)",
+                        "teamType": "solo",
+                        "callsign": "Coco",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-11-08 11:21:18",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1036",
+                        "email": "syarifahadelia21@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Syarifah Adelia Saspi",
+                        "name": "Syarifah Adelia Saspi",
+                        "discord": "syarifahhh22_32049",
+                        "dob": "2010-02-20",
+                        "country": "Indonesia",
+                        "school": "MAN 2 Pekanbaru",
+                        "city": "Pekanbaru, Indonesia",
+                        "grade": "High School — Grade 11 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo",
+                        "teamType": "solo",
+                        "callsign": "Solo",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "Selma Hanifah",
+                        "regTimestamp": "2026-11-08 17:29:19",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1037",
+                        "email": "buanaarkapralangga@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Pralangga Arka Buana",
+                        "name": "Pralangga Arka Buana",
+                        "discord": "pralangga_buana",
+                        "dob": "2010-03-03",
+                        "country": "Indonesia",
+                        "school": "MAN 2 Pekanbaru",
+                        "city": "Pekanbaru",
+                        "grade": "High School — Grade 11 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo",
+                        "teamType": "solo",
+                        "callsign": "Solo",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-11-08 19:04:50",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1038",
+                        "email": "venedictsasha@yahoo.com",
+                        "aliasEmails": [],
+                        "sngUser": "venedictsasha",
+                        "name": "Venedict Sasha-Cristian",
+                        "discord": "sashasushy",
+                        "dob": "2010-07-21",
+                        "country": "Romania",
+                        "school": "Colegiul Național 'Mihai Eminescu'",
+                        "city": "Romania, Botoşani (Botoşani)",
+                        "grade": "High School — Grade 10 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Team of 2 (Alternosteaua)",
+                        "teamType": "duo_set",
+                        "callsign": "Alternosteaua",
+                        "partner": "Alexandrescu Emilia-Maria",
+                        "partnerBib": "SNG-2026-1041",
+                        "partnerDiscord": "Emi",
+                        "partnerCountry": "Romania",
+                        "partnerSchool": "Liceul Teoretic \"Grigore Antipa\" Botoșani",
+                        "teamNote": null,
+                        "publicPrivacy": "full",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "Matei Butnaru (regele 🤑)",
+                        "regTimestamp": "2026-11-08 22:04:09",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1039",
+                        "email": "david.asan58@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "David Asanache",
+                        "name": "Asanache David",
+                        "discord": "davidddqq",
+                        "dob": "2010-02-07",
+                        "country": "Romania",
+                        "school": "Andrei Saguna' National College",
+                        "city": "Brasov, Romania",
+                        "grade": "High School — Grade 10 (or equivalent)",
+                        "experience": "USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad)",
+                        "mode": "Solo (Monoatomic Molecule)",
+                        "teamType": "solo",
+                        "callsign": "Monoatomic Molecule",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "David",
+                        "regTimestamp": "2026-11-08 22:08:53",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1040",
+                        "email": "luca.tanasescu@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Luca T.",
+                        "name": "Luca-Ioan Tănăsescu",
+                        "discord": "luca.7474",
+                        "dob": "2007-04-03",
+                        "country": "Romania",
+                        "school": "UNSTPB Politehnica Bucuresti",
+                        "city": "Bucuresti, Romania",
+                        "grade": "University Undergraduate (Age < 21)",
+                        "experience": "USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad)",
+                        "mode": "Solo (Micunealta)",
+                        "teamType": "solo",
+                        "callsign": "Micunealta",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Adult (18+ / Self-Consented)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-11-08 22:11:58",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1041",
+                        "email": "tui914021@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Tuftgty5",
+                        "name": "Alexandrescu Emilia-Maria",
+                        "discord": "Emi",
+                        "dob": "2010-08-17",
+                        "country": "Romania",
+                        "school": "Liceul teoretic \"Grigore Antipa\"",
+                        "city": "Botoșani România",
+                        "grade": "High School — Grade 10 (or equivalent)",
+                        "experience": "USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad)",
+                        "mode": "Team of 2 (Alternosteaua)",
+                        "teamType": "duo_set",
+                        "callsign": "Alternosteaua",
+                        "partner": "Venedict Sasha-Cristian",
+                        "partnerBib": "SNG-2026-1038",
+                        "partnerDiscord": "sashasushy",
+                        "partnerCountry": "Romania",
+                        "partnerSchool": "Colegiul Național \"Mihai Eminescu\" Botoșani",
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-11-08 22:15:33",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1042",
+                        "email": "ashiffaruq2@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Ashif",
+                        "name": "Ashif Ahmad Faruq",
+                        "discord": "asf04195",
+                        "dob": "2011-03-30",
+                        "country": "Indonesia",
+                        "school": "MAN Insan Cendekia Gowa",
+                        "city": "Indonesia",
+                        "grade": "High School — Grade 10 (or equivalent)",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo (4sf)",
+                        "teamType": "solo",
+                        "callsign": "4sf",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "@user_41612",
+                        "regTimestamp": "2026-11-09 06:38:42",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            },
+            {
+                        "bib": "SNG-2026-1043",
+                        "email": "nevergiveup11902@gmail.com",
+                        "aliasEmails": [],
+                        "sngUser": "Rahul",
+                        "name": "Rahul Mohanty",
+                        "discord": "—",
+                        "dob": "2009-04-15",
+                        "country": "India",
+                        "school": "DAV Public School",
+                        "city": "Bhubaneswar India",
+                        "grade": "High School — Grade 12 / Final Secondary Year",
+                        "experience": "First Astronomy / Astrophysics Competition",
+                        "mode": "Solo",
+                        "teamType": "solo",
+                        "callsign": "Solo",
+                        "partner": null,
+                        "partnerBib": null,
+                        "partnerDiscord": null,
+                        "partnerCountry": null,
+                        "partnerSchool": null,
+                        "teamNote": null,
+                        "publicPrivacy": "abbreviated",
+                        "ageConsent": "Minor (<18 · Parental Consent Verified)",
+                        "sponsorConsent": true,
+                        "referredBy": "None",
+                        "regTimestamp": "2026-11-09 17:45:26",
+                        "stage": "qualifier",
+                        "isAdmin": false
+            }
+];
+
+        const ADMIN_EMAILS = [
+            "matei.butnaru@yahoo.com",
+            "matei.butnaru@yahoo.ro",
+            "contact.supernovaguide@gmail.com",
+            "contact@supernovaguide.com",
+            "mateibutnaru5@gmail.com",
+            "albert_voicu_olteanu@yahoo.com",
+            "mihai.tesileanu2@gmail.com"
+        ];
+
+        const COMMITTEE_MASTER_KEYS = [
+            "SUPERNOVA-STAFF-2026",
+            "SAC2026-ADMIN"
+        ];
+
+        let liveSubmissions = {};
+        let finalSubmissions = {};
+        let webcamSnapshots = {};
+        let proctorFilter = "all";
+
+        // UTC Clock
+        setInterval(() => {
+            const el = document.getElementById('admin-utc-clock');
+            if (el) el.textContent = new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UT';
+        }, 1000);
+
+        // Tab Switcher
+        window.switchAdminTab = function(tabName, btnEl) {
+            document.querySelectorAll('.admin-pane').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`admin-pane-${tabName}`)?.classList.add('active');
+            if (btnEl) btnEl.classList.add('active');
+        };
+
+        function unlockAdminConsole(label) {
+            document.getElementById('admin-auth-gate').style.display = 'none';
+            document.getElementById('active-admin-identity').innerHTML = `<i class="fa-solid fa-user-shield"></i> ${label}`;
+            startRealtimeProctorListeners();
+            renderMasterTable();
+            renderProctorWall();
+            renderGraderTable();
+        }
+
+        // Check Firebase Auth state for Matei, Albert, or Mihai
+        if (getApps().length > 0) {
+            const auth = getAuth(getApp());
+            onAuthStateChanged(auth, (user) => {
+                if (user && user.email && ADMIN_EMAILS.includes(user.email.trim().toLowerCase())) {
+                    unlockAdminConsole(user.email.trim().toLowerCase());
+                }
+            });
+
+            document.getElementById('btn-admin-signin')?.addEventListener('click', async () => {
+                const email = document.getElementById('admin-login-email').value.trim().toLowerCase();
+                const pass = document.getElementById('admin-login-pass').value;
+                const errEl = document.getElementById('admin-auth-error');
+                errEl.textContent = "";
+                if (!ADMIN_EMAILS.includes(email)) {
+                    errEl.textContent = "Access denied: Only Matei, Albert, and Mihai are authorized.";
+                    return;
+                }
+                try {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                    unlockAdminConsole(email);
+                } catch (e) {
+                    errEl.textContent = "Firebase sign-in error: " + e.message;
+                }
+            });
+        }
+
+        document.getElementById('btn-admin-pin-unlock')?.addEventListener('click', () => {
+            const pin = document.getElementById('admin-master-pin').value.trim();
+            if (COMMITTEE_MASTER_KEYS.includes(pin)) {
+                unlockAdminConsole("Scientific Committee Master Key");
+            } else {
+                document.getElementById('admin-auth-error').textContent = "Invalid Committee Master Key.";
+            }
+        });
+
+        // Real-Time Firebase Listeners
+        function startRealtimeProctorListeners() {
+            if (getApps().length === 0) return;
+            const db = getDatabase(getApp());
+
+            onValue(ref(db, 'sac2026/submissions'), (snap) => {
+                liveSubmissions = snap.val() || {};
+                updateTelemetryKPIs();
+                renderProctorWall();
+                renderMasterTable();
+                renderGraderTable();
+            });
+
+            onValue(ref(db, 'sac2026/final_submissions'), (snap) => {
+                finalSubmissions = snap.val() || {};
+                updateTelemetryKPIs();
+                renderProctorWall();
+                renderMasterTable();
+                renderGraderTable();
+            });
+
+            onValue(ref(db, 'sac2026/snapshots'), (snap) => {
+                webcamSnapshots = snap.val() || {};
+                renderProctorWall();
+            });
+        }
+
+        function updateTelemetryKPIs() {
+            const liveBibs = Object.keys(liveSubmissions);
+            const finalBibs = Object.keys(finalSubmissions);
+            let strikeCount = 0;
+            let maxStrikeCount = 0;
+
+            const allBibs = new Set([...liveBibs, ...finalBibs]);
+            allBibs.forEach(bib => {
+                const rec = finalSubmissions[bib] || liveSubmissions[bib];
+                const s = rec?.strikes || 0;
+                if (s >= 1) strikeCount++;
+                if (s >= 3) maxStrikeCount++;
+            });
+
+            document.getElementById('kpi-live-active').textContent = liveBibs.filter(b => !finalSubmissions[b]).length;
+            document.getElementById('kpi-final-submitted').textContent = finalBibs.length;
+            document.getElementById('kpi-flagged-strikes').textContent = strikeCount;
+            document.getElementById('kpi-max-strikes').textContent = maxStrikeCount;
+        }
+
+        window.filterProctorWall = function(mode) {
+            proctorFilter = mode;
+            renderProctorWall();
+        };
+
+        function renderProctorWall() {
+            const wall = document.getElementById('proctor-webcam-wall');
+            if (!wall) return;
+
+            const students = REGISTERED_PARTICIPANTS.filter(p => !p.isAdmin);
+            const filtered = students.filter(p => {
+                const hasLive = !!liveSubmissions[p.bib];
+                const hasFinal = !!finalSubmissions[p.bib];
+                const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib];
+                if (proctorFilter === 'strikes') return rec && (rec.strikes || 0) > 0;
+                if (proctorFilter === 'all43') return true;
+                return hasLive || hasFinal;
+            });
+
+            if (filtered.length === 0) {
+                wall.innerHTML = `
+                    <div style="grid-column: 1 / -1; padding:32px; text-align:center; background:var(--bg-sidebar); border:1px dashed var(--border-light); border-radius:12px; color:var(--text-muted); font-family:var(--font-mono); font-size:0.84rem;">
+                        No active or submitted exam sessions yet. Click <strong>"Show All 43 Roster Slots"</strong> above to view all 43 registered competitors, or open <code>exam.html</code> to test a live session.
+                    </div>
+                `;
+                return;
+            }
+
+            wall.innerHTML = filtered.map(p => {
+                const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib] || null;
+                const isFinal = !!finalSubmissions[p.bib];
+                const snapObj = webcamSnapshots[p.bib];
+                const strikes = rec?.strikes || 0;
+                const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
+                const remSec = rec?.remainingSeconds !== undefined ? rec.remainingSeconds : 3600;
+                const m = Math.floor(remSec / 60);
+                const s = remSec % 60;
+                const timerStr = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+                let tileCls = 'proctor-tile';
+                let strikeColor = 'var(--accent-green)';
+                if (strikes === 1 || strikes === 2) {
+                    tileCls += ' strike-warn';
+                    strikeColor = 'var(--accent-gold)';
+                } else if (strikes >= 3) {
+                    tileCls += ' strike-crit';
+                    strikeColor = 'var(--accent-red)';
+                }
+
+                const snapHtml = snapObj?.latestFrame
+                    ? `<img src="${snapObj.latestFrame}" alt="${p.name}">`
+                    : `<div style="color:var(--text-muted); font-family:var(--font-mono); font-size:0.72rem; text-align:center;">
+                        <i class="fa-solid fa-camera" style="font-size:1.4rem; display:block; margin-bottom:6px; opacity:0.5;"></i>
+                        ${rec ? 'Awaiting 60s Frame' : 'Offline'}
+                       </div>`;
+
+                const statusTag = isFinal
+                    ? `<span style="color:var(--accent-green); font-weight:700;">SUBMITTED (${rec.receiptId || ''})</span>`
+                    : (rec ? `<span style="color:var(--accent-blue); font-weight:700;">LIVE · ${timerStr} left</span>` : `<span style="color:var(--text-muted);">Not Started</span>`);
+
+                return `
+                    <div class="${tileCls}">
+                        <div class="tile-snap">
+                            ${snapHtml}
+                            <span class="tile-badge">${p.bib}</span>
+                            <span class="tile-strike-pill" style="color:${strikeColor};">Strikes: ${strikes}/3</span>
+                        </div>
+                        <div class="tile-body">
+                            <strong style="color:var(--text-pure); font-size:0.92rem;">${p.name}</strong>
+                            <div style="color:var(--text-muted); font-size:0.75rem;">${p.country} · ${p.mode}</div>
+                            <div style="font-family:var(--font-mono); font-size:0.74rem; display:flex; justify-content:space-between; margin-top:4px;">
+                                <span>Answered: <strong>${ansCount}/30</strong></span>
+                                ${statusTag}
+                            </div>
+                            <div style="font-family:var(--font-mono); font-size:0.68rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                Last Event: ${rec?.lastEvent || rec?.submissionReason || '—'}
+                            </div>
+                            <div class="tile-actions">
+                                <button type="button" class="btn-action" style="flex:1; justify-content:center; padding:5px;" onclick="window.inspectCandidate('${p.bib}')">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Dossier
+                                </button>
+                                <button type="button" class="btn-action" style="flex:1; justify-content:center; padding:5px;" onclick="window.resetCandidateStrikes('${p.bib}')">
+                                    <i class="fa-solid fa-rotate-left"></i> Reset Strikes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderMasterTable() {
+            const tbody = document.getElementById('master-tbody');
+            if (!tbody) return;
+            const q = (document.getElementById('master-search-input')?.value || "").trim().toLowerCase();
+            const countryFilter = document.getElementById('master-country-filter')?.value || "";
+
+            const rows = REGISTERED_PARTICIPANTS.filter(p => {
+                if (countryFilter && p.country !== countryFilter) return false;
+                if (!q) return true;
+                return (
+                    p.bib.toLowerCase().includes(q) ||
+                    p.name.toLowerCase().includes(q) ||
+                    p.email.toLowerCase().includes(q) ||
+                    (p.sngUser || '').toLowerCase().includes(q) ||
+                    (p.discord || '').toLowerCase().includes(q) ||
+                    p.school.toLowerCase().includes(q) ||
+                    p.country.toLowerCase().includes(q) ||
+                    p.mode.toLowerCase().includes(q)
+                );
+            });
+
+            tbody.innerHTML = rows.map(p => {
+                const isFinal = !!finalSubmissions[p.bib];
+                const isLive = !!liveSubmissions[p.bib];
+                const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib];
+                const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
+                const statusHtml = isFinal
+                    ? `<span style="color:var(--accent-green); font-family:var(--font-mono); font-weight:700;">Submitted (${ansCount} ans · ${rec.strikes||0} str)</span>`
+                    : (isLive ? `<span style="color:var(--accent-blue); font-family:var(--font-mono);">Live (${ansCount} ans)</span>` : `<span style="color:var(--text-muted); font-family:var(--font-mono);">Registered</span>`);
+
+                return `
+                    <tr>
+                        <td style="font-family:var(--font-mono); font-weight:700; color:${p.isAdmin ? 'var(--accent-gold)' : 'var(--accent-green)'};">${p.bib}</td>
+                        <td style="font-weight:700; color:var(--text-pure);">${p.name}</td>
+                        <td style="font-family:var(--font-mono); font-size:0.75rem;">${p.email}</td>
+                        <td>${p.sngUser}</td>
+                        <td style="font-family:var(--font-mono); color:var(--accent-blue);">${p.discord}</td>
+                        <td style="font-family:var(--font-mono);">${p.dob}</td>
+                        <td>${p.country}</td>
+                        <td>${p.school}</td>
+                        <td>${p.city}</td>
+                        <td>${p.grade.replace(' (or equivalent)', '')}</td>
+                        <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis;">${p.experience}</td>
+                        <td style="font-family:var(--font-mono); color:var(--accent-purple);">${p.mode}</td>
+                        <td>${p.partner ? `${p.partner} (${p.partnerBib})` : '—'}</td>
+                        <td>${p.publicPrivacy}</td>
+                        <td>${p.referredBy}</td>
+                        <td>${statusHtml}</td>
+                        <td>
+                            <button type="button" class="btn-action" style="padding:4px 9px; font-size:0.7rem;" onclick="window.inspectCandidate('${p.bib}')">
+                                Inspect
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        document.getElementById('master-search-input')?.addEventListener('input', renderMasterTable);
+        document.getElementById('master-country-filter')?.addEventListener('change', renderMasterTable);
+
+        // Copy All 43 Competitor Emails for BCC
+        document.getElementById('btn-copy-all-emails')?.addEventListener('click', () => {
+            const emails = new Set();
+            REGISTERED_PARTICIPANTS.filter(p => !p.isAdmin).forEach(p => {
+                emails.add(p.email);
+                if (Array.isArray(p.aliasEmails)) p.aliasEmails.forEach(a => emails.add(a));
+            });
+            const bccStr = Array.from(emails).join(', ');
+            navigator.clipboard.writeText(bccStr);
+            const btn = document.getElementById('btn-copy-all-emails');
+            btn.innerHTML = `<i class="fa-solid fa-check"></i> Copied ${emails.size} Emails to Clipboard!`;
+            setTimeout(() => {
+                btn.innerHTML = `<i class="fa-regular fa-copy"></i> Copy All 43 Emails (BCC List)`;
+            }, 2500);
+        });
+
+        // Export Master CSV
+        document.getElementById('btn-export-master-csv')?.addEventListener('click', () => {
+            const headers = ["Bib", "Name", "Email", "SNG_User", "Discord", "DOB", "Country", "School", "City", "Grade", "Experience", "Mode", "Partner", "Partner_Bib", "Privacy", "Referred_By", "Timestamp", "Answered_Count", "Strikes", "Receipt_ID"];
+            const lines = [headers.join(",")];
+            REGISTERED_PARTICIPANTS.filter(p => !p.isAdmin).forEach(p => {
+                const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib];
+                const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
+                const row = [
+                    p.bib, p.name, p.email, p.sngUser, p.discord, p.dob, p.country,
+                    p.school, p.city, p.grade, p.experience, p.mode, p.partner || "",
+                    p.partnerBib || "", p.publicPrivacy, p.referredBy, p.regTimestamp,
+                    ansCount, rec?.strikes || 0, rec?.receiptId || ""
+                ].map(v => `"${String(v).replace(/"/g, '""')}"`);
+                lines.push(row.join(","));
+            });
+            const blob = new Blob([lines.join("\n")], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "SAC_2026_Master_Competitor_Database.csv";
+            a.click();
+        });
+
+        // Push Exam Access Password to Firebase
+        document.getElementById('btn-push-keys-firebase')?.addEventListener('click', async () => {
+            const passVal = document.getElementById('input-round-password').value.trim();
+            const statusEl = document.getElementById('key-push-status');
+            if (!passVal || getApps().length === 0) return;
+            try {
+                const db = getDatabase(getApp());
+                const keysPayload = {};
+                REGISTERED_PARTICIPANTS.forEach(p => {
+                    keysPayload[p.bib] = passVal;
+                });
+                await set(ref(db, 'sac2026/keys'), keysPayload);
+                statusEl.textContent = `✓ Pushed password "${passVal}" for all ${REGISTERED_PARTICIPANTS.length} Bib IDs to /sac2026/keys in Firebase.`;
+            } catch (e) {
+                statusEl.style.color = "var(--accent-red)";
+                statusEl.textContent = "Firebase write error: " + e.message;
+            }
+        });
+
+        document.getElementById('btn-copy-email-template')?.addEventListener('click', () => {
+            const txt = document.getElementById('email-template-box').value;
+            navigator.clipboard.writeText(txt);
+            const btn = document.getElementById('btn-copy-email-template');
+            btn.innerHTML = `<i class="fa-solid fa-check"></i> Copied!`;
+            setTimeout(() => {
+                btn.innerHTML = `<i class="fa-regular fa-copy"></i> Copy Email Body`;
+            }, 2000);
+        });
+
+        // Auto-Grader & Leaderboard Engine
+        function computeCandidateScore(ansObj) {
+            const keyLetters = (document.getElementById('grader-key-input')?.value || "")
+                .split(',')
+                .map(s => s.trim().toUpperCase())
+                .filter(Boolean);
+            const weights = (document.getElementById('grader-weights-input')?.value || "")
+                .split(',')
+                .map(s => parseFloat(s.trim()) || 1.0);
+
+            if (!ansObj) return { raw: 0, tieBreaker: 0 };
+            const mapLetter = ['A', 'B', 'C', 'D', 'E'];
+            let raw = 0;
+            let weightedSum = 0;
+
+            keyLetters.forEach((correctL, idx) => {
+                const qId = `Q${idx + 1}`;
+                const chosenIdx = ansObj[qId];
+                if (chosenIdx !== undefined && mapLetter[chosenIdx] === correctL) {
+                    raw += 1.0;
+                    weightedSum += (weights[idx] || 1.0);
+                }
+            });
+
+            const tieBreaker = raw > 0 ? (weightedSum / raw) : 0;
+            return { raw, tieBreaker };
+        }
+
+        function renderGraderTable() {
+            const tbody = document.getElementById('grader-leaderboard-tbody');
+            if (!tbody) return;
+
+            const students = REGISTERED_PARTICIPANTS.filter(p => !p.isAdmin).map(p => {
+                const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib] || null;
+                const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
+                const sc = computeCandidateScore(rec?.answers);
+                return {
+                    ...p,
+                    rec,
+                    ansCount,
+                    rawScore: sc.raw,
+                    tieBreaker: sc.tieBreaker,
+                    strikes: rec?.strikes || 0
+                };
+            });
+
+            students.sort((a, b) => {
+                if (b.rawScore !== a.rawScore) return b.rawScore - a.rawScore;
+                if (b.tieBreaker !== a.tieBreaker) return b.tieBreaker - a.tieBreaker;
+                return b.ansCount - a.ansCount;
+            });
+
+            tbody.innerHTML = students.map((s, idx) => {
+                const rank = idx + 1;
+                const isTop50 = rank <= 22;
+                return `
+                    <tr>
+                        <td style="font-family:var(--font-mono); font-weight:700; color:${isTop50 ? 'var(--accent-green)' : 'var(--text-muted)'};">#${rank} ${isTop50 ? '· Q' : ''}</td>
+                        <td style="font-family:var(--font-mono); font-weight:700;">${s.bib}</td>
+                        <td style="font-weight:700; color:var(--text-pure);">${s.name}</td>
+                        <td>${s.country}</td>
+                        <td style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-blue);">${s.mode}</td>
+                        <td style="font-family:var(--font-mono); font-weight:700; font-size:0.95rem; color:var(--accent-gold);">${s.rawScore.toFixed(1)} pt</td>
+                        <td style="font-family:var(--font-mono);">${s.tieBreaker.toFixed(2)}</td>
+                        <td style="font-family:var(--font-mono);">${s.ansCount} / 30</td>
+                        <td style="font-family:var(--font-mono); color:${s.strikes > 0 ? 'var(--accent-red)' : 'var(--accent-green)'};">${s.strikes} / 3</td>
+                        <td style="font-family:var(--font-mono); font-size:0.73rem;">${s.rec?.receiptId || (s.rec ? 'In Progress' : 'Not Started')}</td>
+                        <td>
+                            <button type="button" class="btn-action" style="padding:4px 8px; font-size:0.68rem;" onclick="window.promoteCandidate('${s.bib}', 'selection')">
+                                → Phase 2
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        document.getElementById('btn-save-grade-key')?.addEventListener('click', renderGraderTable);
+
+        // Inspect Candidate Modal & Reset Strikes
+        window.inspectCandidate = function(bib) {
+            const p = REGISTERED_PARTICIPANTS.find(x => x.bib === bib);
+            if (!p) return;
+            const rec = finalSubmissions[bib] || liveSubmissions[bib] || null;
+            const snapObj = webcamSnapshots[bib];
+            const mapLetter = ['A', 'B', 'C', 'D', 'E'];
+
+            let ansHtml = 'No answers submitted yet.';
+            if (rec?.answers) {
+                ansHtml = Object.entries(rec.answers)
+                    .map(([qId, optIdx]) => `<span class="stat-chip" style="display:inline-block; margin:3px; padding:4px 8px; background:var(--bg-sidebar); border:1px solid var(--border-light); border-radius:4px; font-family:var(--font-mono);">${qId}: <strong style="color:var(--accent-blue);">${mapLetter[optIdx] || optIdx}</strong></span>`)
+                    .join('');
+            }
+
+            document.getElementById('modal-cand-title').textContent = `${p.bib} — ${p.name} (${p.country})`;
+            document.getElementById('modal-cand-body').innerHTML = `
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
+                    <div><strong>Full Legal Name:</strong> ${p.name}</div>
+                    <div><strong>Email:</strong> ${p.email} ${p.aliasEmails?.length ? `(Alias: ${p.aliasEmails.join(', ')})` : ''}</div>
+                    <div><strong>SNG Username:</strong> ${p.sngUser}</div>
+                    <div><strong>Discord:</strong> ${p.discord}</div>
+                    <div><strong>Date of Birth:</strong> ${p.dob}</div>
+                    <div><strong>Country:</strong> ${p.country}</div>
+                    <div><strong>School:</strong> ${p.school}</div>
+                    <div><strong>School City:</strong> ${p.city}</div>
+                    <div><strong>Academic Grade:</strong> ${p.grade}</div>
+                    <div><strong>Prior Experience:</strong> ${p.experience}</div>
+                    <div><strong>Format / Team:</strong> ${p.mode}</div>
+                    <div><strong>Assigned Partner:</strong> ${p.partner ? `${p.partner} (${p.partnerBib})` : 'None (Solo)'}</div>
+                    <div><strong>GDPR Public Privacy:</strong> ${p.publicPrivacy}</div>
+                    <div><strong>Parental / Age Consent:</strong> ${p.ageConsent}</div>
+                    <div><strong>Referred By:</strong> ${p.referredBy}</div>
+                    <div><strong>Registration Timestamp:</strong> ${p.regTimestamp} UT</div>
+                </div>
+                <div style="border-top:1px solid var(--border-subtle); padding-top:14px;">
+                    <strong style="font-family:var(--font-mono); color:var(--accent-gold); display:block; margin-bottom:8px;">LIVE EXAM ANSWERS &amp; PROCTOR TELEMETRY</strong>
+                    <div style="margin-bottom:10px;">Strikes: <strong>${rec?.strikes || 0} / 3</strong> · Receipt: <strong>${rec?.receiptId || 'N/A'}</strong></div>
+                    <div>${ansHtml}</div>
+                    ${snapObj?.latestFrame ? `<div style="margin-top:14px;"><img src="${snapObj.latestFrame}" style="max-width:260px; border-radius:8px; border:1px solid var(--border-light);"></div>` : ''}
+                </div>
+            `;
+            document.getElementById('dossier-modal').classList.add('active');
+        };
+
+        document.getElementById('btn-close-dossier')?.addEventListener('click', () => {
+            document.getElementById('dossier-modal').classList.remove('active');
+        });
+
+        window.resetCandidateStrikes = async function(bib) {
+            if (getApps().length === 0) return;
+            const db = getDatabase(getApp());
+            try {
+                if (liveSubmissions[bib]) {
+                    await update(ref(db, `sac2026/submissions/${bib}`), { strikes: 0, lastEvent: "admin_reset_strikes" });
+                }
+                if (finalSubmissions[bib]) {
+                    await update(ref(db, `sac2026/final_submissions/${bib}`), { strikes: 0 });
+                }
+                alert(`Reset strikes to 0 for ${bib}.`);
+            } catch (e) {
+                alert("Error resetting strikes: " + e.message);
+            }
+        };
+
+        window.promoteCandidate = async function(bib, nextStage) {
+            const p = REGISTERED_PARTICIPANTS.find(x => x.bib === bib);
+            if (p) p.stage = nextStage;
+            if (getApps().length > 0) {
+                try {
+                    const db = getDatabase(getApp());
+                    await update(ref(db, `sac2026/stages`), { [bib]: nextStage });
+                } catch (e) {}
+            }
+            alert(`Promoted ${bib} to stage: ${nextStage}`);
+        };
+    </script>
+</body>
+</html>

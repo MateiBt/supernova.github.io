@@ -109,14 +109,14 @@
 
         .gate-card {
             width: 100%;
-            max-width: 880px;
+            max-width: 920px;
             background: var(--bg-card);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-lg);
             padding: 32px;
             box-shadow: 0 24px 80px rgba(0, 0, 0, 0.75);
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
+            grid-template-columns: 1.15fr 0.85fr;
             gap: 28px;
         }
 
@@ -129,14 +129,32 @@
         .gate-brand {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 12px;
             margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .gate-brand-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .gate-brand img {
             width: 36px;
             height: 36px;
             border-radius: 8px;
+        }
+
+        .gate-utc-badge {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            padding: 5px 10px;
+            border-radius: 99px;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-subtle);
+            color: var(--accent-green);
         }
 
         .gate-eyebrow {
@@ -157,35 +175,84 @@
         }
 
         .gate-desc {
-            font-size: 0.88rem;
+            font-size: 0.86rem;
             color: var(--text-muted);
             line-height: 1.55;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+        }
+
+        /* 2-Window Zone Selector */
+        .window-zone-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .zone-option {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .zone-option:hover {
+            border-color: var(--border-light);
+        }
+
+        .zone-option.active {
+            background: rgba(53, 230, 255, 0.1);
+            border-color: var(--accent-blue);
+        }
+
+        .zone-tag {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .zone-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-pure);
+        }
+
+        .zone-hours {
+            font-family: var(--font-mono);
+            font-size: 0.71rem;
+            color: var(--accent-green);
+            margin-top: 2px;
         }
 
         .form-group {
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .form-label {
             display: block;
             font-family: var(--font-mono);
-            font-size: 0.73rem;
+            font-size: 0.72rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .form-input {
             width: 100%;
-            padding: 11px 14px;
+            padding: 10px 14px;
             background: var(--bg-sidebar);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-sm);
             color: var(--text-pure);
             font-family: var(--font-mono);
-            font-size: 0.88rem;
+            font-size: 0.86rem;
             transition: border-color 0.2s;
             user-select: text;
             -webkit-user-select: text;
@@ -256,7 +323,7 @@
 
         .gate-cam-preview {
             width: 100%;
-            height: 155px;
+            height: 165px;
             background: #050507;
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-sm);
@@ -286,10 +353,10 @@
             display: flex;
             align-items: flex-start;
             gap: 10px;
-            font-size: 0.79rem;
+            font-size: 0.78rem;
             color: var(--text-muted);
             line-height: 1.45;
-            margin: 12px 0 16px;
+            margin: 10px 0 12px;
             cursor: pointer;
         }
 
@@ -303,6 +370,7 @@
             padding: 13px 20px;
             border: none;
             border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, var(--accent-blue), #1CB8D8);
             background-color: var(--accent-blue);
             color: #050507;
             font-family: var(--font-mono);
@@ -318,6 +386,11 @@
             gap: 8px;
         }
 
+        .btn-launch:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(53, 230, 255, 0.28);
+        }
+
         .btn-launch:disabled {
             opacity: 0.35;
             cursor: not-allowed;
@@ -327,7 +400,7 @@
             color: var(--accent-red);
             font-family: var(--font-mono);
             font-size: 0.78rem;
-            margin-top: 8px;
+            margin-top: 6px;
             min-height: 18px;
         }
 
@@ -638,7 +711,7 @@
             color: var(--text-main);
         }
 
-        .problem-footer-Actions {
+        .problem-footer-actions {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -839,20 +912,38 @@
          ========================================================= -->
     <div id="gatekeeper-screen">
         <div class="gate-card">
-            <!-- Left Column: Credentials & Password Authentication -->
+            <!-- Left Column: Zone Selection, Credentials & Password Authentication -->
             <div>
                 <div class="gate-brand">
-                    <img src="assets/img/supernova_logo.png" alt="Supernova Guide" onerror="this.style.display='none'">
-                    <div>
-                        <span class="gate-eyebrow">Supernova Astrophysics Cup · Autumn 2026</span>
-                        <strong style="font-family:var(--font-display); color:var(--text-pure);">Proctored Exam Terminal</strong>
+                    <div class="gate-brand-left">
+                        <img src="assets/img/supernova_logo.png" alt="Supernova Guide" onerror="this.style.display='none'">
+                        <div>
+                            <span class="gate-eyebrow">Supernova Astrophysics Cup · Autumn 2026</span>
+                            <strong style="font-family:var(--font-display); color:var(--text-pure);">Proctored Exam Terminal</strong>
+                        </div>
                     </div>
+                    <span class="gate-utc-badge" id="gate-utc-clock">UTC: Loading...</span>
                 </div>
 
                 <h1 class="gate-title">Candidate Authentication</h1>
                 <p class="gate-desc">
-                    Enter your registered Supernova Guide email, Candidate Bib ID, and the unique Exam Access Password sent to your email prior to 18:00 UT.
+                    Select your regional competition window below, then enter your registered Supernova Guide email, Candidate Bib ID, and the Exam Access Password sent to your email.
                 </p>
+
+                <!-- 2-Window Zone Selector -->
+                <label class="form-label">Select Your Regional Entry Window</label>
+                <div class="window-zone-grid">
+                    <div class="zone-option active" id="zone-opt-euasia" onclick="window.selectExamZone('Window A · Europe–Asia (10:00–11:00 UT)', this)">
+                        <span class="zone-tag">Window A · Europe / Asia / Oceania</span>
+                        <div class="zone-title">Eurasia &amp; Oceania Zone</div>
+                        <div class="zone-hours">10:00 UT – 11:00 UT (12:00 EET / 17:00 WIB)</div>
+                    </div>
+                    <div class="zone-option" id="zone-opt-americas" onclick="window.selectExamZone('Window B · Americas (18:00–19:00 UT)', this)">
+                        <span class="zone-tag">Window B · USA &amp; Americas</span>
+                        <div class="zone-title">Americas &amp; Late Zone</div>
+                        <div class="zone-hours">18:00 UT – 19:00 UT (13:00 EST / 10:00 PST)</div>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <label class="form-label" for="cand-email">Registered Account Email</label>
@@ -861,7 +952,7 @@
 
                 <div class="form-group">
                     <label class="form-label" for="cand-bib">Candidate Bib ID</label>
-                    <input type="text" id="cand-bib" class="form-input" placeholder="SNG-2026-0142" required>
+                    <input type="text" id="cand-bib" class="form-input" placeholder="SNG-2026-1001" required>
                 </div>
 
                 <div class="form-group">
@@ -913,7 +1004,7 @@
 
                 <div>
                     <button type="button" class="btn-launch" id="btn-start-exam" disabled>
-                        <i class="fa-solid fa-lock"></i> Unlock & Enter Fullscreen Exam
+                        <i class="fa-solid fa-lock"></i> Unlock &amp; Enter Fullscreen Exam
                     </button>
                 </div>
             </div>
@@ -939,7 +1030,7 @@
                 <span id="exam-timer-display">60:00</span>
             </div>
             <button type="button" class="btn-submit-exam" id="btn-finish-exam">
-                <i class="fa-solid fa-paper-plane"></i> Finish & Submit
+                <i class="fa-solid fa-paper-plane"></i> Finish &amp; Submit
             </button>
         </div>
     </header>
@@ -970,7 +1061,7 @@
                 <div class="options-list" id="q-options-box"></div>
             </div>
 
-            <div class="problem-footer-Actions">
+            <div class="problem-footer-actions">
                 <button type="button" class="btn-nav" id="btn-prev-q">
                     <i class="fa-solid fa-arrow-left"></i> Previous
                 </button>
@@ -1002,6 +1093,10 @@
                     <span class="telemetry-val" id="tel-bib" style="color:var(--accent-blue);">SNG-2026-0000</span>
                 </div>
                 <div class="telemetry-row">
+                    <span style="color:var(--text-muted);">Window</span>
+                    <span class="telemetry-val" id="tel-zone" style="font-size:0.68rem; color:var(--accent-purple);">Window A</span>
+                </div>
+                <div class="telemetry-row">
                     <span style="color:var(--text-muted);">Account</span>
                     <span class="telemetry-val" id="tel-email" style="font-size:0.7rem;">—</span>
                 </div>
@@ -1026,7 +1121,7 @@
             <div class="proctor-card">
                 <div class="proctor-label">Cloud Sync Status</div>
                 <div id="sync-status-text" style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-green);">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> Auto-saved to Local & Cloud
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Auto-saved to Local &amp; Cloud
                 </div>
             </div>
         </aside>
@@ -1046,7 +1141,7 @@
                 Recorded Strike: <span id="modal-strike-count">1</span> / 3
             </div>
             <button type="button" class="btn-launch" id="btn-restore-lockdown">
-                Return to Fullscreen & Resume Exam
+                Return to Fullscreen &amp; Resume Exam
             </button>
         </div>
     </div>
@@ -1112,17 +1207,18 @@
         const db = getDatabase(app);
 
         // =========================================================
-        // 2. ADMIN ACCESS KEYS & EXAM PAYLOAD CONFIGURATION
+        // 2. ADMIN ACCESS KEYS & 2-WINDOW EXAM CONFIGURATION
         // =========================================================
         const MASTER_EXAM_PASSWORDS = [
             "SAC2026-QUALIFIER-KEY",
+            "SAC2026-EUASIA-KEY",
+            "SAC2026-USA-KEY",
             "SUPERNOVA-R1-8842"
         ];
 
         const EXAM_DURATION_SECONDS = 60 * 60; // 60 Minutes
         const MAX_STRIKES = 3;
 
-        // Sample Olympiad Problem Payload (Replace at 18:00 UT or load via Firebase)
         let EXAM_QUESTIONS = [
             {
                 id: "Q1",
@@ -1203,12 +1299,28 @@
         let currentIdx = 0;
         let candidateBib = "";
         let candidateEmail = "";
+        let selectedWindowZone = "Window A · Europe–Asia (10:00–11:00 UT)";
         let answers = {};
         let flagged = {};
         let strikes = 0;
         let remainingSeconds = EXAM_DURATION_SECONDS;
         let timerInterval = null;
         let snapshotInterval = null;
+
+        function updateGateClock() {
+            const el = document.getElementById('gate-utc-clock');
+            if (el) {
+                el.textContent = new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UT';
+            }
+        }
+        setInterval(updateGateClock, 1000);
+        updateGateClock();
+
+        window.selectExamZone = function(zoneLabel, el) {
+            selectedWindowZone = zoneLabel;
+            document.querySelectorAll('.zone-option').forEach(z => z.classList.remove('active'));
+            if (el) el.classList.add('active');
+        };
 
         const gateScreen = document.getElementById('gatekeeper-screen');
         const btnEnableCam = document.getElementById('btn-enable-cam');
@@ -1228,6 +1340,19 @@
             document.getElementById(id).addEventListener('input', checkGateReady);
         });
         pledgeCheck.addEventListener('change', checkGateReady);
+
+        // Auto-fill Email, Bib ID, and Window Zone if launched from Competitor Command Center
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('email')) {
+            document.getElementById('cand-email').value = urlParams.get('email');
+        }
+        if (urlParams.get('bib')) {
+            document.getElementById('cand-bib').value = urlParams.get('bib');
+        }
+        if (urlParams.get('zone') === 'americas') {
+            window.selectExamZone('Window B · Americas (18:00–19:00 UT)', document.getElementById('zone-opt-americas'));
+        }
+        checkGateReady();
 
         // =========================================================
         // 4. WEBCAM & SCREEN SHARE PERMISSIONS
@@ -1298,7 +1423,7 @@
             const bibVal = document.getElementById('cand-bib').value.trim().toUpperCase();
             const passVal = document.getElementById('cand-pass').value.trim();
 
-            if (!/^SNG-2026-\d{4}$/i.test(bibVal)) {
+            if (!/^SNG-(2026-\d{4}|ADMIN-0[123])$/i.test(bibVal)) {
                 gateError.textContent = "Invalid Bib format. Expected format: SNG-2026-XXXX";
                 return;
             }
@@ -1316,7 +1441,7 @@
             }
 
             if (!passwordValid) {
-                gateError.textContent = "Invalid Exam Access Password. Check the email sent prior to 18:00 UT.";
+                gateError.textContent = "Invalid Exam Access Password. Check the email sent prior to your window.";
                 return;
             }
 
@@ -1356,6 +1481,7 @@
 
             document.getElementById('tel-bib').textContent = candidateBib;
             document.getElementById('tel-email').textContent = candidateEmail;
+            document.getElementById('tel-zone').textContent = selectedWindowZone.split('·')[0].trim();
 
             const savedRaw = localStorage.getItem(getStorageKey());
             if (savedRaw) {
@@ -1364,6 +1490,7 @@
                     answers = parsed.answers || {};
                     flagged = parsed.flagged || {};
                     strikes = parsed.strikes || 0;
+                    if (parsed.windowZone) selectedWindowZone = parsed.windowZone;
                     if (parsed.endTimeMs) {
                         const diffSec = Math.floor((parsed.endTimeMs - Date.now()) / 1000);
                         remainingSeconds = Math.max(0, diffSec);
@@ -1376,6 +1503,7 @@
                 localStorage.setItem(getStorageKey(), JSON.stringify({
                     bib: candidateBib,
                     email: candidateEmail,
+                    windowZone: selectedWindowZone,
                     answers,
                     flagged,
                     strikes,
@@ -1404,6 +1532,7 @@
             const payload = {
                 bib: candidateBib,
                 email: candidateEmail,
+                windowZone: selectedWindowZone,
                 answers,
                 flagged,
                 strikes,
@@ -1423,6 +1552,7 @@
                 await update(ref(db, `sac2026/submissions/${candidateBib}`), {
                     bib: candidateBib,
                     email: candidateEmail,
+                    windowZone: selectedWindowZone,
                     answers,
                     flagged,
                     strikes,
@@ -1694,6 +1824,7 @@
             const finalPayload = {
                 bib: candidateBib,
                 email: candidateEmail,
+                windowZone: selectedWindowZone,
                 answers,
                 strikes,
                 remainingSeconds,
@@ -1726,6 +1857,7 @@
                         <div style="background:var(--bg-sidebar); border:1px solid var(--border-subtle); border-radius:10px; padding:16px; text-align:left; font-family:var(--font-mono); font-size:0.8rem; margin-bottom:24px; line-height:1.8;">
                             <div><span style="color:var(--text-muted);">RECEIPT ID:</span> <strong style="color:var(--accent-blue);">${receiptId}</strong></div>
                             <div><span style="color:var(--text-muted);">CANDIDATE BIB:</span> ${candidateBib}</div>
+                            <div><span style="color:var(--text-muted);">WINDOW ZONE:</span> ${selectedWindowZone}</div>
                             <div><span style="color:var(--text-muted);">ANSWERED:</span> ${Object.keys(answers).length} / ${EXAM_QUESTIONS.length}</div>
                             <div><span style="color:var(--text-muted);">PROCTOR STRIKES:</span> ${strikes} / ${MAX_STRIKES}</div>
                             <div><span style="color:var(--text-muted);">TIMESTAMP (UT):</span> ${finalPayload.submittedAtUTC}</div>
