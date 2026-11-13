@@ -79,7 +79,6 @@
             flex-direction: column;
         }
 
-        /* Ambient Background */
         .sky-background {
             position: fixed;
             inset: 0;
@@ -92,7 +91,7 @@
         }
 
         /* =========================================================
-           1. GATEKEEPER & PRE-FLIGHT CHECK OVERLAY
+           1. PRE-FLIGHT ACCOUNT & PROCTORING GATEKEEPER
            ========================================================= */
         #gatekeeper-screen {
             position: fixed;
@@ -109,14 +108,14 @@
 
         .gate-card {
             width: 100%;
-            max-width: 880px;
+            max-width: 920px;
             background: var(--bg-card);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-lg);
             padding: 32px;
             box-shadow: 0 24px 80px rgba(0, 0, 0, 0.75);
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
+            grid-template-columns: 1.15fr 0.85fr;
             gap: 28px;
         }
 
@@ -129,14 +128,32 @@
         .gate-brand {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 12px;
             margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .gate-brand-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .gate-brand img {
             width: 36px;
             height: 36px;
             border-radius: 8px;
+        }
+
+        .gate-utc-badge {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            padding: 5px 10px;
+            border-radius: 99px;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-subtle);
+            color: var(--accent-green);
         }
 
         .gate-eyebrow {
@@ -157,35 +174,97 @@
         }
 
         .gate-desc {
-            font-size: 0.88rem;
+            font-size: 0.86rem;
             color: var(--text-muted);
             line-height: 1.55;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+        }
+
+        .auth-status-banner {
+            background: rgba(43, 227, 138, 0.08);
+            border: 1px solid rgba(43, 227, 138, 0.35);
+            border-radius: var(--radius-sm);
+            padding: 11px 14px;
+            margin-bottom: 14px;
+            font-size: 0.82rem;
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            line-height: 1.45;
+        }
+
+        .window-zone-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .zone-option {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .zone-option:hover {
+            border-color: var(--border-light);
+        }
+
+        .zone-option.active {
+            background: rgba(53, 230, 255, 0.1);
+            border-color: var(--accent-blue);
+        }
+
+        .zone-tag {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .zone-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-pure);
+        }
+
+        .zone-hours {
+            font-family: var(--font-mono);
+            font-size: 0.71rem;
+            color: var(--accent-green);
+            margin-top: 2px;
         }
 
         .form-group {
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .form-label {
             display: block;
             font-family: var(--font-mono);
-            font-size: 0.73rem;
+            font-size: 0.72rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .form-input {
             width: 100%;
-            padding: 11px 14px;
+            padding: 10px 14px;
             background: var(--bg-sidebar);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-sm);
             color: var(--text-pure);
             font-family: var(--font-mono);
-            font-size: 0.88rem;
+            font-size: 0.86rem;
             transition: border-color 0.2s;
             user-select: text;
             -webkit-user-select: text;
@@ -256,7 +335,7 @@
 
         .gate-cam-preview {
             width: 100%;
-            height: 155px;
+            height: 165px;
             background: #050507;
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-sm);
@@ -286,10 +365,10 @@
             display: flex;
             align-items: flex-start;
             gap: 10px;
-            font-size: 0.79rem;
+            font-size: 0.78rem;
             color: var(--text-muted);
             line-height: 1.45;
-            margin: 12px 0 16px;
+            margin: 10px 0 12px;
             cursor: pointer;
         }
 
@@ -303,6 +382,7 @@
             padding: 13px 20px;
             border: none;
             border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, var(--accent-blue), #1CB8D8);
             background-color: var(--accent-blue);
             color: #050507;
             font-family: var(--font-mono);
@@ -318,6 +398,11 @@
             gap: 8px;
         }
 
+        .btn-launch:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(53, 230, 255, 0.28);
+        }
+
         .btn-launch:disabled {
             opacity: 0.35;
             cursor: not-allowed;
@@ -327,7 +412,7 @@
             color: var(--accent-red);
             font-family: var(--font-mono);
             font-size: 0.78rem;
-            margin-top: 8px;
+            margin-top: 6px;
             min-height: 18px;
         }
 
@@ -371,7 +456,7 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
         }
 
         .timer-box {
@@ -442,27 +527,26 @@
             color: #050507;
         }
 
-        /* Question Number Ribbon */
         .question-ribbon {
             background: var(--bg-base);
             border-bottom: 1px solid var(--border-subtle);
             padding: 10px 24px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             overflow-x: auto;
             flex-shrink: 0;
         }
 
         .q-nav-btn {
-            min-width: 36px;
-            height: 34px;
+            min-width: 34px;
+            height: 32px;
             border-radius: 6px;
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
             color: var(--text-muted);
             font-family: var(--font-mono);
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.15s;
@@ -518,6 +602,19 @@
             max-width: 920px;
         }
 
+        .problem-lore-banner {
+            display: none;
+            background: linear-gradient(135deg, rgba(179, 156, 208, 0.12), rgba(53, 230, 255, 0.06));
+            border: 1px solid rgba(179, 156, 208, 0.35);
+            border-left: 4px solid var(--accent-purple);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            font-size: 0.86rem;
+            line-height: 1.55;
+            color: var(--text-main);
+        }
+
         .problem-meta {
             display: flex;
             align-items: center;
@@ -525,12 +622,15 @@
             margin-bottom: 18px;
             padding-bottom: 14px;
             border-bottom: 1px solid var(--border-subtle);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .meta-left {
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .q-num-badge {
@@ -538,6 +638,16 @@
             font-size: 1.2rem;
             font-weight: 700;
             color: var(--text-pure);
+        }
+
+        .q-part-badge {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 3px 9px;
+            border-radius: 6px;
+            background: rgba(53, 230, 255, 0.12);
+            color: var(--accent-blue);
+            border: 1px solid rgba(53, 230, 255, 0.3);
         }
 
         .q-module-badge {
@@ -553,7 +663,7 @@
         .q-pts-badge {
             font-family: var(--font-mono);
             font-size: 0.75rem;
-            color: var(--accent-blue);
+            color: var(--accent-green);
         }
 
         .btn-flag {
@@ -638,7 +748,7 @@
             color: var(--text-main);
         }
 
-        .problem-footer-Actions {
+        .problem-footer-actions {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -681,7 +791,6 @@
             text-decoration: underline;
         }
 
-        /* Right Proctoring Telemetry Sidebar */
         .proctor-sidebar {
             background: var(--bg-sidebar);
             border-left: 1px solid var(--border-subtle);
@@ -799,9 +908,9 @@
         }
 
         .constants-box {
-            max-width: 760px;
+            max-width: 780px;
             width: 100%;
-            max-height: 82vh;
+            max-height: 84vh;
             background: var(--bg-card);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-lg);
@@ -835,44 +944,62 @@
     <div class="sky-background"></div>
 
     <!-- =========================================================
-         1. PASSWORD GATEKEEPER & PRE-FLIGHT PROCTORING MODAL
+         1. ACCOUNT VERIFICATION & PRE-FLIGHT PROCTORING MODAL
          ========================================================= -->
     <div id="gatekeeper-screen">
         <div class="gate-card">
-            <!-- Left Column: Credentials & Password Authentication -->
+            <!-- Left Column: Logged-In Account Detection & Zone Selection (No Password Needed) -->
             <div>
                 <div class="gate-brand">
-                    <img src="assets/img/supernova_logo.png" alt="Supernova Guide" onerror="this.style.display='none'">
-                    <div>
-                        <span class="gate-eyebrow">Supernova Astrophysics Cup · Autumn 2026</span>
-                        <strong style="font-family:var(--font-display); color:var(--text-pure);">Proctored Exam Terminal</strong>
+                    <div class="gate-brand-left">
+                        <img src="assets/img/supernova_logo.png" alt="Supernova Guide" onerror="this.style.display='none'">
+                        <div>
+                            <span class="gate-eyebrow">Supernova Astrophysics Cup · Autumn 2026</span>
+                            <strong style="font-family:var(--font-display); color:var(--text-pure);">Phase 1 Live Exam Terminal (30 MCQs)</strong>
+                        </div>
+                    </div>
+                    <span class="gate-utc-badge" id="gate-utc-clock">UTC: Loading...</span>
+                </div>
+
+                <h1 class="gate-title">Competitor Verification</h1>
+                <p class="gate-desc">
+                    Your Supernova Guide account is verified automatically below. Complete the two hardware proctoring checks on the right to enter fullscreen mode and begin your 60-minute exam.
+                </p>
+
+                <div class="auth-status-banner" id="auth-status-banner">
+                    <i class="fa-solid fa-circle-check" style="font-size:1.1rem;"></i>
+                    <div id="auth-status-text">Detecting your logged-in Supernova Guide account...</div>
+                </div>
+
+                <!-- 2-Window Zone Selector -->
+                <label class="form-label">Select Your Regional Entry Window</label>
+                <div class="window-zone-grid">
+                    <div class="zone-option active" id="zone-opt-euasia" onclick="window.selectExamZone('Window A · Europe–Asia (10:00–11:00 UT)', this)">
+                        <span class="zone-tag">Window A · Europe / Asia / Oceania</span>
+                        <div class="zone-title">Eurasia &amp; Oceania Zone</div>
+                        <div class="zone-hours">10:00 UT – 11:00 UT (12:00 EET / 17:00 WIB)</div>
+                    </div>
+                    <div class="zone-option" id="zone-opt-americas" onclick="window.selectExamZone('Window B · Americas (18:00–19:00 UT)', this)">
+                        <span class="zone-tag">Window B · USA &amp; Americas</span>
+                        <div class="zone-title">Americas &amp; Late Zone</div>
+                        <div class="zone-hours">18:00 UT – 19:00 UT (13:00 EST / 10:00 PST)</div>
                     </div>
                 </div>
 
-                <h1 class="gate-title">Candidate Authentication</h1>
-                <p class="gate-desc">
-                    Enter your registered Supernova Guide email, Candidate Bib ID, and the unique Exam Access Password sent to your email prior to 18:00 UT.
-                </p>
-
                 <div class="form-group">
-                    <label class="form-label" for="cand-email">Registered Account Email</label>
+                    <label class="form-label" for="cand-email">Logged-In Account Email</label>
                     <input type="email" id="cand-email" class="form-input" placeholder="candidate@supernovaguide.com" required>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="cand-bib">Candidate Bib ID</label>
-                    <input type="text" id="cand-bib" class="form-input" placeholder="SNG-2026-0142" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="cand-pass">Exam Access Password (Sent via Email)</label>
-                    <input type="password" id="cand-pass" class="form-input" placeholder="••••••••••••" required>
+                    <label class="form-label" for="cand-bib">Assigned Candidate Bib ID</label>
+                    <input type="text" id="cand-bib" class="form-input" placeholder="SNG-2026-1001" required>
                 </div>
 
                 <label class="pledge-label">
                     <input type="checkbox" id="pledge-check">
                     <span>
-                        I confirm that I am using only a non-programmable scientific calculator and the built-in Supernova IAU Constants Sheet. I consent to continuous webcam monitoring, screen sharing, and full-screen lockdown.
+                        I confirm that I am using only a non-programmable scientific calculator and the built-in Supernova Constants Sheet. I consent to continuous webcam monitoring, screen sharing, and full-screen lockdown.
                     </span>
                 </label>
 
@@ -913,7 +1040,7 @@
 
                 <div>
                     <button type="button" class="btn-launch" id="btn-start-exam" disabled>
-                        <i class="fa-solid fa-lock"></i> Unlock & Enter Fullscreen Exam
+                        <i class="fa-solid fa-play"></i> Enter Fullscreen &amp; Start Exam (30 MCQs)
                     </button>
                 </div>
             </div>
@@ -927,19 +1054,19 @@
         <div class="header-left">
             <img src="assets/img/supernova_logo.png" alt="Logo" onerror="this.style.display='none'">
             <strong style="font-family:var(--font-display); font-size:1.05rem; color:var(--text-pure);">SUPERNOVA GUIDE</strong>
-            <span class="exam-phase-pill" id="header-phase-label">SAC 2026 · OPEN QUALIFIER</span>
+            <span class="exam-phase-pill" id="header-phase-label">SAC 2026 · PHASE 1 QUALIFIER (30 MCQs)</span>
         </div>
 
         <div class="header-right">
             <button type="button" class="btn-constants" id="btn-open-constants">
-                <i class="fa-solid fa-square-root-variable"></i> IAU Constants Sheet
+                <i class="fa-solid fa-square-root-variable"></i> Useful Constants Sheet
             </button>
             <div class="timer-box" id="exam-timer-box">
                 <i class="fa-regular fa-clock"></i>
                 <span id="exam-timer-display">60:00</span>
             </div>
             <button type="button" class="btn-submit-exam" id="btn-finish-exam">
-                <i class="fa-solid fa-paper-plane"></i> Finish & Submit
+                <i class="fa-solid fa-paper-plane"></i> Finish &amp; Submit
             </button>
         </div>
     </header>
@@ -952,9 +1079,12 @@
     <main class="exam-body">
         <section class="problem-pane">
             <div class="problem-card">
+                <div class="problem-lore-banner" id="q-lore-banner"></div>
+
                 <div class="problem-meta">
                     <div class="meta-left">
-                        <span class="q-num-badge" id="q-number-title">Question 1</span>
+                        <span class="q-num-badge" id="q-number-title">Question 1 of 30</span>
+                        <span class="q-part-badge" id="q-part-tag">Part I</span>
                         <span class="q-module-badge" id="q-module-tag">Module T1</span>
                         <span class="q-pts-badge" id="q-points-tag">1.0 Point</span>
                     </div>
@@ -970,7 +1100,7 @@
                 <div class="options-list" id="q-options-box"></div>
             </div>
 
-            <div class="problem-footer-Actions">
+            <div class="problem-footer-actions">
                 <button type="button" class="btn-nav" id="btn-prev-q">
                     <i class="fa-solid fa-arrow-left"></i> Previous
                 </button>
@@ -1002,12 +1132,16 @@
                     <span class="telemetry-val" id="tel-bib" style="color:var(--accent-blue);">SNG-2026-0000</span>
                 </div>
                 <div class="telemetry-row">
-                    <span style="color:var(--text-muted);">Account</span>
-                    <span class="telemetry-val" id="tel-email" style="font-size:0.7rem;">—</span>
+                    <span style="color:var(--text-muted);">Competitor</span>
+                    <span class="telemetry-val" id="tel-name" style="font-size:0.72rem; color:var(--text-pure);">—</span>
+                </div>
+                <div class="telemetry-row">
+                    <span style="color:var(--text-muted);">Window</span>
+                    <span class="telemetry-val" id="tel-zone" style="font-size:0.68rem; color:var(--accent-purple);">Window A</span>
                 </div>
                 <div class="telemetry-row">
                     <span style="color:var(--text-muted);">Progress</span>
-                    <span class="telemetry-val" id="tel-answered" style="color:var(--accent-green);">0 / 5</span>
+                    <span class="telemetry-val" id="tel-answered" style="color:var(--accent-green);">0 / 30</span>
                 </div>
                 <div class="telemetry-row">
                     <span style="color:var(--text-muted);">Fullscreen</span>
@@ -1026,7 +1160,7 @@
             <div class="proctor-card">
                 <div class="proctor-label">Cloud Sync Status</div>
                 <div id="sync-status-text" style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-green);">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> Auto-saved to Local & Cloud
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Auto-saved to Local &amp; Cloud
                 </div>
             </div>
         </aside>
@@ -1046,18 +1180,18 @@
                 Recorded Strike: <span id="modal-strike-count">1</span> / 3
             </div>
             <button type="button" class="btn-launch" id="btn-restore-lockdown">
-                Return to Fullscreen & Resume Exam
+                Return to Fullscreen &amp; Resume Exam
             </button>
         </div>
     </div>
 
     <!-- =========================================================
-         5. OFFICIAL IAU CONSTANTS & FORMULA MODAL
+         5. OFFICIAL PROBLEM SET & IAU CONSTANTS MODAL
          ========================================================= -->
     <div class="modal-overlay" id="constants-modal">
         <div class="constants-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                <h3 style="font-family:var(--font-display); color:var(--text-pure);">Supernova Guide · Official IAU Constants Sheet</h3>
+                <h3 style="font-family:var(--font-display); color:var(--text-pure);">SAC 2026 Phase 1 · Official Useful Constants Sheet</h3>
                 <button type="button" id="btn-close-constants" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
@@ -1067,37 +1201,38 @@
                     <tr>
                         <th>Quantity</th>
                         <th>Symbol</th>
-                        <th>IAU Recommended Value</th>
+                        <th>Official Exam Value</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>Speed of Light</td><td>$c$</td><td>$2.99792458 \times 10^8\text{ m s}^{-1}$</td></tr>
-                    <tr><td>Gravitational Constant</td><td>$G$</td><td>$6.67430 \times 10^{-11}\text{ m}^3\text{ kg}^{-1}\text{ s}^{-2}$</td></tr>
-                    <tr><td>Planck Constant</td><td>$h$</td><td>$6.62607015 \times 10^{-34}\text{ J s}$</td></tr>
-                    <tr><td>Boltzmann Constant</td><td>$k_B$</td><td>$1.380649 \times 10^{-23}\text{ J K}^{-1}$</td></tr>
-                    <tr><td>Stefan-Boltzmann Constant</td><td>$\sigma$</td><td>$5.670374 \times 10^{-8}\text{ W m}^{-2}\text{ K}^{-4}$</td></tr>
-                    <tr><td>Astronomical Unit</td><td>$\text{AU}$</td><td>$1.495978707 \times 10^{11}\text{ m}$</td></tr>
-                    <tr><td>Parsec</td><td>$\text{pc}$</td><td>$3.085677581 \times 10^{16}\text{ m} = 3.26156\text{ ly}$</td></tr>
-                    <tr><td>Solar Mass Parameter</td><td>$(GM)_\odot$</td><td>$1.3271244 \times 10^{20}\text{ m}^3\text{ s}^{-2}$</td></tr>
-                    <tr><td>Nominal Solar Mass</td><td>$M_\odot$</td><td>$1.98841 \times 10^{30}\text{ kg}$</td></tr>
-                    <tr><td>Nominal Solar Radius</td><td>$R_\odot$</td><td>$6.957 \times 10^8\text{ m}$</td></tr>
-                    <tr><td>Nominal Solar Luminosity</td><td>$L_\odot$</td><td>$3.828 \times 10^{26}\text{ W}$</td></tr>
-                    <tr><td>Nominal Solar Effective Temp.</td><td>$T_{\text{eff},\odot}$</td><td>$5772\text{ K}$</td></tr>
-                    <tr><td>Earth Mass</td><td>$M_\oplus$</td><td>$5.97217 \times 10^{24}\text{ kg}$</td></tr>
-                    <tr><td>Earth Equatorial Radius</td><td>$R_{\oplus,\text{eq}}$</td><td>$6.3781 \times 10^6\text{ m}$</td></tr>
+                    <tr><td>Gravitational Constant</td><td>$G$</td><td>$6.67 \times 10^{-11}\ \mathrm{m^3\,kg^{-1}\,s^{-2}}$</td></tr>
+                    <tr><td>Earth Mass</td><td>$M_E$</td><td>$5.97 \times 10^{24}\ \mathrm{kg}$</td></tr>
+                    <tr><td>Earth Radius</td><td>$R_E$</td><td>$6.37 \times 10^6\ \mathrm{m}$</td></tr>
+                    <tr><td>Earth Gravitational Parameter</td><td>$\mu_E$</td><td>$3.986 \times 10^{14}\ \mathrm{m^3/s^2}$</td></tr>
+                    <tr><td>Standard Surface Gravity</td><td>$g_0$</td><td>$9.81\ \mathrm{m/s^2}$</td></tr>
+                    <tr><td>Moon Mass</td><td>$M_M$</td><td>$7.35 \times 10^{22}\ \mathrm{kg}$</td></tr>
+                    <tr><td>Moon Radius</td><td>$R_M$</td><td>$1.74 \times 10^6\ \mathrm{m}$</td></tr>
+                    <tr><td>Solar Mass</td><td>$M_\odot$</td><td>$1.99 \times 10^{30}\ \mathrm{kg}$</td></tr>
+                    <tr><td>Solar Absolute V-Band Magnitude</td><td>$M_\odot$</td><td>$4.83$</td></tr>
+                    <tr><td>Astronomical Unit</td><td>$1\ \mathrm{AU}$</td><td>$1.496 \times 10^{11}\ \mathrm{m}$</td></tr>
+                    <tr><td>Obliquity of the Ecliptic</td><td>$\varepsilon$</td><td>$23.44^\circ$</td></tr>
+                    <tr><td>Speed of Light</td><td>$c$</td><td>$2.99792458 \times 10^8\ \mathrm{m\,s^{-1}}$</td></tr>
+                    <tr><td>Stefan-Boltzmann Constant</td><td>$\sigma$</td><td>$5.670374 \times 10^{-8}\ \mathrm{W\,m^{-2}\,K^{-4}}$</td></tr>
+                    <tr><td>Parsec</td><td>$1\ \mathrm{pc}$</td><td>$3.0857 \times 10^{16}\ \mathrm{m} = 206,265\ \mathrm{AU}$</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 
     <!-- =========================================================
-         6. FIREBASE & PROCTORING ENGINE SCRIPT
+         6. FIREBASE AUTH, QUESTION LOADER & PROCTORING ENGINE
          ========================================================= -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, update, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, set, update, remove, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { EXAM_QUESTIONS as LOCAL_QUESTIONS, EXAM_PARTICIPANTS } from "./js/sac2026_exam_data.js";
 
-        // 1. Firebase Configuration (supernova-auth-92414)
         const firebaseConfig = {
             apiKey: "AIzaSyBZT_CK1nA24qYSzkQ2iNCwCDPiouR-uv8",
             authDomain: "supernova-auth-92414.firebaseapp.com",
@@ -1108,92 +1243,16 @@
             appId: "1:761827551286:web:e4bdb744264402c1f61097"
         };
 
-        const app = initializeApp(firebaseConfig);
+        const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const db = getDatabase(app);
-
-        // =========================================================
-        // 2. ADMIN ACCESS KEYS & EXAM PAYLOAD CONFIGURATION
-        // =========================================================
-        const MASTER_EXAM_PASSWORDS = [
-            "SAC2026-QUALIFIER-KEY",
-            "SUPERNOVA-R1-8842"
-        ];
 
         const EXAM_DURATION_SECONDS = 60 * 60; // 60 Minutes
         const MAX_STRIKES = 3;
 
-        // Sample Olympiad Problem Payload (Replace at 18:00 UT or load via Firebase)
-        let EXAM_QUESTIONS = [
-            {
-                id: "Q1",
-                module: "T1 · Celestial Mechanics",
-                points: "1.0 Point",
-                statement: "A test particle orbits a central star of mass $M$ in a highly eccentric elliptical orbit with semi-major axis $a$ and eccentricity $e = 0.8$. What is the ratio of its orbital speed at periastron ($v_p$) to its orbital speed at apastron ($v_a$)?",
-                options: [
-                    "$3:1$",
-                    "$5:1$",
-                    "$9:1$",
-                    "$81:1$",
-                    "$\\sqrt{5}:1$"
-                ]
-            },
-            {
-                id: "Q2",
-                module: "T2 · Radiation & Relativity",
-                points: "1.0 Point",
-                statement: "An isotropic main-sequence star of radius $R_\\star$ and effective temperature $T_\\star$ is orbited by a rapidly rotating, zero-albedo spherical exoplanet at distance $d \\gg R_\\star$. Assuming thermal equilibrium, the planet's equilibrium temperature $T_{\\text{eq}}$ scales as:",
-                options: [
-                    "$T_\\star \\sqrt{\\frac{R_\\star}{2d}}$",
-                    "$T_\\star \\sqrt{\\frac{R_\\star}{d}}$",
-                    "$T_\\star \\left(\\frac{R_\\star}{2d}\\right)^{1/4}$",
-                    "$T_\\star \\left(\\frac{R_\\star}{4d}\\right)$",
-                    "$T_\\star \\left(\\frac{R_\\star}{d}\\right)^2$"
-                ]
-            },
-            {
-                id: "Q3",
-                module: "T3 · Instrumentation",
-                points: "1.0 Point",
-                statement: "A diffraction-limited optical space telescope with aperture diameter $D = 2.4\\text{ m}$ observes a binary star at wavelength $\\lambda = 550\\text{ nm}$. According to the Rayleigh criterion, what is the minimum angular separation $\\theta$ it can resolve?",
-                options: [
-                    "$0.029''$",
-                    "$0.058''$",
-                    "$0.116''$",
-                    "$0.232''$",
-                    "$0.504''$"
-                ]
-            },
-            {
-                id: "Q4",
-                module: "T4 · Stellar Physics",
-                points: "1.0 Point",
-                statement: "Two stars have identical bolometric luminosities, but Star A has an effective temperature twice that of Star B ($T_A = 2 T_B$). What is the ratio of their radii $R_A / R_B$?",
-                options: [
-                    "$1/16$",
-                    "$1/8$",
-                    "$1/4$",
-                    "$1/2$",
-                    "$1/\\sqrt{2}$"
-                ]
-            },
-            {
-                id: "Q5",
-                module: "T12 · Cosmology",
-                points: "1.0 Point",
-                statement: "A high-redshift quasar is observed at cosmological redshift $z = 3.0$. What was the temperature of the Cosmic Microwave Background (CMB) at the epoch when the light was emitted by the quasar, given $T_0 = 2.725\\text{ K}$ today?",
-                options: [
-                    "$5.45\\text{ K}$",
-                    "$8.18\\text{ K}$",
-                    "$10.90\\text{ K}$",
-                    "$13.63\\text{ K}$",
-                    "$21.80\\text{ K}$"
-                ]
-            }
-        ];
+        let EXAM_QUESTIONS = LOCAL_QUESTIONS;
 
-        // =========================================================
-        // 3. STATE VARIABLES
-        // =========================================================
+        // State Variables
         let webcamStream = null;
         let screenStream = null;
         let camVerified = false;
@@ -1203,6 +1262,9 @@
         let currentIdx = 0;
         let candidateBib = "";
         let candidateEmail = "";
+        let candidateName = "";
+        let matchedParticipant = null;
+        let selectedWindowZone = "Window A · Europe–Asia (10:00–11:00 UT)";
         let answers = {};
         let flagged = {};
         let strikes = 0;
@@ -1210,28 +1272,99 @@
         let timerInterval = null;
         let snapshotInterval = null;
 
+        // Live UTC Clock on Gatekeeper Screen
+        function updateGateClock() {
+            const el = document.getElementById('gate-utc-clock');
+            if (el) {
+                el.textContent = new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UT';
+            }
+        }
+        setInterval(updateGateClock, 1000);
+        updateGateClock();
+
+        window.selectExamZone = function(zoneLabel, el) {
+            selectedWindowZone = zoneLabel;
+            document.querySelectorAll('.zone-option').forEach(z => z.classList.remove('active'));
+            if (el) el.classList.add('active');
+        };
+
         const gateScreen = document.getElementById('gatekeeper-screen');
         const btnEnableCam = document.getElementById('btn-enable-cam');
         const btnEnableScreen = document.getElementById('btn-enable-screen');
         const btnStartExam = document.getElementById('btn-start-exam');
         const pledgeCheck = document.getElementById('pledge-check');
         const gateError = document.getElementById('gate-error');
+        const emailInput = document.getElementById('cand-email');
+        const bibInput = document.getElementById('cand-bib');
+        const authBanner = document.getElementById('auth-status-banner');
+        const authText = document.getElementById('auth-status-text');
 
-        function checkGateReady() {
-            const emailVal = document.getElementById('cand-email').value.trim();
-            const bibVal = document.getElementById('cand-bib').value.trim();
-            const passVal = document.getElementById('cand-pass').value.trim();
-            btnStartExam.disabled = !(camVerified && screenVerified && pledgeCheck.checked && emailVal && bibVal && passVal);
+        function findParticipantByEmailOrBib(emailStr, bibStr, displayNameStr = "") {
+            const eLower = (emailStr || "").trim().toLowerCase();
+            const bUpper = (bibStr || "").trim().toUpperCase();
+            const dLower = (displayNameStr || "").trim().toLowerCase();
+
+            return EXAM_PARTICIPANTS.find(p =>
+                p.email.toLowerCase() === eLower ||
+                (Array.isArray(p.aliasEmails) && p.aliasEmails.some(a => a.toLowerCase() === eLower)) ||
+                p.bib.toUpperCase() === bUpper ||
+                (dLower && p.sngUser && p.sngUser.toLowerCase() === dLower)
+            );
         }
 
-        ['cand-email', 'cand-bib', 'cand-pass'].forEach(id => {
-            document.getElementById(id).addEventListener('input', checkGateReady);
+        function checkGateReady() {
+            const emailVal = emailInput.value.trim();
+            const bibVal = bibInput.value.trim();
+            const found = findParticipantByEmailOrBib(emailVal, bibVal);
+            if (found) {
+                matchedParticipant = found;
+                authBanner.style.borderColor = "rgba(43, 227, 138, 0.4)";
+                authBanner.style.color = "var(--accent-green)";
+                authText.innerHTML = `Verified Account: <strong>${found.name}</strong> (Bib: <strong>${found.bib}</strong> · ${found.country})${found.canStartAnytime ? ' · <span style="color:var(--accent-gold);">Immediate Start Enabled</span>' : ''}`;
+            }
+            btnStartExam.disabled = !(camVerified && screenVerified && pledgeCheck.checked && emailVal && bibVal);
+        }
+
+        emailInput.addEventListener('input', () => {
+            const found = findParticipantByEmailOrBib(emailInput.value, "");
+            if (found) bibInput.value = found.bib;
+            checkGateReady();
         });
+        bibInput.addEventListener('input', checkGateReady);
         pledgeCheck.addEventListener('change', checkGateReady);
 
-        // =========================================================
-        // 4. WEBCAM & SCREEN SHARE PERMISSIONS
-        // =========================================================
+        // Pre-fill from URL parameters if launched from competitions.html
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('email')) emailInput.value = urlParams.get('email');
+        if (urlParams.get('bib')) bibInput.value = urlParams.get('bib');
+        if (urlParams.get('zone') === 'americas') {
+            window.selectExamZone('Window B · Americas (18:00–19:00 UT)', document.getElementById('zone-opt-americas'));
+        }
+
+        // Automatically detect logged-in Firebase Auth account (No Password Needed)
+        onAuthStateChanged(auth, (user) => {
+            if (user && user.email) {
+                const found = findParticipantByEmailOrBib(user.email, bibInput.value, user.displayName || "");
+                emailInput.value = user.email;
+                if (found) {
+                    bibInput.value = found.bib;
+                    matchedParticipant = found;
+                    if (['USA', 'Brazil'].includes(found.country)) {
+                        window.selectExamZone('Window B · Americas (18:00–19:00 UT)', document.getElementById('zone-opt-americas'));
+                    }
+                    authText.innerHTML = `Logged in as <strong>${found.name}</strong> (${user.email}) · Bib: <strong>${found.bib}</strong>${found.canStartAnytime ? ' · <span style="color:var(--accent-gold);">Test Access Unlocked Now</span>' : ''}`;
+                } else {
+                    authText.innerHTML = `Logged in as <strong>${user.email}</strong>. Enter your Candidate Bib ID below.`;
+                }
+            } else if (!emailInput.value) {
+                authBanner.style.borderColor = "rgba(255, 207, 92, 0.4)";
+                authBanner.style.color = "var(--accent-gold)";
+                authText.innerHTML = `Please confirm your registered Supernova Guide email and Candidate Bib ID below.`;
+            }
+            checkGateReady();
+        });
+
+        // Webcam & Screen Share Permissions
         btnEnableCam.addEventListener('click', async () => {
             gateError.textContent = "";
             try {
@@ -1289,48 +1422,22 @@
             }
         });
 
-        // =========================================================
-        // 5. AUTHENTICATE PASSWORD & LAUNCH FULLSCREEN EXAM
-        // =========================================================
+        // Launch Fullscreen Exam (No Password Needed — Verified by Account/Roster)
         btnStartExam.addEventListener('click', async () => {
             gateError.textContent = "";
-            const emailVal = document.getElementById('cand-email').value.trim();
-            const bibVal = document.getElementById('cand-bib').value.trim().toUpperCase();
-            const passVal = document.getElementById('cand-pass').value.trim();
+            const emailVal = emailInput.value.trim().toLowerCase();
+            const bibVal = bibInput.value.trim().toUpperCase();
 
-            if (!/^SNG-2026-\d{4}$/i.test(bibVal)) {
-                gateError.textContent = "Invalid Bib format. Expected format: SNG-2026-XXXX";
+            const participant = findParticipantByEmailOrBib(emailVal, bibVal);
+            if (!participant) {
+                gateError.textContent = "Account email or Candidate Bib ID not found on the official SAC 2026 roster.";
                 return;
             }
 
-            let passwordValid = MASTER_EXAM_PASSWORDS.includes(passVal);
-            if (!passwordValid) {
-                try {
-                    const keySnap = await get(ref(db, `sac2026/keys/${bibVal}`));
-                    if (keySnap.exists() && keySnap.val() === passVal) {
-                        passwordValid = true;
-                    }
-                } catch (e) {
-                    console.warn("Firebase key lookup fallback:", e);
-                }
-            }
-
-            if (!passwordValid) {
-                gateError.textContent = "Invalid Exam Access Password. Check the email sent prior to 18:00 UT.";
-                return;
-            }
-
-            try {
-                const qSnap = await get(ref(db, `sac2026/questions`));
-                if (qSnap.exists() && Array.isArray(qSnap.val())) {
-                    EXAM_QUESTIONS = qSnap.val();
-                }
-            } catch (e) {
-                console.info("Using built-in exam question bank.");
-            }
-
-            candidateEmail = emailVal;
-            candidateBib = bibVal;
+            matchedParticipant = participant;
+            candidateEmail = participant.email;
+            candidateBib = participant.bib;
+            candidateName = participant.name;
 
             try {
                 if (document.documentElement.requestFullscreen) {
@@ -1343,9 +1450,6 @@
             initializeExamSession();
         });
 
-        // =========================================================
-        // 6. EXAM SESSION INITIALIZATION & AUTO-SAVE RECOVERY
-        // =========================================================
         function getStorageKey() {
             return `sac_2026_exam_state_${candidateBib}`;
         }
@@ -1355,7 +1459,8 @@
             examActive = true;
 
             document.getElementById('tel-bib').textContent = candidateBib;
-            document.getElementById('tel-email').textContent = candidateEmail;
+            document.getElementById('tel-name').textContent = candidateName;
+            document.getElementById('tel-zone').textContent = selectedWindowZone.split('·')[0].trim();
 
             const savedRaw = localStorage.getItem(getStorageKey());
             if (savedRaw) {
@@ -1364,6 +1469,7 @@
                     answers = parsed.answers || {};
                     flagged = parsed.flagged || {};
                     strikes = parsed.strikes || 0;
+                    if (parsed.windowZone) selectedWindowZone = parsed.windowZone;
                     if (parsed.endTimeMs) {
                         const diffSec = Math.floor((parsed.endTimeMs - Date.now()) / 1000);
                         remainingSeconds = Math.max(0, diffSec);
@@ -1375,7 +1481,9 @@
                 const endTimeMs = Date.now() + EXAM_DURATION_SECONDS * 1000;
                 localStorage.setItem(getStorageKey(), JSON.stringify({
                     bib: candidateBib,
+                    name: candidateName,
                     email: candidateEmail,
+                    windowZone: selectedWindowZone,
                     answers,
                     flagged,
                     strikes,
@@ -1403,7 +1511,9 @@
 
             const payload = {
                 bib: candidateBib,
+                name: candidateName,
                 email: candidateEmail,
+                windowZone: selectedWindowZone,
                 answers,
                 flagged,
                 strikes,
@@ -1422,7 +1532,9 @@
             try {
                 await update(ref(db, `sac2026/submissions/${candidateBib}`), {
                     bib: candidateBib,
+                    name: candidateName,
                     email: candidateEmail,
+                    windowZone: selectedWindowZone,
                     answers,
                     flagged,
                     strikes,
@@ -1442,9 +1554,7 @@
             }
         }
 
-        // =========================================================
-        // 7. QUESTION RENDERING & NAVIGATION
-        // =========================================================
+        // Question Rendering & Navigation (30 MCQs across Parts I, II, III, IV)
         function buildQuestionRibbon() {
             const ribbon = document.getElementById('question-ribbon');
             ribbon.innerHTML = '';
@@ -1481,8 +1591,18 @@
             const q = EXAM_QUESTIONS[idx];
 
             document.getElementById('q-number-title').textContent = `Question ${idx + 1} of ${EXAM_QUESTIONS.length}`;
+            document.getElementById('q-part-tag').textContent = q.part || "Phase 1";
             document.getElementById('q-module-tag').textContent = q.module;
             document.getElementById('q-points-tag').textContent = q.points;
+
+            const loreBanner = document.getElementById('q-lore-banner');
+            if (q.lore) {
+                loreBanner.innerHTML = q.lore;
+                loreBanner.style.display = 'block';
+            } else {
+                loreBanner.style.display = 'none';
+            }
+
             document.getElementById('q-statement-box').innerHTML = q.statement;
 
             const flagBtn = document.getElementById('btn-flag-q');
@@ -1520,6 +1640,7 @@
 
             if (window.MathJax && window.MathJax.typesetPromise) {
                 window.MathJax.typesetPromise([
+                    loreBanner,
                     document.getElementById('q-statement-box'),
                     optsContainer
                 ]).catch(err => console.warn('MathJax error:', err));
@@ -1548,9 +1669,7 @@
             saveState(`flagged_${q.id}`);
         });
 
-        // =========================================================
-        // 8. TIMER & PERIODIC WEBCAM SNAPSHOTS
-        // =========================================================
+        // Countdown Timer & Periodic Webcam Snapshots
         function startCountdownTimer() {
             const timerDisplay = document.getElementById('exam-timer-display');
             const timerBox = document.getElementById('exam-timer-box');
@@ -1594,9 +1713,7 @@
             }, 60000);
         }
 
-        // =========================================================
-        // 9. ANTI-CHEAT LOCKDOWN & STRIKE LISTENERS
-        // =========================================================
+        // Anti-Cheat Lockdown & Strike Listeners
         function updateStrikeUI() {
             const strikeEl = document.getElementById('tel-strikes');
             strikeEl.textContent = `${strikes} / ${MAX_STRIKES}`;
@@ -1674,9 +1791,7 @@
             document.getElementById('constants-modal').classList.remove('active');
         });
 
-        // =========================================================
-        // 10. FINAL SUBMISSION & RECEIPT GENERATION
-        // =========================================================
+        // Final Submission & Test Reset Support for Mihai, Albert & Matei
         document.getElementById('btn-finish-exam').addEventListener('click', () => {
             const answeredCount = Object.keys(answers).length;
             const confirmMsg = `You have answered ${answeredCount} of ${EXAM_QUESTIONS.length} questions. Are you sure you want to finalize and submit your exam?`;
@@ -1684,6 +1799,16 @@
                 finalizeAndSubmitExam("Candidate Manual Submission");
             }
         });
+
+        window.resetTestAttempt = async function() {
+            localStorage.removeItem(getStorageKey());
+            localStorage.removeItem(`${getStorageKey()}_submitted`);
+            try {
+                await remove(ref(db, `sac2026/submissions/${candidateBib}`));
+                await remove(ref(db, `sac2026/final_submissions/${candidateBib}`));
+            } catch (e) {}
+            window.location.reload();
+        };
 
         async function finalizeAndSubmitExam(reason) {
             examActive = false;
@@ -1693,7 +1818,9 @@
             const receiptId = `SAC26-${candidateBib.split('-').pop()}-${Date.now().toString(36).toUpperCase()}`;
             const finalPayload = {
                 bib: candidateBib,
+                name: candidateName,
                 email: candidateEmail,
+                windowZone: selectedWindowZone,
                 answers,
                 strikes,
                 remainingSeconds,
@@ -1717,22 +1844,32 @@
                 document.exitFullscreen().catch(() => {});
             }
 
+            const resetBtnHtml = matchedParticipant?.canStartAnytime
+                ? `<button type="button" onclick="window.resetTestAttempt()" style="margin-left:10px; padding:12px 20px; border-radius:8px; border:1px solid var(--accent-gold); background:rgba(255,207,92,0.12); color:var(--accent-gold); font-family:var(--font-mono); font-weight:700; font-size:0.82rem; cursor:pointer;">
+                    <i class="fa-solid fa-rotate-left"></i> Reset Test Attempt (Albert / Mihai / Matei)
+                   </button>`
+                : '';
+
             document.body.innerHTML = `
                 <div style="height:100vh; display:flex; align-items:center; justify-content:center; background:var(--bg-base); padding:24px;">
-                    <div style="max-width:560px; width:100%; background:var(--bg-card); border:1px solid var(--accent-green); border-radius:16px; padding:36px; text-align:center;">
+                    <div style="max-width:580px; width:100%; background:var(--bg-card); border:1px solid var(--accent-green); border-radius:16px; padding:36px; text-align:center;">
                         <i class="fa-solid fa-circle-check" style="font-size:3rem; color:var(--accent-green); margin-bottom:16px;"></i>
                         <h1 style="font-family:var(--font-display); color:var(--text-pure); margin-bottom:8px;">Exam Submitted Successfully</h1>
                         <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:22px;">${reason}</p>
                         <div style="background:var(--bg-sidebar); border:1px solid var(--border-subtle); border-radius:10px; padding:16px; text-align:left; font-family:var(--font-mono); font-size:0.8rem; margin-bottom:24px; line-height:1.8;">
                             <div><span style="color:var(--text-muted);">RECEIPT ID:</span> <strong style="color:var(--accent-blue);">${receiptId}</strong></div>
-                            <div><span style="color:var(--text-muted);">CANDIDATE BIB:</span> ${candidateBib}</div>
+                            <div><span style="color:var(--text-muted);">COMPETITOR:</span> ${candidateName} (${candidateBib})</div>
+                            <div><span style="color:var(--text-muted);">WINDOW ZONE:</span> ${selectedWindowZone}</div>
                             <div><span style="color:var(--text-muted);">ANSWERED:</span> ${Object.keys(answers).length} / ${EXAM_QUESTIONS.length}</div>
                             <div><span style="color:var(--text-muted);">PROCTOR STRIKES:</span> ${strikes} / ${MAX_STRIKES}</div>
                             <div><span style="color:var(--text-muted);">TIMESTAMP (UT):</span> ${finalPayload.submittedAtUTC}</div>
                         </div>
-                        <a href="competitions.html" style="display:inline-block; padding:12px 24px; border-radius:8px; background:var(--accent-blue); color:#050507; font-family:var(--font-mono); font-weight:700; font-size:0.84rem; text-decoration:none;">
-                            Return to Competitor Dashboard
-                        </a>
+                        <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:10px;">
+                            <a href="competitions.html" style="display:inline-block; padding:12px 24px; border-radius:8px; background:var(--accent-blue); color:#050507; font-family:var(--font-mono); font-weight:700; font-size:0.84rem; text-decoration:none;">
+                                Return to Competitor Dashboard
+                            </a>
+                            ${resetBtnHtml}
+                        </div>
                     </div>
                 </div>
             `;
