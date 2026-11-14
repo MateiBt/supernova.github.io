@@ -229,7 +229,7 @@
         /* --- WEBCAM PROCTOR WALL --- */
         .webcam-wall {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
             gap: 16px;
         }
         .proctor-tile {
@@ -240,15 +240,19 @@
             display: flex;
             flex-direction: column;
         }
+        .proctor-tile.live-focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 20px rgba(53, 230, 255, 0.22);
+        }
         .proctor-tile.strike-warn {
             border-color: var(--accent-gold);
         }
         .proctor-tile.strike-crit {
             border-color: var(--accent-red);
-            box-shadow: 0 0 20px rgba(255, 92, 92, 0.2);
+            box-shadow: 0 0 20px rgba(255, 92, 92, 0.25);
         }
         .tile-snap {
-            height: 155px;
+            height: 165px;
             background: #050507;
             position: relative;
             display: flex;
@@ -259,6 +263,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transform: scaleX(-1);
         }
         .tile-badge {
             position: absolute;
@@ -282,6 +287,17 @@
             font-family: var(--font-mono);
             font-size: 0.68rem;
             font-weight: 700;
+        }
+        .tile-fps-pill {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background: rgba(10, 10, 12, 0.88);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.64rem;
+            color: var(--accent-green);
         }
         .tile-body {
             padding: 14px;
@@ -483,7 +499,7 @@
                         <i class="fa-solid fa-tower-broadcast" style="color:var(--accent-gold);"></i>
                         SAC 2026 Chief Proctor &amp; Organizer Console
                     </h1>
-                    <p>Real-time Firebase telemetry, webcam snapshot monitoring, 43-competitor uncensored database, password dispatch, and automated grading.</p>
+                    <p>Real-time 3s / 1 FPS live camera streaming, window lock control, 43-competitor uncensored database, and automated grading.</p>
                 </div>
             </div>
             <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
@@ -501,12 +517,12 @@
             <div class="kpi-card">
                 <span class="kpi-lbl">Verified Competitors</span>
                 <div class="kpi-val" style="color:var(--accent-blue);">43</div>
-                <div class="kpi-sub">33 Solo · 10 Duo (5 Teams)</div>
+                <div class="kpi-sub">33 Solo · 10 Duo (+3 Staff Test Slots)</div>
             </div>
             <div class="kpi-card">
                 <span class="kpi-lbl">Live Active in Exam</span>
                 <div class="kpi-val" id="kpi-live-active" style="color:var(--accent-green);">0</div>
-                <div class="kpi-sub">Streaming to /sac2026/submissions</div>
+                <div class="kpi-sub">Streaming 3s / 1 FPS Feeds</div>
             </div>
             <div class="kpi-card">
                 <span class="kpi-lbl">Final Submissions</span>
@@ -528,16 +544,16 @@
         <!-- 4 ADMIN MODULE TABS -->
         <div class="admin-tabs">
             <button type="button" class="admin-tab-btn active" onclick="window.switchAdminTab('proctor', this)">
-                <i class="fa-solid fa-video"></i> 1. Live Webcam &amp; Proctor Telemetry Wall
+                <i class="fa-solid fa-video"></i> 1. Live Camera Wall (3s / 1 FPS) &amp; Window Control
             </button>
             <button type="button" class="admin-tab-btn" onclick="window.switchAdminTab('master', this)">
-                <i class="fa-solid fa-database"></i> 2. Master Competitor Database (All 43 · Uncensored)
+                <i class="fa-solid fa-database"></i> 2. Master Competitor Database (All 43 + Staff)
             </button>
             <button type="button" class="admin-tab-btn" onclick="window.switchAdminTab('keys', this)">
-                <i class="fa-solid fa-key"></i> 3. Exam Password &amp; Email Dispatch
+                <i class="fa-solid fa-envelope"></i> 3. Pre-Round Email &amp; Announcement Dispatch
             </button>
             <button type="button" class="admin-tab-btn" onclick="window.switchAdminTab('grader', this)">
-                <i class="fa-solid fa-Calculator"></i> 4. Answer Key Auto-Grader &amp; Standings
+                <i class="fa-solid fa-calculator"></i> 4. Answer Key Auto-Grader &amp; Standings
             </button>
         </div>
 
@@ -545,18 +561,43 @@
              TAB 1: LIVE WEBCAM & PROCTOR TELEMETRY WALL
              ========================================================= -->
         <section class="admin-pane active" id="admin-pane-proctor">
+            <!-- Exam Window Lock Control Bar -->
+            <div class="panel-card" style="padding:16px 22px; border-left:4px solid var(--accent-blue);">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                    <div>
+                        <strong style="font-family:var(--font-display); color:var(--text-pure); font-size:1rem;">
+                            <i class="fa-solid fa-clock" style="color:var(--accent-blue);"></i> Exam Window Gatekeeper Control
+                        </strong>
+                        <p style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">
+                            Current Mode: <strong id="window-override-status-text" style="color:var(--accent-green); font-family:var(--font-mono);">AUTO SCHEDULE (10:00–11:00 UT &amp; 18:00–19:00 UT; Matei/Albert/Mihai Unlocked)</strong>
+                        </p>
+                    </div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button type="button" class="btn-action btn-green" onclick="window.setWindowOverride('auto')">
+                            <i class="fa-solid fa-calendar-check"></i> Auto Window Lock (Default)
+                        </button>
+                        <button type="button" class="btn-action btn-gold" onclick="window.setWindowOverride('force_open')">
+                            <i class="fa-solid fa-lock-open"></i> Force Unlock All Now
+                        </button>
+                        <button type="button" class="btn-action" style="border-color:var(--accent-red); color:var(--accent-red);" onclick="window.setWindowOverride('strict_all')">
+                            <i class="fa-solid fa-lock"></i> Strict Lock Everyone
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="panel-card">
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
                     <div>
-                        <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Real-Time Candidate Proctoring Wall</h3>
-                        <p style="font-size:0.82rem; color:var(--text-muted);">Automatically updates whenever a candidate unlocks <code>exam.html</code>, answers a problem, triggers a fullscreen/focus strike, or uploads a 60s webcam snapshot.</p>
+                        <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Real-Time Candidate Live Camera Wall</h3>
+                        <p style="font-size:0.82rem; color:var(--text-muted);">All active cameras stream every <strong>3 seconds</strong> automatically. Click <strong>"Watch 1 FPS"</strong> on any card to accelerate that student's camera to a continuous 1-second live stream.</p>
                     </div>
                     <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                        <button type="button" class="btn-action" onclick="window.filterProctorWall('all')">Show All Active/Submitted</button>
+                        <button type="button" class="btn-action" onclick="window.filterProctorWall('all')">Show Active / Submitted</button>
                         <button type="button" class="btn-action" onclick="window.filterProctorWall('strikes')" style="border-color:var(--accent-red); color:var(--accent-red);">
                             <i class="fa-solid fa-triangle-exclamation"></i> Only With Strikes
                         </button>
-                        <button type="button" class="btn-action" onclick="window.filterProctorWall('all43')">Show All 43 Roster Slots</button>
+                        <button type="button" class="btn-action" onclick="window.filterProctorWall('all43')">Show All 46 Roster Slots (43 + Staff)</button>
                     </div>
                 </div>
 
@@ -633,49 +674,38 @@
         </section>
 
         <!-- =========================================================
-             TAB 3: EXAM PASSWORD & EMAIL DISPATCH MANAGER
+             TAB 3: PRE-ROUND EMAIL & ANNOUNCEMENT DISPATCH
              ========================================================= -->
         <section class="admin-pane" id="admin-pane-keys">
             <div class="panel-card">
-                <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Exam Access Password &amp; Cloud Key Dispatch</h3>
+                <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Ready-to-Send Pre-Round Email &amp; Discord Announcement</h3>
                 <p style="font-size:0.84rem; color:var(--text-muted); line-height:1.55;">
-                    Set the active round password below and push it to Firebase (<code>/sac2026/keys/{bib}</code>). When pushed, every registered Bib ID (`SNG-2026-1001` through `SNG-2026-1043`) can unlock <code>exam.html</code> using this password (in addition to the built-in master keys <code>SAC2026-QUALIFIER-KEY</code> and <code>SUPERNOVA-R1-8842</code>).
+                    Candidates authenticate automatically with their registered Supernova Guide email and Candidate Bib ID (`SNG-2026-10XX`) during Window A (`10:00–11:00 UT`) and Window B (`18:00–19:00 UT`).
                 </p>
 
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                    <div style="background:var(--bg-sidebar); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:20px;">
-                        <label style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-gold); text-transform:uppercase;">Active Round Access Password</label>
-                        <input type="text" id="input-round-password" class="form-input" value="SAC2026-QUALIFIER-KEY">
-
-                        <button type="button" class="btn-action btn-gold" id="btn-push-keys-firebase" style="width:100%; justify-content:center; padding:11px;">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> Push Password for All 43 Bibs to Firebase
+                <div style="background:var(--bg-sidebar); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:20px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-blue); text-transform:uppercase;">Official Phase 1 Dispatch Template</span>
+                        <button type="button" class="btn-action" id="btn-copy-email-template">
+                            <i class="fa-regular fa-copy"></i> Copy Email Body
                         </button>
-                        <div id="key-push-status" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-green); margin-top:10px;"></div>
                     </div>
-
-                    <div style="background:var(--bg-sidebar); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:20px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-blue); text-transform:uppercase;">Ready-to-Send Pre-Round Email Template</span>
-                            <button type="button" class="btn-action" id="btn-copy-email-template">
-                                <i class="fa-regular fa-copy"></i> Copy Email Body
-                            </button>
-                        </div>
-                        <textarea id="email-template-box" class="form-input" style="height:170px; font-size:0.76rem; line-height:1.5; resize:vertical;" readonly>Subject: [SAC 2026] Phase 1 Exam Access Password & Terminal Link (Opens 18:00 UT)
+                    <textarea id="email-template-box" class="form-input" style="height:190px; font-size:0.78rem; line-height:1.55; resize:vertical;" readonly>Subject: [SAC 2026] Phase 1 (Open Qualifier) Live Exam Terminal — Window A (10:00 UT) & Window B (18:00 UT)
 
 Dear Competitor,
 
-Phase 1 (Open Qualifier) of the Supernova Astrophysics Cup — Autumn 2026 (SAC 2026) opens today between 18:00 UT and 19:00 UT (duration: 60 minutes, 30 MCQs).
+Phase 1 (Open Qualifier) of the Supernova Astrophysics Cup — Autumn 2026 (SAC 2026) takes place today, Saturday, 14 November 2026 (duration: 60 minutes, 30 MCQs):
+• Window A (Europe / Asia / Africa / Oceania): 10:00 UT – 11:00 UT
+• Window B (North & South America): 18:00 UT – 19:00 UT
 
 1. Official Exam Terminal: https://supernovaguide.com/exam.html
 2. Your Candidate Bib ID: Find your SNG-2026-10XX Bib ID on https://supernovaguide.com/competitions.html
-3. Exam Access Password: SAC2026-QUALIFIER-KEY
 
-Please ensure your webcam is connected, close all external tabs, and launch the terminal between 18:00 UT and 19:00 UT.
+Please ensure your webcam is connected, close all external tabs, and launch the terminal during your regional entry window.
 
 Best of luck,
 Matei, Albert, & Mihai
 Supernova Guide Scientific Committee</textarea>
-                    </div>
                 </div>
             </div>
         </section>
@@ -730,7 +760,7 @@ Supernova Guide Scientific Committee</textarea>
         </section>
     </main>
 
-    <!-- CANDIDATE DOSSIER & ANSWER SHEET MODAL -->
+    <!-- CANDIDATE DOSSIER & LIVE CAMERA MODAL -->
     <div class="modal-overlay" id="dossier-modal">
         <div class="modal-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--border-subtle);">
@@ -1704,9 +1734,9 @@ Supernova Guide Scientific Committee</textarea>
                         "city": "Braila",
                         "grade": "Middle School / Junior High (Grades 5–8)",
                         "experience": "USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad)",
-                        "mode": "Solo (¯\_(ツ)_/¯)",
+                        "mode": "Solo (¯\\_(ツ)_/¯)",
                         "teamType": "solo",
-                        "callsign": "¯\_(ツ)_/¯",
+                        "callsign": "¯\\_(ツ)_/¯",
                         "partner": null,
                         "partnerBib": null,
                         "partnerDiscord": null,
@@ -2235,7 +2265,7 @@ Supernova Guide Scientific Committee</textarea>
                         "canStartAnytime": false,
                         "isParticipant": true
             }
-];
+        ];
 
         const ADMIN_EMAILS = [
             "matei.butnaru@yahoo.com",
@@ -2255,7 +2285,9 @@ Supernova Guide Scientific Committee</textarea>
         let liveSubmissions = {};
         let finalSubmissions = {};
         let webcamSnapshots = {};
+        let liveWatchMap = {};
         let proctorFilter = "all";
+        let currentInspectedBib = null;
 
         // UTC Clock
         setInterval(() => {
@@ -2316,10 +2348,49 @@ Supernova Guide Scientific Committee</textarea>
             }
         });
 
+        // Window Override Control (Auto Schedule vs Force Open vs Strict Lock)
+        window.setWindowOverride = async function(mode) {
+            if (getApps().length === 0) return;
+            const db = getDatabase(getApp());
+            try {
+                await set(ref(db, 'sac2026/config/windowOverride'), mode);
+            } catch (e) {
+                alert("Failed to update window lock mode: " + e.message);
+            }
+        };
+
+        // Toggle 1 FPS High-Priority Live Watch for a Specific Candidate
+        window.toggleLiveWatch = async function(bib) {
+            if (getApps().length === 0) return;
+            const db = getDatabase(getApp());
+            const nextState = !liveWatchMap[bib];
+            try {
+                await set(ref(db, `sac2026/live_watch/${bib}`), nextState ? true : null);
+            } catch (e) {
+                alert("Could not toggle 1 FPS live focus: " + e.message);
+            }
+        };
+
         // Real-Time Firebase Listeners
         function startRealtimeProctorListeners() {
             if (getApps().length === 0) return;
             const db = getDatabase(getApp());
+
+            onValue(ref(db, 'sac2026/config/windowOverride'), (snap) => {
+                const mode = snap.val() || 'auto';
+                const statusEl = document.getElementById('window-override-status-text');
+                if (!statusEl) return;
+                if (mode === 'force_open') {
+                    statusEl.textContent = "FORCE UNLOCKED (All Competitors Can Enter Now)";
+                    statusEl.style.color = "var(--accent-gold)";
+                } else if (mode === 'strict_all') {
+                    statusEl.textContent = "STRICT LOCK (Locked Outside 10:00–11:00 UT & 18:00–19:00 UT for Everyone)";
+                    statusEl.style.color = "var(--accent-red)";
+                } else {
+                    statusEl.textContent = "AUTO SCHEDULE (10:00–11:00 UT & 18:00–19:00 UT; Matei/Albert/Mihai Unlocked)";
+                    statusEl.style.color = "var(--accent-green)";
+                }
+            });
 
             onValue(ref(db, 'sac2026/submissions'), (snap) => {
                 liveSubmissions = snap.val() || {};
@@ -2339,6 +2410,22 @@ Supernova Guide Scientific Committee</textarea>
 
             onValue(ref(db, 'sac2026/snapshots'), (snap) => {
                 webcamSnapshots = snap.val() || {};
+                renderProctorWall();
+                if (currentInspectedBib && document.getElementById('dossier-modal')?.classList.contains('active')) {
+                    const modalImg = document.getElementById('modal-live-cam-img');
+                    const modalTs = document.getElementById('modal-live-cam-ts');
+                    const snapObj = webcamSnapshots[currentInspectedBib];
+                    if (modalImg && snapObj?.latestFrame) {
+                        modalImg.src = snapObj.latestFrame;
+                    }
+                    if (modalTs && snapObj?.timestampUTC) {
+                        modalTs.textContent = `Last frame: ${snapObj.timestampUTC.slice(11, 19)} UT (${snapObj.fpsMode || '3s Stream'})`;
+                    }
+                }
+            });
+
+            onValue(ref(db, 'sac2026/live_watch'), (snap) => {
+                liveWatchMap = snap.val() || {};
                 renderProctorWall();
             });
         }
@@ -2372,20 +2459,21 @@ Supernova Guide Scientific Committee</textarea>
             const wall = document.getElementById('proctor-webcam-wall');
             if (!wall) return;
 
-            const students = REGISTERED_PARTICIPANTS.filter(p => !p.isAdmin);
+            const students = REGISTERED_PARTICIPANTS.filter(p => p.isParticipant !== false);
             const filtered = students.filter(p => {
                 const hasLive = !!liveSubmissions[p.bib];
                 const hasFinal = !!finalSubmissions[p.bib];
+                const hasSnap = !!webcamSnapshots[p.bib];
                 const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib];
                 if (proctorFilter === 'strikes') return rec && (rec.strikes || 0) > 0;
                 if (proctorFilter === 'all43') return true;
-                return hasLive || hasFinal;
+                return hasLive || hasFinal || hasSnap;
             });
 
             if (filtered.length === 0) {
                 wall.innerHTML = `
                     <div style="grid-column: 1 / -1; padding:32px; text-align:center; background:var(--bg-sidebar); border:1px dashed var(--border-light); border-radius:12px; color:var(--text-muted); font-family:var(--font-mono); font-size:0.84rem;">
-                        No active or submitted exam sessions yet. Click <strong>"Show All 43 Roster Slots"</strong> above to view all 43 registered competitors, or open <code>exam.html</code> to test a live session.
+                        No active or submitted exam sessions yet. Click <strong>"Show All 46 Roster Slots (43 + Staff)"</strong> above to view everyone, or open <code>exam.html</code> as Matei, Albert, or Mihai to test live 3s / 1 FPS camera streaming.
                     </div>
                 `;
                 return;
@@ -2395,6 +2483,7 @@ Supernova Guide Scientific Committee</textarea>
                 const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib] || null;
                 const isFinal = !!finalSubmissions[p.bib];
                 const snapObj = webcamSnapshots[p.bib];
+                const isWatched1Fps = !!liveWatchMap[p.bib];
                 const strikes = rec?.strikes || 0;
                 const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
                 const remSec = rec?.remainingSeconds !== undefined ? rec.remainingSeconds : 3600;
@@ -2403,6 +2492,7 @@ Supernova Guide Scientific Committee</textarea>
                 const timerStr = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 
                 let tileCls = 'proctor-tile';
+                if (isWatched1Fps) tileCls += ' live-focus';
                 let strikeColor = 'var(--accent-green)';
                 if (strikes === 1 || strikes === 2) {
                     tileCls += ' strike-warn';
@@ -2412,12 +2502,22 @@ Supernova Guide Scientific Committee</textarea>
                     strikeColor = 'var(--accent-red)';
                 }
 
+                const frameAgeSec = snapObj?.timestampUTC
+                    ? Math.max(0, Math.round((Date.now() - Date.parse(snapObj.timestampUTC)) / 1000))
+                    : null;
+
                 const snapHtml = snapObj?.latestFrame
                     ? `<img src="${snapObj.latestFrame}" alt="${p.name}">`
                     : `<div style="color:var(--text-muted); font-family:var(--font-mono); font-size:0.72rem; text-align:center;">
                         <i class="fa-solid fa-camera" style="font-size:1.4rem; display:block; margin-bottom:6px; opacity:0.5;"></i>
-                        ${rec ? 'Awaiting 60s Frame' : 'Offline'}
+                        ${rec ? 'Connecting Camera...' : 'Offline'}
                        </div>`;
+
+                const fpsBadgeHtml = snapObj?.timestampUTC
+                    ? `<span class="tile-fps-pill" style="color:${isWatched1Fps ? 'var(--accent-gold)' : 'var(--accent-green)'};">
+                        ● ${isWatched1Fps ? '1 FPS LIVE' : '3s LIVE'} · ${frameAgeSec !== null ? frameAgeSec + 's ago' : ''}
+                       </span>`
+                    : '';
 
                 const statusTag = isFinal
                     ? `<span style="color:var(--accent-green); font-weight:700;">SUBMITTED (${rec.receiptId || ''})</span>`
@@ -2429,6 +2529,7 @@ Supernova Guide Scientific Committee</textarea>
                             ${snapHtml}
                             <span class="tile-badge">${p.bib}</span>
                             <span class="tile-strike-pill" style="color:${strikeColor};">Strikes: ${strikes}/3</span>
+                            ${fpsBadgeHtml}
                         </div>
                         <div class="tile-body">
                             <strong style="color:var(--text-pure); font-size:0.92rem;">${p.name}</strong>
@@ -2441,11 +2542,14 @@ Supernova Guide Scientific Committee</textarea>
                                 Last Event: ${rec?.lastEvent || rec?.submissionReason || '—'}
                             </div>
                             <div class="tile-actions">
+                                <button type="button" class="btn-action ${isWatched1Fps ? 'btn-gold' : ''}" style="flex:1; justify-content:center; padding:5px;" onclick="window.toggleLiveWatch('${p.bib}')">
+                                    <i class="fa-solid fa-bolt"></i> ${isWatched1Fps ? '1 FPS On' : 'Watch 1 FPS'}
+                                </button>
                                 <button type="button" class="btn-action" style="flex:1; justify-content:center; padding:5px;" onclick="window.inspectCandidate('${p.bib}')">
                                     <i class="fa-solid fa-magnifying-glass"></i> Dossier
                                 </button>
-                                <button type="button" class="btn-action" style="flex:1; justify-content:center; padding:5px;" onclick="window.resetCandidateStrikes('${p.bib}')">
-                                    <i class="fa-solid fa-rotate-left"></i> Reset Strikes
+                                <button type="button" class="btn-action" style="padding:5px 8px;" title="Reset Strikes" onclick="window.resetCandidateStrikes('${p.bib}')">
+                                    <i class="fa-solid fa-rotate-left"></i>
                                 </button>
                             </div>
                         </div>
@@ -2533,16 +2637,17 @@ Supernova Guide Scientific Committee</textarea>
 
         // Export Master CSV
         document.getElementById('btn-export-master-csv')?.addEventListener('click', () => {
-            const headers = ["Bib", "Name", "Email", "SNG_User", "Discord", "DOB", "Country", "School", "City", "Grade", "Experience", "Mode", "Partner", "Partner_Bib", "Privacy", "Referred_By", "Timestamp", "Answered_Count", "Strikes", "Receipt_ID"];
+            const headers = ["Bib", "Name", "Email", "SNG_User", "Discord", "DOB", "Country", "School", "City", "Grade", "Experience", "Mode", "Partner", "Partner_Bib", "Privacy", "Referred_By", "Timestamp", "Answered_Count", "Raw_Score", "Tie_Breaker", "Strikes", "Receipt_ID"];
             const lines = [headers.join(",")];
-            REGISTERED_PARTICIPANTS.filter(p => !p.isAdmin).forEach(p => {
+            REGISTERED_PARTICIPANTS.filter(p => p.isParticipant !== false).forEach(p => {
                 const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib];
                 const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
+                const sc = computeCandidateScore(rec?.answers);
                 const row = [
                     p.bib, p.name, p.email, p.sngUser, p.discord, p.dob, p.country,
                     p.school, p.city, p.grade, p.experience, p.mode, p.partner || "",
                     p.partnerBib || "", p.publicPrivacy, p.referredBy, p.regTimestamp,
-                    ansCount, rec?.strikes || 0, rec?.receiptId || ""
+                    ansCount, sc.raw.toFixed(1), sc.tieBreaker.toFixed(2), rec?.strikes || 0, rec?.receiptId || ""
                 ].map(v => `"${String(v).replace(/"/g, '""')}"`);
                 lines.push(row.join(","));
             });
@@ -2552,25 +2657,6 @@ Supernova Guide Scientific Committee</textarea>
             a.href = url;
             a.download = "SAC_2026_Master_Competitor_Database.csv";
             a.click();
-        });
-
-        // Push Exam Access Password to Firebase
-        document.getElementById('btn-push-keys-firebase')?.addEventListener('click', async () => {
-            const passVal = document.getElementById('input-round-password').value.trim();
-            const statusEl = document.getElementById('key-push-status');
-            if (!passVal || getApps().length === 0) return;
-            try {
-                const db = getDatabase(getApp());
-                const keysPayload = {};
-                REGISTERED_PARTICIPANTS.forEach(p => {
-                    keysPayload[p.bib] = passVal;
-                });
-                await set(ref(db, 'sac2026/keys'), keysPayload);
-                statusEl.textContent = `✓ Pushed password "${passVal}" for all ${REGISTERED_PARTICIPANTS.length} Bib IDs to /sac2026/keys in Firebase.`;
-            } catch (e) {
-                statusEl.style.color = "var(--accent-red)";
-                statusEl.textContent = "Firebase write error: " + e.message;
-            }
         });
 
         document.getElementById('btn-copy-email-template')?.addEventListener('click', () => {
@@ -2615,7 +2701,7 @@ Supernova Guide Scientific Committee</textarea>
             const tbody = document.getElementById('grader-leaderboard-tbody');
             if (!tbody) return;
 
-            const students = REGISTERED_PARTICIPANTS.filter(p => !p.isAdmin).map(p => {
+            const students = REGISTERED_PARTICIPANTS.filter(p => p.isParticipant !== false).map(p => {
                 const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib] || null;
                 const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
                 const sc = computeCandidateScore(rec?.answers);
@@ -2641,7 +2727,7 @@ Supernova Guide Scientific Committee</textarea>
                 return `
                     <tr>
                         <td style="font-family:var(--font-mono); font-weight:700; color:${isTop50 ? 'var(--accent-green)' : 'var(--text-muted)'};">#${rank} ${isTop50 ? '· Q' : ''}</td>
-                        <td style="font-family:var(--font-mono); font-weight:700;">${s.bib}</td>
+                        <td style="font-family:var(--font-mono); font-weight:700; color:${s.isAdmin ? 'var(--accent-gold)' : 'var(--text-pure)'};">${s.bib}</td>
                         <td style="font-weight:700; color:var(--text-pure);">${s.name}</td>
                         <td>${s.country}</td>
                         <td style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-blue);">${s.mode}</td>
@@ -2662,13 +2748,15 @@ Supernova Guide Scientific Committee</textarea>
 
         document.getElementById('btn-save-grade-key')?.addEventListener('click', renderGraderTable);
 
-        // Inspect Candidate Modal & Reset Strikes
+        // Inspect Candidate Modal & Live Camera Feed
         window.inspectCandidate = function(bib) {
+            currentInspectedBib = bib;
             const p = REGISTERED_PARTICIPANTS.find(x => x.bib === bib);
             if (!p) return;
             const rec = finalSubmissions[bib] || liveSubmissions[bib] || null;
             const snapObj = webcamSnapshots[bib];
             const mapLetter = ['A', 'B', 'C', 'D', 'E'];
+            const sc = computeCandidateScore(rec?.answers);
 
             let ansHtml = 'No answers submitted yet.';
             if (rec?.answers) {
@@ -2698,16 +2786,26 @@ Supernova Guide Scientific Committee</textarea>
                     <div><strong>Registration Timestamp:</strong> ${p.regTimestamp} UT</div>
                 </div>
                 <div style="border-top:1px solid var(--border-subtle); padding-top:14px;">
-                    <strong style="font-family:var(--font-mono); color:var(--accent-gold); display:block; margin-bottom:8px;">LIVE EXAM ANSWERS &amp; PROCTOR TELEMETRY</strong>
-                    <div style="margin-bottom:10px;">Strikes: <strong>${rec?.strikes || 0} / 3</strong> · Receipt: <strong>${rec?.receiptId || 'N/A'}</strong></div>
+                    <strong style="font-family:var(--font-mono); color:var(--accent-gold); display:block; margin-bottom:8px;">LIVE EXAM ANSWERS, SCORE &amp; CAMERA STREAM</strong>
+                    <div style="margin-bottom:10px; font-family:var(--font-mono); font-size:0.82rem;">
+                        Score: <strong style="color:var(--accent-gold);">${sc.raw.toFixed(1)} / 30.0 pt</strong> (Tie-Break: ${sc.tieBreaker.toFixed(2)}) ·
+                        Strikes: <strong>${rec?.strikes || 0} / 3</strong> ·
+                        Receipt: <strong>${rec?.receiptId || 'N/A'}</strong>
+                    </div>
                     <div>${ansHtml}</div>
-                    ${snapObj?.latestFrame ? `<div style="margin-top:14px;"><img src="${snapObj.latestFrame}" style="max-width:260px; border-radius:8px; border:1px solid var(--border-light);"></div>` : ''}
+                    <div style="margin-top:14px;">
+                        <div style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-green); margin-bottom:6px;" id="modal-live-cam-ts">
+                            ${snapObj?.timestampUTC ? `Last frame: ${snapObj.timestampUTC.slice(11, 19)} UT (${snapObj.fpsMode || '3s Stream'})` : 'No camera frame uploaded yet'}
+                        </div>
+                        <img id="modal-live-cam-img" src="${snapObj?.latestFrame || ''}" style="${snapObj?.latestFrame ? '' : 'display:none;'} max-width:320px; border-radius:8px; border:1px solid var(--border-light); transform:scaleX(-1);">
+                    </div>
                 </div>
             `;
             document.getElementById('dossier-modal').classList.add('active');
         };
 
         document.getElementById('btn-close-dossier')?.addEventListener('click', () => {
+            currentInspectedBib = null;
             document.getElementById('dossier-modal').classList.remove('active');
         });
 
