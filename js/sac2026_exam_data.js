@@ -249,8 +249,8 @@ export const EXAM_QUESTIONS = [
         "lore": "",
         "statement": "A satellite revolves around Earth in an elliptical orbit. Its minimum and maximum distances from Earth's centre are $r_p = 7000\\ \\mathrm{km}$ and $r_a = 21000\\ \\mathrm{km}$, respectively.<br><br>Given Earth's gravitational parameter $\\mu_E = 3.986 \\times 10^{14}\\ \\mathrm{m^3/s^2}$, calculate the satellite's velocity at periapsis ($v_p$) and its orbital period ($T$).",
         "options": [
-            "$v_p = 7.55\\ \\mathrm{km/s},\\ T = 4.58\\ \\mathrm{h}$",
             "$v_p = 9.24\\ \\mathrm{km/s},\\ T = 4.58\\ \\mathrm{h}$",
+            "$v_p = 7.55\\ \\mathrm{km/s},\\ T = 3.25\\ \\mathrm{h}$",
             "$v_p = 7.55\\ \\mathrm{km/s},\\ T = 2.29\\ \\mathrm{h}$",
             "$v_p = 5.32\\ \\mathrm{km/s},\\ T = 4.58\\ \\mathrm{h}$"
         ]
@@ -345,11 +345,11 @@ export const EXAM_QUESTIONS = [
         "module": "T1 · Horizontal to Equatorial",
         "points": "1.0 Point",
         "lore": "<strong>Part III — The Adventures of Alex Barbu and Robert Badea:</strong> In the beginning, the universe was governed by three ancient and mythical beings: Mihai, Albert, and Matei—keepers of Creation, Time, and Theory. Only together do they possess the complete power of the universe. They supervise the adventures of two legendary astronomers, Alex and Robert, through five cosmic challenges.",
-        "statement": "<strong>The Lost Astronomers</strong><br>Alex and Robert arrive at a mysterious observatory built through the combined powers of the three gods at latitude $\\varphi = 40^\\circ\\mathrm{N}$. One night, its telescope detects a mysterious star at an altitude of $h = 35^\\circ$ and an azimuth of $A = 110^\\circ$, measured clockwise from the north.<br><br>Determine the star's declination ($\\delta$) and hour angle ($H$). Consider positive hour angles to be west of the meridian.",
+        "statement": "<strong>The Lost Astronomers</strong><br>Alex and Robert arrive at a mysterious observatory built through the combined powers of the three gods at latitude $\\varphi = 40^\\circ\\mathrm{N}$. One night, its telescope detects a mysterious star at an altitude of $h = 35^\\circ$ and an azimuth of $A = 110^\\circ$, measured clockwise from the north.<br><br>Determine the star's declination ($\\delta$) and hour angle ($H$), expressed in degrees. Consider positive hour angles to be west of the meridian.",
         "options": [
-            "$\\delta = +8.05^\\circ,\\ H = -50.6^\\circ$",
+            "$\\delta = +8.86^\\circ,\\ H = -51.17^\\circ$",
             "$\\delta = +20.0^\\circ,\\ H = -35.0^\\circ$",
-            "$\\delta = -8.05^\\circ,\\ H = +50.6^\\circ$",
+            "$\\delta = 8.86^\\circ,\\ H = +51.17^\\circ$",
             "$\\delta = +35.0^\\circ,\\ H = -40.0^\\circ$"
         ]
     },
@@ -428,6 +428,7 @@ export const EXAM_QUESTIONS = [
 export const EXAM_PARTICIPANTS = [
     {
         "bib": "SNG-2026-1046",
+        "aliasBibs": ["SNG-ADMIN-01"],
         "email": "matei.butnaru@yahoo.com",
         "aliasEmails": [
             "contact.supernovaguide@gmail.com",
@@ -444,6 +445,7 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1044",
+        "aliasBibs": ["SNG-ADMIN-02"],
         "email": "albert_voicu_olteanu@yahoo.com",
         "aliasEmails": [],
         "sngUser": "Albert",
@@ -455,6 +457,7 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1045",
+        "aliasBibs": ["SNG-ADMIN-03"],
         "email": "mihai.tesileanu2@gmail.com",
         "aliasEmails": [],
         "sngUser": "Mihai",

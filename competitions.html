@@ -347,12 +347,6 @@
             color: var(--accent-green);
         }
 
-        /* Team & Partner Split Card */
-        .team-split-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
         .teammate-box {
             background: var(--bg-sidebar);
             border: 1px solid var(--border-light);
@@ -710,7 +704,7 @@
         .mock-option.wrong { border-color: var(--accent-rose); background: rgba(255, 193, 204, 0.1); color: var(--accent-rose); }
 
         @media (max-width: 1150px) {
-            .pd-stats-grid, .dossier-grid, .consent-strip, .team-split-grid, .diag-grid, .cohort-stats-row, .phases-grid, .prizes-grid, .comp-details-grid {
+            .pd-stats-grid, .dossier-grid, .consent-strip, .diag-grid, .cohort-stats-row, .phases-grid, .prizes-grid, .comp-details-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -726,7 +720,7 @@
         <div class="comet" style="top: 10%; left: 85%; animation: shooting 9s infinite linear 1s;"></div>
     </div>
 
-    <!-- SIDEBAR NAVIGATION (Exact Root Filenames) -->
+    <!-- SIDEBAR NAVIGATION -->
     <aside class="sidebar">
         <a href="dashboard.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
@@ -791,7 +785,7 @@
                         Scientific Committee &amp; Chief Proctor Mode (Matei · Albert · Mihai)
                     </div>
                     <div style="font-size:0.9rem; color:var(--text-pure); font-weight:600;">
-                        Inspect any competitor's full dashboard below or launch the live Admin Proctor &amp; Grading Console.
+                        Select any competitor below to inspect their dossier &amp; scorecard, or open the Admin Proctor Console.
                     </div>
                 </div>
             </div>
@@ -812,7 +806,7 @@
             <div class="pd-header">
                 <div>
                     <h2>Competitor Command Center · SAC 2026</h2>
-                    <p id="pd-subtitle">Sign in with your registered Supernova Guide email to unlock your complete 12-field candidate dossier, partner assignment, live round scorecards, and hardware proctoring check.</p>
+                    <p id="pd-subtitle">Sign in with your registered Supernova Guide email to unlock your personal 12-field candidate dossier, partner assignment, live round scorecards, and hardware proctoring check.</p>
                 </div>
                 <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
                     <span class="c-badge badge-blue" id="pd-roster-count-pill">43 Verified Competitors · 12 Countries</span>
@@ -839,10 +833,10 @@
 
                 <div class="pd-stat-card">
                     <div>
-                        <div class="pd-stat-label">Participation Format &amp; Callsign</div>
+                        <div class="pd-stat-label">Entry Callsign</div>
                         <div class="pd-stat-value" id="pd-user-mode">—</div>
                     </div>
-                    <div class="pd-sub-meta" id="pd-user-partner">Teammate &amp; institution info</div>
+                    <div class="pd-sub-meta" id="pd-user-partner">Teammate &amp; division info</div>
                 </div>
 
                 <div class="pd-stat-card">
@@ -850,15 +844,15 @@
                         <div class="pd-stat-label">Active Stage &amp; Cutoff</div>
                         <div class="pd-stat-value" id="pd-next-round-name" style="color:var(--accent-blue);">Phase 1: Open Qualifier</div>
                     </div>
-                    <div class="pd-sub-meta" id="pd-round-window-note">14 Nov · Win A: 10–11 UT | Win B: 18–19 UT</div>
+                    <div class="pd-sub-meta" id="pd-round-window-note">Top 30 Advance to Phase 2 · Top 20 to Final</div>
                 </div>
 
                 <div class="pd-stat-card">
                     <div>
-                        <div class="pd-stat-label">Countdown to Your Next Window</div>
+                        <div class="pd-stat-label" id="pd-timer-card-label">Countdown to Next Window</div>
                         <div class="pd-stat-value" id="pd-next-round-timer" style="font-family:var(--font-mono); font-size:0.98rem;">--d : --h : --m : --s</div>
                     </div>
-                    <div class="pd-sub-meta" id="pd-password-note">Access password emailed 15–30m before 18:00 UT</div>
+                    <div class="pd-sub-meta" id="pd-password-note">Win A: 10:00–11:00 UT | Win B: 18:00–19:00 UT</div>
                 </div>
             </div>
 
@@ -878,28 +872,28 @@
                     <i class="fa-solid fa-id-card"></i> 1. My Official Dossier (12 Fields)
                 </button>
                 <button type="button" class="pd-tab-btn" onclick="window.switchDashTab('team', this)">
-                    <i class="fa-solid fa-user-group"></i> 2. Team &amp; Partner Assignment
+                    <i class="fa-solid fa-user-group"></i> 2. My Entry &amp; Partner Info
                 </button>
                 <button type="button" class="pd-tab-btn" onclick="window.switchDashTab('phases', this)">
-                    <i class="fa-solid fa-list-check"></i> 3. 3-Phase Scorecards &amp; Receipts
+                    <i class="fa-solid fa-list-check"></i> 3. Scorecards &amp; Live Receipts
                 </button>
                 <button type="button" class="pd-tab-btn" onclick="window.switchDashTab('preflight', this)">
                     <i class="fa-solid fa-camera"></i> 4. System &amp; Webcam Pre-Flight Check
                 </button>
                 <button type="button" class="pd-tab-btn" onclick="window.switchDashTab('cohort', this)">
-                    <i class="fa-solid fa-earth-europe"></i> 5. Official Roster &amp; Cohort Stats (43)
+                    <i class="fa-solid fa-earth-europe"></i> 5. Official Candidate Code Roster (43)
                 </button>
             </div>
 
-            <!-- TAB 1: MY OFFICIAL DOSSIER (ALL 12 REGISTRATION FIELDS + CONSENTS) -->
+            <!-- TAB 1: MY OFFICIAL DOSSIER (PRIVATE TO LOGGED-IN CANDIDATE) -->
             <div class="pd-tab-pane active" id="dash-pane-dossier">
                 <div class="dossier-grid">
                     <div class="dossier-cell">
-                        <span class="d-lbl">1. Full Legal Name (Certificate Name)</span>
+                        <span class="d-lbl">1. Full Legal Name (Private · Certificate Only)</span>
                         <div class="d-val" id="dos-name">—</div>
                     </div>
                     <div class="dossier-cell">
-                        <span class="d-lbl">2. Official Candidate Bib ID</span>
+                        <span class="d-lbl">2. Official Candidate Bib Code</span>
                         <div class="d-val" id="dos-bib" style="font-family:var(--font-mono); color:var(--accent-green);">—</div>
                     </div>
                     <div class="dossier-cell">
@@ -915,7 +909,7 @@
                         <div class="d-val" id="dos-dob">—</div>
                     </div>
                     <div class="dossier-cell">
-                        <span class="d-lbl">6. Country of Residence &amp; Flag</span>
+                        <span class="d-lbl">6. Country of Residence</span>
                         <div class="d-val" id="dos-country">—</div>
                     </div>
                     <div class="dossier-cell">
@@ -956,14 +950,14 @@
                         <i class="fa-solid fa-shield-check"></i>
                         <div>
                             <strong style="display:block; font-size:0.72rem; font-family:var(--font-mono);">INTEGRITY PLEDGE</strong>
-                            <span>IAU Sheet + Non-Prog. Calc Only</span>
+                            <span>Constants Sheet + Non-Prog. Calc Only</span>
                         </div>
                     </div>
                     <div class="consent-pill">
-                        <i class="fa-solid fa-eye"></i>
+                        <i class="fa-solid fa-user-secret"></i>
                         <div>
-                            <strong style="display:block; font-size:0.72rem; font-family:var(--font-mono);">PUBLIC LEADERBOARD</strong>
-                            <span id="dos-consent-privacy">—</span>
+                            <strong style="display:block; font-size:0.72rem; font-family:var(--font-mono);">PUBLIC IDENTITY</strong>
+                            <span id="dos-consent-privacy">Candidate Bib Code Only</span>
                         </div>
                     </div>
                     <div class="consent-pill">
@@ -976,88 +970,44 @@
                 </div>
             </div>
 
-            <!-- TAB 2: TEAM & PARTNER ASSIGNMENT -->
+            <!-- TAB 2: PERSONAL ENTRY & PARTNER CONFIGURATION (NO OTHER PARTICIPANTS' NAMES EXPOSED) -->
             <div class="pd-tab-pane" id="dash-pane-team">
-                <div class="team-split-grid">
-                    <div class="teammate-box">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-blue); text-transform:uppercase;">Your Entry Configuration</span>
-                            <span class="c-badge badge-green" id="team-type-badge">Solo / Duo</span>
-                        </div>
-                        <h3 style="font-family:var(--font-display); font-size:1.25rem; color:var(--text-pure);" id="team-callsign-title">—</h3>
-                        <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.55;" id="team-status-desc">
-                            Sign in to view your team configuration and partner details.
-                        </p>
-                        <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:12px 14px; font-size:0.82rem; line-height:1.6;" id="team-partner-details-box">
-                            No partner assigned (Solo entry).
-                        </div>
+                <div class="teammate-box">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-blue); text-transform:uppercase;">Your Personal Entry Configuration</span>
+                        <span class="c-badge badge-green" id="team-type-badge">Unified Competition Field</span>
                     </div>
-
-                    <div class="teammate-box">
-                        <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-gold); text-transform:uppercase;">Official Duo Teams &amp; Matchmaking Pairs (5 Teams / 10 Competitors)</span>
-                        <div class="roster-table-wrap" style="max-height:220px;">
-                            <table class="roster-table">
-                                <thead>
-                                    <tr>
-                                        <th>Team / Pair</th>
-                                        <th>Competitor 1</th>
-                                        <th>Competitor 2</th>
-                                        <th>Type</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td style="font-family:var(--font-mono); color:var(--accent-green); font-weight:700;">Tefla</td>
-                                        <td>Kerem Karagöl (1025)</td>
-                                        <td>Yusuf Kerem Kuru (1030)</td>
-                                        <td><span class="c-badge badge-green">Set Duo</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-family:var(--font-mono); color:var(--accent-green); font-weight:700;">Alternosteaua</td>
-                                        <td>Venedict Sasha-C. (1038)</td>
-                                        <td>Alexandrescu Emilia (1041)</td>
-                                        <td><span class="c-badge badge-green">Set Duo</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-family:var(--font-mono); color:var(--accent-blue); font-weight:700;">Astrobros (Pair #1)</td>
-                                        <td>Badea Robert Y. (1003)</td>
-                                        <td>Dumitrescu Sebastian (1031)</td>
-                                        <td><span class="c-badge badge-blue">Matched</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-family:var(--font-mono); color:var(--accent-blue); font-weight:700;">Pair #2 · Americas</td>
-                                        <td>Alexander Yu (1026 · USA)</td>
-                                        <td>Bernardo M. (1028 · Brazil)</td>
-                                        <td><span class="c-badge badge-blue">Matched</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-family:var(--font-mono); color:var(--accent-blue); font-weight:700;">Pair #3 · Eurasia</td>
-                                        <td>Barbu Mihai A. (1001 · RO)</td>
-                                        <td>Bayar E. (1019 · MN)</td>
-                                        <td><span class="c-badge badge-blue">Matched</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <p style="font-size:0.76rem; color:var(--text-muted);">
-                            *Note: Participants who selected "In a team of 2 (I have a partner)" whose partner did not submit the registration form (`INSAN`, `Barça Boys`) compete individually as Solo entries.
-                        </p>
+                    <h3 style="font-family:var(--font-display); font-size:1.25rem; color:var(--text-pure);" id="team-callsign-title">—</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.55;" id="team-status-desc">
+                        Sign in to view your entry configuration and partner details. All competitors compete in one unified ranking identified publicly only by their Candidate Bib Code (`SNG-2026-10XX`).
+                    </p>
+                    <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:14px 16px; font-size:0.84rem; line-height:1.65;" id="team-partner-details-box">
+                        No partner assigned (Solo entry).
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 3: 3-PHASE SCORECARDS & CLOUD RECEIPTS -->
+            <!-- TAB 3: 3-PHASE SCORECARDS & ALL-COMPETITORS CLOUD RECEIPTS (BY BIB CODE) -->
             <div class="pd-tab-pane" id="dash-pane-phases">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <span style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-green);" id="scorecard-viewing-label">
+                        Viewing Personal Scorecard: Sign in or select a Candidate Bib below
+                    </span>
+                    <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted);">
+                        Phase 1 Cutoff: <strong>Top 30 Advance</strong> · Phase 2 Cutoff: <strong>Top 20 Advance</strong>
+                    </span>
+                </div>
+
                 <table class="phase-progress-table">
                     <thead>
                         <tr>
                             <th>Tournament Phase</th>
-                            <th>Date &amp; Entry Window (UT)</th>
+                            <th>Date &amp; Entry Windows (UT)</th>
                             <th>Structure &amp; Difficulty</th>
-                            <th>Cutoff</th>
-                            <th>Your Live Status</th>
+                            <th>Qualification Cutoff</th>
+                            <th>Bib Status</th>
                             <th>Answered / Strikes</th>
-                            <th>Official Score / Receipt</th>
+                            <th>Score / Cloud Receipt</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1065,16 +1015,16 @@
                             <td style="font-weight:700; color:var(--text-pure);">Phase 1: Open Qualifier</td>
                             <td style="font-family:var(--font-mono); font-size:0.78rem;">Sat, 14 Nov · Win A: 10:00 UT | Win B: 18:00 UT</td>
                             <td>30 MCQs · 60 min (15E, 10M, 5H)</td>
-                            <td style="color:var(--accent-green); font-family:var(--font-mono);">Top 50% (22 Entries)</td>
+                            <td style="color:var(--accent-green); font-family:var(--font-mono); font-weight:700;">Top 30 Advance</td>
                             <td id="p1-live-status"><span class="c-badge badge-green">Enrolled · Ready</span></td>
-                            <td id="p1-live-telemetry" style="font-family:var(--font-mono);">0 / 30 · 0/3 Strikes</td>
-                            <td id="p1-live-receipt" style="font-family:var(--font-mono); color:var(--accent-blue);">Awaiting 14 Nov 18:00 UT</td>
+                            <td id="p1-live-telemetry" style="font-family:var(--font-mono);">0 / 30 · 0 Strikes</td>
+                            <td id="p1-live-receipt" style="font-family:var(--font-mono); color:var(--accent-blue);">Awaiting 14 Nov 10:00 UT</td>
                         </tr>
                         <tr>
                             <td style="font-weight:700; color:var(--text-pure);">Phase 2: Selection Round</td>
                             <td style="font-family:var(--font-mono); font-size:0.78rem;">Sun, 15 Nov · Win A: 10:00 UT | Win B: 18:00 UT</td>
                             <td>40 MCQs · 60 min (15E, 15M, 10H)</td>
-                            <td style="color:var(--accent-blue); font-family:var(--font-mono);">Top 20 Advance</td>
+                            <td style="color:var(--accent-blue); font-family:var(--font-mono); font-weight:700;">Top 20 Advance</td>
                             <td id="p2-live-status"><span class="c-badge" style="background:rgba(255,255,255,0.06); color:var(--text-muted);">Pending Phase 1 Cutoff</span></td>
                             <td style="font-family:var(--font-mono); color:var(--text-muted);">— / 40</td>
                             <td style="font-family:var(--font-mono); color:var(--text-muted);">Unlocks after Phase 1</td>
@@ -1083,13 +1033,43 @@
                             <td style="font-weight:700; color:var(--text-pure);">Phase 3: Grand Final</td>
                             <td style="font-family:var(--font-mono); font-size:0.78rem;">Fri, 20 Nov · Win A: 10:00 UT | Win B: 18:00 UT</td>
                             <td>45 MCQs · 90 min (10E, 20M, 15H)</td>
-                            <td style="color:var(--accent-gold); font-family:var(--font-mono);">Top 20 Win Prizes</td>
+                            <td style="color:var(--accent-gold); font-family:var(--font-mono); font-weight:700;">Top 20 Win Prizes</td>
                             <td id="p3-live-status"><span class="c-badge" style="background:rgba(255,255,255,0.06); color:var(--text-muted);">Pending Phase 2 Cutoff</span></td>
                             <td style="font-family:var(--font-mono); color:var(--text-muted);">— / 45</td>
                             <td style="font-family:var(--font-mono); color:var(--text-muted);">Unlocks after Phase 2</td>
                         </tr>
                     </tbody>
                 </table>
+
+                <!-- Live All-Competitors Scorecards & Cloud Receipts Board (By Candidate Bib Code) -->
+                <div style="margin-top:6px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:10px;">
+                        <h4 style="font-family:var(--font-mono); font-size:0.76rem; color:var(--accent-blue); text-transform:uppercase;">
+                            <i class="fa-solid fa-trophy"></i> Live All-Candidate Scorecards &amp; Cloud Receipts (By Candidate Bib Code)
+                        </h4>
+                        <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted);" id="cohort-scorecards-summary">
+                            Syncing live submissions from Firebase...
+                        </span>
+                    </div>
+                    <div class="roster-table-wrap" style="max-height:360px;">
+                        <table class="roster-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Candidate Bib Code</th>
+                                    <th>Country</th>
+                                    <th>Callsign</th>
+                                    <th>Live Status</th>
+                                    <th>Answered</th>
+                                    <th>Score (30.0 pt)</th>
+                                    <th>Tie-Breaker</th>
+                                    <th>Cloud Receipt ID</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cohort-scorecards-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <!-- TAB 4: SYSTEM & WEBCAM PRE-FLIGHT DIAGNOSTICS -->
@@ -1119,7 +1099,7 @@
                         <div class="diag-row" id="diag-row-fs">
                             <div>
                                 <strong style="color:var(--text-pure); display:block; font-size:0.88rem;">3. Fullscreen Lockdown API (`requestFullscreen`)</strong>
-                                <span style="font-size:0.78rem; color:var(--text-muted);" id="diag-fs-status">Required to prevent strike penalties during the exam.</span>
+                                <span style="font-size:0.78rem; color:var(--text-muted);" id="diag-fs-status">Required to prevent focus strike warnings during the exam.</span>
                             </div>
                             <button type="button" class="btn-comp btn-mock" style="padding:7px 14px; font-size:0.76rem;" id="btn-test-fs">
                                 <i class="fa-solid fa-expand"></i> Test Fullscreen
@@ -1146,7 +1126,7 @@
                 </div>
             </div>
 
-            <!-- TAB 5: COHORT ANALYTICS & FULL 43-COMPETITOR DIRECTORY -->
+            <!-- TAB 5: COHORT ANALYTICS & UNIFIED ANONYMIZED CANDIDATE BIB DIRECTORY -->
             <div class="pd-tab-pane" id="dash-pane-cohort">
                 <div class="cohort-stats-row">
                     <div class="cohort-box">
@@ -1181,37 +1161,34 @@
                     </div>
 
                     <div class="cohort-box">
-                        <h4><i class="fa-solid fa-medal"></i> Olympiad Background &amp; Referrals</h4>
+                        <h4><i class="fa-solid fa-medal"></i> Olympiad Background &amp; Cutoffs</h4>
                         <div class="tag-cloud">
                             <span class="stat-chip">USAAAO / National Astro: <strong>14</strong></span>
                             <span class="stat-chip">IPhO / National Physics: <strong>9</strong></span>
                             <span class="stat-chip">IOAA / IOAA-Jr: <strong>5</strong></span>
                             <span class="stat-chip">First Astro Contest: <strong>25</strong></span>
-                            <span class="stat-chip" style="border-color:var(--accent-gold); color:var(--accent-gold);">Top Ambassador: <strong>@user_41612 (5)</strong></span>
+                            <span class="stat-chip" style="border-color:var(--accent-green); color:var(--accent-green);">Phase 1 → 2: <strong>Top 30</strong></span>
+                            <span class="stat-chip" style="border-color:var(--accent-blue); color:var(--accent-blue);">Phase 2 → Final: <strong>Top 20</strong></span>
                         </div>
                     </div>
                 </div>
 
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                        <button type="button" class="copy-bib-btn" onclick="window.filterRosterMode('all')">All (43)</button>
-                        <button type="button" class="copy-bib-btn" onclick="window.filterRosterMode('duo')">Teams of 2 (10)</button>
-                        <button type="button" class="copy-bib-btn" onclick="window.filterRosterMode('solo')">Solo (33)</button>
-                    </div>
-                    <input type="text" id="roster-search-input" placeholder="Search by Bib, Name, Country, Grade, or Team..." style="padding:8px 14px; border-radius:6px; background:var(--bg-sidebar); border:1px solid var(--border-light); color:var(--text-pure); font-family:var(--font-mono); font-size:0.75rem; min-width:280px;">
+                    <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">
+                        <i class="fa-solid fa-user-shield" style="color:var(--accent-green);"></i> Unified Candidate Roster (Anonymized by Candidate Bib Code for competitor privacy)
+                    </span>
+                    <input type="text" id="roster-search-input" placeholder="Search by Candidate Bib Code (SNG-2026-10XX), Country, or Callsign..." style="padding:8px 14px; border-radius:6px; background:var(--bg-sidebar); border:1px solid var(--border-light); color:var(--text-pure); font-family:var(--font-mono); font-size:0.75rem; min-width:320px;">
                 </div>
 
                 <div class="roster-table-wrap">
                     <table class="roster-table">
                         <thead>
                             <tr>
-                                <th>Bib ID</th>
-                                <th>Competitor</th>
+                                <th>Candidate Bib Code</th>
                                 <th>Country</th>
-                                <th>Academic Grade</th>
-                                <th>Format / Team Callsign</th>
-                                <th>Partner</th>
-                                <th>Institution (GDPR Filtered)</th>
+                                <th>Academic Division</th>
+                                <th>Callsign</th>
+                                <th>Regional Window</th>
                             </tr>
                         </thead>
                         <tbody id="roster-tbody"></tbody>
@@ -1222,7 +1199,7 @@
             <!-- BOTTOM ACTION BAR -->
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding-top:12px; border-top:1px solid var(--border-subtle);">
                 <span style="font-size:0.82rem; color:var(--text-muted);" id="pd-helper-note">
-                    All rounds open between <strong>18:00 UT and 19:00 UT</strong>. Clicking <strong>Launch Exam Terminal</strong> pre-fills your Candidate Bib and Email on <code>exam.html</code>.
+                    Entry Windows: <strong>Window A (10:00–11:00 UT)</strong> &amp; <strong>Window B (18:00–19:00 UT)</strong>. Clicking <strong>Launch Exam Terminal</strong> pre-fills your Candidate Bib and Email on <code>exam.html</code>.
                 </span>
                 <div style="display:flex; gap:10px; flex-wrap:wrap;">
                     <a href="tools.html" class="btn-comp btn-mock" style="padding:9px 15px; font-size:0.8rem;">
@@ -1244,19 +1221,19 @@
                 <div>
                     <div class="comp-badges">
                         <span class="c-badge badge-green"><i class="fa-solid fa-bolt"></i> Autumn 2026 Season (SAC 2026)</span>
-                        <span class="c-badge badge-blue">3-Phase MCQ Format · Solo or Team of 2</span>
+                        <span class="c-badge badge-blue">3-Phase MCQ Format · Unified Standings</span>
                         <span class="c-badge badge-gold">Over $2,300 in Prizes</span>
                     </div>
                     <h2 class="comp-title">Supernova Autumn Cup 2026</h2>
                     <p class="comp-subtitle">
-                        Our first seasonal competition: a three-phase Multiple Choice Question (MCQ) event open internationally to students up to age 20 (Individually or in Teams of 2), covering all topics on our site—with a strong focus on celestial mechanics.
+                        Our first seasonal competition: a three-phase Multiple Choice Question (MCQ) event open internationally to students up to age 20, covering all topics on our site—with a strong focus on celestial mechanics.
                     </p>
                 </div>
 
                 <div class="countdown-box">
-                    <span class="countdown-label" id="countdown-phase-label">Open Qualifier Starts In</span>
+                    <span class="countdown-label" id="countdown-phase-label">Window A Opens In</span>
                     <div class="countdown-digits" id="countdown-timer">--d : --h : --m : --s</div>
-                    <div class="countdown-dates">14 Nov · Europe/Asia: 10:00 UT | Americas: 18:00 UT</div>
+                    <div class="countdown-dates">14 Nov · Window A: 10:00 UT | Window B: 18:00 UT</div>
                 </div>
             </div>
 
@@ -1320,17 +1297,17 @@
                 <div class="phase-card">
                     <span class="phase-num">Phase 01 · Saturday, 14 Nov 2026</span>
                     <h3>Open Qualifier (1 Hour)</h3>
-                    <p>All registered participants take a 30 MCQ astronomy &amp; astrophysics exam in 1 hour (entry window: 18:00–19:00 UT), covering spherical coordinates, Keplerian orbits, radiation laws, and optics.</p>
+                    <p>All registered participants take a 30 MCQ astronomy &amp; astrophysics exam in 1 hour (Window A: 10:00–11:00 UT | Window B: 18:00–19:00 UT), covering spherical coordinates, Keplerian orbits, radiation laws, and cosmology.</p>
                     <div class="phase-meta">
                         <span>Format: 30 MCQs (1 hr)</span>
-                        <span style="color:var(--accent-green); font-weight:700;">Top 50% Advance</span>
+                        <span style="color:var(--accent-green); font-weight:700;">Top 30 Advance</span>
                     </div>
                 </div>
 
                 <div class="phase-card">
                     <span class="phase-num" style="color: var(--accent-blue);">Phase 02 · Sunday, 15 Nov 2026</span>
                     <h3>Selection Round (1 Hour)</h3>
-                    <p>All qualified participants take a harder 40 MCQ astronomy &amp; astrophysics exam in 1 hour (entry window: 18:00–19:00 UT) featuring binary star kinematics, extinction, and stellar structure.</p>
+                    <p>The top 30 qualifiers take a harder 40 MCQ astronomy &amp; astrophysics exam in 1 hour (Window A: 10:00–11:00 UT | Window B: 18:00–19:00 UT) featuring binary star kinematics, extinction, and stellar structure.</p>
                     <div class="phase-meta">
                         <span>Format: 40 MCQs (1 hr)</span>
                         <span style="color:var(--accent-blue); font-weight:700;">Top 20 Advance</span>
@@ -1340,7 +1317,7 @@
                 <div class="phase-card">
                     <span class="phase-num" style="color: var(--accent-gold);">Phase 03 · Friday, 20 Nov 2026</span>
                     <h3>Final Round (90 Min)</h3>
-                    <p>The top 20 participants from the Selection Round compete in the Grand Final (entry window: 18:00–19:00 UT, 45 MCQs) to win commercial software licenses, physical books, Steam keys, and AoPS vouchers.</p>
+                    <p>The top 20 participants from the Selection Round compete in the Grand Final (Window A: 10:00–11:00 UT | Window B: 18:00–19:00 UT, 45 MCQs) to win commercial software licenses, physical books, Steam keys, and AoPS vouchers.</p>
                     <div class="phase-meta">
                         <span>Format: 45 MCQs (1.5 hr)</span>
                         <span style="color:var(--accent-gold); font-weight:700;">All 20 Win Prizes</span>
@@ -1384,12 +1361,12 @@
                             Ambassador Challenge Standings
                         </div>
                         <p style="font-size:0.86rem; color:var(--text-main); line-height:1.6;">
-                            Verified referrals from the official registration spreadsheet (Column 19: <em>"Referred By"</em>):
+                            Verified referrals from the official registration dataset (identified by Discord / Bib Code):
                         </p>
                         <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:12px 15px; font-family:var(--font-mono); font-size:0.76rem; color:var(--accent-gold); line-height:1.8;">
-                            🥇 1st Ambassador: <strong>@user_41612 (Khalfani Xavier)</strong> — 5 Verified Referrals (Universe Sandbox Key)<br>
-                            🥈 2nd Ambassador: <strong>kerem_45.sjk_37712 (Kerem K.)</strong> — Verified Referrer ($25 AoPS Voucher)<br>
-                            🥉 3rd Ambassador: <strong>Selma Hanifah</strong> — Verified Referrer ($25 AoPS Voucher)
+                            🥇 1st Ambassador: <strong>@user_41612 (SNG-2026-1011)</strong> — 5 Verified Referrals (Universe Sandbox Key)<br>
+                            🥈 2nd Ambassador: <strong>kerem_45.sjk_37712 (SNG-2026-1025)</strong> — Verified Referrer ($25 AoPS Voucher)<br>
+                            🥉 3rd Ambassador: <strong>selmama.h (SNG-2026-1032)</strong> — Verified Referrer ($25 AoPS Voucher)
                         </div>
                     </div>
 
@@ -1409,10 +1386,10 @@
                 <div class="rules-panel">
                     <div class="panel-heading"><i class="fa-solid fa-scale-balanced" style="color: var(--accent-green);"></i> Official Format &amp; Rules</div>
                     <ul class="rules-list">
-                        <li><i class="fa-solid fa-check"></i> <div><strong>Eligibility &amp; Teams:</strong> Open worldwide to students up to age 20. Compete <strong>Individually</strong> or in a <strong>Team of 2</strong> (with a chosen partner or randomly assigned). Teams of 2 receive a Special Team Diploma, and each participant must submit the registration form.</div></li>
+                        <li><i class="fa-solid fa-check"></i> <div><strong>Qualification Cutoffs:</strong> Top 30 advance from Phase 1 (Open Qualifier) to Phase 2 (Selection Round). Top 20 advance from Phase 2 to Phase 3 (Grand Final).</div></li>
                         <li><i class="fa-solid fa-check"></i> <div><strong>Scoring &amp; Tie-Breakers:</strong> \(+1.0\text{ pt}\) per correct answer, \(0.0\text{ pts}\) for blank or wrong choices (no negative marking). Ties are broken by the average difficulty weight of solved problems.</div></li>
-                        <li><i class="fa-solid fa-check"></i> <div><strong>Universal Entry Window:</strong> All rounds open between <strong>18:00 UT and 19:00 UT</strong> on their respective dates.</div></li>
-                        <li><i class="fa-solid fa-check"></i> <div><strong>Allowed Tools &amp; Proctoring:</strong> Non-programmable scientific calculator and the official IAU Constants sheet (`tools.html`). Full-screen lockdown, screen sharing, and webcam proctoring apply on `exam.html`.</div></li>
+                        <li><i class="fa-solid fa-check"></i> <div><strong>Regional Entry Windows:</strong> Each competition day features <strong>Window A (10:00–11:00 UT)</strong> for Europe/Asia/Africa/Oceania and <strong>Window B (18:00–19:00 UT)</strong> for the Americas.</div></li>
+                        <li><i class="fa-solid fa-check"></i> <div><strong>Candidate Bib Code Anonymity:</strong> Public rosters and scoreboards display only your official Candidate Bib Code (<code>SNG-2026-10XX</code>) to protect student privacy.</div></li>
                     </ul>
                 </div>
 
@@ -1434,7 +1411,7 @@
             <!-- FOOTER CTA -->
             <div class="comp-footer">
                 <div class="reg-status-info">
-                    Phase 1 (Open Qualifier): <strong>Saturday, 14 Nov 2026 (18:00–19:00 UT)</strong> · Check your email for the Exam Access Password.
+                    Phase 1 (Open Qualifier): <strong>Saturday, 14 Nov 2026 · Window A (10:00 UT) &amp; Window B (18:00 UT)</strong>
                 </div>
                 <div class="btn-group">
                     <a href="https://drive.google.com/file/d/1B6t4DWtaloF9IRWQ652CjbE6PAN1vg8d/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="btn-comp btn-mock">
@@ -1472,10 +1449,10 @@
     <script type="module">
         import { getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         // ============================================================================
-        // COMPLETE 43-COMPETITOR + 3 ADMIN DATASET (ALL 20 EXCEL COLUMNS INCLUDED)
+        // COMPLETE 43-COMPETITOR + 3 ADMIN DATASET
         // ============================================================================
         const REGISTERED_PARTICIPANTS = [
             {
@@ -1496,7 +1473,7 @@
                         "city": "Botoșani, Romania",
                         "grade": "Lead Organizer & Scientific Committee",
                         "experience": "IOAA / National Astronomy & Physics Olympiad",
-                        "mode": "Solo (Test Participant & Lead Organizer)",
+                        "mode": "Solo (Matei)",
                         "teamType": "solo",
                         "callsign": "Matei",
                         "partner": null,
@@ -1530,7 +1507,7 @@
                         "city": "Romania",
                         "grade": "Co-Founder & Scientific Committee",
                         "experience": "IOAA / National Astronomy & Physics Olympiad",
-                        "mode": "Solo (Test Participant & Co-Founder)",
+                        "mode": "Solo (Albert)",
                         "teamType": "solo",
                         "callsign": "Albert",
                         "partner": null,
@@ -1564,7 +1541,7 @@
                         "city": "Romania",
                         "grade": "Co-Founder & Scientific Committee",
                         "experience": "IOAA / National Astronomy & Physics Olympiad",
-                        "mode": "Solo (Test Participant & Co-Founder)",
+                        "mode": "Solo (Mihai)",
                         "teamType": "solo",
                         "callsign": "Mihai",
                         "partner": null,
@@ -1598,7 +1575,7 @@
                         "city": "Pitesti, Arges, Romania",
                         "grade": "High School — Grade 9 (or equivalent)",
                         "experience": "USAAAO / National Astronomy Olympiad",
-                        "mode": "Team of 2 (Matchmaking Pair #3)",
+                        "mode": "Pair #3 · Eurasia",
                         "teamType": "duo_random",
                         "callsign": "Pair #3 · Eurasia",
                         "partner": "Bayar Enkhbold",
@@ -1625,7 +1602,7 @@
                         "name": "Solcan-Luca Darius-Florin",
                         "discord": "cgl6",
                         "dob": "2012-07-24",
-                        "country": "Romania , Botoşani",
+                        "country": "Romania",
                         "school": "Școala gimnazială numărul 7 Botoșani",
                         "city": "Botoșani România",
                         "grade": "Middle School / Junior High (Grades 5–8)",
@@ -1662,7 +1639,7 @@
                         "city": "Pitesti, Romania",
                         "grade": "High School — Grade 10 (or equivalent)",
                         "experience": "First Astronomy / Astrophysics Competition",
-                        "mode": "Team of 2 (Astrobros · Pair #1)",
+                        "mode": "Astrobros",
                         "teamType": "duo_random",
                         "callsign": "Astrobros",
                         "partner": "Dumitrescu Sebastian Gabriel",
@@ -2176,7 +2153,7 @@
                         "city": "Ulaanbaatar, Mongolia",
                         "grade": "High School — Grade 11 (or equivalent)",
                         "experience": "First Astronomy / Astrophysics Competition",
-                        "mode": "Team of 2 (ƛ𝛆μμ⍺ · Pair #3)",
+                        "mode": "ƛ𝛆μμ⍺ · Pair #3",
                         "teamType": "duo_random",
                         "callsign": "ƛ𝛆μμ⍺ · Pair #3",
                         "partner": "Barbu Mihai Alexandru",
@@ -2368,7 +2345,7 @@
                         "city": "Kocaeli İstanbul",
                         "grade": "High School — Grade 10 (or equivalent)",
                         "experience": "USAAAO / National Astronomy Olympiad",
-                        "mode": "Team of 2 (Tefla)",
+                        "mode": "Tefla",
                         "teamType": "duo_set",
                         "callsign": "Tefla",
                         "partner": "Yusuf Kerem Kuru",
@@ -2400,7 +2377,7 @@
                         "city": "Camas, Washington, USA",
                         "grade": "High School — Grade 11 (or equivalent)",
                         "experience": "USAAAO / National Astronomy Olympiad",
-                        "mode": "Team of 2 (iono bro · Pair #2)",
+                        "mode": "iono bro · Pair #2",
                         "teamType": "duo_random",
                         "callsign": "iono bro · Pair #2",
                         "partner": "Bernardo Miguel de Souza",
@@ -2432,9 +2409,9 @@
                         "city": "Braila",
                         "grade": "Middle School / Junior High (Grades 5–8)",
                         "experience": "USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad)",
-                        "mode": "Solo (¯\_(ツ)_/¯)",
+                        "mode": "Solo (¯\\_(ツ)_/¯)",
                         "teamType": "solo",
-                        "callsign": "¯\_(ツ)_/¯",
+                        "callsign": "¯\\_(ツ)_/¯",
                         "partner": null,
                         "partnerBib": null,
                         "partnerDiscord": null,
@@ -2464,7 +2441,7 @@
                         "city": "Curitiba, Paraná",
                         "grade": "Gap Year Student (Age < 21)",
                         "experience": "Physics Olympiad (IPhO / National Physics Olympiad)",
-                        "mode": "Team of 2 (Stellaris · Pair #2)",
+                        "mode": "Stellaris · Pair #2",
                         "teamType": "duo_random",
                         "callsign": "Stellaris · Pair #2",
                         "partner": "Alexander Yu",
@@ -2528,7 +2505,7 @@
                         "city": "Kocaeli, Türkiye",
                         "grade": "High School — Grade 10 (or equivalent)",
                         "experience": "USAAAO / National Astronomy Olympiad",
-                        "mode": "Team of 2 (Tefla)",
+                        "mode": "Tefla",
                         "teamType": "duo_set",
                         "callsign": "Tefla",
                         "partner": "Kerem Karagöl",
@@ -2560,7 +2537,7 @@
                         "city": "Pitesti Romania",
                         "grade": "High School — Grade 10 (or equivalent)",
                         "experience": "First Astronomy / Astrophysics Competition",
-                        "mode": "Team of 2 (Astrobros · Pair #1)",
+                        "mode": "Astrobros",
                         "teamType": "duo_random",
                         "callsign": "Astrobros",
                         "partner": "Badea Robert Yannis",
@@ -2784,7 +2761,7 @@
                         "city": "Romania, Botoşani (Botoşani)",
                         "grade": "High School — Grade 10 (or equivalent)",
                         "experience": "First Astronomy / Astrophysics Competition",
-                        "mode": "Team of 2 (Alternosteaua)",
+                        "mode": "Alternosteaua",
                         "teamType": "duo_set",
                         "callsign": "Alternosteaua",
                         "partner": "Alexandrescu Emilia-Maria",
@@ -2880,7 +2857,7 @@
                         "city": "Botoșani România",
                         "grade": "High School — Grade 10 (or equivalent)",
                         "experience": "USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad)",
-                        "mode": "Team of 2 (Alternosteaua)",
+                        "mode": "Alternosteaua",
                         "teamType": "duo_set",
                         "callsign": "Alternosteaua",
                         "partner": "Venedict Sasha-Cristian",
@@ -2963,7 +2940,7 @@
                         "canStartAnytime": false,
                         "isParticipant": true
             }
-];
+        ];
 
         const ADMIN_EMAILS = [
             "matei.butnaru@yahoo.com",
@@ -2975,21 +2952,40 @@
             "mihai.tesileanu2@gmail.com"
         ];
 
+        // Official Corrected 30-Question Answer Key (Q18 = A)
+        const R1_ANSWER_KEY = [
+            "B", "A", "B", "B", "D", "C", "C", "D", "C", "B",
+            "C", "C", "D", "C", "D", "B", "A", "A", "A", "B",
+            "A", "A", "A", "B", "A", "B", "B", "C", "B", "A"
+        ];
+
+        const R1_WEIGHTS = [
+            2.0, 2.0, 1.5, 2.0, 2.0, 2.5, 2.5, 2.0, 2.0, 2.5,
+            2.5, 2.0, 2.5, 3.0, 2.5, 4.5, 5.5, 5.0, 5.0, 5.0,
+            6.5, 6.0, 7.0, 6.5, 7.0, 8.0, 8.5, 8.5, 9.0, 10.0
+        ];
+
+        // All 6 Official Competition Entry Windows (Window A = 10:00–11:00 UT, Window B = 18:00–19:00 UT)
+        const COMPETITION_WINDOWS = [
+            { phase: "Phase 1 · Window A (10:00 UT)", start: Date.parse("2026-11-14T10:00:00Z"), end: Date.parse("2026-11-14T11:00:00Z") },
+            { phase: "Phase 1 · Window B (18:00 UT)", start: Date.parse("2026-11-14T18:00:00Z"), end: Date.parse("2026-11-14T19:00:00Z") },
+            { phase: "Phase 2 · Window A (10:00 UT)", start: Date.parse("2026-11-15T10:00:00Z"), end: Date.parse("2026-11-15T11:00:00Z") },
+            { phase: "Phase 2 · Window B (18:00 UT)", start: Date.parse("2026-11-15T18:00:00Z"), end: Date.parse("2026-11-15T19:00:00Z") },
+            { phase: "Phase 3 · Window A (10:00 UT)", start: Date.parse("2026-11-20T10:00:00Z"), end: Date.parse("2026-11-20T11:00:00Z") },
+            { phase: "Phase 3 · Window B (18:00 UT)", start: Date.parse("2026-11-20T18:00:00Z"), end: Date.parse("2026-11-20T19:00:00Z") }
+        ];
+
         const ROUND_EXAM_LINKS = {
             qualifier: "exam.html",
             selection: "exam.html",
             final: "exam.html"
         };
 
-        const ROUND_DATES_UTC = {
-            qualifier: new Date('2026-11-14T18:00:00Z').getTime(),
-            selection: new Date('2026-11-15T18:00:00Z').getTime(),
-            final: new Date('2026-11-20T18:00:00Z').getTime()
-        };
-
         let currentParticipant = null;
         let isOrganizerAdmin = false;
-        let activeRosterFilter = "all";
+        let liveSubmissionsMap = {};
+        let finalSubmissionsMap = {};
+        let resultsPublished = false;
 
         // Tab Switcher inside Competitor Command Center
         window.switchDashTab = function(tabId, btnEl) {
@@ -2999,15 +2995,28 @@
             if (btnEl) btnEl.classList.add('active');
         };
 
-        function formatPublicName(p) {
-            if (isOrganizerAdmin) return p.name; // Admins see full names
-            if (p.publicPrivacy === 'abbreviated') {
-                const parts = p.name.trim().split(/\s+/);
-                if (parts.length === 1) return parts[0];
-                return `${parts[0]} ${parts[parts.length - 1].charAt(0).toUpperCase()}.`;
-            }
-            return p.name;
+        function computeCandidateScore(ansObj) {
+            if (!ansObj) return { raw: 0, tie: 0 };
+            const letters = ['A', 'B', 'C', 'D', 'E'];
+            let raw = 0, wSum = 0;
+            R1_ANSWER_KEY.forEach((corr, i) => {
+                const chosen = ansObj[`Q${i + 1}`];
+                if (chosen !== undefined && letters[chosen] === corr) {
+                    raw += 1.0;
+                    wSum += (R1_WEIGHTS[i] || 1.0);
+                }
+            });
+            return { raw, tie: raw > 0 ? wSum / raw : 0 };
         }
+
+        window.selectCandidateForScorecard = function(bib) {
+            const chosen = REGISTERED_PARTICIPANTS.find(x => x.bib === bib);
+            if (chosen) {
+                populateHydratedDossier(chosen);
+                const previewSelect = document.getElementById('admin-preview-select');
+                if (previewSelect) previewSelect.value = bib;
+            }
+        };
 
         function populateHydratedDossier(p) {
             currentParticipant = p;
@@ -3022,11 +3031,15 @@
             const modeEl = document.getElementById('pd-user-mode');
             const partnerEl = document.getElementById('pd-user-partner');
             const roundNameEl = document.getElementById('pd-next-round-name');
+            const viewLbl = document.getElementById('scorecard-viewing-label');
 
             cardEl.classList.add('is-registered');
             badgeEl.className = 'pd-status-badge confirmed';
             badgeEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> Verified (${p.bib})`;
-            subEl.innerHTML = `Welcome, <strong style="color:var(--text-pure);">${p.name}</strong> (${p.school} · ${p.country}). Below is your complete SAC 2026 registration dossier, partner pairing, and live exam telemetry.`;
+            subEl.innerHTML = `Active Candidate Bib Code: <strong style="color:var(--accent-green); font-family:var(--font-mono);">${p.bib}</strong> (${p.country}). Below is your personal registration dossier and live exam scorecard.`;
+            if (viewLbl) {
+                viewLbl.innerHTML = `Viewing Scorecard for Candidate Bib: <strong style="color:var(--text-pure);">${p.bib}</strong>${isOrganizerAdmin ? ` (${p.name})` : ''}`;
+            }
 
             bibEl.textContent = p.bib;
             emailEl.textContent = `${p.sngUser} · ${p.email}`;
@@ -3042,14 +3055,14 @@
                 };
             }
 
-            modeEl.textContent = p.mode;
-            if (p.partner) {
-                partnerEl.innerHTML = `Teammate: <strong style="color:var(--accent-blue);">${p.partner}</strong> (${p.partnerBib || ''})`;
+            modeEl.textContent = p.callsign || "Solo";
+            if (p.partnerBib) {
+                partnerEl.innerHTML = `Partner Bib: <strong style="color:var(--accent-blue); font-family:var(--font-mono);">${p.partnerBib}</strong>`;
             } else {
-                partnerEl.textContent = `${p.grade} · ${p.country}`;
+                partnerEl.textContent = `${p.grade.replace(' (or equivalent)', '')} · ${p.country}`;
             }
 
-            // Populate Tab 1: 12-Field Dossier
+            // Populate Tab 1: Personal 12-Field Dossier
             document.getElementById('dos-name').textContent = p.name;
             document.getElementById('dos-bib').textContent = p.bib;
             document.getElementById('dos-account').textContent = `${p.sngUser} (${p.email})`;
@@ -3063,40 +3076,38 @@
             document.getElementById('dos-timestamp').textContent = `${p.regTimestamp} UT`;
             document.getElementById('dos-ref').textContent = p.referredBy || "None";
 
-            document.getElementById('dos-consent-privacy').textContent =
-                p.publicPrivacy === 'full' ? 'Full Legal Name + School + Country' : 'Abbreviated (First Name + Last Initial only)';
+            document.getElementById('dos-consent-privacy').textContent = `Candidate Bib Code (${p.bib})`;
             document.getElementById('dos-consent-sponsor').textContent =
                 `${p.ageConsent} · Sponsor Share: ${p.sponsorConsent ? 'Yes ✓' : 'Opted Out'}`;
 
-            // Populate Tab 2: Team & Partner Assignment
+            // Populate Tab 2: Personal Entry & Partner Info (No other teams' names exposed)
             const teamBadge = document.getElementById('team-type-badge');
             const teamTitle = document.getElementById('team-callsign-title');
             const teamDesc = document.getElementById('team-status-desc');
             const partnerBox = document.getElementById('team-partner-details-box');
 
-            teamTitle.textContent = `Callsign: ${p.callsign || p.mode}`;
+            teamTitle.textContent = `Bib Code: ${p.bib} · Callsign: ${p.callsign || 'Solo'}`;
             if (p.partner) {
-                teamBadge.textContent = p.teamType === 'duo_set' ? 'Verified Set Duo (2 Competitors)' : 'Official Matchmaking Pair (2 Competitors)';
+                teamBadge.textContent = 'Duo Entry · Unified Standings';
                 teamBadge.className = 'c-badge badge-green';
-                teamDesc.textContent = 'You are competing in a verified Team of 2. You and your partner collaborate and submit a unified exam response (or either partner may submit under their Bib ID). Both teammates receive the Special Team Diploma.';
+                teamDesc.textContent = 'You are registered with a partner. Both teammates collaborate and compete in the unified SAC 2026 standings under your Candidate Bib Code.';
                 partnerBox.innerHTML = `
-                    <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-blue); text-transform:uppercase; margin-bottom:6px;">Assigned Teammate Dossier</div>
-                    <div><strong>Full Name:</strong> ${p.partner}</div>
-                    <div><strong>Teammate Bib ID:</strong> <span style="font-family:var(--font-mono); color:var(--accent-green);">${p.partnerBib || '—'}</span></div>
-                    <div><strong>Teammate Discord:</strong> <span style="font-family:var(--font-mono); color:var(--accent-gold);">${p.partnerDiscord || '—'}</span></div>
-                    <div><strong>Institution &amp; Country:</strong> ${p.partnerSchool || '—'} (${p.partnerCountry || '—'})</div>
+                    <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-blue); text-transform:uppercase; margin-bottom:6px;">Your Assigned Partner Details</div>
+                    <div><strong>Partner Bib Code:</strong> <span style="font-family:var(--font-mono); color:var(--accent-green);">${p.partnerBib || '—'}</span></div>
+                    <div><strong>Partner Name:</strong> ${p.partner}</div>
+                    <div><strong>Partner Discord:</strong> <span style="font-family:var(--font-mono); color:var(--accent-gold);">${p.partnerDiscord || '—'}</span></div>
+                    <div><strong>Country:</strong> ${p.partnerCountry || '—'}</div>
                 `;
             } else {
-                teamBadge.textContent = 'Individual Entry (Solo · 1.0× Baseline)';
+                teamBadge.textContent = 'Individual Entry · Unified Standings';
                 teamBadge.className = 'c-badge badge-blue';
-                teamDesc.textContent = p.teamNote || 'You are registered as an Individual (Solo) competitor. All Solo and Duo entries are evaluated on an equal 1.0× raw score baseline (+1.0 pt per correct answer, 0.0 pts for blank or wrong answers).';
+                teamDesc.textContent = p.teamNote || 'You are competing independently under your Candidate Bib Code in the unified SAC 2026 standings (+1.0 pt per correct answer, Top 30 advance to Phase 2, Top 20 advance to the Grand Final).';
                 partnerBox.innerHTML = `
-                    <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px;">Solo Entry Confirmation</div>
-                    <div>Competing independently under Bib <strong style="color:var(--accent-green); font-family:var(--font-mono);">${p.bib}</strong> (${p.school}).</div>
+                    <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px;">Entry Confirmation</div>
+                    <div>Competing under Candidate Bib Code <strong style="color:var(--accent-green); font-family:var(--font-mono);">${p.bib}</strong> (${p.country}).</div>
                 `;
             }
 
-            // Stage label
             if (p.stage === 'selection') {
                 roundNameEl.textContent = "Phase 2: Selection Round (15 Nov)";
             } else if (p.stage === 'final') {
@@ -3105,54 +3116,131 @@
                 roundNameEl.textContent = "Phase 1: Open Qualifier (14 Nov)";
             }
 
-            checkCloudSubmissionStatus(p.bib);
+            renderAllScorecardsAndReceipts();
             renderRosterTable(document.getElementById('roster-search-input')?.value || "");
         }
 
-        async function checkCloudSubmissionStatus(bib) {
+        function startLiveScorecardListeners() {
+            if (getApps().length === 0) return;
+            const db = getDatabase(getApp());
+
+            onValue(ref(db, 'sac2026/config/resultsPublished'), (snap) => {
+                resultsPublished = Boolean(snap.val());
+                renderAllScorecardsAndReceipts();
+            });
+
+            onValue(ref(db, 'sac2026/submissions'), (snap) => {
+                liveSubmissionsMap = snap.val() || {};
+                renderAllScorecardsAndReceipts();
+            });
+
+            onValue(ref(db, 'sac2026/final_submissions'), (snap) => {
+                finalSubmissionsMap = snap.val() || {};
+                renderAllScorecardsAndReceipts();
+            });
+        }
+
+        function renderAllScorecardsAndReceipts() {
             const banner = document.getElementById('pd-receipt-banner');
             const p1Status = document.getElementById('p1-live-status');
             const p1Tel = document.getElementById('p1-live-telemetry');
             const p1Rec = document.getElementById('p1-live-receipt');
-            if (banner) banner.style.display = 'none';
 
-            if (!bib || getApps().length === 0) return;
-            try {
-                const db = getDatabase(getApp());
-                // Check live in-progress telemetry first
-                const liveSnap = await get(ref(db, `sac2026/submissions/${bib}`));
-                if (liveSnap.exists()) {
-                    const live = liveSnap.val();
-                    const ansCount = live.answers ? Object.keys(live.answers).length : 0;
-                    if (p1Status) p1Status.innerHTML = `<span class="c-badge badge-blue">In Progress (Live)</span>`;
-                    if (p1Tel) p1Tel.textContent = `${ansCount} / 30 · ${live.strikes || 0}/3 Strikes`;
-                    if (p1Rec) p1Rec.textContent = `Last Sync: ${live.updatedAt ? live.updatedAt.slice(11, 19) + ' UT' : 'Active'}`;
-                }
+            if (currentParticipant) {
+                const bib = currentParticipant.bib;
+                const finalRec = finalSubmissionsMap[bib];
+                const liveRec = liveSubmissionsMap[bib];
+                const rec = finalRec || liveRec;
+                const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
+                const sc = computeCandidateScore(rec?.answers);
 
-                // Check final submission receipt
-                const finalSnap = await get(ref(db, `sac2026/final_submissions/${bib}`));
-                if (finalSnap.exists()) {
-                    const data = finalSnap.val();
-                    const ansCount = data.answers ? Object.keys(data.answers).length : 0;
-                    const details = document.getElementById('pd-receipt-details');
-                    const timeEl = document.getElementById('pd-receipt-time');
-                    if (banner && details && timeEl) {
-                        details.textContent = `Receipt ID: ${data.receiptId} · Answered: ${ansCount} MCQs · Strikes: ${data.strikes || 0}/3`;
-                        timeEl.textContent = `Submitted: ${data.submittedAtUTC || ''}`;
+                if (finalRec) {
+                    if (banner) {
+                        document.getElementById('pd-receipt-details').textContent =
+                            `Bib: ${bib} · Receipt ID: ${finalRec.receiptId} · Answered: ${ansCount}/30 · Score: ${sc.raw.toFixed(1)} / 30.0 pt (Tie-Break: ${sc.tie.toFixed(2)})`;
+                        document.getElementById('pd-receipt-time').textContent = `Submitted: ${finalRec.submittedAtUTC || ''}`;
                         banner.style.display = 'flex';
                     }
                     if (p1Status) p1Status.innerHTML = `<span class="c-badge badge-green">Submitted ✓</span>`;
-                    if (p1Tel) p1Tel.textContent = `${ansCount} / 30 · ${data.strikes || 0}/3 Strikes`;
-                    if (p1Rec) p1Rec.textContent = data.receiptId || "Submitted";
+                    if (p1Tel) p1Tel.textContent = `${ansCount} / 30 · ${finalRec.strikes || 0} Strikes`;
+                    if (p1Rec) p1Rec.textContent = `${sc.raw.toFixed(1)} / 30.0 pt · ${finalRec.receiptId || 'Verified'}`;
+                } else if (liveRec) {
+                    if (banner) banner.style.display = 'none';
+                    if (p1Status) p1Status.innerHTML = `<span class="c-badge badge-blue">In Progress (Live)</span>`;
+                    if (p1Tel) p1Tel.textContent = `${ansCount} / 30 · ${liveRec.strikes || 0} Strikes`;
+                    if (p1Rec) p1Rec.textContent = isOrganizerAdmin ? `Live Score: ${sc.raw.toFixed(1)} / 30.0 pt` : `Syncing Live`;
+                } else {
+                    if (banner) banner.style.display = 'none';
+                    if (p1Status) p1Status.innerHTML = `<span class="c-badge badge-green">Enrolled · Ready</span>`;
+                    if (p1Tel) p1Tel.textContent = `0 / 30 · 0 Strikes`;
+                    if (p1Rec) p1Rec.textContent = `Awaiting Window Launch`;
                 }
-            } catch (e) {}
+            }
+
+            // Render All-Candidate Scorecards & Cloud Receipts Table (Identified strictly by Candidate Bib Code)
+            const tbody = document.getElementById('cohort-scorecards-tbody');
+            const sumEl = document.getElementById('cohort-scorecards-summary');
+            if (!tbody) return;
+
+            const allCandidates = REGISTERED_PARTICIPANTS.filter(p => p.isParticipant !== false).map(p => {
+                const finalRec = finalSubmissionsMap[p.bib];
+                const liveRec = liveSubmissionsMap[p.bib];
+                const rec = finalRec || liveRec || null;
+                const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
+                const sc = computeCandidateScore(rec?.answers);
+                return { ...p, finalRec, liveRec, rec, ansCount, raw: sc.raw, tie: sc.tie };
+            });
+
+            allCandidates.sort((a, b) => {
+                const aActive = a.rec ? 1 : 0;
+                const bActive = b.rec ? 1 : 0;
+                if (bActive !== aActive) return bActive - aActive;
+                if (b.raw !== a.raw) return b.raw - a.raw;
+                if (b.tie !== a.tie) return b.tie - a.tie;
+                return b.ansCount - a.ansCount;
+            });
+
+            const submittedCount = allCandidates.filter(c => c.finalRec).length;
+            const liveCount = allCandidates.filter(c => c.liveRec && !c.finalRec).length;
+            if (sumEl) {
+                sumEl.textContent = `${submittedCount} Submitted · ${liveCount} Live In Exam · Top 30 Advance to Phase 2`;
+            }
+
+            tbody.innerHTML = allCandidates.map((c, idx) => {
+                const rank = idx + 1;
+                const isSelected = currentParticipant && currentParticipant.bib === c.bib;
+                // Strictly Candidate Bib Code on public view; Organizers see name in subtle tag
+                const bibCellHtml = isOrganizerAdmin
+                    ? `${c.bib} <span style="color:var(--text-muted); font-weight:400;">(${c.name})</span>`
+                    : (isSelected ? `${c.bib} <span style="color:var(--accent-green);">(You)</span>` : c.bib);
+
+                let statusHtml = `<span style="color:var(--text-muted);">Registered</span>`;
+                if (c.finalRec) statusHtml = `<span style="color:var(--accent-green); font-weight:700;">Submitted ✓</span>`;
+                else if (c.liveRec) statusHtml = `<span style="color:var(--accent-blue); font-weight:700;">Live In Exam</span>`;
+
+                const canViewScore = isOrganizerAdmin || isSelected || resultsPublished;
+                const scoreHtml = c.rec
+                    ? (canViewScore ? `<strong style="color:var(--accent-gold);">${c.raw.toFixed(1)} / 30.0</strong>` : `<span style="color:var(--text-muted);">Recorded</span>`)
+                    : `—`;
+                const tieHtml = (c.rec && canViewScore) ? c.tie.toFixed(2) : `—`;
+
+                return `
+                    <tr class="${isSelected ? 'me-row' : ''}" style="${isOrganizerAdmin ? 'cursor:pointer;' : ''}" onclick="${isOrganizerAdmin ? `window.selectCandidateForScorecard('${c.bib}')` : ''}">
+                        <td style="font-family:var(--font-mono); font-weight:700; color:${rank <= 30 ? 'var(--accent-green)' : 'var(--text-muted)'};">#${rank} ${rank <= 30 ? '· Q' : ''}</td>
+                        <td style="font-family:var(--font-mono); font-weight:700; color:var(--accent-blue);">${bibCellHtml}</td>
+                        <td>${c.country}</td>
+                        <td style="font-family:var(--font-mono); font-size:0.75rem;">${c.callsign || 'Solo'}</td>
+                        <td>${statusHtml}</td>
+                        <td style="font-family:var(--font-mono);">${c.rec ? `${c.ansCount} / 30` : '—'}</td>
+                        <td style="font-family:var(--font-mono);">${scoreHtml}</td>
+                        <td style="font-family:var(--font-mono);">${tieHtml}</td>
+                        <td style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-blue);">${c.finalRec?.receiptId || (c.liveRec ? 'In Progress' : '—')}</td>
+                    </tr>
+                `;
+            }).join('');
         }
 
-        window.filterRosterMode = function(mode) {
-            activeRosterFilter = mode;
-            renderRosterTable(document.getElementById('roster-search-input')?.value || "");
-        };
-
+        // Unified Candidate Bib Roster (Tab 5 — Strictly Candidate Bib Code, No Names Exposed)
         function renderRosterTable(filterText = "") {
             const tbody = document.getElementById('roster-tbody');
             if (!tbody) return;
@@ -3160,36 +3248,31 @@
             const students = REGISTERED_PARTICIPANTS.filter(p => !p.isAdmin);
 
             const filtered = students.filter(p => {
-                if (activeRosterFilter === 'duo' && !p.partner) return false;
-                if (activeRosterFilter === 'solo' && p.partner) return false;
                 if (!q) return true;
-                const pubName = formatPublicName(p).toLowerCase();
-                const schoolStr = (isOrganizerAdmin || p.publicPrivacy === 'full' ? p.school : '').toLowerCase();
                 return (
                     p.bib.toLowerCase().includes(q) ||
-                    pubName.includes(q) ||
                     p.country.toLowerCase().includes(q) ||
                     p.grade.toLowerCase().includes(q) ||
-                    p.mode.toLowerCase().includes(q) ||
-                    schoolStr.includes(q)
+                    (p.callsign || '').toLowerCase().includes(q) ||
+                    (isOrganizerAdmin && p.name.toLowerCase().includes(q))
                 );
             });
 
             tbody.innerHTML = filtered.map(p => {
                 const isMe = currentParticipant && currentParticipant.bib === p.bib;
-                const displayName = isMe ? `${p.name} (You)` : formatPublicName(p);
-                const displaySchool = (isOrganizerAdmin || isMe || p.publicPrivacy === 'full')
-                    ? p.school
-                    : '<span style="color:var(--text-muted); font-style:italic;">Hidden (GDPR Abbreviated)</span>';
+                const bibDisplay = isOrganizerAdmin
+                    ? `${p.bib} <span style="color:var(--text-muted); font-weight:400;">(${p.name})</span>`
+                    : (isMe ? `${p.bib} (You)` : p.bib);
+                const winLabel = ['USA', 'Brazil'].includes(p.country)
+                    ? 'Window B (18:00–19:00 UT)'
+                    : 'Window A (10:00–11:00 UT)';
                 return `
                     <tr class="${isMe ? 'me-row' : ''}">
-                        <td style="font-family:var(--font-mono); font-weight:700; color:var(--accent-green);">${p.bib}</td>
-                        <td style="font-weight:600; color:var(--text-pure);">${displayName}</td>
+                        <td style="font-family:var(--font-mono); font-weight:700; color:var(--accent-green);">${bibDisplay}</td>
                         <td>${p.country}</td>
                         <td style="font-size:0.76rem; color:var(--text-muted);">${p.grade.replace(' (or equivalent)', '')}</td>
-                        <td style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-blue);">${p.mode}</td>
-                        <td style="font-size:0.78rem;">${p.partner || '—'}</td>
-                        <td>${displaySchool}</td>
+                        <td style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-blue);">${p.callsign || 'Solo'}</td>
+                        <td style="font-family:var(--font-mono); font-size:0.73rem; color:var(--text-muted);">${winLabel}</td>
                     </tr>
                 `;
             }).join('');
@@ -3204,6 +3287,7 @@
             if (!user) {
                 emailEl.textContent = "Sign in to view";
                 renderRosterTable();
+                renderAllScorecardsAndReceipts();
                 return;
             }
 
@@ -3220,7 +3304,7 @@
                     REGISTERED_PARTICIPANTS.forEach(p => {
                         const opt = document.createElement('option');
                         opt.value = p.bib;
-                        opt.textContent = `${p.bib} — ${p.name} (${p.country} · ${p.mode})`;
+                        opt.textContent = `${p.bib} — ${p.name} (${p.country} · ${p.callsign || 'Solo'})`;
                         previewSelect.appendChild(opt);
                     });
                     previewSelect.addEventListener('change', (e) => {
@@ -3240,6 +3324,7 @@
                 populateHydratedDossier(found);
             } else {
                 renderRosterTable();
+                renderAllScorecardsAndReceipts();
             }
         }
 
@@ -3248,8 +3333,10 @@
             onAuthStateChanged(authInstance, (user) => {
                 applyParticipantUI(user);
             });
+            startLiveScorecardListeners();
         } else {
             renderRosterTable();
+            renderAllScorecardsAndReceipts();
         }
 
         document.getElementById('roster-search-input')?.addEventListener('input', (e) => {
@@ -3322,63 +3409,51 @@
             }
         };
 
-        function updatePersonalRoundTimer() {
-            const timerEl = document.getElementById('pd-next-round-timer');
-            if (!timerEl) return;
-            const stage = currentParticipant?.stage || 'qualifier';
-            const target = ROUND_DATES_UTC[stage] || ROUND_DATES_UTC.qualifier;
-            const diff = Math.max(0, target - Date.now());
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const m = Math.floor((diff / 1000 / 60) % 60);
-            const s = Math.floor((diff / 1000) % 60);
-            timerEl.textContent = `${String(d).padStart(2,'0')}d : ${String(h).padStart(2,'0')}h : ${String(m).padStart(2,'0')}m : ${String(s).padStart(2,'0')}s`;
-        }
-        setInterval(updatePersonalRoundTimer, 1000);
-        updatePersonalRoundTimer();
-    </script>
-
-    <script>
-        const regOpenDate = new Date('2026-10-19T00:00:00Z').getTime();
-        const regCloseDate = new Date('2026-11-08T23:59:59Z').getTime();
-        const qualDate = new Date('2026-11-14T18:00:00Z').getTime();
-
-        function updateCountdown() {
+        // Unified Live Countdown Engine (Counts down to Window A at 10:00 UT, then Window B at 18:00 UT)
+        function updateAllCountdowns() {
             const now = Date.now();
             const utcStr = new Date(now).toISOString().replace('T', ' ').substring(0, 19) + ' UT';
             const clockEl = document.getElementById('live-utc-clock');
             if (clockEl) clockEl.textContent = utcStr;
 
+            const activeWin = COMPETITION_WINDOWS.find(w => now >= w.start && now <= w.end);
+            const nextWin = COMPETITION_WINDOWS.find(w => w.start > now);
+
             const labelEl = document.getElementById('countdown-phase-label');
             const timerEl = document.getElementById('countdown-timer');
+            const pTimerEl = document.getElementById('pd-next-round-timer');
+            const pLabelEl = document.getElementById('pd-timer-card-label');
 
-            let target = qualDate;
-            if (now < regOpenDate) {
-                labelEl.textContent = 'Registration Opens In';
-                target = regOpenDate;
-            } else if (now <= regCloseDate) {
-                labelEl.textContent = 'Registration Closes In';
-                target = regCloseDate;
-            } else if (now <= qualDate) {
-                labelEl.textContent = 'Open Qualifier Starts In';
-                target = qualDate;
+            let diff = 0;
+            if (activeWin) {
+                if (labelEl) labelEl.textContent = `${activeWin.phase} LIVE — Closes In`;
+                if (pLabelEl) pLabelEl.textContent = `${activeWin.phase} LIVE NOW`;
+                diff = activeWin.end - now;
+            } else if (nextWin) {
+                if (labelEl) labelEl.textContent = `${nextWin.phase} Opens In`;
+                if (pLabelEl) pLabelEl.textContent = `Next: ${nextWin.phase}`;
+                diff = nextWin.start - now;
             } else {
-                labelEl.textContent = 'Competition In Progress';
-                timerEl.textContent = '00d : 00h : 00m : 00s';
+                if (labelEl) labelEl.textContent = 'SAC 2026 Completed';
+                if (timerEl) timerEl.textContent = '00d : 00h : 00m : 00s';
+                if (pTimerEl) pTimerEl.textContent = '00d : 00h : 00m : 00s';
                 return;
             }
 
-            const diff = Math.max(0, target - now);
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const m = Math.floor((diff / 1000 / 60) % 60);
+            const d = Math.floor(diff / 86400000);
+            const h = Math.floor((diff / 3600000) % 24);
+            const m = Math.floor((diff / 60000) % 60);
             const s = Math.floor((diff / 1000) % 60);
+            const formatted = `${String(d).padStart(2,'0')}d : ${String(h).padStart(2,'0')}h : ${String(m).padStart(2,'0')}m : ${String(s).padStart(2,'0')}s`;
 
-            timerEl.textContent = `${String(d).padStart(2,'0')}d : ${String(h).padStart(2,'0')}h : ${String(m).padStart(2,'0')}m : ${String(s).padStart(2,'0')}s`;
+            if (timerEl) timerEl.textContent = formatted;
+            if (pTimerEl) pTimerEl.textContent = formatted;
         }
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
+        setInterval(updateAllCountdowns, 1000);
+        updateAllCountdowns();
+    </script>
 
+    <script>
         const MOCK_QUESTIONS = [
             {
                 q: "1. [T6 · ISM & Extinction] A star has an apparent V-band magnitude \\(m_V = 11.0\\) and absolute magnitude \\(M_V = +1.0\\). If interstellar dust along the line of sight introduces an extinction of \\(A_V = 2.0\\text{ mag}\\), what is the true distance \\(d\\) to the star?",
