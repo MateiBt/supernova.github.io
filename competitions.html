@@ -675,7 +675,7 @@
         .btn-register {
             background: var(--accent-green); color: var(--bg-base); border-color: var(--accent-green);
         }
-        .btn-register:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(43, 227, 138, 0.3); }
+        .btn-register:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(43, 227, 138, 0.3); }
         .btn-mock {
             background: var(--bg-card); color: var(--text-pure); border-color: var(--border-light);
         }
@@ -852,7 +852,7 @@
                         <div class="pd-stat-label" id="pd-timer-card-label">Countdown to Next Window</div>
                         <div class="pd-stat-value" id="pd-next-round-timer" style="font-family:var(--font-mono); font-size:0.98rem;">--d : --h : --m : --s</div>
                     </div>
-                    <div class="pd-sub-meta" id="pd-password-note">Win A: 10:00–11:00 UT | Win B: 18:00–19:00 UT</div>
+                    <div class="pd-sub-meta" id="pd-password-note">Win A: 10:00–11:00 UT | Win B: 13:30–15:00 UT</div>
                 </div>
             </div>
 
@@ -1013,12 +1013,12 @@
                     <tbody>
                         <tr>
                             <td style="font-weight:700; color:var(--text-pure);">Phase 1: Open Qualifier</td>
-                            <td style="font-family:var(--font-mono); font-size:0.78rem;">Sat, 14 Nov · Win A: 10:00 UT | Win B: 18:00 UT</td>
+                            <td style="font-family:var(--font-mono); font-size:0.78rem;">Sat, 14 Nov · Win A: 10:00 UT | Win B: 13:30–15:00 UT</td>
                             <td>30 MCQs · 60 min (15E, 10M, 5H)</td>
                             <td style="color:var(--accent-green); font-family:var(--font-mono); font-weight:700;">Top 30 Advance</td>
                             <td id="p1-live-status"><span class="c-badge badge-green">Enrolled · Ready</span></td>
                             <td id="p1-live-telemetry" style="font-family:var(--font-mono);">0 / 30 · 0 Strikes</td>
-                            <td id="p1-live-receipt" style="font-family:var(--font-mono); color:var(--accent-blue);">Awaiting 14 Nov 10:00 UT</td>
+                            <td id="p1-live-receipt" style="font-family:var(--font-mono); color:var(--accent-blue);">Window B: 13:30–15:00 UT</td>
                         </tr>
                         <tr>
                             <td style="font-weight:700; color:var(--text-pure);">Phase 2: Selection Round</td>
@@ -1188,7 +1188,7 @@
                                 <th>Country</th>
                                 <th>Academic Division</th>
                                 <th>Callsign</th>
-                                <th>Regional Window</th>
+                                <th>Entry Window</th>
                             </tr>
                         </thead>
                         <tbody id="roster-tbody"></tbody>
@@ -1199,7 +1199,7 @@
             <!-- BOTTOM ACTION BAR -->
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding-top:12px; border-top:1px solid var(--border-subtle);">
                 <span style="font-size:0.82rem; color:var(--text-muted);" id="pd-helper-note">
-                    Entry Windows: <strong>Window A (10:00–11:00 UT)</strong> &amp; <strong>Window B (18:00–19:00 UT)</strong>. Clicking <strong>Launch Exam Terminal</strong> pre-fills your Candidate Bib and Email on <code>exam.html</code>.
+                    Entry Windows: <strong>Window A (10:00–11:00 UT)</strong> &amp; <strong>Window B (13:30–15:00 UT)</strong>. Clicking <strong>Launch Exam Terminal</strong> pre-fills your Candidate Bib and Email on <code>exam.html</code>.
                 </span>
                 <div style="display:flex; gap:10px; flex-wrap:wrap;">
                     <a href="tools.html" class="btn-comp btn-mock" style="padding:9px 15px; font-size:0.8rem;">
@@ -1231,9 +1231,9 @@
                 </div>
 
                 <div class="countdown-box">
-                    <span class="countdown-label" id="countdown-phase-label">Window A Opens In</span>
+                    <span class="countdown-label" id="countdown-phase-label">Window B Live</span>
                     <div class="countdown-digits" id="countdown-timer">--d : --h : --m : --s</div>
-                    <div class="countdown-dates">14 Nov · Window A: 10:00 UT | Window B: 18:00 UT</div>
+                    <div class="countdown-dates">14 Nov · Window A: 10:00 UT | Window B: 13:30–15:00 UT</div>
                 </div>
             </div>
 
@@ -1297,7 +1297,7 @@
                 <div class="phase-card">
                     <span class="phase-num">Phase 01 · Saturday, 14 Nov 2026</span>
                     <h3>Open Qualifier (1 Hour)</h3>
-                    <p>All registered participants take a 30 MCQ astronomy &amp; astrophysics exam in 1 hour (Window A: 10:00–11:00 UT | Window B: 18:00–19:00 UT), covering spherical coordinates, Keplerian orbits, radiation laws, and cosmology.</p>
+                    <p>All registered participants take a 30 MCQ astronomy &amp; astrophysics exam in 1 hour (Window A: 10:00–11:00 UT | Window B: 13:30–15:00 UT), covering spherical coordinates, Keplerian orbits, radiation laws, and cosmology.</p>
                     <div class="phase-meta">
                         <span>Format: 30 MCQs (1 hr)</span>
                         <span style="color:var(--accent-green); font-weight:700;">Top 30 Advance</span>
@@ -1388,7 +1388,7 @@
                     <ul class="rules-list">
                         <li><i class="fa-solid fa-check"></i> <div><strong>Qualification Cutoffs:</strong> Top 30 advance from Phase 1 (Open Qualifier) to Phase 2 (Selection Round). Top 20 advance from Phase 2 to Phase 3 (Grand Final).</div></li>
                         <li><i class="fa-solid fa-check"></i> <div><strong>Scoring &amp; Tie-Breakers:</strong> \(+1.0\text{ pt}\) per correct answer, \(0.0\text{ pts}\) for blank or wrong choices (no negative marking). Ties are broken by the average difficulty weight of solved problems.</div></li>
-                        <li><i class="fa-solid fa-check"></i> <div><strong>Regional Entry Windows:</strong> Each competition day features <strong>Window A (10:00–11:00 UT)</strong> for Europe/Asia/Africa/Oceania and <strong>Window B (18:00–19:00 UT)</strong> for the Americas.</div></li>
+                        <li><i class="fa-solid fa-check"></i> <div><strong>Phase 1 Entry Windows:</strong> <strong>Window A (10:00–11:00 UT)</strong> and <strong>Window B (13:30–15:00 UT)</strong>. Each competitor or Duo team is permitted strictly 1 attempt.</div></li>
                         <li><i class="fa-solid fa-check"></i> <div><strong>Candidate Bib Code Anonymity:</strong> Public rosters and scoreboards display only your official Candidate Bib Code (<code>SNG-2026-10XX</code>) to protect student privacy.</div></li>
                     </ul>
                 </div>
@@ -1411,13 +1411,13 @@
             <!-- FOOTER CTA -->
             <div class="comp-footer">
                 <div class="reg-status-info">
-                    Phase 1 (Open Qualifier): <strong>Saturday, 14 Nov 2026 · Window A (10:00 UT) &amp; Window B (18:00 UT)</strong>
+                    Phase 1 (Open Qualifier): <strong>Saturday, 14 Nov 2026 · Window A (10:00 UT) &amp; Window B (13:30–15:00 UT)</strong>
                 </div>
                 <div class="btn-group">
                     <a href="https://drive.google.com/file/d/1B6t4DWtaloF9IRWQ652CjbE6PAN1vg8d/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="btn-comp btn-mock">
                         <i class="fa-solid fa-file-pdf" style="color: var(--accent-rose);"></i> View Rules &amp; Syllabus (PDF)
                     </a>
-                    <button type="button" class="btn-comp btn-register" onclick="window.enterCompetitionRound()">
+                    <button type="button" class="btn-comp btn-register" id="footer-enter-round-btn" onclick="window.enterCompetitionRound()">
                         <i class="fa-solid fa-terminal"></i> Launch Exam Terminal
                     </button>
                 </div>
@@ -2952,11 +2952,18 @@
             "mihai.tesileanu2@gmail.com"
         ];
 
-        // Official Corrected 30-Question Answer Key (Q18 = A)
-        const R1_ANSWER_KEY = [
+        // Official Window A Key (10:00–11:00 UT)
+        const R1_WINDOW_A_KEY = [
             "B", "A", "B", "B", "D", "C", "C", "D", "C", "B",
             "C", "C", "D", "C", "D", "B", "A", "A", "A", "B",
             "A", "A", "A", "B", "A", "B", "B", "C", "B", "A"
+        ];
+
+        // Official Window B Key (13:30–15:00 UT)
+        const R1_WINDOW_B_KEY = [
+            "B", "A", "B", "B", "C", "B", "C", "D", "C", "B",
+            "B", "C", "C", "C", "D", "B", "A", "A", "C", "B",
+            "A", "A", "A", "B", "A", "D", "A", "B", "C", "C"
         ];
 
         const R1_WEIGHTS = [
@@ -2965,10 +2972,10 @@
             6.5, 6.0, 7.0, 6.5, 7.0, 8.0, 8.5, 8.5, 9.0, 10.0
         ];
 
-        // All 6 Official Competition Entry Windows (Window A = 10:00–11:00 UT, Window B = 18:00–19:00 UT)
+        // Updated Competition Windows (Window B = 13:30–15:00 UT today)
         const COMPETITION_WINDOWS = [
             { phase: "Phase 1 · Window A (10:00 UT)", start: Date.parse("2026-11-14T10:00:00Z"), end: Date.parse("2026-11-14T11:00:00Z") },
-            { phase: "Phase 1 · Window B (18:00 UT)", start: Date.parse("2026-11-14T18:00:00Z"), end: Date.parse("2026-11-14T19:00:00Z") },
+            { phase: "Phase 1 · Window B (13:30–15:00 UT)", start: Date.parse("2026-11-14T13:30:00Z"), end: Date.parse("2026-11-14T15:00:00Z") },
             { phase: "Phase 2 · Window A (10:00 UT)", start: Date.parse("2026-11-15T10:00:00Z"), end: Date.parse("2026-11-15T11:00:00Z") },
             { phase: "Phase 2 · Window B (18:00 UT)", start: Date.parse("2026-11-15T18:00:00Z"), end: Date.parse("2026-11-15T19:00:00Z") },
             { phase: "Phase 3 · Window A (10:00 UT)", start: Date.parse("2026-11-20T10:00:00Z"), end: Date.parse("2026-11-20T11:00:00Z") },
@@ -2987,7 +2994,6 @@
         let finalSubmissionsMap = {};
         let resultsPublished = false;
 
-        // Tab Switcher inside Competitor Command Center
         window.switchDashTab = function(tabId, btnEl) {
             document.querySelectorAll('.pd-tab-pane').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.pd-tab-btn').forEach(b => b.classList.remove('active'));
@@ -2995,11 +3001,15 @@
             if (btnEl) btnEl.classList.add('active');
         };
 
-        function computeCandidateScore(ansObj) {
+        function computeCandidateScore(ansObj, rec = null) {
             if (!ansObj) return { raw: 0, tie: 0 };
+            const ts = rec ? Date.parse(rec.submittedAtUTC || rec.updatedAt || 0) : 0;
+            const isWinB = ts >= Date.parse("2026-11-14T13:20:00Z") ||
+                (ts === 0 && String(rec?.windowZone || "").includes("Window B"));
+            const activeKey = isWinB ? R1_WINDOW_B_KEY : R1_WINDOW_A_KEY;
             const letters = ['A', 'B', 'C', 'D', 'E'];
             let raw = 0, wSum = 0;
-            R1_ANSWER_KEY.forEach((corr, i) => {
+            activeKey.forEach((corr, i) => {
                 const chosen = ansObj[`Q${i + 1}`];
                 if (chosen !== undefined && letters[chosen] === corr) {
                     raw += 1.0;
@@ -3007,6 +3017,18 @@
                 }
             });
             return { raw, tie: raw > 0 ? wSum / raw : 0 };
+        }
+
+        function hasCandidateAlreadyParticipated(p) {
+            if (!p || p.canStartAnytime) return false;
+            if (finalSubmissionsMap[p.bib]) return true;
+            if (p.partnerBib && finalSubmissionsMap[p.partnerBib]) return true;
+            const liveRec = liveSubmissionsMap[p.bib] || (p.partnerBib ? liveSubmissionsMap[p.partnerBib] : null);
+            if (liveRec) {
+                const ts = Date.parse(liveRec.updatedAt || 0);
+                if (ts > 0 && ts < Date.parse("2026-11-14T13:20:00Z")) return true;
+            }
+            return false;
         }
 
         window.selectCandidateForScorecard = function(bib) {
@@ -3080,7 +3102,7 @@
             document.getElementById('dos-consent-sponsor').textContent =
                 `${p.ageConsent} · Sponsor Share: ${p.sponsorConsent ? 'Yes ✓' : 'Opted Out'}`;
 
-            // Populate Tab 2: Personal Entry & Partner Info (No other teams' names exposed)
+            // Populate Tab 2: Personal Entry & Partner Info
             const teamBadge = document.getElementById('team-type-badge');
             const teamTitle = document.getElementById('team-callsign-title');
             const teamDesc = document.getElementById('team-status-desc');
@@ -3145,14 +3167,33 @@
             const p1Status = document.getElementById('p1-live-status');
             const p1Tel = document.getElementById('p1-live-telemetry');
             const p1Rec = document.getElementById('p1-live-receipt');
+            const enterBtn = document.getElementById('pd-enter-round-btn');
+            const footerBtn = document.getElementById('footer-enter-round-btn');
 
             if (currentParticipant) {
                 const bib = currentParticipant.bib;
-                const finalRec = finalSubmissionsMap[bib];
-                const liveRec = liveSubmissionsMap[bib];
+                const finalRec = finalSubmissionsMap[bib] || (currentParticipant.partnerBib ? finalSubmissionsMap[currentParticipant.partnerBib] : null);
+                const liveRec = liveSubmissionsMap[bib] || (currentParticipant.partnerBib ? liveSubmissionsMap[currentParticipant.partnerBib] : null);
                 const rec = finalRec || liveRec;
                 const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
-                const sc = computeCandidateScore(rec?.answers);
+                const sc = computeCandidateScore(rec?.answers, rec);
+
+                // Lock Launch Exam Terminal buttons if already participated (unless Organizer)
+                const isLockedOut = hasCandidateAlreadyParticipated(currentParticipant);
+                [enterBtn, footerBtn].forEach(btn => {
+                    if (!btn) return;
+                    if (isLockedOut) {
+                        btn.disabled = true;
+                        btn.style.opacity = "0.45";
+                        btn.style.cursor = "not-allowed";
+                        btn.innerHTML = `<i class="fa-solid fa-lock"></i> Exam Completed (1 Attempt Limit)`;
+                    } else {
+                        btn.disabled = false;
+                        btn.style.opacity = "1";
+                        btn.style.cursor = "pointer";
+                        btn.innerHTML = `<i class="fa-solid fa-terminal"></i> Launch Exam Terminal (exam.html)`;
+                    }
+                });
 
                 if (finalRec) {
                     if (banner) {
@@ -3173,7 +3214,7 @@
                     if (banner) banner.style.display = 'none';
                     if (p1Status) p1Status.innerHTML = `<span class="c-badge badge-green">Enrolled · Ready</span>`;
                     if (p1Tel) p1Tel.textContent = `0 / 30 · 0 Strikes`;
-                    if (p1Rec) p1Rec.textContent = `Awaiting Window Launch`;
+                    if (p1Rec) p1Rec.textContent = `Window B: 13:30–15:00 UT`;
                 }
             }
 
@@ -3187,7 +3228,7 @@
                 const liveRec = liveSubmissionsMap[p.bib];
                 const rec = finalRec || liveRec || null;
                 const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
-                const sc = computeCandidateScore(rec?.answers);
+                const sc = computeCandidateScore(rec?.answers, rec);
                 return { ...p, finalRec, liveRec, rec, ansCount, raw: sc.raw, tie: sc.tie };
             });
 
@@ -3209,7 +3250,6 @@
             tbody.innerHTML = allCandidates.map((c, idx) => {
                 const rank = idx + 1;
                 const isSelected = currentParticipant && currentParticipant.bib === c.bib;
-                // Strictly Candidate Bib Code on public view; Organizers see name in subtle tag
                 const bibCellHtml = isOrganizerAdmin
                     ? `${c.bib} <span style="color:var(--text-muted); font-weight:400;">(${c.name})</span>`
                     : (isSelected ? `${c.bib} <span style="color:var(--accent-green);">(You)</span>` : c.bib);
@@ -3263,16 +3303,13 @@
                 const bibDisplay = isOrganizerAdmin
                     ? `${p.bib} <span style="color:var(--text-muted); font-weight:400;">(${p.name})</span>`
                     : (isMe ? `${p.bib} (You)` : p.bib);
-                const winLabel = ['USA', 'Brazil'].includes(p.country)
-                    ? 'Window B (18:00–19:00 UT)'
-                    : 'Window A (10:00–11:00 UT)';
                 return `
                     <tr class="${isMe ? 'me-row' : ''}">
                         <td style="font-family:var(--font-mono); font-weight:700; color:var(--accent-green);">${bibDisplay}</td>
                         <td>${p.country}</td>
                         <td style="font-size:0.76rem; color:var(--text-muted);">${p.grade.replace(' (or equivalent)', '')}</td>
                         <td style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-blue);">${p.callsign || 'Solo'}</td>
-                        <td style="font-family:var(--font-mono); font-size:0.73rem; color:var(--text-muted);">${winLabel}</td>
+                        <td style="font-family:var(--font-mono); font-size:0.73rem; color:var(--text-muted);">Win A (10:00 UT) / Win B (13:30 UT)</td>
                     </tr>
                 `;
             }).join('');
@@ -3399,17 +3436,20 @@
         });
 
         window.enterCompetitionRound = function() {
+            if (currentParticipant && hasCandidateAlreadyParticipated(currentParticipant)) {
+                alert(`Bib ${currentParticipant.bib} has already completed Phase 1. Only 1 attempt is permitted.`);
+                return;
+            }
             const stage = currentParticipant?.stage || 'qualifier';
             const baseUrl = ROUND_EXAM_LINKS[stage] || 'exam.html';
             if (currentParticipant) {
-                const zoneParam = ['USA', 'Brazil'].includes(currentParticipant.country) ? 'americas' : 'euasia';
-                window.location.href = `${baseUrl}?bib=${encodeURIComponent(currentParticipant.bib)}&email=${encodeURIComponent(currentParticipant.email)}&zone=${zoneParam}`;
+                window.location.href = `${baseUrl}?bib=${encodeURIComponent(currentParticipant.bib)}&email=${encodeURIComponent(currentParticipant.email)}&zone=americas`;
             } else {
                 window.location.href = baseUrl;
             }
         };
 
-        // Unified Live Countdown Engine (Counts down to Window A at 10:00 UT, then Window B at 18:00 UT)
+        // Unified Live Countdown Engine (Counts down to Window A at 10:00 UT, then Window B at 13:30–15:00 UT)
         function updateAllCountdowns() {
             const now = Date.now();
             const utcStr = new Date(now).toISOString().replace('T', ' ').substring(0, 19) + ' UT';

@@ -454,6 +454,7 @@
             font-size: 0.75rem;
             margin-top: 4px;
             min-height: 16px;
+            line-height: 1.4;
         }
 
         /* =========================================================
@@ -1015,7 +1016,7 @@
 
                 <h1 class="gate-title">Competitor Verification</h1>
                 <p class="gate-desc">
-                    Your Supernova Guide account is verified automatically below. The exam terminal unlocks during the official competition windows (<strong>10:00–11:00 UT</strong> and <strong>18:00–19:00 UT</strong>). Teams of 2 share a live synchronized exam sheet automatically.
+                    Your Supernova Guide account is verified automatically below. The exam terminal unlocks during the official competition windows (<strong>10:00–11:00 UT</strong> and <strong>13:30–15:00 UT</strong>). Each candidate or Duo team is permitted strictly <strong>1 exam attempt</strong>.
                 </p>
 
                 <div class="auth-status-banner" id="auth-status-banner">
@@ -1030,17 +1031,17 @@
                 </div>
 
                 <!-- 2-Window Zone Selector -->
-                <label class="form-label">Select Your Regional Entry Window</label>
+                <label class="form-label">Select Your Entry Window</label>
                 <div class="window-zone-grid">
-                    <div class="zone-option active" id="zone-opt-euasia" onclick="window.selectExamZone('Window A · Europe–Asia (10:00–11:00 UT)', this)">
-                        <span class="zone-tag">Window A · Europe / Asia / Oceania</span>
-                        <div class="zone-title">Eurasia &amp; Oceania Zone</div>
-                        <div class="zone-hours">10:00 UT – 11:00 UT (12:00 EET / 17:00 WIB)</div>
+                    <div class="zone-option" id="zone-opt-euasia" onclick="window.selectExamZone('Window A · First Window (10:00–11:00 UT)', this)">
+                        <span class="zone-tag">Window A · Completed</span>
+                        <div class="zone-title">First Session</div>
+                        <div class="zone-hours">10:00 UT – 11:00 UT (Closed)</div>
                     </div>
-                    <div class="zone-option" id="zone-opt-americas" onclick="window.selectExamZone('Window B · Americas (18:00–19:00 UT)', this)">
-                        <span class="zone-tag">Window B · USA &amp; Americas</span>
-                        <div class="zone-title">Americas &amp; Late Zone</div>
-                        <div class="zone-hours">18:00 UT – 19:00 UT (13:00 EST / 10:00 PST)</div>
+                    <div class="zone-option active" id="zone-opt-americas" onclick="window.selectExamZone('Window B · Second Window (13:30–15:00 UT)', this)">
+                        <span class="zone-tag">Window B · Active Session</span>
+                        <div class="zone-title">Second Session</div>
+                        <div class="zone-hours">13:30 UT – 15:00 UT (15:30 EET)</div>
                     </div>
                 </div>
 
@@ -1222,7 +1223,7 @@
                 </div>
                 <div class="telemetry-row">
                     <span style="color:var(--text-muted);">Window</span>
-                    <span class="telemetry-val" id="tel-zone" style="font-size:0.68rem; color:var(--accent-purple);">Window A</span>
+                    <span class="telemetry-val" id="tel-zone" style="font-size:0.68rem; color:var(--accent-purple);">Window B</span>
                 </div>
                 <div class="telemetry-row">
                     <span style="color:var(--text-muted);">Progress</span>
@@ -1355,10 +1356,10 @@
 
         const EXAM_DURATION_SECONDS = 60 * 60; // 60 Minutes
 
-        // Official SAC 2026 Competition Entry Windows (UTC)
+        // Official SAC 2026 Competition Entry Windows (UTC) — Window B set to 13:30–15:00 UT
         const OFFICIAL_WINDOWS_UTC = [
             { label: "Phase 1 · Window A (10:00–11:00 UT)", startMs: Date.parse("2026-11-14T10:00:00Z"), endMs: Date.parse("2026-11-14T11:00:00Z") },
-            { label: "Phase 1 · Window B (18:00–19:00 UT)", startMs: Date.parse("2026-11-14T18:00:00Z"), endMs: Date.parse("2026-11-14T19:00:00Z") },
+            { label: "Phase 1 · Window B (13:30–15:00 UT)", startMs: Date.parse("2026-11-14T13:30:00Z"), endMs: Date.parse("2026-11-14T15:00:00Z") },
             { label: "Phase 2 · Window A (10:00–11:00 UT)", startMs: Date.parse("2026-11-15T10:00:00Z"), endMs: Date.parse("2026-11-15T11:00:00Z") },
             { label: "Phase 2 · Window B (18:00–19:00 UT)", startMs: Date.parse("2026-11-15T18:00:00Z"), endMs: Date.parse("2026-11-15T19:00:00Z") },
             { label: "Phase 3 · Window A (10:00–11:00 UT)", startMs: Date.parse("2026-11-20T10:00:00Z"), endMs: Date.parse("2026-11-20T11:00:00Z") },
@@ -1384,7 +1385,7 @@
         let matchedParticipant = null;
         let activeTeamId = null;
         let partnerBib = null;
-        let selectedWindowZone = "Window A · Europe–Asia (10:00–11:00 UT)";
+        let selectedWindowZone = "Window B · Second Window (13:30–15:00 UT)";
         let answers = {};
         let flagged = {};
         let strikes = 0;
@@ -1394,12 +1395,33 @@
         let snapshotInterval = null;
         let isLiveWatchedByAdmin = false;
         let adminWindowOverride = "auto";
+        let submittedBibsMap = {};
+        let windowAParticipatedBibsMap = {};
 
         onValue(ref(db, 'sac2026/config/windowOverride'), (snap) => {
             if (snap.exists()) {
                 adminWindowOverride = snap.val();
                 checkGateReady();
             }
+        });
+
+        // Track all final submissions and Window A sessions in real time to block repeat participation
+        onValue(ref(db, 'sac2026/final_submissions'), (snap) => {
+            submittedBibsMap = snap.val() || {};
+            checkGateReady();
+        });
+
+        onValue(ref(db, 'sac2026/submissions'), (snap) => {
+            const allSubs = snap.val() || {};
+            windowAParticipatedBibsMap = {};
+            Object.entries(allSubs).forEach(([b, data]) => {
+                const ts = Date.parse(data?.updatedAt || 0);
+                // Anyone who had an active session in Window A (before 13:20 UT) cannot enter Window B
+                if (ts > 0 && ts < Date.parse("2026-11-14T13:20:00Z")) {
+                    windowAParticipatedBibsMap[b] = data;
+                }
+            });
+            checkGateReady();
         });
 
         window.selectExamZone = function(zoneLabel, el) {
@@ -1434,6 +1456,23 @@
                 (Array.isArray(p.aliasBibs) && p.aliasBibs.some(ab => ab.toUpperCase() === bUpper)) ||
                 (dLower && p.sngUser && p.sngUser.toLowerCase() === dLower)
             );
+        }
+
+        function hasCandidateAlreadyParticipated(p) {
+            if (!p || p.canStartAnytime) return null; // Organizers (Matei, Albert, Mihai) can test anytime
+            if (submittedBibsMap[p.bib]) {
+                return `Bib ${p.bib} has already submitted Phase 1 (Receipt: ${submittedBibsMap[p.bib].receiptId || 'Verified'}). Only 1 attempt is permitted.`;
+            }
+            if (p.partnerBib && submittedBibsMap[p.partnerBib]) {
+                return `Your Duo teammate (${p.partnerBib}) has already submitted Phase 1 for your team (Receipt: ${submittedBibsMap[p.partnerBib].receiptId || 'Verified'}).`;
+            }
+            if (windowAParticipatedBibsMap[p.bib]) {
+                return `Bib ${p.bib} already participated in Window A. Repeat participation in Window B is not permitted.`;
+            }
+            if (p.partnerBib && windowAParticipatedBibsMap[p.partnerBib]) {
+                return `Your Duo teammate (${p.partnerBib}) already participated in Window A. Repeat participation in Window B is not permitted.`;
+            }
+            return null;
         }
 
         function hasActiveUnexpiredSession(bib) {
@@ -1490,7 +1529,7 @@
                 winBanner.className = "window-status-banner open";
                 winLabel.innerHTML = `<i class="fa-solid fa-user-shield"></i> <strong>ORGANIZER / OVERRIDE ACCESS UNLOCKED</strong>`;
                 winCountdown.textContent = ws.nextWin
-                    ? `Public Window A in ${formatCountdownMs(ws.nextWin.startMs - ws.now)}`
+                    ? `Next Window in ${formatCountdownMs(ws.nextWin.startMs - ws.now)}`
                     : "Ready";
             } else if (ws.canResume) {
                 winBanner.className = "window-status-banner open";
@@ -1521,12 +1560,21 @@
                 authText.innerHTML = `Verified: <strong>${found.name}</strong> (Bib: <strong>${found.bib}</strong> · ${found.country})${teamTag}${found.canStartAnytime ? ' · <span style="color:var(--accent-gold);">Test Access</span>' : ''}`;
             }
 
+            // Block if already submitted or already participated in Window A
+            const lockReason = hasCandidateAlreadyParticipated(found);
+            if (lockReason) {
+                btnStartExam.disabled = true;
+                btnStartExam.innerHTML = `<i class="fa-solid fa-ban"></i> Exam Already Completed (1 Attempt Limit)`;
+                gateError.textContent = lockReason;
+                return;
+            }
+
             const ws = getWindowState();
             const hardwareAndFormReady = camVerified && screenVerified && pledgeCheck.checked && emailVal && bibVal;
 
             if (!ws.isAllowedNow) {
                 btnStartExam.disabled = true;
-                btnStartExam.innerHTML = `<i class="fa-solid fa-lock"></i> Locked Until Official Exam Window (10:00 or 18:00 UT)`;
+                btnStartExam.innerHTML = `<i class="fa-solid fa-lock"></i> Locked Until Official Exam Window (13:30–15:00 UT)`;
             } else {
                 btnStartExam.disabled = !hardwareAndFormReady;
                 btnStartExam.innerHTML = `<i class="fa-solid fa-play"></i> Enter Fullscreen &amp; Start Exam (30 MCQs)`;
@@ -1537,19 +1585,20 @@
         updateGateClockAndWindowUI();
 
         emailInput.addEventListener('input', () => {
+            gateError.textContent = "";
             const found = findParticipantByEmailOrBib(emailInput.value, "");
             if (found) bibInput.value = found.bib;
             checkGateReady();
         });
-        bibInput.addEventListener('input', checkGateReady);
+        bibInput.addEventListener('input', () => {
+            gateError.textContent = "";
+            checkGateReady();
+        });
         pledgeCheck.addEventListener('change', checkGateReady);
 
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('email')) emailInput.value = urlParams.get('email');
         if (urlParams.get('bib')) bibInput.value = urlParams.get('bib');
-        if (urlParams.get('zone') === 'americas') {
-            window.selectExamZone('Window B · Americas (18:00–19:00 UT)', document.getElementById('zone-opt-americas'));
-        }
 
         onAuthStateChanged(auth, (user) => {
             if (user && user.email) {
@@ -1558,9 +1607,6 @@
                 if (found) {
                     bibInput.value = found.bib;
                     matchedParticipant = found;
-                    if (['USA', 'Brazil'].includes(found.country)) {
-                        window.selectExamZone('Window B · Americas (18:00–19:00 UT)', document.getElementById('zone-opt-americas'));
-                    }
                 }
             }
             checkGateReady();
@@ -1641,6 +1687,12 @@
                 return;
             }
 
+            const lockReason = hasCandidateAlreadyParticipated(participant);
+            if (lockReason) {
+                gateError.textContent = lockReason;
+                return;
+            }
+
             matchedParticipant = participant;
             candidateEmail = participant.email;
             candidateBib = participant.bib;
@@ -1650,20 +1702,27 @@
 
             const ws = getWindowState();
             if (!ws.isAllowedNow) {
-                gateError.textContent = "Entry Locked: The exam terminal can only be opened during Window A (10:00–11:00 UT) or Window B (18:00–19:00 UT).";
+                gateError.textContent = "Entry Locked: The exam terminal can only be opened during the official Window B (13:30–15:00 UT).";
                 return;
             }
 
-            // Clear stale localStorage if Firebase has no active/final record for this Bib
+            // Double-check Firebase directly before starting
             try {
                 const cloudFinalSnap = await get(ref(db, `sac2026/final_submissions/${candidateBib}`));
                 const cloudLiveSnap = await get(ref(db, `sac2026/submissions/${candidateBib}`));
                 if (!cloudFinalSnap.exists() && !cloudLiveSnap.exists()) {
                     localStorage.removeItem(getStorageKey());
                     localStorage.removeItem(`${getStorageKey()}_submitted`);
-                } else if (cloudFinalSnap.exists() && !participant.canStartAnytime) {
-                    gateError.textContent = `Bib ${candidateBib} has already submitted this exam (Receipt: ${cloudFinalSnap.val().receiptId || 'Verified'}).`;
-                    return;
+                } else if (!participant.canStartAnytime) {
+                    if (cloudFinalSnap.exists()) {
+                        gateError.textContent = `Bib ${candidateBib} has already submitted this exam (Receipt: ${cloudFinalSnap.val().receiptId || 'Verified'}).`;
+                        return;
+                    }
+                    const liveTs = Date.parse(cloudLiveSnap.val()?.updatedAt || 0);
+                    if (liveTs > 0 && liveTs < Date.parse("2026-11-14T13:20:00Z")) {
+                        gateError.textContent = `Bib ${candidateBib} already participated in Window A and cannot re-enter in Window B.`;
+                        return;
+                    }
                 }
             } catch (e) {}
 
@@ -1702,7 +1761,7 @@
                 }
             }
 
-            // Recover unexpired session from Firebase Team Session, Individual Session, or localStorage
+            // Recover unexpired Window B session from Firebase Team Session, Individual Session, or localStorage
             let recovered = null;
             try {
                 if (activeTeamId) {

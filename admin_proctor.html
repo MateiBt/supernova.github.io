@@ -526,7 +526,7 @@
                         <i class="fa-solid fa-tower-broadcast" style="color:var(--accent-gold);"></i>
                         SAC 2026 Chief Proctor &amp; Organizer Console
                     </h1>
-                    <p>Live 3s Webcam + Shared Screen monitoring, manual strike controls (+1 / -1 / Reset), shared Duo team sync, and one-click test reset.</p>
+                    <p>Live 3s Webcam + Shared Screen monitoring, manual strike controls (+1 / -1 / Reset), shared Duo team sync, and dual-window auto-grading.</p>
                 </div>
             </div>
             <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
@@ -599,7 +599,7 @@
                             <i class="fa-solid fa-clock" style="color:var(--accent-blue);"></i> Exam Window Gatekeeper Control
                         </strong>
                         <p style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">
-                            Current Mode: <strong id="window-override-status-text" style="color:var(--accent-green); font-family:var(--font-mono);">AUTO SCHEDULE (10:00–11:00 UT &amp; 18:00–19:00 UT; Matei/Albert/Mihai Unlocked)</strong>
+                            Current Mode: <strong id="window-override-status-text" style="color:var(--accent-green); font-family:var(--font-mono);">AUTO SCHEDULE (10:00–11:00 UT &amp; 13:30–15:00 UT; Matei/Albert/Mihai Unlocked)</strong>
                         </p>
                     </div>
                     <div style="display:flex; gap:8px; flex-wrap:wrap;">
@@ -710,7 +710,7 @@
             <div class="panel-card">
                 <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Ready-to-Send Pre-Round Email &amp; Discord Announcement</h3>
                 <p style="font-size:0.84rem; color:var(--text-muted); line-height:1.55;">
-                    Includes the instruction reminding students to click <strong>"Hide"</strong> on the browser screen-share bar before starting so they don't trigger focus warnings.
+                    Includes the instruction reminding students to angle their webcam toward their work paper and click <strong>"Hide"</strong> on the browser screen-share bar before starting.
                 </p>
 
                 <div style="background:var(--bg-sidebar); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:20px;">
@@ -720,18 +720,19 @@
                             <i class="fa-regular fa-copy"></i> Copy Email Body
                         </button>
                     </div>
-                    <textarea id="email-template-box" class="form-input" style="height:210px; font-size:0.78rem; line-height:1.55; resize:vertical;" readonly>Subject: [SAC 2026] Phase 1 (Open Qualifier) Live Exam Terminal — Window A (10:00 UT) & Window B (18:00 UT)
+                    <textarea id="email-template-box" class="form-input" style="height:225px; font-size:0.78rem; line-height:1.55; resize:vertical;" readonly>Subject: [SAC 2026] Phase 1 (Open Qualifier) Live Exam Terminal — Window A (10:00 UT) & Window B (13:30–15:00 UT)
 
 Dear Competitor,
 
 Phase 1 (Open Qualifier) of the Supernova Astrophysics Cup — Autumn 2026 (SAC 2026) takes place today, Saturday, 14 November 2026 (duration: 60 minutes, 30 MCQs):
-- Window A (Europe / Asia / Africa / Oceania): 10:00 UT – 11:00 UT
-- Window B (North & South America): 18:00 UT – 19:00 UT
+- Window A: 10:00 UT – 11:00 UT
+- Window B: 13:30 UT – 15:00 UT
 
 1. Official Exam Terminal: https://supernovaguide.com/exam.html
 2. Your Candidate Bib Code: Find your SNG-2026-10XX Bib ID on https://supernovaguide.com/competitions.html
-3. IMPORTANT SCREEN-SHARE TIP: After clicking "Share Screen" on the check-in page, click "Hide" on the small floating bar at the bottom of your screen ("supernovaguide.com is sharing your screen") BEFORE clicking Start Exam so it never interrupts your fullscreen focus.
-4. Teams of 2: Both teammates can log in with their own Bib ID and collaborate—your answers and timer sync automatically in real time!
+3. WEBCAM FRAMING (WORK PAPER): Angle your webcam slightly downward so both you and your scratch/work paper are clearly visible while writing.
+4. IMPORTANT SCREEN-SHARE TIP: After clicking "Share Screen" on the check-in page, click "Hide" on the small floating bar at the bottom of your screen ("supernovaguide.com is sharing your screen") BEFORE clicking Start Exam so it never interrupts your fullscreen focus.
+5. TEAMS OF 2: Both teammates log in with their own Bib ID—your answers and timer sync automatically in real time! You may communicate via a second device (kept visible on your webcam) or via Discord voice call (without clicking outside the fullscreen exam window).
 
 Best of luck,
 Matei, Albert, & Mihai
@@ -747,8 +748,8 @@ Supernova Guide Scientific Committee</textarea>
             <div class="panel-card">
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
                     <div>
-                        <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Official Answer Key Auto-Grader &amp; Tie-Breaker Engine (Top 30 Advance)</h3>
-                        <p style="font-size:0.82rem; color:var(--text-muted);">Pre-loaded with the corrected 30-question Phase 1 Answer Key (including Q18 = A). Top 30 advance to Phase 2 (Selection Round).</p>
+                        <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Dual-Window Answer Key Auto-Grader &amp; Tie-Breaker Engine (Top 30 Advance)</h3>
+                        <p style="font-size:0.82rem; color:var(--text-muted);">Window A submissions (&lt; 13:20 UT) are graded with the Window A key; Window B submissions (≥ 13:20 UT) are graded with the Window B key below. Top 30 advance to Phase 2.</p>
                     </div>
                     <button type="button" class="btn-action btn-gold" id="btn-save-grade-key">
                         <i class="fa-solid fa-calculator"></i> Re-Grade All Submissions
@@ -757,8 +758,8 @@ Supernova Guide Scientific Committee</textarea>
 
                 <div style="display:grid; grid-template-columns: 2fr 1fr; gap:14px;">
                     <div>
-                        <label style="font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;">Official Answer Key (Q1–Q30 · Q18 = A)</label>
-                        <input type="text" id="grader-key-input" class="form-input" value="B, A, B, B, D, C, C, D, C, B, C, C, D, C, D, B, A, A, A, B, A, A, A, B, A, B, B, C, B, A">
+                        <label style="font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;">Official Window B Answer Key (Q1–Q30 · 13:30–15:00 UT)</label>
+                        <input type="text" id="grader-key-input" class="form-input" value="B, A, B, B, C, B, C, D, C, B, B, C, C, C, D, B, A, A, C, B, A, A, A, B, A, D, A, B, C, C">
                     </div>
                     <div>
                         <label style="font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;">Difficulty Weights (Q1–Q30)</label>
@@ -774,7 +775,7 @@ Supernova Guide Scientific Committee</textarea>
                                 <th>Bib ID</th>
                                 <th>Competitor</th>
                                 <th>Country</th>
-                                <th>Format / Team</th>
+                                <th>Format / Team · Window</th>
                                 <th>Raw Score</th>
                                 <th>Tie-Breaker (Avg Diff.)</th>
                                 <th>Answered</th>
@@ -1104,10 +1105,10 @@ Supernova Guide Scientific Committee</textarea>
                     statusEl.textContent = "FORCE UNLOCKED (All Competitors Can Enter Now)";
                     statusEl.style.color = "var(--accent-gold)";
                 } else if (mode === 'strict_all') {
-                    statusEl.textContent = "STRICT LOCK (Locked Outside 10:00–11:00 UT & 18:00–19:00 UT for Everyone)";
+                    statusEl.textContent = "STRICT LOCK (Locked Outside 10:00–11:00 UT & 13:30–15:00 UT for Everyone)";
                     statusEl.style.color = "var(--accent-red)";
                 } else {
-                    statusEl.textContent = "AUTO SCHEDULE (10:00–11:00 UT & 18:00–19:00 UT; Matei/Albert/Mihai Unlocked)";
+                    statusEl.textContent = "AUTO SCHEDULE (10:00–11:00 UT & 13:30–15:00 UT; Matei/Albert/Mihai Unlocked)";
                     statusEl.style.color = "var(--accent-green)";
                 }
             });
@@ -1131,7 +1132,6 @@ Supernova Guide Scientific Committee</textarea>
             onValue(ref(db, 'sac2026/snapshots'), (snap) => {
                 webcamSnapshots = snap.val() || {};
                 renderProctorWall();
-                // Live-update open Dossier Modal Webcam + Shared Screen every 3 seconds
                 if (currentInspectedBib && document.getElementById('dossier-modal')?.classList.contains('active')) {
                     const modalCamImg = document.getElementById('modal-live-cam-img');
                     const modalScrImg = document.getElementById('modal-live-screen-img');
@@ -1195,7 +1195,6 @@ Supernova Guide Scientific Committee</textarea>
                 const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib];
                 if (proctorFilter === 'strikes') return rec && (rec.strikes || 0) > 0;
                 if (proctorFilter === 'all43') return true;
-                // Always pin Matei, Albert, and Mihai at the top + any active/submitted competitor
                 return p.isAdmin || hasLive || hasFinal || hasSnap;
             });
 
@@ -1282,7 +1281,7 @@ Supernova Guide Scientific Committee</textarea>
                             </div>
                             <div class="tile-actions">
                                 <button type="button" class="btn-action ${isWatched1Fps ? 'btn-gold' : ''}" style="padding:5px 8px;" onclick="window.toggleLiveWatch('${p.bib}')" title="Toggle 1 FPS High-Speed Stream">
-                                    <i class="fa-solid fa-bolt"></i> ${isWatched1Fps ? '1 FPS' : '1 FPS'}
+                                    <i class="fa-solid fa-bolt"></i> 1 FPS
                                 </button>
                                 <button type="button" class="btn-action" style="padding:5px 8px; border-color:var(--accent-gold); color:var(--accent-gold);" onclick="window.adjustCandidateStrikes('${p.bib}', 1)" title="Add +1 Strike Manually">
                                     +1 Str
@@ -1378,18 +1377,18 @@ Supernova Guide Scientific Committee</textarea>
             }, 2500);
         });
 
-        // Export Master CSV
+        // Export Master CSV (with Dual-Window Score Calculation)
         document.getElementById('btn-export-master-csv')?.addEventListener('click', () => {
-            const headers = ["Bib", "Team_ID", "Name", "Email", "SNG_User", "Discord", "DOB", "Country", "School", "City", "Grade", "Mode", "Partner", "Partner_Bib", "Answered_Count", "Raw_Score", "Tie_Breaker", "Strikes", "Receipt_ID"];
+            const headers = ["Bib", "Team_ID", "Name", "Email", "SNG_User", "Discord", "DOB", "Country", "School", "City", "Grade", "Mode", "Partner", "Partner_Bib", "Window_Key", "Answered_Count", "Raw_Score", "Tie_Breaker", "Strikes", "Receipt_ID"];
             const lines = [headers.join(",")];
             REGISTERED_PARTICIPANTS.filter(p => p.isParticipant !== false).forEach(p => {
                 const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib];
                 const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
-                const sc = computeCandidateScore(rec?.answers);
+                const sc = computeCandidateScore(rec?.answers, rec);
                 const row = [
                     p.bib, p.teamId || "SOLO", p.name, p.email, p.sngUser, p.discord, p.dob, p.country,
                     p.school, p.city, p.grade, p.mode, p.partner || "",
-                    p.partnerBib || "", ansCount, sc.raw.toFixed(1), sc.tieBreaker.toFixed(2), rec?.strikes || 0, rec?.receiptId || ""
+                    p.partnerBib || "", sc.windowUsed, ansCount, sc.raw.toFixed(1), sc.tieBreaker.toFixed(2), rec?.strikes || 0, rec?.receiptId || ""
                 ].map(v => `"${String(v).replace(/"/g, '""')}"`);
                 lines.push(row.join(","));
             });
@@ -1411,17 +1410,47 @@ Supernova Guide Scientific Committee</textarea>
             }, 2000);
         });
 
-        // Auto-Grader & Leaderboard Engine (Top 30 Advance to Phase 2)
-        function computeCandidateScore(ansObj) {
-            const keyLetters = (document.getElementById('grader-key-input')?.value || "")
+        // Official Window A Key (10:00–11:00 UT)
+        const WINDOW_A_ANSWER_KEY = [
+            "B", "A", "B", "B", "D", "C", "C", "D", "C", "B",
+            "C", "C", "D", "C", "D", "B", "A", "A", "A", "B",
+            "A", "A", "A", "B", "A", "B", "B", "C", "B", "A"
+        ];
+
+        // Official Window B Key (13:30–15:00 UT)
+        const WINDOW_B_ANSWER_KEY = [
+            "B", "A", "B", "B", "C", "B", "C", "D", "C", "B",
+            "B", "C", "C", "C", "D", "B", "A", "A", "C", "B",
+            "A", "A", "A", "B", "A", "D", "A", "B", "C", "C"
+        ];
+
+        // Any submission updated/submitted at or after 13:20 UT (or tagged Window B) uses the Window B Key
+        function isWindowBSubmission(rec) {
+            if (!rec) return false;
+            const ts = Date.parse(rec.submittedAtUTC || rec.updatedAt || 0);
+            if (ts >= Date.parse("2026-11-14T13:20:00Z")) return true;
+            if (String(rec.windowZone || "").includes("Window B") && ts === 0) return true;
+            return false;
+        }
+
+        function getActiveKeyForRecord(rec) {
+            const winBInputKey = (document.getElementById('grader-key-input')?.value || "")
                 .split(',')
                 .map(s => s.trim().toUpperCase())
                 .filter(Boolean);
+
+            return isWindowBSubmission(rec)
+                ? (winBInputKey.length === 30 ? winBInputKey : WINDOW_B_ANSWER_KEY)
+                : WINDOW_A_ANSWER_KEY;
+        }
+
+        function computeCandidateScore(ansObj, rec = null) {
+            const keyLetters = getActiveKeyForRecord(rec);
             const weights = (document.getElementById('grader-weights-input')?.value || "")
                 .split(',')
                 .map(s => parseFloat(s.trim()) || 1.0);
 
-            if (!ansObj) return { raw: 0, tieBreaker: 0 };
+            if (!ansObj) return { raw: 0, tieBreaker: 0, windowUsed: "—" };
             const mapLetter = ['A', 'B', 'C', 'D', 'E'];
             let raw = 0;
             let weightedSum = 0;
@@ -1436,7 +1465,11 @@ Supernova Guide Scientific Committee</textarea>
             });
 
             const tieBreaker = raw > 0 ? (weightedSum / raw) : 0;
-            return { raw, tieBreaker };
+            return {
+                raw,
+                tieBreaker,
+                windowUsed: isWindowBSubmission(rec) ? "Win B" : "Win A"
+            };
         }
 
         function renderGraderTable() {
@@ -1446,13 +1479,14 @@ Supernova Guide Scientific Committee</textarea>
             const students = REGISTERED_PARTICIPANTS.filter(p => p.isParticipant !== false).map(p => {
                 const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib] || null;
                 const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
-                const sc = computeCandidateScore(rec?.answers);
+                const sc = computeCandidateScore(rec?.answers, rec);
                 return {
                     ...p,
                     rec,
                     ansCount,
                     rawScore: sc.raw,
                     tieBreaker: sc.tieBreaker,
+                    windowUsed: sc.windowUsed,
                     strikes: rec?.strikes || 0
                 };
             });
@@ -1475,7 +1509,7 @@ Supernova Guide Scientific Committee</textarea>
                         <td style="font-family:var(--font-mono); font-weight:700; color:${s.isAdmin ? 'var(--accent-gold)' : 'var(--text-pure)'};">${s.bib}</td>
                         <td style="font-weight:700; color:var(--text-pure);">${s.name}</td>
                         <td>${s.country}</td>
-                        <td style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-blue);">${s.callsign || 'Solo'}${s.partnerBib ? ` (${s.partnerBib})` : ''}</td>
+                        <td style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-blue);">${s.callsign || 'Solo'}${s.partnerBib ? ` (${s.partnerBib})` : ''} · ${s.windowUsed}</td>
                         <td style="font-family:var(--font-mono); font-weight:700; font-size:0.95rem; color:var(--accent-gold);">${s.rawScore.toFixed(1)} pt</td>
                         <td style="font-family:var(--font-mono);">${s.tieBreaker.toFixed(2)}</td>
                         <td style="font-family:var(--font-mono);">${s.ansCount} / 30</td>
@@ -1501,11 +1535,8 @@ Supernova Guide Scientific Committee</textarea>
             const rec = finalSubmissions[bib] || liveSubmissions[bib] || null;
             const snapObj = webcamSnapshots[bib];
             const mapLetter = ['A', 'B', 'C', 'D', 'E'];
-            const keyLetters = (document.getElementById('grader-key-input')?.value || "")
-                .split(',')
-                .map(s => s.trim().toUpperCase())
-                .filter(Boolean);
-            const sc = computeCandidateScore(rec?.answers);
+            const keyLetters = getActiveKeyForRecord(rec);
+            const sc = computeCandidateScore(rec?.answers, rec);
 
             let ansHtml = 'No answers submitted yet.';
             if (rec?.answers) {
@@ -1520,7 +1551,7 @@ Supernova Guide Scientific Committee</textarea>
                     .join('');
             }
 
-            document.getElementById('modal-cand-title').textContent = `${p.bib} — ${p.name} (${p.country})`;
+            document.getElementById('modal-cand-title').textContent = `${p.bib} — ${p.name} (${p.country} · ${sc.windowUsed})`;
             document.getElementById('modal-cand-body').innerHTML = `
                 <div style="display:grid; grid-template-columns: 1fr 1.35fr; gap:16px; margin-bottom:18px;">
                     <div style="background:#050507; border:1px solid var(--border-light); border-radius:10px; padding:10px; text-align:center;">
@@ -1546,6 +1577,7 @@ Supernova Guide Scientific Committee</textarea>
                 <div style="border-top:1px solid var(--border-subtle); padding-top:14px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
                         <div style="font-family:var(--font-mono); font-size:0.84rem;">
+                            Key: <strong style="color:var(--accent-blue);">${sc.windowUsed}</strong> ·
                             Score: <strong style="color:var(--accent-gold);">${sc.raw.toFixed(1)} / 30.0 pt</strong> (Tie-Break: ${sc.tieBreaker.toFixed(2)}) ·
                             Strikes: <strong style="color:var(--accent-red);">${rec?.strikes || 0}</strong> ·
                             Receipt: <strong>${rec?.receiptId || 'In Progress'}</strong>
