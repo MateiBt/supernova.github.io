@@ -429,6 +429,9 @@ export const EXAM_PARTICIPANTS = [
     {
         "bib": "SNG-2026-1046",
         "aliasBibs": ["SNG-ADMIN-01"],
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "matei.butnaru@yahoo.com",
         "aliasEmails": [
             "contact.supernovaguide@gmail.com",
@@ -446,6 +449,9 @@ export const EXAM_PARTICIPANTS = [
     {
         "bib": "SNG-2026-1044",
         "aliasBibs": ["SNG-ADMIN-02"],
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "albert_voicu_olteanu@yahoo.com",
         "aliasEmails": [],
         "sngUser": "Albert",
@@ -458,6 +464,9 @@ export const EXAM_PARTICIPANTS = [
     {
         "bib": "SNG-2026-1045",
         "aliasBibs": ["SNG-ADMIN-03"],
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "mihai.tesileanu2@gmail.com",
         "aliasEmails": [],
         "sngUser": "Mihai",
@@ -469,17 +478,23 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1001",
+        "teamId": "TEAM-PAIR3",
+        "partnerBib": "SNG-2026-1019",
+        "partnerName": "Bayar Enkhbold",
         "email": "alex.mihai.barbu11@gmail.com",
         "aliasEmails": [],
         "sngUser": "Regele",
         "name": "Barbu Mihai Alexandru",
         "country": "Romania",
         "school": "Colegiul National \"Ion C. Bratianu\"",
-        "mode": "Team of 2 (Matchmaking Pair #3)",
+        "mode": "Team of 2 (Pair #3 · Eurasia)",
         "canStartAnytime": false
     },
     {
         "bib": "SNG-2026-1002",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "lucadariusflorin2012@gmail.com",
         "aliasEmails": [],
         "sngUser": "Darius S.",
@@ -491,6 +506,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1003",
+        "teamId": "TEAM-PAIR1",
+        "partnerBib": "SNG-2026-1031",
+        "partnerName": "Dumitrescu Sebastian Gabriel",
         "email": "robyan2044@gmail.com",
         "aliasEmails": [],
         "sngUser": "Badea Robert",
@@ -502,6 +520,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1004",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "alexaionescu32@gmail.com",
         "aliasEmails": [],
         "sngUser": "ioana25",
@@ -513,6 +534,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1005",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "divyaispresenthere@gmail.com",
         "aliasEmails": [],
         "sngUser": "Divya",
@@ -524,6 +548,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1006",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "riteshkumarmohapatra11902@gmail.com",
         "aliasEmails": [],
         "sngUser": "Ritesh Kumar Mohapatra",
@@ -535,6 +562,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1007",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "bogus.daria@orizont.md",
         "aliasEmails": [
             "darincabogus@gmail.com"
@@ -548,6 +578,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1008",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "mirunateodora0204@gmail.com",
         "aliasEmails": [],
         "sngUser": "81miruna",
@@ -559,6 +592,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1009",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "mohdfaisalabdulcarim@gmail.com",
         "aliasEmails": [],
         "sngUser": "Mohammad Faisal T. Abdulcarim",
@@ -570,6 +606,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1010",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "paunescuadrian713@gmail.com",
         "aliasEmails": [],
         "sngUser": "Livansky",
@@ -581,6 +620,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1011",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "faeeboii@gmail.com",
         "aliasEmails": [],
         "sngUser": "Khalfani Xavier Kamil Susanto",
@@ -592,6 +634,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1012",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "aminedjformsg@gmail.com",
         "aliasEmails": [],
         "sngUser": "Amine",
@@ -603,6 +648,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1013",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "bertea.matei2010@gmail.com",
         "aliasEmails": [],
         "sngUser": "BMatei19",
@@ -614,6 +662,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1014",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "namanvrocks@gmail.com",
         "aliasEmails": [],
         "sngUser": "namanvrocks",
@@ -625,6 +676,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1015",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "aryanver21@gmail.com",
         "aliasEmails": [],
         "sngUser": "aryanver21",
@@ -636,6 +690,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1016",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "niranjanbarhate64@gmail.com",
         "aliasEmails": [],
         "sngUser": "NiranX",
@@ -647,6 +704,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1017",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "bilalabiyu025@gmail.com",
         "aliasEmails": [],
         "sngUser": "@bilal",
@@ -658,6 +718,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1018",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "bilanabiyu@gmail.com",
         "aliasEmails": [],
         "sngUser": "begesu",
@@ -669,6 +732,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1019",
+        "teamId": "TEAM-PAIR3",
+        "partnerBib": "SNG-2026-1001",
+        "partnerName": "Barbu Mihai Alexandru",
         "email": "bayar.e100@gmail.com",
         "aliasEmails": [],
         "sngUser": "Bayar.E",
@@ -680,6 +746,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1020",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "fawwazihanan@gmail.com",
         "aliasEmails": [],
         "sngUser": "Fawwazi Hanan Zia",
@@ -691,6 +760,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1021",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "rymbie99@gmail.com",
         "aliasEmails": [],
         "sngUser": "Rymbie",
@@ -702,6 +774,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1022",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "michaelngg@gmail.com",
         "aliasEmails": [],
         "sngUser": "michaelngg",
@@ -713,6 +788,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1023",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "dolanbaytuna1@gmail.com",
         "aliasEmails": [],
         "sngUser": "Tuna Dolanbay",
@@ -724,6 +802,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1024",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "shaaravayachit4@gmail.com",
         "aliasEmails": [],
         "sngUser": "Schrodinger's cat",
@@ -735,6 +816,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1025",
+        "teamId": "TEAM-TEFLA",
+        "partnerBib": "SNG-2026-1030",
+        "partnerName": "Yusuf Kerem Kuru",
         "email": "keremkaragol1299@gmail.com",
         "aliasEmails": [],
         "sngUser": "Kerem K",
@@ -746,6 +830,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1026",
+        "teamId": "TEAM-PAIR2",
+        "partnerBib": "SNG-2026-1028",
+        "partnerName": "Bernardo Miguel de Souza",
         "email": "alexanderyu780@gmail.com",
         "aliasEmails": [],
         "sngUser": "Alexander Y",
@@ -757,6 +844,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1027",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "mohoreadavidcristian@gmail.com",
         "aliasEmails": [],
         "sngUser": "CrisDav007",
@@ -768,6 +858,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1028",
+        "teamId": "TEAM-PAIR2",
+        "partnerBib": "SNG-2026-1026",
+        "partnerName": "Alexander Yu",
         "email": "souzaestudosevida@outlook.com",
         "aliasEmails": [],
         "sngUser": "Benhard",
@@ -779,6 +872,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1029",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "lukegeltner@ufl.edu",
         "aliasEmails": [],
         "sngUser": "Luke Geltner",
@@ -790,6 +886,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1030",
+        "teamId": "TEAM-TEFLA",
+        "partnerBib": "SNG-2026-1025",
+        "partnerName": "Kerem Karagöl",
         "email": "yusufkeremkuru@gmail.com",
         "aliasEmails": [],
         "sngUser": "ysf55",
@@ -801,6 +900,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1031",
+        "teamId": "TEAM-PAIR1",
+        "partnerBib": "SNG-2026-1003",
+        "partnerName": "Badea Robert Yannis",
         "email": "sebydumitrescu10@gmail.com",
         "aliasEmails": [],
         "sngUser": "Dumitrescu Sebastian",
@@ -812,6 +914,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1032",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "whodisval@gmail.com",
         "aliasEmails": [],
         "sngUser": "Val",
@@ -823,6 +928,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1033",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "seanangelo0980@gmail.com",
         "aliasEmails": [],
         "sngUser": "D'angelo Sean Antoni",
@@ -834,6 +942,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1034",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "galvanizingpolymath@gmail.com",
         "aliasEmails": [],
         "sngUser": "galvanizingpolymath",
@@ -845,6 +956,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1035",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "kusumdodiya901@gmail.com",
         "aliasEmails": [],
         "sngUser": "Yash chavda",
@@ -856,6 +970,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1036",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "syarifahadelia21@gmail.com",
         "aliasEmails": [],
         "sngUser": "Syarifah Adelia Saspi",
@@ -867,6 +984,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1037",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "buanaarkapralangga@gmail.com",
         "aliasEmails": [],
         "sngUser": "Pralangga Arka Buana",
@@ -878,6 +998,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1038",
+        "teamId": "TEAM-ALTERNOSTEAUA",
+        "partnerBib": "SNG-2026-1041",
+        "partnerName": "Alexandrescu Emilia-Maria",
         "email": "venedictsasha@yahoo.com",
         "aliasEmails": [],
         "sngUser": "venedictsasha",
@@ -889,6 +1012,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1039",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "david.asan58@gmail.com",
         "aliasEmails": [],
         "sngUser": "David Asanache",
@@ -900,6 +1026,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1040",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "luca.tanasescu@gmail.com",
         "aliasEmails": [],
         "sngUser": "Luca T.",
@@ -911,6 +1040,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1041",
+        "teamId": "TEAM-ALTERNOSTEAUA",
+        "partnerBib": "SNG-2026-1038",
+        "partnerName": "Venedict Sasha-Cristian",
         "email": "tui914021@gmail.com",
         "aliasEmails": [],
         "sngUser": "Tuftgty5",
@@ -922,6 +1054,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1042",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "ashiffaruq2@gmail.com",
         "aliasEmails": [],
         "sngUser": "Ashif",
@@ -933,6 +1068,9 @@ export const EXAM_PARTICIPANTS = [
     },
     {
         "bib": "SNG-2026-1043",
+        "teamId": null,
+        "partnerBib": null,
+        "partnerName": null,
         "email": "nevergiveup11902@gmail.com",
         "aliasEmails": [],
         "sngUser": "Rahul",
