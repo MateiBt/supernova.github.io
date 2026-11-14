@@ -599,7 +599,7 @@
                             <i class="fa-solid fa-clock" style="color:var(--accent-blue);"></i> Exam Window Gatekeeper Control
                         </strong>
                         <p style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">
-                            Current Mode: <strong id="window-override-status-text" style="color:var(--accent-green); font-family:var(--font-mono);">AUTO SCHEDULE (10:00–11:00 UT &amp; 13:30–15:00 UT; Matei/Albert/Mihai Unlocked)</strong>
+                            Current Mode: <strong id="window-override-status-text" style="color:var(--accent-green); font-family:var(--font-mono);">AUTO SCHEDULE (10:00–11:00 UT &amp; 18:00–19:00 UT; Matei/Albert/Mihai Unlocked)</strong>
                         </p>
                     </div>
                     <div style="display:flex; gap:8px; flex-wrap:wrap;">
@@ -720,13 +720,13 @@
                             <i class="fa-regular fa-copy"></i> Copy Email Body
                         </button>
                     </div>
-                    <textarea id="email-template-box" class="form-input" style="height:225px; font-size:0.78rem; line-height:1.55; resize:vertical;" readonly>Subject: [SAC 2026] Phase 1 (Open Qualifier) Live Exam Terminal — Window A (10:00 UT) & Window B (13:30–15:00 UT)
+                    <textarea id="email-template-box" class="form-input" style="height:225px; font-size:0.78rem; line-height:1.55; resize:vertical;" readonly>Subject: [SAC 2026] Phase 1 (Open Qualifier) Live Exam Terminal — Window A (10:00 UT) & Window B (18:00–19:00 UT)
 
 Dear Competitor,
 
 Phase 1 (Open Qualifier) of the Supernova Astrophysics Cup — Autumn 2026 (SAC 2026) takes place today, Saturday, 14 November 2026 (duration: 60 minutes, 30 MCQs):
 - Window A: 10:00 UT – 11:00 UT
-- Window B: 13:30 UT – 15:00 UT
+- Window B: 18:00 UT – 19:00 UT
 
 1. Official Exam Terminal: https://supernovaguide.com/exam.html
 2. Your Candidate Bib Code: Find your SNG-2026-10XX Bib ID on https://supernovaguide.com/competitions.html
@@ -749,7 +749,7 @@ Supernova Guide Scientific Committee</textarea>
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
                     <div>
                         <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Dual-Window Answer Key Auto-Grader &amp; Tie-Breaker Engine (Top 30 Advance)</h3>
-                        <p style="font-size:0.82rem; color:var(--text-muted);">Window A submissions (&lt; 13:20 UT) are graded with the Window A key; Window B submissions (≥ 13:20 UT) are graded with the Window B key below. Top 30 advance to Phase 2.</p>
+                        <p style="font-size:0.82rem; color:var(--text-muted);">Window A submissions (&lt; 16:00 UT) are graded with the Window A key; Window B submissions (≥ 16:00 UT) are graded with the Window B key below. Top 30 advance to Phase 2.</p>
                     </div>
                     <button type="button" class="btn-action btn-gold" id="btn-save-grade-key">
                         <i class="fa-solid fa-calculator"></i> Re-Grade All Submissions
@@ -758,7 +758,7 @@ Supernova Guide Scientific Committee</textarea>
 
                 <div style="display:grid; grid-template-columns: 2fr 1fr; gap:14px;">
                     <div>
-                        <label style="font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;">Official Window B Answer Key (Q1–Q30 · 13:30–15:00 UT)</label>
+                        <label style="font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;">Official Window B Answer Key (Q1–Q30 · 18:00–19:00 UT)</label>
                         <input type="text" id="grader-key-input" class="form-input" value="B, A, B, B, C, B, C, D, C, B, B, C, C, C, D, B, A, A, C, B, A, A, A, B, A, D, A, B, C, C">
                     </div>
                     <div>
@@ -1105,10 +1105,10 @@ Supernova Guide Scientific Committee</textarea>
                     statusEl.textContent = "FORCE UNLOCKED (All Competitors Can Enter Now)";
                     statusEl.style.color = "var(--accent-gold)";
                 } else if (mode === 'strict_all') {
-                    statusEl.textContent = "STRICT LOCK (Locked Outside 10:00–11:00 UT & 13:30–15:00 UT for Everyone)";
+                    statusEl.textContent = "STRICT LOCK (Locked Outside 10:00–11:00 UT & 18:00–19:00 UT for Everyone)";
                     statusEl.style.color = "var(--accent-red)";
                 } else {
-                    statusEl.textContent = "AUTO SCHEDULE (10:00–11:00 UT & 13:30–15:00 UT; Matei/Albert/Mihai Unlocked)";
+                    statusEl.textContent = "AUTO SCHEDULE (10:00–11:00 UT & 18:00–19:00 UT; Matei/Albert/Mihai Unlocked)";
                     statusEl.style.color = "var(--accent-green)";
                 }
             });
@@ -1417,18 +1417,18 @@ Supernova Guide Scientific Committee</textarea>
             "A", "A", "A", "B", "A", "B", "B", "C", "B", "A"
         ];
 
-        // Official Window B Key (13:30–15:00 UT)
+        // Official Window B Key (18:00–19:00 UT)
         const WINDOW_B_ANSWER_KEY = [
             "B", "A", "B", "B", "C", "B", "C", "D", "C", "B",
             "B", "C", "C", "C", "D", "B", "A", "A", "C", "B",
             "A", "A", "A", "B", "A", "D", "A", "B", "C", "C"
         ];
 
-        // Any submission updated/submitted at or after 13:20 UT (or tagged Window B) uses the Window B Key
+        // Any submission updated/submitted at or after 16:00 UT (or tagged Window B) uses the Window B Key
         function isWindowBSubmission(rec) {
             if (!rec) return false;
             const ts = Date.parse(rec.submittedAtUTC || rec.updatedAt || 0);
-            if (ts >= Date.parse("2026-11-14T13:20:00Z")) return true;
+            if (ts >= Date.parse("2026-11-14T16:00:00Z")) return true;
             if (String(rec.windowZone || "").includes("Window B") && ts === 0) return true;
             return false;
         }
