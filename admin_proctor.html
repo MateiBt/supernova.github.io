@@ -226,10 +226,10 @@
             display: flex;
         }
 
-        /* --- WEBCAM + SCREEN PROCTOR WALL --- */
+        /* --- TRIPLE-FEED PROCTOR WALL (CAM + SCREEN + PHONE) --- */
         .webcam-wall {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(430px, 1fr));
             gap: 16px;
         }
         .proctor-tile {
@@ -249,11 +249,11 @@
         }
         .proctor-tile.strike-crit {
             border-color: var(--accent-red);
-            box-shadow: 0 0 20px rgba(255, 92, 92, 0.22);
+            box-shadow: 0 0 20px rgba(255, 92, 92, 0.24);
         }
-        .tile-dual-feeds {
+        .tile-triple-feeds {
             display: grid;
-            grid-template-columns: 1fr 1.25fr;
+            grid-template-columns: 1fr 1.25fr 1fr;
             gap: 2px;
             height: 155px;
             background: #050507;
@@ -281,12 +281,21 @@
             position: absolute;
             bottom: 5px;
             right: 5px;
-            background: rgba(10, 10, 12, 0.82);
+            background: rgba(10, 10, 12, 0.85);
             padding: 2px 6px;
             border-radius: 4px;
             font-family: var(--font-mono);
-            font-size: 0.6rem;
+            font-size: 0.58rem;
             color: var(--text-muted);
+        }
+        .feed-tag.phone-online {
+            color: var(--accent-green);
+            border: 1px solid rgba(43, 227, 138, 0.35);
+        }
+        .feed-tag.phone-offline {
+            color: var(--accent-red);
+            border: 1px solid rgba(255, 92, 92, 0.5);
+            font-weight: 700;
         }
         .tile-badge {
             position: absolute;
@@ -434,7 +443,7 @@
             background: var(--bg-card);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-lg);
-            max-width: 920px;
+            max-width: 1080px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
@@ -447,6 +456,7 @@
         @media (max-width: 800px) {
             .sidebar { display: none; }
             .dashboard-main { padding: 18px; }
+            .webcam-wall { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -526,13 +536,16 @@
                         <i class="fa-solid fa-tower-broadcast" style="color:var(--accent-gold);"></i>
                         SAC 2026 Chief Proctor &amp; Organizer Console
                     </h1>
-                    <p>Live 3s Webcam + Shared Screen monitoring, manual strike controls (+1 / -1 / Reset), shared Duo team sync, and dual-window auto-grading.</p>
+                    <p>Live 3s Triple-Stream (Webcam + Shared Screen + 2nd-Angle Phone Cam), manual strike controls, Duo team sync, and dual-window auto-grading.</p>
                 </div>
             </div>
             <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
                 <button type="button" class="btn-action" style="background:rgba(255,92,92,0.16); border-color:var(--accent-red); color:var(--accent-red); padding:7px 13px;" onclick="window.wipeAllTestData()">
                     <i class="fa-solid fa-trash-can"></i> Wipe All Test Data (Reset All to 0)
                 </button>
+                <span class="admin-badge" id="firebase-stream-status" style="color:var(--accent-blue); border-color:rgba(53,230,255,0.4); background:rgba(53,230,255,0.1);">
+                    <i class="fa-solid fa-satellite-dish"></i> DB: Connecting...
+                </span>
                 <span class="admin-badge" id="active-admin-identity">
                     <i class="fa-solid fa-user-check"></i> Organizer Active
                 </span>
@@ -552,7 +565,7 @@
             <div class="kpi-card">
                 <span class="kpi-lbl">Live Active in Exam</span>
                 <div class="kpi-val" id="kpi-live-active" style="color:var(--accent-green);">0</div>
-                <div class="kpi-sub">Streaming Cam + Screen (3s)</div>
+                <div class="kpi-sub" id="kpi-phone-live-sub">0 Phone Cams Paired (3s)</div>
             </div>
             <div class="kpi-card">
                 <span class="kpi-lbl">Final Submissions</span>
@@ -565,16 +578,16 @@
                 <div class="kpi-sub">Candidates with ≥ 1 strike</div>
             </div>
             <div class="kpi-card">
-                <span class="kpi-lbl">High Violations (≥ 3 Strikes)</span>
+                <span class="kpi-lbl">High Violations / Phone Alerts</span>
                 <div class="kpi-val" id="kpi-max-strikes" style="color:var(--accent-red);">0</div>
-                <div class="kpi-sub">Flagged for manual proctor review</div>
+                <div class="kpi-sub" id="kpi-phone-drop-sub">0 Phone Disconnect Alerts</div>
             </div>
         </section>
 
         <!-- 4 ADMIN MODULE TABS -->
         <div class="admin-tabs">
             <button type="button" class="admin-tab-btn active" onclick="window.switchAdminTab('proctor', this)">
-                <i class="fa-solid fa-desktop"></i> 1. Live Webcam + Shared Screen Wall (3s)
+                <i class="fa-solid fa-desktop"></i> 1. Triple-Feed Proctor Wall (Cam + Screen + Phone)
             </button>
             <button type="button" class="admin-tab-btn" onclick="window.switchAdminTab('master', this)">
                 <i class="fa-solid fa-database"></i> 2. Master Competitor Database (All 43 + Staff)
@@ -588,7 +601,7 @@
         </div>
 
         <!-- =========================================================
-             TAB 1: LIVE WEBCAM + SHARED SCREEN WALL
+             TAB 1: LIVE WEBCAM + SHARED SCREEN + 2ND-ANGLE PHONE WALL
              ========================================================= -->
         <section class="admin-pane active" id="admin-pane-proctor">
             <!-- Exam Window Lock Control Bar -->
@@ -619,11 +632,14 @@
             <div class="panel-card">
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
                     <div>
-                        <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Real-Time Webcam + Shared Screen Wall (Updates Every 3 Seconds)</h3>
-                        <p style="font-size:0.81rem; color:var(--text-muted);">Each card shows the candidate's <strong>Live Webcam (left)</strong> and <strong>Live Shared Screen (right)</strong> every 3 seconds. Use <strong>+1 / -1 / 0</strong> to adjust strikes manually or <strong>Submit</strong> to force-submit.</p>
+                        <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Real-Time Triple-Camera Wall (Webcam + Screen + 2nd-Angle Phone)</h3>
+                        <p style="font-size:0.81rem; color:var(--text-muted);">Each card streams <strong>Laptop Cam (left)</strong>, <strong>Shared Screen (middle)</strong>, and <strong>Mobile Desk Cam (right)</strong> every 3 seconds. Alerts trigger if a live candidate's phone drops for 25s+.</p>
                     </div>
                     <div style="display:flex; gap:8px; flex-wrap:wrap;">
                         <button type="button" class="btn-action" onclick="window.filterProctorWall('all')">Show Staff + Active / Submitted</button>
+                        <button type="button" class="btn-action" onclick="window.filterProctorWall('phone_alert')" style="border-color:var(--accent-red); color:var(--accent-red);">
+                            <i class="fa-solid fa-mobile-screen-button"></i> Phone Disconnected
+                        </button>
                         <button type="button" class="btn-action" onclick="window.filterProctorWall('strikes')" style="border-color:var(--accent-gold); color:var(--accent-gold);">
                             <i class="fa-solid fa-triangle-exclamation"></i> Only With Strikes
                         </button>
@@ -710,7 +726,7 @@
             <div class="panel-card">
                 <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Ready-to-Send Pre-Round Email &amp; Discord Announcement</h3>
                 <p style="font-size:0.84rem; color:var(--text-muted); line-height:1.55;">
-                    Includes the instruction reminding students to angle their webcam toward their work paper and click <strong>"Hide"</strong> on the browser screen-share bar before starting.
+                    Includes instructions for pairing the mandatory <strong>2nd-angle phone camera</strong> via QR code, angling the laptop webcam toward work paper, and clicking <strong>"Hide"</strong> on the browser screen-share bar before starting.
                 </p>
 
                 <div style="background:var(--bg-sidebar); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:20px;">
@@ -720,7 +736,7 @@
                             <i class="fa-regular fa-copy"></i> Copy Email Body
                         </button>
                     </div>
-                    <textarea id="email-template-box" class="form-input" style="height:225px; font-size:0.78rem; line-height:1.55; resize:vertical;" readonly>Subject: [SAC 2026] Phase 1 (Open Qualifier) Live Exam Terminal — Window A (10:00 UT) & Window B (13:30–15:00 UT)
+                    <textarea id="email-template-box" class="form-input" style="height:245px; font-size:0.78rem; line-height:1.55; resize:vertical;" readonly>Subject: [SAC 2026] Phase 1 (Open Qualifier) Live Exam Terminal — Window A (10:00 UT) & Window B (13:30–15:00 UT)
 
 Dear Competitor,
 
@@ -730,9 +746,9 @@ Phase 1 (Open Qualifier) of the Supernova Astrophysics Cup — Autumn 2026 (SAC 
 
 1. Official Exam Terminal: https://supernovaguide.com/exam.html
 2. Your Candidate Bib Code: Find your SNG-2026-10XX Bib ID on https://supernovaguide.com/competitions.html
-3. WEBCAM FRAMING (WORK PAPER): Angle your webcam slightly downward so both you and your scratch/work paper are clearly visible while writing.
-4. IMPORTANT SCREEN-SHARE TIP: After clicking "Share Screen" on the check-in page, click "Hide" on the small floating bar at the bottom of your screen ("supernovaguide.com is sharing your screen") BEFORE clicking Start Exam so it never interrupts your fullscreen focus.
-5. TEAMS OF 2: Both teammates log in with their own Bib ID—your answers and timer sync automatically in real time! You may communicate via a second device (kept visible on your webcam) or via Discord voice call (without clicking outside the fullscreen exam window).
+3. 2ND-ANGLE PHONE CAMERA (MANDATORY): On the exam check-in screen, scan the QR code with your phone to open mobile_proctor.html and prop your phone to the side/behind you so your hands, scratch paper, and laptop screen are visible. Keep your phone plugged in and unlocked during the exam.
+4. LAPTOP WEBCAM & SCREEN SHARE: Angle your laptop webcam slightly downward toward your work paper. After clicking "Share Screen", click "Hide" on the small floating browser bar ("supernovaguide.com is sharing your screen") BEFORE clicking Start Exam so it never interrupts fullscreen focus.
+5. TEAMS OF 2: Both teammates log in with their own Bib ID—your answers and timer sync automatically in real time! You may communicate via Discord voice call (without clicking outside the fullscreen exam window).
 
 Best of luck,
 Matei, Albert, & Mihai
@@ -791,7 +807,7 @@ Supernova Guide Scientific Committee</textarea>
         </section>
     </main>
 
-    <!-- CANDIDATE DOSSIER & FULL-RES CAM + SCREEN MODAL -->
+    <!-- CANDIDATE DOSSIER & FULL-RES 3-FEED MODAL -->
     <div class="modal-overlay" id="dossier-modal">
         <div class="modal-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--border-subtle);">
@@ -877,15 +893,119 @@ Supernova Guide Scientific Committee</textarea>
         let liveSubmissions = {};
         let finalSubmissions = {};
         let webcamSnapshots = {};
+        let phoneProctorFeeds = {};
+        let phoneEntryReceivedAt = {};
         let liveWatchMap = {};
         let proctorFilter = "all";
         let currentInspectedBib = null;
+        let listenersStarted = false;
 
-        // UTC Clock
+        function parseTimestampMs(val) {
+            if (!val) return 0;
+            if (typeof val === "number") return val < 1e12 ? val * 1000 : val;
+            const parsed = Date.parse(String(val));
+            return Number.isNaN(parsed) ? 0 : parsed;
+        }
+
+        function resolveParticipant(pOrBib) {
+            if (typeof pOrBib === "object" && pOrBib !== null) return pOrBib;
+            const norm = String(pOrBib || "").trim().toUpperCase();
+            return REGISTERED_PARTICIPANTS.find(x =>
+                x.bib.toUpperCase() === norm ||
+                (Array.isArray(x.aliasBibs) && x.aliasBibs.some(a => a.toUpperCase() === norm))
+            ) || { bib: norm, aliasBibs: [] };
+        }
+
+        function findPhoneEntry(p) {
+            const candidates = [p.bib, ...(Array.isArray(p.aliasBibs) ? p.aliasBibs : [])]
+                .filter(Boolean)
+                .map(s => String(s).trim());
+
+            for (const key of candidates) {
+                if (phoneProctorFeeds[key]) return { key, entry: phoneProctorFeeds[key] };
+                if (phoneProctorFeeds[key.toLowerCase()]) return { key: key.toLowerCase(), entry: phoneProctorFeeds[key.toLowerCase()] };
+            }
+
+            const upperSet = new Set(candidates.map(c => c.toUpperCase()));
+            for (const rawKey of Object.keys(phoneProctorFeeds)) {
+                if (upperSet.has(rawKey.trim().toUpperCase())) {
+                    return { key: rawKey, entry: phoneProctorFeeds[rawKey] };
+                }
+            }
+            return { key: p.bib, entry: null };
+        }
+
+        // Evaluate 2nd-angle phone camera connection freshness (< 25s threshold, clock-skew tolerant)
+        function getPhoneFeedStatus(pOrBib) {
+            const p = resolveParticipant(pOrBib);
+            const bib = p.bib;
+            const { key: matchedKey, entry: phoneEntry } = findPhoneEntry(p);
+            const snapObj = webcamSnapshots[bib];
+            const isLiveExam = !!liveSubmissions[bib] && !finalSubmissions[bib];
+
+            const phoneMs = phoneEntry
+                ? Math.max(
+                    parseTimestampMs(phoneEntry.lastHeartbeatMs),
+                    parseTimestampMs(phoneEntry.timestampUTC),
+                    parseTimestampMs(phoneEntry.timestamp),
+                    parseTimestampMs(phoneEntry.updatedAt),
+                    parseTimestampMs(phoneEntry.lastSeen),
+                    parseTimestampMs(phoneEntry.lastPing)
+                )
+                : 0;
+            const snapPhoneMs = snapObj
+                ? Math.max(parseTimestampMs(snapObj.phoneTimestampUTC), parseTimestampMs(snapObj.phoneLastHeartbeatMs))
+                : 0;
+            const localRxMs = phoneEntryReceivedAt[matchedKey] || 0;
+
+            const latestMs = Math.max(phoneMs, snapPhoneMs, localRxMs);
+            const frame = (phoneEntry && (
+                phoneEntry.latestFrame ||
+                phoneEntry.frame ||
+                phoneEntry.image ||
+                phoneEntry.snapshot ||
+                phoneEntry.latestSnapshot ||
+                phoneEntry.dataUrl
+            )) || snapObj?.latestPhone || null;
+
+            if (!phoneEntry && !latestMs && !frame) {
+                return {
+                    connected: false,
+                    ageSec: null,
+                    frame: null,
+                    alert: isLiveExam
+                };
+            }
+
+            const ageSec = latestMs > 0 ? Math.max(0, Math.round((Date.now() - latestMs) / 1000)) : 0;
+            const explicitlyOffline = phoneEntry && (
+                phoneEntry.connected === false ||
+                phoneEntry.online === false ||
+                String(phoneEntry.status || "").toLowerCase() === "disconnected" ||
+                String(phoneEntry.status || "").toLowerCase() === "offline"
+            );
+            const connected = !explicitlyOffline && ageSec < 25;
+
+            return {
+                connected,
+                ageSec,
+                frame,
+                alert: isLiveExam && !connected
+            };
+        }
+
+        // UTC Clock + Periodic 3s Heartbeat Refresh for Frame Age & Phone Disconnect Detection
         setInterval(() => {
             const el = document.getElementById('admin-utc-clock');
             if (el) el.textContent = new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UT';
         }, 1000);
+
+        setInterval(() => {
+            if (document.getElementById('admin-auth-gate')?.style.display === 'none') {
+                updateTelemetryKPIs();
+                renderProctorWall();
+            }
+        }, 3000);
 
         // Tab Switcher
         window.switchAdminTab = function(tabName, btnEl) {
@@ -942,7 +1062,7 @@ Supernova Guide Scientific Committee</textarea>
 
         // 1. One-Click Wipe of All Test Data & Submissions
         window.wipeAllTestData = async function() {
-            if (!confirm("Are you sure you want to WIPE ALL test submissions, camera snapshots, team sessions, and strikes so the competition starts at 0?")) return;
+            if (!confirm("Are you sure you want to WIPE ALL test submissions, camera snapshots, phone feeds, team sessions, and strikes so the competition starts at 0?")) return;
             if (getApps().length === 0) return;
             const db = getDatabase(getApp());
             try {
@@ -950,14 +1070,16 @@ Supernova Guide Scientific Committee</textarea>
                     remove(ref(db, 'sac2026/submissions')),
                     remove(ref(db, 'sac2026/final_submissions')),
                     remove(ref(db, 'sac2026/snapshots')),
+                    remove(ref(db, 'sac2026/phone_proctor')),
                     remove(ref(db, 'sac2026/team_sessions')),
                     remove(ref(db, 'sac2026/live_watch')),
                     remove(ref(db, 'sac2026/force_submit'))
                 ]);
+                phoneEntryReceivedAt = {};
                 Object.keys(localStorage).forEach(k => {
                     if (k.startsWith('sac_2026_exam_state_')) localStorage.removeItem(k);
                 });
-                alert("✓ All test submissions, camera/screen feeds, team sessions, and strikes have been wiped to 0!");
+                alert("✓ All test submissions, camera/screen/phone feeds, team sessions, and strikes have been wiped to 0!");
             } catch (e) {
                 alert("Error wiping test data: " + e.message);
             }
@@ -1092,10 +1214,63 @@ Supernova Guide Scientific Committee</textarea>
             alert(`✓ Triggered Force Auto-Submission for ${activeLiveBibs.length} live sessions.`);
         };
 
-        // Real-Time Firebase Listeners
-        function startRealtimeProctorListeners() {
-            if (getApps().length === 0) return;
+        function syncModalLiveFeeds() {
+            if (!currentInspectedBib || !document.getElementById('dossier-modal')?.classList.contains('active')) return;
+            const modalCamImg = document.getElementById('modal-live-cam-img');
+            const modalScrImg = document.getElementById('modal-live-screen-img');
+            const modalPhoneImg = document.getElementById('modal-live-phone-img');
+            const modalTs = document.getElementById('modal-live-cam-ts');
+            const snapObj = webcamSnapshots[currentInspectedBib];
+            const phoneStat = getPhoneFeedStatus(currentInspectedBib);
+
+            if (modalCamImg && snapObj?.latestFrame) {
+                modalCamImg.src = snapObj.latestFrame;
+                modalCamImg.style.display = 'block';
+            }
+            if (modalScrImg && snapObj?.latestScreen) {
+                modalScrImg.src = snapObj.latestScreen;
+                modalScrImg.style.display = 'block';
+            }
+            if (modalPhoneImg && phoneStat.frame) {
+                modalPhoneImg.src = phoneStat.frame;
+                modalPhoneImg.style.display = 'block';
+            }
+            if (modalTs) {
+                const camTsText = snapObj?.timestampUTC ? `Cam/Screen: ${snapObj.timestampUTC.slice(11, 19)} UT` : 'Cam/Screen: Waiting';
+                const phoneTsText = phoneStat.connected
+                    ? `Phone Cam: LIVE (${phoneStat.ageSec}s ago)`
+                    : (phoneStat.ageSec !== null ? `Phone Cam: OFFLINE (${phoneStat.ageSec}s ago)` : 'Phone Cam: Not Connected');
+                modalTs.textContent = `${camTsText}  |  ${phoneTsText}`;
+            }
+        }
+
+        function setDbStatusBadge(text, colorVar) {
+            const el = document.getElementById('firebase-stream-status');
+            if (!el) return;
+            el.innerHTML = `<i class="fa-solid fa-satellite-dish"></i> ${text}`;
+            el.style.color = colorVar;
+            el.style.borderColor = colorVar;
+        }
+
+        // Real-Time Firebase Listeners (with retry if js/auth.js initializes asynchronously)
+        function startRealtimeProctorListeners(attempt = 0) {
+            if (listenersStarted) return;
+            if (getApps().length === 0) {
+                if (attempt < 15) {
+                    setTimeout(() => startRealtimeProctorListeners(attempt + 1), 400);
+                } else {
+                    setDbStatusBadge("DB: Firebase Not Initialized", "var(--accent-red)");
+                }
+                return;
+            }
+            listenersStarted = true;
             const db = getDatabase(getApp());
+            setDbStatusBadge("DB: Live Connected", "var(--accent-green)");
+
+            const handleDbError = (nodeName) => (err) => {
+                console.error(`Firebase read error on ${nodeName}:`, err);
+                setDbStatusBadge(`DB Permission/Read Error (${nodeName})`, "var(--accent-red)");
+            };
 
             onValue(ref(db, 'sac2026/config/windowOverride'), (snap) => {
                 const mode = snap.val() || 'auto';
@@ -1111,7 +1286,7 @@ Supernova Guide Scientific Committee</textarea>
                     statusEl.textContent = "AUTO SCHEDULE (10:00–11:00 UT & 13:30–15:00 UT; Matei/Albert/Mihai Unlocked)";
                     statusEl.style.color = "var(--accent-green)";
                 }
-            });
+            }, handleDbError('config'));
 
             onValue(ref(db, 'sac2026/submissions'), (snap) => {
                 liveSubmissions = snap.val() || {};
@@ -1119,7 +1294,7 @@ Supernova Guide Scientific Committee</textarea>
                 renderProctorWall();
                 renderMasterTable();
                 renderGraderTable();
-            });
+            }, handleDbError('submissions'));
 
             onValue(ref(db, 'sac2026/final_submissions'), (snap) => {
                 finalSubmissions = snap.val() || {};
@@ -1127,34 +1302,35 @@ Supernova Guide Scientific Committee</textarea>
                 renderProctorWall();
                 renderMasterTable();
                 renderGraderTable();
-            });
+            }, handleDbError('final_submissions'));
 
             onValue(ref(db, 'sac2026/snapshots'), (snap) => {
                 webcamSnapshots = snap.val() || {};
+                updateTelemetryKPIs();
                 renderProctorWall();
-                if (currentInspectedBib && document.getElementById('dossier-modal')?.classList.contains('active')) {
-                    const modalCamImg = document.getElementById('modal-live-cam-img');
-                    const modalScrImg = document.getElementById('modal-live-screen-img');
-                    const modalTs = document.getElementById('modal-live-cam-ts');
-                    const snapObj = webcamSnapshots[currentInspectedBib];
-                    if (modalCamImg && snapObj?.latestFrame) {
-                        modalCamImg.src = snapObj.latestFrame;
-                        modalCamImg.style.display = 'block';
+                syncModalLiveFeeds();
+            }, handleDbError('snapshots'));
+
+            onValue(ref(db, 'sac2026/phone_proctor'), (snap) => {
+                const incoming = snap.val() || {};
+                const now = Date.now();
+                Object.keys(incoming).forEach(k => {
+                    if (JSON.stringify(incoming[k]) !== JSON.stringify(phoneProctorFeeds[k])) {
+                        phoneEntryReceivedAt[k] = now;
                     }
-                    if (modalScrImg && snapObj?.latestScreen) {
-                        modalScrImg.src = snapObj.latestScreen;
-                        modalScrImg.style.display = 'block';
-                    }
-                    if (modalTs && snapObj?.timestampUTC) {
-                        modalTs.textContent = `Last 3s sync: ${snapObj.timestampUTC.slice(11, 19)} UT (${snapObj.fpsMode || '3s Stream'})`;
-                    }
-                }
-            });
+                });
+                phoneProctorFeeds = incoming;
+                const activeCount = Object.keys(incoming).length;
+                setDbStatusBadge(`DB: Live (${activeCount} Phone Node${activeCount === 1 ? '' : 's'})`, "var(--accent-green)");
+                updateTelemetryKPIs();
+                renderProctorWall();
+                syncModalLiveFeeds();
+            }, handleDbError('phone_proctor'));
 
             onValue(ref(db, 'sac2026/live_watch'), (snap) => {
                 liveWatchMap = snap.val() || {};
                 renderProctorWall();
-            });
+            }, handleDbError('live_watch'));
         }
 
         function updateTelemetryKPIs() {
@@ -1162,6 +1338,8 @@ Supernova Guide Scientific Committee</textarea>
             const finalBibs = Object.keys(finalSubmissions);
             let strikeCount = 0;
             let maxStrikeCount = 0;
+            let activePhonesCount = 0;
+            let phoneDropAlertsCount = 0;
 
             const allBibs = new Set([...liveBibs, ...finalBibs]);
             allBibs.forEach(bib => {
@@ -1171,10 +1349,18 @@ Supernova Guide Scientific Committee</textarea>
                 if (s >= 3) maxStrikeCount++;
             });
 
+            REGISTERED_PARTICIPANTS.filter(p => p.isParticipant !== false).forEach(p => {
+                const pStatus = getPhoneFeedStatus(p);
+                if (pStatus.connected) activePhonesCount++;
+                if (pStatus.alert) phoneDropAlertsCount++;
+            });
+
             document.getElementById('kpi-live-active').textContent = liveBibs.filter(b => !finalSubmissions[b]).length;
+            document.getElementById('kpi-phone-live-sub').textContent = `${activePhonesCount} Phone Cams Paired (3s)`;
             document.getElementById('kpi-final-submitted').textContent = finalBibs.length;
             document.getElementById('kpi-flagged-strikes').textContent = strikeCount;
             document.getElementById('kpi-max-strikes').textContent = maxStrikeCount;
+            document.getElementById('kpi-phone-drop-sub').textContent = `${phoneDropAlertsCount} Phone Disconnect Alerts`;
         }
 
         window.filterProctorWall = function(mode) {
@@ -1182,7 +1368,7 @@ Supernova Guide Scientific Committee</textarea>
             renderProctorWall();
         };
 
-        // Render Dual-Feed (Webcam + Shared Screen) Proctor Wall with Matei, Albert & Mihai Pinned at Top
+        // Render Triple-Feed (Webcam + Shared Screen + 2nd-Angle Phone Cam) Proctor Wall
         function renderProctorWall() {
             const wall = document.getElementById('proctor-webcam-wall');
             if (!wall) return;
@@ -1192,13 +1378,23 @@ Supernova Guide Scientific Committee</textarea>
                 const hasLive = !!liveSubmissions[p.bib];
                 const hasFinal = !!finalSubmissions[p.bib];
                 const hasSnap = !!webcamSnapshots[p.bib];
+                const { entry: phoneEntry } = findPhoneEntry(p);
+                const hasPhone = !!phoneEntry;
                 const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib];
+                const phoneStatus = getPhoneFeedStatus(p);
+
+                if (proctorFilter === 'phone_alert') return phoneStatus.alert;
                 if (proctorFilter === 'strikes') return rec && (rec.strikes || 0) > 0;
                 if (proctorFilter === 'all43') return true;
-                return p.isAdmin || hasLive || hasFinal || hasSnap;
+                return p.isAdmin || hasLive || hasFinal || hasSnap || hasPhone;
             });
 
-            filtered.sort((a, b) => (b.isAdmin ? 1 : 0) - (a.isAdmin ? 1 : 0));
+            filtered.sort((a, b) => {
+                const aAlert = getPhoneFeedStatus(a).alert ? 1 : 0;
+                const bAlert = getPhoneFeedStatus(b).alert ? 1 : 0;
+                if (bAlert !== aAlert) return bAlert - aAlert;
+                return (b.isAdmin ? 1 : 0) - (a.isAdmin ? 1 : 0);
+            });
 
             wall.innerHTML = filtered.map(p => {
                 const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib] || null;
@@ -1211,6 +1407,7 @@ Supernova Guide Scientific Committee</textarea>
                 const m = Math.floor(remSec / 60);
                 const s = remSec % 60;
                 const timerStr = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                const phoneStatus = getPhoneFeedStatus(p);
 
                 let tileCls = 'proctor-tile';
                 if (isWatched1Fps || p.isAdmin) tileCls += ' live-focus';
@@ -1218,9 +1415,9 @@ Supernova Guide Scientific Committee</textarea>
                 if (strikes === 1 || strikes === 2) {
                     tileCls += ' strike-warn';
                     strikeColor = 'var(--accent-gold)';
-                } else if (strikes >= 3) {
+                } else if (strikes >= 3 || phoneStatus.alert) {
                     tileCls += ' strike-crit';
-                    strikeColor = 'var(--accent-red)';
+                    if (strikes >= 3) strikeColor = 'var(--accent-red)';
                 }
 
                 const frameAgeSec = snapObj?.timestampUTC
@@ -1241,11 +1438,37 @@ Supernova Guide Scientific Committee</textarea>
                         ${rec ? 'Screen...' : 'No Screen'}
                        </div>`;
 
+                let phoneHtml = '';
+                if (phoneStatus.frame) {
+                    const tagClass = phoneStatus.connected ? 'feed-tag phone-online' : 'feed-tag phone-offline';
+                    const tagText = phoneStatus.connected
+                        ? `PHONE · ${phoneStatus.ageSec}s`
+                        : `PHONE LOST · ${phoneStatus.ageSec}s`;
+                    phoneHtml = `<img src="${phoneStatus.frame}" alt="Phone Cam"><span class="${tagClass}">${tagText}</span>`;
+                } else if (phoneStatus.connected) {
+                    phoneHtml = `<div style="color:var(--accent-green); font-family:var(--font-mono); font-size:0.63rem; text-align:center; padding:4px;">
+                        <i class="fa-solid fa-mobile-screen-button" style="font-size:1.1rem; display:block; margin-bottom:4px;"></i>
+                        PHONE PAIRED (${phoneStatus.ageSec}s)
+                       </div>`;
+                } else {
+                    phoneHtml = `<div style="color:${phoneStatus.alert ? 'var(--accent-red)' : 'var(--text-muted)'}; font-family:var(--font-mono); font-size:0.63rem; text-align:center; padding:4px;">
+                        <i class="fa-solid fa-mobile-screen-button" style="font-size:1.1rem; display:block; margin-bottom:4px; opacity:${phoneStatus.alert ? '0.95' : '0.45'};"></i>
+                        ${phoneStatus.alert ? 'PHONE OFFLINE!' : 'No Phone'}
+                       </div>`;
+                }
+
                 const fpsBadgeHtml = snapObj?.timestampUTC
                     ? `<span class="tile-fps-pill" style="color:${isWatched1Fps ? 'var(--accent-gold)' : 'var(--accent-green)'};">
                         ● ${isWatched1Fps ? '1 FPS' : '3s'} · ${frameAgeSec !== null ? frameAgeSec + 's ago' : ''}
                        </span>`
                     : (p.isAdmin ? `<span class="tile-fps-pill" style="color:var(--accent-gold);">STAFF SLOT</span>` : '');
+
+                const phoneAlertBannerHtml = phoneStatus.alert
+                    ? `<div style="background:rgba(255,92,92,0.16); border:1px solid rgba(255,92,92,0.45); color:var(--accent-red); font-family:var(--font-mono); font-size:0.68rem; font-weight:700; padding:4px 8px; border-radius:6px; display:flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>2nd-Angle Phone Disconnected${phoneStatus.ageSec !== null ? ` (${phoneStatus.ageSec}s ago)` : ''}</span>
+                       </div>`
+                    : '';
 
                 const statusTag = isFinal
                     ? `<span style="color:var(--accent-green); font-weight:700;">SUBMITTED (${rec.receiptId || ''})</span>`
@@ -1259,14 +1482,16 @@ Supernova Guide Scientific Committee</textarea>
 
                 return `
                     <div class="${tileCls}">
-                        <div class="tile-dual-feeds" onclick="window.inspectCandidate('${p.bib}')" style="cursor:pointer;" title="Click to enlarge Webcam & Shared Screen">
+                        <div class="tile-triple-feeds" onclick="window.inspectCandidate('${p.bib}')" style="cursor:pointer;" title="Click to enlarge Webcam, Shared Screen & 2nd-Angle Phone Cam">
                             <div class="feed-box cam-feed">${camHtml}</div>
                             <div class="feed-box screen-feed">${screenHtml}</div>
+                            <div class="feed-box phone-feed">${phoneHtml}</div>
                             <span class="tile-badge" style="${p.isAdmin ? 'color:var(--accent-gold);' : ''}">${p.bib}${p.teamId ? ' · ' + p.teamId : ''}</span>
                             <span class="tile-strike-pill" style="color:${strikeColor};">Strikes: ${strikes}</span>
                             ${fpsBadgeHtml}
                         </div>
                         <div class="tile-body">
+                            ${phoneAlertBannerHtml}
                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                 <strong style="color:var(--text-pure); font-size:0.9rem;">${p.name}</strong>
                                 <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted);">${p.country}</span>
@@ -1292,7 +1517,7 @@ Supernova Guide Scientific Committee</textarea>
                                 <button type="button" class="btn-action" style="padding:5px 8px;" onclick="window.resetCandidateStrikes('${p.bib}')" title="Reset Strikes to 0">
                                     0 Str
                                 </button>
-                                <button type="button" class="btn-action" style="padding:5px 8px;" onclick="window.inspectCandidate('${p.bib}')" title="Open Full Screen & Webcam View">
+                                <button type="button" class="btn-action" style="padding:5px 8px;" onclick="window.inspectCandidate('${p.bib}')" title="Open Full 3-Feed View">
                                     <i class="fa-solid fa-expand"></i>
                                 </button>
                                 ${forceSubmitBtnHtml}
@@ -1527,13 +1752,14 @@ Supernova Guide Scientific Committee</textarea>
 
         document.getElementById('btn-save-grade-key')?.addEventListener('click', renderGraderTable);
 
-        // Inspect Candidate Modal (Large Side-by-Side Live Webcam + Shared Screen + Question Breakdown)
+        // Inspect Candidate Modal (Large 3-Column Live Webcam + Shared Screen + 2nd-Angle Phone Cam)
         window.inspectCandidate = function(bib) {
             currentInspectedBib = bib;
             const p = REGISTERED_PARTICIPANTS.find(x => x.bib === bib);
             if (!p) return;
             const rec = finalSubmissions[bib] || liveSubmissions[bib] || null;
             const snapObj = webcamSnapshots[bib];
+            const phoneStat = getPhoneFeedStatus(p);
             const mapLetter = ['A', 'B', 'C', 'D', 'E'];
             const keyLetters = getActiveKeyForRecord(rec);
             const sc = computeCandidateScore(rec?.answers, rec);
@@ -1551,20 +1777,29 @@ Supernova Guide Scientific Committee</textarea>
                     .join('');
             }
 
+            const camTsText = snapObj?.timestampUTC ? `Cam/Screen: ${snapObj.timestampUTC.slice(11, 19)} UT` : 'Cam/Screen: Waiting';
+            const phoneTsText = phoneStat.connected
+                ? `Phone Cam: LIVE (${phoneStat.ageSec}s ago)`
+                : (phoneStat.ageSec !== null ? `Phone Cam: OFFLINE (${phoneStat.ageSec}s ago)` : 'Phone Cam: Not Connected');
+
             document.getElementById('modal-cand-title').textContent = `${p.bib} — ${p.name} (${p.country} · ${sc.windowUsed})`;
             document.getElementById('modal-cand-body').innerHTML = `
-                <div style="display:grid; grid-template-columns: 1fr 1.35fr; gap:16px; margin-bottom:18px;">
+                <div style="display:grid; grid-template-columns: 1fr 1.3fr 1fr; gap:14px; margin-bottom:16px;">
                     <div style="background:#050507; border:1px solid var(--border-light); border-radius:10px; padding:10px; text-align:center;">
-                        <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-blue); margin-bottom:6px;">LIVE WEBCAM FEED (3s)</div>
-                        <img id="modal-live-cam-img" src="${snapObj?.latestFrame || ''}" style="${snapObj?.latestFrame ? 'display:block;' : 'display:none;'} width:100%; max-height:240px; object-fit:contain; border-radius:6px; transform:scaleX(-1);">
+                        <div style="font-family:var(--font-mono); font-size:0.7rem; color:var(--accent-blue); margin-bottom:6px;">1. LAPTOP WEBCAM (3s)</div>
+                        <img id="modal-live-cam-img" src="${snapObj?.latestFrame || ''}" style="${snapObj?.latestFrame ? 'display:block;' : 'display:none;'} width:100%; max-height:230px; object-fit:contain; border-radius:6px; transform:scaleX(-1);">
                     </div>
                     <div style="background:#050507; border:1px solid var(--border-light); border-radius:10px; padding:10px; text-align:center;">
-                        <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-purple); margin-bottom:6px;">LIVE SHARED SCREEN FEED (3s)</div>
-                        <img id="modal-live-screen-img" src="${snapObj?.latestScreen || ''}" style="${snapObj?.latestScreen ? 'display:block;' : 'display:none;'} width:100%; max-height:240px; object-fit:contain; border-radius:6px;">
+                        <div style="font-family:var(--font-mono); font-size:0.7rem; color:var(--accent-purple); margin-bottom:6px;">2. SHARED SCREEN (3s)</div>
+                        <img id="modal-live-screen-img" src="${snapObj?.latestScreen || ''}" style="${snapObj?.latestScreen ? 'display:block;' : 'display:none;'} width:100%; max-height:230px; object-fit:contain; border-radius:6px;">
+                    </div>
+                    <div style="background:#050507; border:1px solid ${phoneStat.alert ? 'var(--accent-red)' : 'var(--border-light)'}; border-radius:10px; padding:10px; text-align:center;">
+                        <div style="font-family:var(--font-mono); font-size:0.7rem; color:${phoneStat.connected ? 'var(--accent-green)' : 'var(--accent-red)'}; margin-bottom:6px;">3. 2ND-ANGLE PHONE CAM</div>
+                        <img id="modal-live-phone-img" src="${phoneStat.frame || ''}" style="${phoneStat.frame ? 'display:block;' : 'display:none;'} width:100%; max-height:230px; object-fit:contain; border-radius:6px;">
                     </div>
                 </div>
                 <div style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-green); margin-bottom:14px;" id="modal-live-cam-ts">
-                    ${snapObj?.timestampUTC ? `Last 3s sync: ${snapObj.timestampUTC.slice(11, 19)} UT (${snapObj.fpsMode || '3s Stream'})` : 'Waiting for candidate camera/screen stream...'}
+                    ${camTsText}  |  ${phoneTsText}
                 </div>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:14px; font-size:0.82rem;">
                     <div><strong>Full Legal Name:</strong> ${p.name}</div>
