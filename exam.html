@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Exam Terminal — SAC 2026 | Supernova Guide</title>
+    <title>Live Mock Exam Terminal — SAC 2026 | Supernova Guide</title>
     <link rel="icon" type="image/png" href="assets/img/supernova_logo.png">
 
     <!-- Google Fonts -->
@@ -13,6 +13,9 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- QRCode.js for Secondary Phone Camera Pairing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <!-- MathJax 3 Configuration -->
     <script>
@@ -192,6 +195,12 @@
             align-items: center;
             gap: 10px;
             line-height: 1.45;
+        }
+
+        .auth-status-banner.unverified {
+            background: rgba(255, 92, 92, 0.09);
+            border-color: rgba(255, 92, 92, 0.42);
+            color: var(--accent-red);
         }
 
         .window-status-banner {
@@ -455,6 +464,80 @@
             margin-top: 4px;
             min-height: 16px;
             line-height: 1.4;
+        }
+
+        /* =========================================================
+           QR PAIRING GATE PANEL
+           ========================================================= */
+        .qr-pairing-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qr-pairing-panel.paired {
+            border-color: rgba(43, 227, 138, 0.45);
+            background: rgba(43, 227, 138, 0.06);
+        }
+        .qr-code-box {
+            width: 84px;
+            height: 84px;
+            min-width: 84px;
+            background: #FFFFFF;
+            padding: 5px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .qr-code-box img,
+        .qr-code-box canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+
+        .qr-pairing-details {
+            flex: 1;
+            min-width: 0;
+            font-size: 0.73rem;
+            line-height: 1.4;
+            color: var(--text-muted);
+        }
+
+        .qr-pairing-status {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .qr-pairing-status.connected {
+            color: var(--accent-green);
+        }
+
+        .qr-link-copy {
+            display: inline-block;
+            margin-top: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.66rem;
+            color: var(--accent-blue);
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            text-decoration: underline;
         }
 
         /* =========================================================
@@ -949,6 +1032,10 @@
             display: flex;
         }
 
+        #phone-disconnect-modal {
+            z-index: 3100;
+        }
+
         .violation-box {
             max-width: 520px;
             width: 100%;
@@ -1001,14 +1088,14 @@
          ========================================================= -->
     <div id="gatekeeper-screen">
         <div class="gate-card">
-            <!-- Left Column: Logged-In Account Detection, Window Lock & Zone Selection -->
+            <!-- Left Column: Logged-In Account Detection, Window Lock & Session Info -->
             <div>
                 <div class="gate-brand">
                     <div class="gate-brand-left">
                         <img src="assets/img/supernova_logo.png" alt="Supernova Guide" onerror="this.style.display='none'">
                         <div>
                             <span class="gate-eyebrow">Supernova Astrophysics Cup · Autumn 2026</span>
-                            <strong style="font-family:var(--font-display); color:var(--text-pure);">Phase 1 Live Exam Terminal (30 MCQs)</strong>
+                            <strong style="font-family:var(--font-display); color:var(--text-pure);">Official Mock Exam Terminal (30 MCQs · 60 Min)</strong>
                         </div>
                     </div>
                     <span class="gate-utc-badge" id="gate-utc-clock">UTC: Loading...</span>
@@ -1016,7 +1103,7 @@
 
                 <h1 class="gate-title">Competitor Verification</h1>
                 <p class="gate-desc">
-                    Your Supernova Guide account is verified automatically below. The exam terminal unlocks during the official competition windows (<strong>10:00–11:00 UT</strong> and <strong>18:00–19:00 UT</strong>). Each candidate or Duo team is permitted strictly <strong>1 exam attempt</strong>.
+                    Only registered competitors in <strong>EXAM_PARTICIPANTS</strong> may enter. The Mock Exam terminal unlocks on <strong>19 Nov 2026 between 14:00 and 20:00 UT</strong> with a <strong>60-minute</strong> exam timer. Each candidate or Duo team is permitted strictly <strong>1 attempt</strong>.
                 </p>
 
                 <div class="auth-status-banner" id="auth-status-banner">
@@ -1026,27 +1113,22 @@
 
                 <!-- Live Window Schedule & Countdown Banner -->
                 <div class="window-status-banner locked" id="window-status-banner">
-                    <span id="window-status-label"><i class="fa-regular fa-clock"></i> Checking competition window...</span>
+                    <span id="window-status-label"><i class="fa-regular fa-clock"></i> Checking Mock Exam window...</span>
                     <strong id="window-countdown-text">--:--:--</strong>
                 </div>
 
-                <!-- 2-Window Zone Selector -->
-                <label class="form-label">Select Your Entry Window</label>
-                <div class="window-zone-grid">
-                    <div class="zone-option" id="zone-opt-euasia" onclick="window.selectExamZone('Window A · Europe–Asia (10:00–11:00 UT)', this)">
-                        <span class="zone-tag">Window A · Completed</span>
-                        <div class="zone-title">Eurasia &amp; Oceania Zone</div>
-                        <div class="zone-hours">10:00 UT – 11:00 UT (Closed)</div>
-                    </div>
-                    <div class="zone-option active" id="zone-opt-americas" onclick="window.selectExamZone('Window B · Americas (18:00–19:00 UT)', this)">
-                        <span class="zone-tag">Window B · Active Session</span>
-                        <div class="zone-title">Americas &amp; Late Zone</div>
-                        <div class="zone-hours">18:00 UT – 19:00 UT (20:00 EET / 13:00 EST)</div>
+                <!-- Mock Exam Official Window Card -->
+                <label class="form-label">Active Competition Session</label>
+                <div class="window-zone-grid" style="grid-template-columns: 1fr;">
+                    <div class="zone-option active" id="zone-opt-mock" onclick="window.selectExamZone('Mock Exam · 19 Nov 2026 (14:00–20:00 UT)', this)">
+                        <span class="zone-tag">Official Mock Exam · 60-Minute Individual / Duo Timer</span>
+                        <div class="zone-title">Thursday, 19 November 2026</div>
+                        <div class="zone-hours">Entry Window: 14:00 UT – 20:00 UT (16:00 – 22:00 EET) · 1 Attempt Limit</div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="cand-email">Logged-In Account Email</label>
+                    <label class="form-label" for="cand-email">Registered Account Email</label>
                     <input type="email" id="cand-email" class="form-input" placeholder="candidate@supernovaguide.com" required>
                 </div>
 
@@ -1058,13 +1140,12 @@
                 <label class="pledge-label">
                     <input type="checkbox" id="pledge-check">
                     <span>
-                        I confirm that I am using only a non-programmable scientific calculator and the built-in Supernova Constants Sheet, and that my webcam shows my writing and work paper. I consent to continuous live webcam + screen streaming (every 3s) and full-screen lockdown.
+                        I confirm that I am using only a non-programmable scientific calculator and the built-in Supernova Constants Sheet, and that my webcam shows my writing and work paper. I consent to continuous live webcam + screen + secondary phone camera streaming (every 3s) and full-screen lockdown.
                     </span>
                 </label>
 
                 <div id="gate-error" class="gate-error"></div>
             </div>
-
             <!-- Right Column: Hardware Permissions & Proctoring Rules -->
             <div class="preflight-box">
                 <div>
@@ -1096,6 +1177,27 @@
                         <button type="button" class="step-btn" id="btn-enable-screen">Share Screen</button>
                     </div>
 
+                    <!-- Check 3: Secondary Phone Camera QR Pairing -->
+                    <div class="preflight-step" id="step-phone">
+                        <div class="step-info">
+                            <i class="fa-solid fa-mobile-screen-button" style="color:var(--accent-green);"></i>
+                            <span>3. Phone Side-Cam (QR Pair)</span>
+                        </div>
+                        <button type="button" class="step-btn" id="btn-pair-phone-status" disabled style="border-color:var(--accent-gold); background:rgba(255,207,92,0.12); color:var(--accent-gold);">Scan QR</button>
+                    </div>
+
+                    <div class="qr-pairing-panel" id="qr-pairing-panel">
+                        <div class="qr-code-box" id="phone-qr-container" title="Scan with your phone camera"></div>
+                        <div class="qr-pairing-details">
+                            <strong style="color:var(--text-pure); display:block;">Pair Secondary Phone Camera</strong>
+                            <span>Scan this QR code with your phone and position it to show your desk &amp; screen.</span>
+                            <div class="qr-pairing-status" id="qr-pairing-status">
+                                <i class="fa-solid fa-spinner fa-spin"></i> Waiting for phone scan...
+                            </div>
+                            <button type="button" class="qr-link-copy" id="btn-copy-phone-link">Copy pairing URL</button>
+                        </div>
+                    </div>
+
                     <!-- Work Paper Framing Notice -->
                     <div class="hide-bar-alert" style="border-left-color: var(--accent-blue); background: rgba(53, 230, 255, 0.09); border-color: rgba(53, 230, 255, 0.35);">
                         <i class="fa-solid fa-pen-to-square" style="color:var(--accent-blue);"></i>
@@ -1117,7 +1219,7 @@
 
                 <div>
                     <button type="button" class="btn-launch" id="btn-start-exam" disabled>
-                        <i class="fa-solid fa-play"></i> Enter Fullscreen &amp; Start Exam (30 MCQs)
+                        <i class="fa-solid fa-play"></i> Enter Fullscreen &amp; Start Mock Exam (30 MCQs)
                     </button>
                 </div>
             </div>
@@ -1131,7 +1233,7 @@
         <div class="header-left">
             <img src="assets/img/supernova_logo.png" alt="Logo" onerror="this.style.display='none'">
             <strong style="font-family:var(--font-display); font-size:1.05rem; color:var(--text-pure);">SUPERNOVA GUIDE</strong>
-            <span class="exam-phase-pill" id="header-phase-label">SAC 2026 · PHASE 1 QUALIFIER (30 MCQs)</span>
+            <span class="exam-phase-pill" id="header-phase-label">SAC 2026 · OFFICIAL MOCK EXAM (30 MCQs · 60 MIN)</span>
         </div>
 
         <div class="header-right">
@@ -1161,7 +1263,7 @@
                 <div class="problem-meta">
                     <div class="meta-left">
                         <span class="q-num-badge" id="q-number-title">Question 1 of 30</span>
-                        <span class="q-part-badge" id="q-part-tag">Part I</span>
+                        <span class="q-part-badge" id="q-part-tag">Mock Exam</span>
                         <span class="q-module-badge" id="q-module-tag">Module T1</span>
                         <span class="q-pts-badge" id="q-points-tag">1.0 Point</span>
                     </div>
@@ -1204,7 +1306,7 @@
                 <canvas id="screen-snapshot-canvas" width="480" height="270" style="display:none;"></canvas>
             </div>
 
-            <!-- Duo Team Shared Session Banner (Visible for the 5 Teams of 2) -->
+            <!-- Duo Team Shared Session Banner (Visible for Teams of 2) -->
             <div class="duo-sync-banner" id="duo-sync-banner">
                 <i class="fa-solid fa-users"></i>
                 <strong>SHARED TEAM EXAM ACTIVE:</strong><br>
@@ -1222,8 +1324,8 @@
                     <span class="telemetry-val" id="tel-name" style="font-size:0.72rem; color:var(--text-pure);">—</span>
                 </div>
                 <div class="telemetry-row">
-                    <span style="color:var(--text-muted);">Window</span>
-                    <span class="telemetry-val" id="tel-zone" style="font-size:0.68rem; color:var(--accent-purple);">Window B</span>
+                    <span style="color:var(--text-muted);">Session</span>
+                    <span class="telemetry-val" id="tel-zone" style="font-size:0.68rem; color:var(--accent-purple);">Mock Exam</span>
                 </div>
                 <div class="telemetry-row">
                     <span style="color:var(--text-muted);">Progress</span>
@@ -1236,6 +1338,10 @@
                 <div class="telemetry-row">
                     <span style="color:var(--text-muted);">Screen Share</span>
                     <span class="telemetry-val" id="tel-screenshare" style="color:var(--accent-green);">ACTIVE</span>
+                </div>
+                <div class="telemetry-row">
+                    <span style="color:var(--text-muted);">Phone Side-Cam</span>
+                    <span class="telemetry-val" id="tel-phonecam" style="color:var(--accent-green);">ACTIVE</span>
                 </div>
                 <div class="telemetry-row">
                     <span style="color:var(--text-muted);">Focus Strikes</span>
@@ -1277,9 +1383,9 @@
     <div class="modal-overlay" id="submit-confirm-modal">
         <div class="violation-box" style="border-color:var(--accent-green);">
             <i class="fa-solid fa-paper-plane" style="font-size:2.2rem; color:var(--accent-green); margin-bottom:12px;"></i>
-            <h2 style="font-family:var(--font-display); color:var(--text-pure); margin-bottom:8px;">Finalize &amp; Submit Exam?</h2>
+            <h2 style="font-family:var(--font-display); color:var(--text-pure); margin-bottom:8px;">Finalize &amp; Submit Mock Exam?</h2>
             <p id="submit-confirm-text" style="font-size:0.9rem; color:var(--text-muted); line-height:1.55; margin-bottom:22px;">
-                You have answered 0 of 30 questions. Are you sure you want to finalize and submit your official exam sheet?
+                You have answered 0 of 30 questions. Are you sure you want to finalize and submit your official Mock Exam sheet?
             </p>
             <div style="display:flex; gap:12px;">
                 <button type="button" class="btn-nav" id="btn-cancel-submit" style="flex:1; justify-content:center;">
@@ -1293,12 +1399,34 @@
     </div>
 
     <!-- =========================================================
+         4C. SECONDARY PHONE DISCONNECT MONITOR MODAL
+         ========================================================= -->
+    <div class="modal-overlay" id="phone-disconnect-modal">
+        <div class="violation-box" style="border-color:var(--accent-red);">
+            <i class="fa-solid fa-mobile-screen-button" style="font-size:2.3rem; color:var(--accent-red); margin-bottom:12px;"></i>
+            <h2 style="font-family:var(--font-display); color:var(--text-pure); margin-bottom:8px;">Phone Side-Camera Disconnected</h2>
+            <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.55; margin-bottom:14px;">
+                No heartbeat has been received from your secondary phone camera for more than <strong>15 seconds</strong>. Keep the mobile proctor tab open and screen awake, or re-scan the QR code below immediately.
+            </p>
+            <div style="display:flex; justify-content:center; margin-bottom:14px;">
+                <div class="qr-code-box" id="reconnect-qr-container" style="width:128px; height:128px; min-width:128px; padding:8px;"></div>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:0.84rem; color:var(--accent-red); font-weight:700; margin-bottom:8px;">
+                Disconnect Duration: <span id="phone-disconnect-seconds">15s</span>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-gold);">
+                <i class="fa-solid fa-spinner fa-spin"></i> Waiting for phone heartbeat to resume exam...
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================
          5. OFFICIAL PROBLEM SET & IAU CONSTANTS MODAL
          ========================================================= -->
     <div class="modal-overlay" id="constants-modal">
         <div class="constants-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                <h3 style="font-family:var(--font-display); color:var(--text-pure);">SAC 2026 Phase 1 · Official Useful Constants Sheet</h3>
+                <h3 style="font-family:var(--font-display); color:var(--text-pure);">SAC 2026 Mock Exam · Official Useful Constants Sheet</h3>
                 <button type="button" id="btn-close-constants" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
@@ -1354,16 +1482,15 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        const EXAM_DURATION_SECONDS = 60 * 60; // 60 Minutes
+        const EXAM_DURATION_SECONDS = 60 * 60; // 60 Minutes per individual / Duo team
 
-        // Official SAC 2026 Competition Entry Windows (UTC) — Window B set to 18:00–19:00 UT
+        // Official SAC 2026 Mock Exam Entry Window (UTC): 19 Nov 2026 · 14:00–20:00 UT
         const OFFICIAL_WINDOWS_UTC = [
-            { label: "Phase 1 · Window A (10:00–11:00 UT)", startMs: Date.parse("2026-11-14T10:00:00Z"), endMs: Date.parse("2026-11-14T11:00:00Z") },
-            { label: "Phase 1 · Window B (18:00–19:00 UT)", startMs: Date.parse("2026-11-14T18:00:00Z"), endMs: Date.parse("2026-11-14T19:00:00Z") },
-            { label: "Phase 2 · Window A (10:00–11:00 UT)", startMs: Date.parse("2026-11-15T10:00:00Z"), endMs: Date.parse("2026-11-15T11:00:00Z") },
-            { label: "Phase 2 · Window B (18:00–19:00 UT)", startMs: Date.parse("2026-11-15T18:00:00Z"), endMs: Date.parse("2026-11-15T19:00:00Z") },
-            { label: "Phase 3 · Window A (10:00–11:00 UT)", startMs: Date.parse("2026-11-20T10:00:00Z"), endMs: Date.parse("2026-11-20T11:00:00Z") },
-            { label: "Phase 3 · Window B (18:00–19:00 UT)", startMs: Date.parse("2026-11-20T18:00:00Z"), endMs: Date.parse("2026-11-20T19:00:00Z") }
+            {
+                label: "Official Mock Exam (19 Nov 2026 · 14:00–20:00 UT)",
+                startMs: Date.parse("2026-11-19T14:00:00Z"),
+                endMs: Date.parse("2026-11-19T20:00:00Z")
+            }
         ];
 
         let EXAM_QUESTIONS = LOCAL_QUESTIONS;
@@ -1373,6 +1500,14 @@
         let screenStream = null;
         let camVerified = false;
         let screenVerified = false;
+        let phoneVerified = false;
+        let phonePairingBib = "";
+        let phonePairingToken = "";
+        let phonePairingUrl = "";
+        let lastPhoneHeartbeatMs = 0;
+        let phoneMonitorInterval = null;
+        let phoneDisconnectStrikeLogged = false;
+        let phoneUnsubscribe = null;
 
         let examActive = false;
         let isSubmitting = false;
@@ -1385,7 +1520,7 @@
         let matchedParticipant = null;
         let activeTeamId = null;
         let partnerBib = null;
-        let selectedWindowZone = "Window B · Americas (18:00–19:00 UT)";
+        let selectedWindowZone = "Mock Exam · 19 Nov 2026 (14:00–20:00 UT)";
         let answers = {};
         let flagged = {};
         let strikes = 0;
@@ -1396,7 +1531,15 @@
         let isLiveWatchedByAdmin = false;
         let adminWindowOverride = "auto";
         let submittedBibsMap = {};
-        let windowAParticipatedBibsMap = {};
+        let submittedEmailsMap = {};
+
+        function normalizeEmail(e) {
+            return (e || "").trim().toLowerCase();
+        }
+
+        function emailKeyForFirebase(e) {
+            return normalizeEmail(e).replace(/\./g, ',');
+        }
 
         onValue(ref(db, 'sac2026/config/windowOverride'), (snap) => {
             if (snap.exists()) {
@@ -1405,20 +1548,35 @@
             }
         });
 
-        // Track all final submissions and Window A sessions in real time to block repeat participation
+        // Track all final submissions by BOTH Bib ID and Normalized Email to strictly prevent repeat attempts
         onValue(ref(db, 'sac2026/final_submissions'), (snap) => {
-            submittedBibsMap = snap.val() || {};
+            const raw = snap.val() || {};
+            submittedBibsMap = raw;
+            submittedEmailsMap = {};
+            Object.entries(raw).forEach(([bibKey, sub]) => {
+                if (!sub) return;
+                if (sub.email) {
+                    submittedEmailsMap[normalizeEmail(sub.email)] = sub;
+                }
+                const rosterEntry = EXAM_PARTICIPANTS.find(p => p.bib.toUpperCase() === bibKey.toUpperCase());
+                if (rosterEntry) {
+                    submittedEmailsMap[normalizeEmail(rosterEntry.email)] = sub;
+                    if (Array.isArray(rosterEntry.aliasEmails)) {
+                        rosterEntry.aliasEmails.forEach(a => {
+                            submittedEmailsMap[normalizeEmail(a)] = sub;
+                        });
+                    }
+                }
+            });
             checkGateReady();
         });
 
-        onValue(ref(db, 'sac2026/submissions'), (snap) => {
-            const allSubs = snap.val() || {};
-            windowAParticipatedBibsMap = {};
-            Object.entries(allSubs).forEach(([b, data]) => {
-                const ts = Date.parse(data?.updatedAt || 0);
-                // Anyone who had an active session in Window A (before 16:00 UT) cannot enter Window B
-                if (ts > 0 && ts < Date.parse("2026-11-14T16:00:00Z")) {
-                    windowAParticipatedBibsMap[b] = data;
+        onValue(ref(db, 'sac2026/submitted_emails'), (snap) => {
+            const raw = snap.val() || {};
+            Object.entries(raw).forEach(([encodedEmail, sub]) => {
+                const decoded = encodedEmail.replace(/,/g, '.').toLowerCase();
+                if (sub && !submittedEmailsMap[decoded]) {
+                    submittedEmailsMap[decoded] = sub;
                 }
             });
             checkGateReady();
@@ -1429,7 +1587,6 @@
             document.querySelectorAll('.zone-option').forEach(z => z.classList.remove('active'));
             if (el) el.classList.add('active');
         };
-
         const gateScreen = document.getElementById('gatekeeper-screen');
         const btnEnableCam = document.getElementById('btn-enable-cam');
         const btnEnableScreen = document.getElementById('btn-enable-screen');
@@ -1444,40 +1601,249 @@
         const winLabel = document.getElementById('window-status-label');
         const winCountdown = document.getElementById('window-countdown-text');
 
+        // =========================================================
+        // SECONDARY PHONE CAMERA QR PAIRING & 15s DISCONNECT MONITOR
+        // =========================================================
+        function buildPhonePairingUrl(bib, token) {
+            const baseUrl = window.location.href.split('?')[0].split('#')[0];
+            const dirUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/') + 1);
+            return `${dirUrl}mobile_proctor.html?bib=${encodeURIComponent(bib)}&token=${encodeURIComponent(token)}`;
+        }
+
+        function renderQrIntoContainer(containerId, urlText, sizePx) {
+            const box = document.getElementById(containerId);
+            if (!box) return;
+            box.innerHTML = '';
+            if (typeof window.QRCode === 'function') {
+                new window.QRCode(box, {
+                    text: urlText,
+                    width: sizePx,
+                    height: sizePx,
+                    colorDark: "#000000",
+                    colorLight: "#FFFFFF",
+                    correctLevel: window.QRCode.CorrectLevel.M
+                });
+            } else {
+                const img = document.createElement('img');
+                img.alt = "Phone Pairing QR";
+                img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${sizePx}x${sizePx}&data=${encodeURIComponent(urlText)}`;
+                box.appendChild(img);
+            }
+        }
+
+        function updatePhonePairedUI(isConnected, detailText) {
+            const stepPhone = document.getElementById('step-phone');
+            const btnPhone = document.getElementById('btn-pair-phone-status');
+            const panel = document.getElementById('qr-pairing-panel');
+            const statusEl = document.getElementById('qr-pairing-status');
+
+            if (isConnected) {
+                if (stepPhone) stepPhone.classList.add('verified');
+                if (btnPhone) {
+                    btnPhone.textContent = "Paired ✓";
+                    btnPhone.style.borderColor = "var(--accent-green)";
+                    btnPhone.style.background = "rgba(43, 227, 138, 0.15)";
+                    btnPhone.style.color = "var(--accent-green)";
+                }
+                if (panel) panel.classList.add('paired');
+                if (statusEl) {
+                    statusEl.className = "qr-pairing-status connected";
+                    statusEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${detailText || "Phone side-cam connected!"}`;
+                }
+            } else {
+                if (stepPhone) stepPhone.classList.remove('verified');
+                if (btnPhone) {
+                    btnPhone.textContent = "Scan QR";
+                    btnPhone.style.borderColor = "var(--accent-gold)";
+                    btnPhone.style.background = "rgba(255, 207, 92, 0.12)";
+                    btnPhone.style.color = "var(--accent-gold)";
+                }
+                if (panel) panel.classList.remove('paired');
+                if (statusEl) {
+                    statusEl.className = "qr-pairing-status";
+                    statusEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${detailText || "Waiting for phone scan..."}`;
+                }
+            }
+        }
+
+        async function setupPhonePairingForBib(rawBib) {
+            const cleanBib = (rawBib || "").trim().toUpperCase();
+            if (!cleanBib || cleanBib.length < 4) return;
+            if (cleanBib === phonePairingBib && phonePairingToken) return;
+
+            phonePairingBib = cleanBib;
+            phoneVerified = false;
+            phonePairingToken = `${cleanBib}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+            phonePairingUrl = buildPhonePairingUrl(cleanBib, phonePairingToken);
+
+            renderQrIntoContainer('phone-qr-container', phonePairingUrl, 74);
+            renderQrIntoContainer('reconnect-qr-container', phonePairingUrl, 112);
+            updatePhonePairedUI(false, `Waiting for scan (${cleanBib})...`);
+
+            if (typeof phoneUnsubscribe === 'function') {
+                phoneUnsubscribe();
+                phoneUnsubscribe = null;
+            }
+
+            try {
+                await set(ref(db, `sac2026/phone_proctor/${cleanBib}`), {
+                    bib: cleanBib,
+                    pairingToken: phonePairingToken,
+                    connected: false,
+                    status: "waiting",
+                    createdAtUTC: new Date().toISOString()
+                });
+            } catch (e) {}
+
+            phoneUnsubscribe = onValue(ref(db, `sac2026/phone_proctor/${cleanBib}`), (snap) => {
+                if (!snap.exists()) return;
+                const data = snap.val();
+                const hbTs = Number(data.lastHeartbeatMs) || Date.parse(data.timestampUTC || 0) || 0;
+                const isFresh = hbTs > 0 && (Date.now() - hbTs) < 15000;
+                const tokenMatches = !data.pairingToken || data.pairingToken === phonePairingToken;
+
+                if (tokenMatches && (data.connected === true || data.status === "active" || isFresh)) {
+                    lastPhoneHeartbeatMs = hbTs > 0 ? hbTs : Date.now();
+                    if (!phoneVerified) {
+                        phoneVerified = true;
+                        updatePhonePairedUI(true, "Phone side-cam connected & streaming!");
+                        checkGateReady();
+                    }
+                    if (examActive && !isSubmitting) {
+                        const disconnectModal = document.getElementById('phone-disconnect-modal');
+                        if (disconnectModal && disconnectModal.classList.contains('active')) {
+                            disconnectModal.classList.remove('active');
+                            saveState("phone_sidecam_reconnected");
+                        }
+                        phoneDisconnectStrikeLogged = false;
+                        const telPhone = document.getElementById('tel-phonecam');
+                        if (telPhone) {
+                            telPhone.textContent = "ACTIVE";
+                            telPhone.style.color = "var(--accent-green)";
+                        }
+                    }
+                }
+            });
+        }
+
+        document.getElementById('btn-copy-phone-link').addEventListener('click', async () => {
+            if (!phonePairingUrl) return;
+            try {
+                await navigator.clipboard.writeText(phonePairingUrl);
+                const btn = document.getElementById('btn-copy-phone-link');
+                btn.textContent = "Pairing URL copied ✓";
+                setTimeout(() => { btn.textContent = "Copy pairing URL"; }, 2000);
+            } catch (e) {}
+        });
+
+        function startPhoneDisconnectMonitor() {
+            if (phoneMonitorInterval) clearInterval(phoneMonitorInterval);
+            if (!lastPhoneHeartbeatMs) lastPhoneHeartbeatMs = Date.now();
+
+            phoneMonitorInterval = setInterval(() => {
+                if (!examActive || isSubmitting) return;
+                const elapsedSec = Math.floor((Date.now() - lastPhoneHeartbeatMs) / 1000);
+                const telPhone = document.getElementById('tel-phonecam');
+                const disconnectModal = document.getElementById('phone-disconnect-modal');
+                const disconnectSecEl = document.getElementById('phone-disconnect-seconds');
+
+                if (elapsedSec >= 15) {
+                    if (telPhone) {
+                        telPhone.textContent = `LOST (${elapsedSec}s)`;
+                        telPhone.style.color = "var(--accent-red)";
+                    }
+                    if (disconnectSecEl) {
+                        disconnectSecEl.textContent = `${elapsedSec}s`;
+                    }
+                    if (disconnectModal && !disconnectModal.classList.contains('active')) {
+                        disconnectModal.classList.add('active');
+                    }
+                    if (!phoneDisconnectStrikeLogged && Date.now() >= launchGraceUntil) {
+                        phoneDisconnectStrikeLogged = true;
+                        recordStrike("Secondary phone camera disconnected for more than 15 seconds.");
+                    }
+                } else {
+                    if (telPhone) {
+                        telPhone.textContent = "ACTIVE";
+                        telPhone.style.color = "var(--accent-green)";
+                    }
+                }
+            }, 1000);
+        }
+
         function findParticipantByEmailOrBib(emailStr, bibStr, displayNameStr = "") {
-            const eLower = (emailStr || "").trim().toLowerCase();
+            const eLower = normalizeEmail(emailStr);
             const bUpper = (bibStr || "").trim().toUpperCase();
             const dLower = (displayNameStr || "").trim().toLowerCase();
 
             return EXAM_PARTICIPANTS.find(p =>
-                p.email.toLowerCase() === eLower ||
-                (Array.isArray(p.aliasEmails) && p.aliasEmails.some(a => a.toLowerCase() === eLower)) ||
-                p.bib.toUpperCase() === bUpper ||
-                (Array.isArray(p.aliasBibs) && p.aliasBibs.some(ab => ab.toUpperCase() === bUpper)) ||
+                (eLower && (
+                    normalizeEmail(p.email) === eLower ||
+                    (Array.isArray(p.aliasEmails) && p.aliasEmails.some(a => normalizeEmail(a) === eLower))
+                )) ||
+                (bUpper && (
+                    p.bib.toUpperCase() === bUpper ||
+                    (Array.isArray(p.aliasBibs) && p.aliasBibs.some(ab => ab.toUpperCase() === bUpper))
+                )) ||
                 (dLower && p.sngUser && p.sngUser.toLowerCase() === dLower)
             );
         }
 
-        function hasCandidateAlreadyParticipated(p) {
+        function verifyStrictRosterMatch(emailStr, bibStr) {
+            const eLower = normalizeEmail(emailStr);
+            const bUpper = (bibStr || "").trim().toUpperCase();
+            if (!eLower || !bUpper) return null;
+
+            return EXAM_PARTICIPANTS.find(p => {
+                const emailMatches = normalizeEmail(p.email) === eLower ||
+                    (Array.isArray(p.aliasEmails) && p.aliasEmails.some(a => normalizeEmail(a) === eLower));
+                const bibMatches = p.bib.toUpperCase() === bUpper ||
+                    (Array.isArray(p.aliasBibs) && p.aliasBibs.some(ab => ab.toUpperCase() === bUpper));
+                return emailMatches && bibMatches;
+            }) || null;
+        }
+
+        function hasCandidateAlreadyParticipated(p, rawEmailInput = "") {
             if (!p || p.canStartAnytime) return null; // Organizers (Matei, Albert, Mihai) can test anytime
+
+            const eNorm = normalizeEmail(rawEmailInput || p.email);
+            const primaryEmailNorm = normalizeEmail(p.email);
+
             if (submittedBibsMap[p.bib]) {
-                return `Bib ${p.bib} has already submitted Phase 1 (Receipt: ${submittedBibsMap[p.bib].receiptId || 'Verified'}). Only 1 attempt is permitted.`;
+                return `Bib ${p.bib} has already submitted this Mock Exam (Receipt: ${submittedBibsMap[p.bib].receiptId || 'Verified'}). Only 1 attempt is permitted.`;
             }
             if (p.partnerBib && submittedBibsMap[p.partnerBib]) {
-                return `Your Duo teammate (${p.partnerBib}) has already submitted Phase 1 for your team (Receipt: ${submittedBibsMap[p.partnerBib].receiptId || 'Verified'}).`;
+                return `Your Duo teammate (${p.partnerBib}) has already submitted this Mock Exam for your team (Receipt: ${submittedBibsMap[p.partnerBib].receiptId || 'Verified'}).`;
             }
-            if (windowAParticipatedBibsMap[p.bib]) {
-                return `Bib ${p.bib} already participated in Window A. Repeat participation in Window B is not permitted.`;
+            if (submittedEmailsMap[primaryEmailNorm]) {
+                return `Account email ${p.email} has already completed an attempt (Receipt: ${submittedEmailsMap[primaryEmailNorm].receiptId || 'Verified'}). Repeat attempts are locked.`;
             }
-            if (p.partnerBib && windowAParticipatedBibsMap[p.partnerBib]) {
-                return `Your Duo teammate (${p.partnerBib}) already participated in Window A. Repeat participation in Window B is not permitted.`;
+            if (eNorm && submittedEmailsMap[eNorm]) {
+                return `Account email ${eNorm} has already completed an attempt (Receipt: ${submittedEmailsMap[eNorm].receiptId || 'Verified'}). Repeat attempts are locked.`;
             }
+            if (Array.isArray(p.aliasEmails)) {
+                for (const alias of p.aliasEmails) {
+                    const aNorm = normalizeEmail(alias);
+                    if (submittedEmailsMap[aNorm]) {
+                        return `Registered email (${alias}) has already completed an attempt. Repeat attempts are locked.`;
+                    }
+                }
+            }
+
+            // Local backup lock check (Bib + Email)
+            const localSubKey = `sac_2026_exam_state_${p.teamId || p.bib}_submitted`;
+            const localEmailKey = `sac_2026_submitted_email_${primaryEmailNorm}`;
+            if (localStorage.getItem(localSubKey) || localStorage.getItem(localEmailKey)) {
+                return `This Bib ID (${p.bib}) or Email (${p.email}) already has a completed submission recorded on this device.`;
+            }
+
             return null;
         }
 
-        function hasActiveUnexpiredSession(bib) {
-            if (!bib) return false;
-            const raw = localStorage.getItem(`sac_2026_exam_state_${bib}`);
+        function hasActiveUnexpiredSession(bibOrTeamId) {
+            if (!bibOrTeamId) return false;
+            if (localStorage.getItem(`sac_2026_exam_state_${bibOrTeamId}_submitted`)) return false;
+            const raw = localStorage.getItem(`sac_2026_exam_state_${bibOrTeamId}`);
             if (!raw) return false;
             try {
                 const parsed = JSON.parse(raw);
@@ -1494,7 +1860,9 @@
 
             const canBypass = (adminWindowOverride === "force_open") ||
                 (adminWindowOverride !== "strict_all" && matchedParticipant?.canStartAnytime === true);
-            const canResume = matchedParticipant && hasActiveUnexpiredSession(matchedParticipant.bib);
+            const canResume = matchedParticipant &&
+                !hasCandidateAlreadyParticipated(matchedParticipant, emailInput.value) &&
+                hasActiveUnexpiredSession(matchedParticipant.teamId || matchedParticipant.bib);
 
             return {
                 now,
@@ -1529,7 +1897,7 @@
                 winBanner.className = "window-status-banner open";
                 winLabel.innerHTML = `<i class="fa-solid fa-user-shield"></i> <strong>ORGANIZER / OVERRIDE ACCESS UNLOCKED</strong>`;
                 winCountdown.textContent = ws.nextWin
-                    ? `Next Window in ${formatCountdownMs(ws.nextWin.startMs - ws.now)}`
+                    ? `Mock Opens in ${formatCountdownMs(ws.nextWin.startMs - ws.now)}`
                     : "Ready";
             } else if (ws.canResume) {
                 winBanner.className = "window-status-banner open";
@@ -1541,7 +1909,7 @@
                 winCountdown.textContent = `Opens in ${formatCountdownMs(ws.nextWin.startMs - ws.now)}`;
             } else {
                 winBanner.className = "window-status-banner locked";
-                winLabel.innerHTML = `<i class="fa-solid fa-lock"></i> <strong>ALL COMPETITION WINDOWS CLOSED</strong>`;
+                winLabel.innerHTML = `<i class="fa-solid fa-lock"></i> <strong>MOCK EXAM WINDOW CLOSED (19 Nov · 14:00–20:00 UT)</strong>`;
                 winCountdown.textContent = "Closed";
             }
 
@@ -1551,33 +1919,48 @@
         function checkGateReady() {
             const emailVal = emailInput.value.trim();
             const bibVal = bibInput.value.trim();
-            const found = findParticipantByEmailOrBib(emailVal, bibVal);
-            if (found) {
-                matchedParticipant = found;
-                authBanner.style.borderColor = "rgba(43, 227, 138, 0.4)";
-                authBanner.style.color = "var(--accent-green)";
-                const teamTag = found.teamId ? ` · <span style="color:var(--accent-blue);">Shared Team Exam (${found.partnerBib})</span>` : '';
-                authText.innerHTML = `Verified: <strong>${found.name}</strong> (Bib: <strong>${found.bib}</strong> · ${found.country})${teamTag}${found.canStartAnytime ? ' · <span style="color:var(--accent-gold);">Test Access</span>' : ''}`;
+            const strictMatch = verifyStrictRosterMatch(emailVal, bibVal);
+            const looseMatch = strictMatch || findParticipantByEmailOrBib(emailVal, bibVal);
+
+            if (strictMatch) {
+                matchedParticipant = strictMatch;
+                authBanner.className = "auth-status-banner";
+                const teamTag = strictMatch.teamId ? ` · <span style="color:var(--accent-blue);">Shared Team Exam (${strictMatch.partnerBib})</span>` : '';
+                authText.innerHTML = `Verified: <strong>${strictMatch.name}</strong> (Bib: <strong>${strictMatch.bib}</strong> · ${strictMatch.country})${teamTag}${strictMatch.canStartAnytime ? ' · <span style="color:var(--accent-gold);">Organizer Test Access</span>' : ''}`;
+                setupPhonePairingForBib(strictMatch.bib);
+            } else if (emailVal.length > 0 || bibVal.length > 0) {
+                matchedParticipant = null;
+                authBanner.className = "auth-status-banner unverified";
+                if (looseMatch) {
+                    authText.innerHTML = `Email &amp; Bib mismatch: Enter the registered email and Bib ID together from <strong>EXAM_PARTICIPANTS</strong>.`;
+                } else {
+                    authText.innerHTML = `Access Restricted: Account email or Bib ID is not listed in <strong>EXAM_PARTICIPANTS</strong>.`;
+                }
+            } else {
+                matchedParticipant = null;
+                authBanner.className = "auth-status-banner";
+                authText.textContent = "Enter your registered EXAM_PARTICIPANTS email and Bib ID to verify eligibility.";
             }
 
-            // Block if already submitted or already participated in Window A
-            const lockReason = hasCandidateAlreadyParticipated(found);
+            // Block if already submitted (by Bib ID, Duo Partner Bib, or Email)
+            const lockReason = hasCandidateAlreadyParticipated(strictMatch || looseMatch, emailVal);
             if (lockReason) {
                 btnStartExam.disabled = true;
-                btnStartExam.innerHTML = `<i class="fa-solid fa-ban"></i> Exam Already Completed (1 Attempt Limit)`;
+                btnStartExam.innerHTML = `<i class="fa-solid fa-ban"></i> Attempt Already Used (1 Attempt Limit)`;
                 gateError.textContent = lockReason;
                 return;
             }
 
             const ws = getWindowState();
-            const hardwareAndFormReady = camVerified && screenVerified && pledgeCheck.checked && emailVal && bibVal;
+            const phoneReady = phoneVerified || Boolean(strictMatch?.canStartAnytime);
+            const hardwareAndFormReady = Boolean(strictMatch) && camVerified && screenVerified && phoneReady && pledgeCheck.checked;
 
             if (!ws.isAllowedNow) {
                 btnStartExam.disabled = true;
-                btnStartExam.innerHTML = `<i class="fa-solid fa-lock"></i> Locked Until Official Exam Window (18:00–19:00 UT)`;
+                btnStartExam.innerHTML = `<i class="fa-solid fa-lock"></i> Locked Until Mock Exam (19 Nov · 14:00–20:00 UT)`;
             } else {
                 btnStartExam.disabled = !hardwareAndFormReady;
-                btnStartExam.innerHTML = `<i class="fa-solid fa-play"></i> Enter Fullscreen &amp; Start Exam (30 MCQs)`;
+                btnStartExam.innerHTML = `<i class="fa-solid fa-play"></i> Enter Fullscreen &amp; Start Mock Exam (30 MCQs)`;
             }
         }
 
@@ -1586,8 +1969,8 @@
 
         emailInput.addEventListener('input', () => {
             gateError.textContent = "";
-            const found = findParticipantByEmailOrBib(emailInput.value, "");
-            if (found) bibInput.value = found.bib;
+            const foundByEmail = findParticipantByEmailOrBib(emailInput.value, "");
+            if (foundByEmail) bibInput.value = foundByEmail.bib;
             checkGateReady();
         });
         bibInput.addEventListener('input', () => {
@@ -1678,23 +2061,28 @@
         // Launch Fullscreen Exam
         btnStartExam.addEventListener('click', async () => {
             gateError.textContent = "";
-            const emailVal = emailInput.value.trim().toLowerCase();
+            const emailVal = normalizeEmail(emailInput.value);
             const bibVal = bibInput.value.trim().toUpperCase();
 
-            const participant = findParticipantByEmailOrBib(emailVal, bibVal);
+            const participant = verifyStrictRosterMatch(emailVal, bibVal);
             if (!participant) {
-                gateError.textContent = "Account email or Candidate Bib ID not found on the official SAC 2026 roster.";
+                gateError.textContent = "Access Denied: Your email and Candidate Bib ID must both match an entry in EXAM_PARTICIPANTS.";
                 return;
             }
 
-            const lockReason = hasCandidateAlreadyParticipated(participant);
+            if (!phoneVerified && !participant.canStartAnytime) {
+                gateError.textContent = "Please scan the QR code with your phone to pair your secondary camera before starting.";
+                return;
+            }
+
+            const lockReason = hasCandidateAlreadyParticipated(participant, emailVal);
             if (lockReason) {
                 gateError.textContent = lockReason;
                 return;
             }
 
             matchedParticipant = participant;
-            candidateEmail = participant.email;
+            candidateEmail = emailVal || normalizeEmail(participant.email);
             candidateBib = participant.bib;
             candidateName = participant.name;
             activeTeamId = participant.teamId || null;
@@ -1702,25 +2090,28 @@
 
             const ws = getWindowState();
             if (!ws.isAllowedNow) {
-                gateError.textContent = "Entry Locked: The exam terminal can only be opened during the official Window B (18:00–19:00 UT).";
+                gateError.textContent = "Entry Locked: The Mock Exam terminal can only be opened on 19 Nov 2026 between 14:00 and 20:00 UT.";
                 return;
             }
 
-            // Double-check Firebase directly before starting
+            // Direct Firebase verification on BOTH Bib ID and Normalized Email before launching
             try {
-                const cloudFinalSnap = await get(ref(db, `sac2026/final_submissions/${candidateBib}`));
-                const cloudLiveSnap = await get(ref(db, `sac2026/submissions/${candidateBib}`));
-                if (!cloudFinalSnap.exists() && !cloudLiveSnap.exists()) {
+                const [cloudFinalBibSnap, cloudEmailSnap, cloudLiveSnap] = await Promise.all([
+                    get(ref(db, `sac2026/final_submissions/${candidateBib}`)),
+                    get(ref(db, `sac2026/submitted_emails/${emailKeyForFirebase(candidateEmail)}`)),
+                    get(ref(db, `sac2026/submissions/${candidateBib}`))
+                ]);
+
+                if (!cloudFinalBibSnap.exists() && !cloudEmailSnap.exists() && !cloudLiveSnap.exists()) {
                     localStorage.removeItem(getStorageKey());
                     localStorage.removeItem(`${getStorageKey()}_submitted`);
                 } else if (!participant.canStartAnytime) {
-                    if (cloudFinalSnap.exists()) {
-                        gateError.textContent = `Bib ${candidateBib} has already submitted this exam (Receipt: ${cloudFinalSnap.val().receiptId || 'Verified'}).`;
+                    if (cloudFinalBibSnap.exists()) {
+                        gateError.textContent = `Bib ${candidateBib} has already submitted this Mock Exam (Receipt: ${cloudFinalBibSnap.val().receiptId || 'Verified'}).`;
                         return;
                     }
-                    const liveTs = Date.parse(cloudLiveSnap.val()?.updatedAt || 0);
-                    if (liveTs > 0 && liveTs < Date.parse("2026-11-14T16:00:00Z")) {
-                        gateError.textContent = `Bib ${candidateBib} already participated in Window A and cannot re-enter in Window B.`;
+                    if (cloudEmailSnap.exists()) {
+                        gateError.textContent = `Email ${candidateEmail} has already submitted this Mock Exam (Receipt: ${cloudEmailSnap.val().receiptId || 'Verified'}).`;
                         return;
                     }
                 }
@@ -1747,21 +2138,23 @@
             examActive = true;
             isSubmitting = false;
             sessionStartedAtMs = Date.now();
+            lastPhoneHeartbeatMs = Date.now();
+            phoneDisconnectStrikeLogged = false;
 
             document.getElementById('tel-bib').textContent = candidateBib;
             document.getElementById('tel-name').textContent = candidateName;
-            document.getElementById('tel-zone').textContent = selectedWindowZone.split('·')[0].trim();
+            document.getElementById('tel-zone').textContent = "Mock Exam (60m)";
 
             if (activeTeamId && matchedParticipant?.partnerName) {
                 const duoBanner = document.getElementById('duo-sync-banner');
                 const duoText = document.getElementById('duo-sync-partner-text');
                 if (duoBanner && duoText) {
                     duoBanner.style.display = 'block';
-                    duoText.textContent = `${matchedParticipant.partnerName} (${partnerBib}) — Answers & timer sync live!`;
+                    duoText.textContent = `${matchedParticipant.partnerName} (${partnerBib}) — Answers & 60-min timer sync live!`;
                 }
             }
 
-            // Recover unexpired Window B session from Firebase Team Session, Individual Session, or localStorage
+            // Recover unexpired active session from Firebase Team Session, Individual Session, or localStorage
             let recovered = null;
             try {
                 if (activeTeamId) {
@@ -1781,7 +2174,7 @@
                 }
             }
 
-            // Only resume timer if endTimeMs is still strictly in the future
+            // Only resume 60-minute timer if endTimeMs is still strictly in the future
             if (recovered && recovered.endTimeMs && recovered.endTimeMs > Date.now() + 5000) {
                 answers = recovered.answers || {};
                 flagged = recovered.flagged || {};
@@ -1802,9 +2195,18 @@
             renderQuestion(0);
             startCountdownTimer();
             startLiveCameraAndScreenStream();
+            if (phoneVerified || !matchedParticipant?.canStartAnytime) {
+                startPhoneDisconnectMonitor();
+            } else {
+                const telPhone = document.getElementById('tel-phonecam');
+                if (telPhone) {
+                    telPhone.textContent = "BYPASSED";
+                    telPhone.style.color = "var(--accent-gold)";
+                }
+            }
             saveState("session_started");
 
-            // 1. Real-Time Shared Team Sync Listener (For the 5 Duo Teams)
+            // 1. Real-Time Shared Team Sync Listener (For Duo Teams)
             if (activeTeamId) {
                 onValue(ref(db, `sac2026/team_sessions/${activeTeamId}`), (snap) => {
                     if (!examActive || !snap.exists()) return;
@@ -1991,7 +2393,7 @@
             const q = EXAM_QUESTIONS[idx];
 
             document.getElementById('q-number-title').textContent = `Question ${idx + 1} of ${EXAM_QUESTIONS.length}`;
-            document.getElementById('q-part-tag').textContent = q.part || "Phase 1";
+            document.getElementById('q-part-tag').textContent = q.part || "Mock Exam";
             document.getElementById('q-module-tag').textContent = q.module;
             document.getElementById('q-points-tag').textContent = q.points;
 
@@ -2066,7 +2468,7 @@
         });
 
         // =========================================================
-        // COUNTDOWN TIMER (DISPLAY ONLY — NEVER AUTO-SUBMITS)
+        // 60-MINUTE COUNTDOWN TIMER (DISPLAY ONLY — NEVER AUTO-SUBMITS)
         // =========================================================
         function startCountdownTimer() {
             const timerDisplay = document.getElementById('exam-timer-display');
@@ -2230,7 +2632,7 @@
             const answeredCount = Object.keys(answers).length;
             const teamNote = activeTeamId ? ` (Shared Team Submission with ${partnerBib})` : '';
             document.getElementById('submit-confirm-text').textContent =
-                `You have answered ${answeredCount} of ${EXAM_QUESTIONS.length} questions${teamNote}. Are you sure you want to finalize and submit your exam?`;
+                `You have answered ${answeredCount} of ${EXAM_QUESTIONS.length} questions${teamNote}. Are you sure you want to finalize and submit your Mock Exam?`;
             document.getElementById('submit-confirm-modal').classList.add('active');
         });
 
@@ -2246,12 +2648,21 @@
         window.resetTestAttempt = async function() {
             localStorage.removeItem(getStorageKey());
             localStorage.removeItem(`${getStorageKey()}_submitted`);
+            localStorage.removeItem(`sac_2026_submitted_email_${normalizeEmail(candidateEmail)}`);
+            if (matchedParticipant?.email) {
+                localStorage.removeItem(`sac_2026_submitted_email_${normalizeEmail(matchedParticipant.email)}`);
+            }
             try {
                 await remove(ref(db, `sac2026/submissions/${candidateBib}`));
                 await remove(ref(db, `sac2026/final_submissions/${candidateBib}`));
+                await remove(ref(db, `sac2026/submitted_emails/${emailKeyForFirebase(candidateEmail)}`));
+                if (matchedParticipant?.email) {
+                    await remove(ref(db, `sac2026/submitted_emails/${emailKeyForFirebase(matchedParticipant.email)}`));
+                }
                 await remove(ref(db, `sac2026/snapshots/${candidateBib}`));
                 await remove(ref(db, `sac2026/live_watch/${candidateBib}`));
                 await remove(ref(db, `sac2026/force_submit/${candidateBib}`));
+                await remove(ref(db, `sac2026/phone_proctor/${candidateBib}`));
                 if (activeTeamId) {
                     await remove(ref(db, `sac2026/team_sessions/${activeTeamId}`));
                 }
@@ -2265,8 +2676,10 @@
             examActive = false;
             clearInterval(timerInterval);
             clearInterval(snapshotInterval);
+            clearInterval(phoneMonitorInterval);
+            if (typeof phoneUnsubscribe === 'function') phoneUnsubscribe();
 
-            const receiptId = `SAC26-${(activeTeamId || candidateBib).split('-').pop()}-${Date.now().toString(36).toUpperCase()}`;
+            const receiptId = `SAC26-MOCK-${(activeTeamId || candidateBib).split('-').pop()}-${Date.now().toString(36).toUpperCase()}`;
             const nowIso = new Date().toISOString();
 
             const finalPayload = {
@@ -2285,24 +2698,53 @@
             };
 
             localStorage.setItem(`${getStorageKey()}_submitted`, JSON.stringify(finalPayload));
+            localStorage.setItem(`sac_2026_submitted_email_${normalizeEmail(candidateEmail)}`, receiptId);
+            if (matchedParticipant?.email) {
+                localStorage.setItem(`sac_2026_submitted_email_${normalizeEmail(matchedParticipant.email)}`, receiptId);
+            }
             localStorage.removeItem(getStorageKey());
 
             try {
                 await set(ref(db, `sac2026/final_submissions/${candidateBib}`), finalPayload);
+                await set(ref(db, `sac2026/submitted_emails/${emailKeyForFirebase(candidateEmail)}`), {
+                    bib: candidateBib,
+                    email: candidateEmail,
+                    receiptId,
+                    submittedAtUTC: nowIso
+                });
+                if (matchedParticipant?.email && normalizeEmail(matchedParticipant.email) !== normalizeEmail(candidateEmail)) {
+                    await set(ref(db, `sac2026/submitted_emails/${emailKeyForFirebase(matchedParticipant.email)}`), {
+                        bib: candidateBib,
+                        email: matchedParticipant.email,
+                        receiptId,
+                        submittedAtUTC: nowIso
+                    });
+                }
                 await remove(ref(db, `sac2026/live_watch/${candidateBib}`));
+
                 if (activeTeamId) {
                     await update(ref(db, `sac2026/team_sessions/${activeTeamId}`), {
                         submitted: true,
                         finalPayload
                     });
                     if (partnerBib) {
+                        const partnerEntry = EXAM_PARTICIPANTS.find(p => p.bib.toUpperCase() === partnerBib.toUpperCase());
                         await set(ref(db, `sac2026/final_submissions/${partnerBib}`), {
                             ...finalPayload,
                             bib: partnerBib,
                             partnerBib: candidateBib,
                             name: matchedParticipant?.partnerName || partnerBib,
+                            email: partnerEntry?.email || "",
                             submissionReason: `${reason} (Synced Team Submission with ${candidateBib})`
                         });
+                        if (partnerEntry?.email) {
+                            await set(ref(db, `sac2026/submitted_emails/${emailKeyForFirebase(partnerEntry.email)}`), {
+                                bib: partnerBib,
+                                email: partnerEntry.email,
+                                receiptId,
+                                submittedAtUTC: nowIso
+                            });
+                        }
                     }
                 }
             } catch (e) {
@@ -2317,6 +2759,8 @@
             examActive = false;
             clearInterval(timerInterval);
             clearInterval(snapshotInterval);
+            clearInterval(phoneMonitorInterval);
+            if (typeof phoneUnsubscribe === 'function') phoneUnsubscribe();
 
             if (webcamStream) webcamStream.getTracks().forEach(t => t.stop());
             if (screenStream) screenStream.getTracks().forEach(t => t.stop());
@@ -2334,12 +2778,12 @@
                 <div style="height:100vh; display:flex; align-items:center; justify-content:center; background:var(--bg-base); padding:24px;">
                     <div style="max-width:580px; width:100%; background:var(--bg-card); border:1px solid var(--accent-green); border-radius:16px; padding:36px; text-align:center;">
                         <i class="fa-solid fa-circle-check" style="font-size:3rem; color:var(--accent-green); margin-bottom:16px;"></i>
-                        <h1 style="font-family:var(--font-display); color:var(--text-pure); margin-bottom:8px;">Exam Submitted Successfully</h1>
+                        <h1 style="font-family:var(--font-display); color:var(--text-pure); margin-bottom:8px;">Mock Exam Submitted Successfully</h1>
                         <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:22px;">${finalPayload.submissionReason}</p>
                         <div style="background:var(--bg-sidebar); border:1px solid var(--border-subtle); border-radius:10px; padding:16px; text-align:left; font-family:var(--font-mono); font-size:0.8rem; margin-bottom:24px; line-height:1.8;">
                             <div><span style="color:var(--text-muted);">RECEIPT ID:</span> <strong style="color:var(--accent-blue);">${finalPayload.receiptId}</strong></div>
                             <div><span style="color:var(--text-muted);">CANDIDATE BIB:</span> ${candidateBib}${partnerBib ? ` (Paired with ${partnerBib})` : ''}</div>
-                            <div><span style="color:var(--text-muted);">WINDOW ZONE:</span> ${finalPayload.windowZone}</div>
+                            <div><span style="color:var(--text-muted);">SESSION:</span> ${finalPayload.windowZone}</div>
                             <div><span style="color:var(--text-muted);">ANSWERED:</span> ${Object.keys(finalPayload.answers || {}).length} / ${EXAM_QUESTIONS.length}</div>
                             <div><span style="color:var(--text-muted);">PROCTOR STRIKES:</span> ${finalPayload.strikes || 0}</div>
                             <div><span style="color:var(--text-muted);">TIMESTAMP (UT):</span> ${finalPayload.submittedAtUTC}</div>
