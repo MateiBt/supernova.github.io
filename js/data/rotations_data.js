@@ -1283,6 +1283,350 @@ For an isothermal ideal gas at \\(T_0 = 4854\\text{ K}\\) with \\(\\mu_m = 1.26\
 <p>$$ \\rho_{\\mathrm{phot}} = \\rho_0\\left(\\frac{2/3}{0.5800}\\right)^{2/3} = 2.50 \\times 10^{-4} \\times (1.1494)^{2/3} \\approx \\mathbf{2.74 \\times 10^{-4}\\ \\mathrm{kg\\,m^{-3}}} $$</p>
 <p>Because \\(\\tau(z) \\propto \\rho(z)^{1+\\alpha} \\propto e^{-(1+\\alpha)z/H_P} = e^{-z/H_\\tau}\\), the optical depth e-folds over the scale height:</p>
 <p>$$ H_\\tau = \\frac{H_P}{1 + \\alpha} = \\frac{116.0\\text{ km}}{1.50} \\approx \\mathbf{77.3\\text{ km}} \\quad \\left(\\theta_{\\mathrm{limb}} = \\frac{77.3\\text{ km}}{1.496 \\times 10^8\\text{ km}} \\times 206,265'' \\approx \\mathbf{0.107''}\\right) $$</p>`
+    },
+
+    // Day 29 — 16.11.2026
+    {
+        uniqueId: "potd_2026_11_16",
+        dayNumber: 29,
+        scheduledDate: "16.11.2026",
+        title: "Saha Ionization and the Balmer Peak in Stellar Photospheres",
+        author: "Matei",
+        module: "T4 & T5 · Stellar Spectra & Statistical Mechanics",
+        difficultyClass: "medium",
+        difficultyText: "4.0 / 10.0",
+        description: `<p>Hydrogen Balmer absorption lines (\\(n = 2 \\to m\\)) reach their maximum strength in A0V main-sequence stars (such as Vega, \\(T \\approx 9600\\text{ K}\\)) rather than in cooler solar-type stars or hotter O/B stars. Model a stellar photosphere as a pure hydrogen gas in local thermodynamic equilibrium (LTE) at constant electron pressure \\(P_e = n_e k_B T = 20.0\\text{ Pa}\\).</p>
+<p>For neutral atomic hydrogen (\\(\\text{H I}\\)), the statistical weight of principal quantum level \\(n\\) is \\(g_n = 2n^2\\), the ground-state ionization energy is \\(\\chi_1 = 13.60\\text{ eV}\\), the \\(n = 2\\) excitation energy is \\(\\Delta E_{12} = 10.20\\text{ eV}\\), and the partition function may be approximated by the ground-state weight \\(Z_{\\mathrm{I}} \\simeq g_1 = 2\\) (with \\(g_{\\mathrm{II}} = 1\\) for a bare proton \\(\\text{H II}\\)). Use \\(m_e = 9.109 \\times 10^{-31}\\text{ kg}\\), \\(h = 6.626 \\times 10^{-34}\\ \\mathrm{J\\,s}\\), \\(k_B = 1.3806 \\times 10^{-23}\\ \\mathrm{J\\,K^{-1}} = 8.6173 \\times 10^{-5}\\ \\mathrm{eV\\,K^{-1}}\\), and \\(1\\text{ eV} = 1.6022 \\times 10^{-19}\\text{ J}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Using the Boltzmann excitation formula, calculate the ratio \\(N_2 / N_1\\) of neutral hydrogen atoms in the first excited state (\\(n = 2\\)) to those in the ground state (\\(n = 1\\)) at \\(T_\\odot = 5772\\text{ K}\\), \\(T_{\\mathrm{A0}} = 9600\\text{ K}\\), and \\(T_{\\mathrm{B1}} = 25,000\\text{ K}\\). <em>(2.0 points)</em></li>
+    <li>Write the Saha ionization equation in terms of the electron pressure \\(P_e\\):
+    $$ \\frac{n_{\\mathrm{II}}}{n_{\\mathrm{I}}} P_e = \\frac{2 g_{\\mathrm{II}}}{Z_{\\mathrm{I}}}\\left(\\frac{2\\pi m_e k_B T}{h^2}\\right)^{3/2} k_B T\\,e^{-\\chi_1 / (k_B T)} $$
+    Calculate the ionization ratio \\(n_{\\mathrm{II}} / n_{\\mathrm{I}}\\) and the ionized fraction \\(x \\equiv \\frac{n_{\\mathrm{II}}}{n_{\\mathrm{I}} + n_{\\mathrm{II}}}\\) at \\(T_\\odot = 5772\\text{ K}\\), \\(T_{\\mathrm{A0}} = 9600\\text{ K}\\), and \\(T_{\\mathrm{B1}} = 25,000\\text{ K}\\). <em>(3.0 points)</em></li>
+    <li>Determine the temperature \\(T_{1/2}\\) at which hydrogen is exactly \\(50\\%\\) ionized (\\(x = 0.50\\)) at \\(P_e = 20.0\\text{ Pa}\\). <em>(2.0 points)</em></li>
+    <li>Combine parts (a) and (b) to compute the fraction of <em>all</em> hydrogen nuclei (neutral plus ionized) that reside in the \\(n = 2\\) state, \\(f_{n=2}(T) = (1 - x)\\frac{N_2 / N_1}{1 + N_2 / N_1}\\), at the three temperatures, and explain physically why the Balmer lines peak near \\(T \\approx 9600\\text{ K}\\). <em>(3.0 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Boltzmann excitation vs. Saha thermal ionization in stellar atmospheres, and the physical origin of the Harvard spectral sequence.</p>
+
+<p><strong>(a) Boltzmann Excitation Ratio \\(N_2 / N_1\\) (2.0 points):</strong><br>
+With \\(g_1 = 2(1)^2 = 2\\), \\(g_2 = 2(2)^2 = 8\\) (\\(g_2 / g_1 = 4\\)), and \\(\\Delta E_{12} = 10.20\\text{ eV}\\), the Boltzmann equation is \\(\\frac{N_2}{N_1} = 4\\exp\\!\\left(-\\frac{10.20\\text{ eV}}{k_B T}\\right)\\):</p>
+<ul>
+    <li><strong>At \\(T_\\odot = 5772\\text{ K}\\) (\\(k_B T = 0.4974\\text{ eV}\\)):</strong>
+    $$ \\frac{N_2}{N_1} = 4\\exp\\!\\left(-\\frac{10.20}{0.4974}\\right) = 4 e^{-20.507} \\approx \\mathbf{4.95 \\times 10^{-9}} $$</li>
+    <li><strong>At \\(T_{\\mathrm{A0}} = 9600\\text{ K}\\) (\\(k_B T = 0.8273\\text{ eV}\\)):</strong>
+    $$ \\frac{N_2}{N_1} = 4\\exp\\!\\left(-\\frac{10.20}{0.8273}\\right) = 4 e^{-12.330} \\approx \\mathbf{1.77 \\times 10^{-5}} $$</li>
+    <li><strong>At \\(T_{\\mathrm{B1}} = 25,000\\text{ K}\\) (\\(k_B T = 2.154\\text{ eV}\\)):</strong>
+    $$ \\frac{N_2}{N_1} = 4\\exp\\!\\left(-\\frac{10.20}{2.154}\\right) = 4 e^{-4.735} \\approx \\mathbf{3.51 \\times 10^{-2}} $$</li>
+</ul>
+
+<p><strong>(b) Saha Ionization Ratio &amp; Ionized Fraction \\(x\\) (3.0 points):</strong><br>
+Since \\(\\frac{2 g_{\\mathrm{II}}}{Z_{\\mathrm{I}}} = \\frac{2(1)}{2} = 1\\), we evaluate the Saha prefactor \\(C_{\\mathrm{Saha}} = \\left(\\frac{2\\pi m_e k_B}{h^2}\\right)^{3/2}k_B \\approx 3.335 \\times 10^7\\ \\mathrm{Pa\\,K^{-5/2}}\\), so that \\(\\frac{n_{\\mathrm{II}}}{n_{\\mathrm{I}}} = \\frac{C_{\\mathrm{Saha}} T^{5/2}}{P_e}e^{-\\chi_1 / (k_B T)}\\) with \\(P_e = 20.0\\text{ Pa}\\):</p>
+<ul>
+    <li><strong>At \\(T_\\odot = 5772\\text{ K}\\):</strong> \\(\\chi_1 / (k_B T) = 27.342\\), \\(T^{5/2} = 2.529 \\times 10^9\\ \\mathrm{K^{5/2}}\\):
+    $$ \\frac{n_{\\mathrm{II}}}{n_{\\mathrm{I}}} = \\frac{(3.335 \\times 10^7)(2.529 \\times 10^9)}{20.0}e^{-27.342} \\approx \\mathbf{5.65 \\times 10^{-6}}, \\qquad x \\approx \\mathbf{5.65 \\times 10^{-6}} $$</li>
+    <li><strong>At \\(T_{\\mathrm{A0}} = 9600\\text{ K}\\):</strong> \\(\\chi_1 / (k_B T) = 16.440\\), \\(T^{5/2} = 8.918 \\times 10^9\\ \\mathrm{K^{5/2}}\\):
+    $$ \\frac{n_{\\mathrm{II}}}{n_{\\mathrm{I}}} = \\frac{(3.335 \\times 10^7)(8.918 \\times 10^9)}{20.0}e^{-16.440} \\approx \\mathbf{1.078}, \\qquad x = \\frac{1.078}{2.078} \\approx \\mathbf{0.519} \\ (51.9\\%) $$</li>
+    <li><strong>At \\(T_{\\mathrm{B1}} = 25,000\\text{ K}\\):</strong> \\(\\chi_1 / (k_B T) = 6.313\\), \\(T^{5/2} = 9.766 \\times 10^{10}\\ \\mathrm{K^{5/2}}\\):
+    $$ \\frac{n_{\\mathrm{II}}}{n_{\\mathrm{I}}} = \\frac{(3.335 \\times 10^7)(9.766 \\times 10^{10})}{20.0}e^{-6.313} \\approx \\mathbf{2.95 \\times 10^5}, \\qquad x \\approx \\mathbf{0.9999966} \\quad (1 - x \\approx 3.39 \\times 10^{-6}) $$</li>
+</ul>
+
+<p><strong>(c) Half-Ionization Temperature \\(T_{1/2}\\) (2.0 points):</strong><br>
+Setting \\(x = 0.50 \\iff \\frac{n_{\\mathrm{II}}}{n_{\\mathrm{I}}} = 1\\) requires \\(C_{\\mathrm{Saha}} T_{1/2}^{5/2} e^{-157,809\\text{ K} / T_{1/2}} = 20.0\\text{ Pa}\\). Iterating near \\(9600\\text{ K}\\) yields:</p>
+<p>$$ T_{1/2} \\approx \\mathbf{9555\\text{ K}} $$</p>
+
+<p><strong>(d) Fraction of Total Hydrogen in \\(n = 2\\) &amp; Physical Interpretation (3.0 points):</strong><br>
+Evaluating \\(f_{n=2}(T) = (1 - x)\\frac{N_2 / N_1}{1 + N_2 / N_1}\\):</p>
+<ul>
+    <li><strong>At \\(T_\\odot = 5772\\text{ K}\\):</strong> \\(f_{n=2} \\approx (1.000)(4.95 \\times 10^{-9}) = \\mathbf{4.95 \\times 10^{-9}}\\)</li>
+    <li><strong>At \\(T_{\\mathrm{A0}} = 9600\\text{ K}\\):</strong> \\(f_{n=2} \\approx (0.481)(1.77 \\times 10^{-5}) = \\mathbf{8.50 \\times 10^{-6}}\\)</li>
+    <li><strong>At \\(T_{\\mathrm{B1}} = 25,000\\text{ K}\\):</strong> \\(f_{n=2} \\approx (3.39 \\times 10^{-6})\\frac{0.0351}{1.0351} = \\mathbf{1.15 \\times 10^{-7}}\\)</li>
+</ul>
+<p>In cool stars (\\(T \\sim 5800\\text{ K}\\)), virtually all hydrogen is neutral, but thermal collisions are too weak to populate the \\(n = 2\\) level (\\(10.2\\text{ eV}\\) above ground). In hot stars (\\(T \\gtrsim 20,000\\text{ K}\\)), excitation is efficient, but nearly all neutral hydrogen is destroyed by thermal ionization. The product \\((1 - x)\\times (N_2/N_1)\\) therefore peaks sharply around \\(T \\approx 9600\\text{ K}\\) in A0 stars.</p>`
+    },
+
+    // Day 30 — 17.11.2026
+    {
+        uniqueId: "potd_2026_11_17",
+        dayNumber: 30,
+        scheduledDate: "17.11.2026",
+        title: "Dispersion Delay and Faraday Rotation of a Fast Radio Burst",
+        author: "Matei",
+        module: "T6 & T12 · Plasma Astrophysics & Intergalactic Medium",
+        difficultyClass: "medium",
+        difficultyText: "3.9 / 10.0",
+        description: `<p>A cosmological Fast Radio Burst (FRB) is detected across a receiver band spanning \\(\\nu_1 = 400.0\\text{ MHz}\\) to \\(\\nu_2 = 800.0\\text{ MHz}\\). As the radio pulse propagates through cold ionized plasma of electron number density \\(n_e\\) along path length \\(D\\), it obeys the dispersion relation \\(\\omega^2 = \\omega_p^2 + c^2 k^2\\), where \\(\\omega_p = \\sqrt{\\frac{n_e e^2}{\\varepsilon_0 m_e}}\\) is the electron plasma angular frequency. The total observed dispersion measure is \\(\\mathrm{DM} \\equiv \\int_0^D n_e\\,dl = 500.0\\ \\mathrm{pc\\,cm^{-3}}\\). Neglect cosmological redshift factors in the local propagation equations and use \\(e = 1.6022 \\times 10^{-19}\\text{ C}\\), \\(m_e = 9.1094 \\times 10^{-31}\\text{ kg}\\), \\(\\varepsilon_0 = 8.8542 \\times 10^{-12}\\ \\mathrm{F\\,m^{-1}}\\), \\(c = 2.9979 \\times 10^8\\ \\mathrm{m\\,s^{-1}}\\), and \\(1\\text{ pc} = 3.0857 \\times 10^{16}\\text{ m}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>From \\(\\omega^2 = \\omega_p^2 + c^2 k^2\\), prove that the phase velocity \\(v_{\\mathrm{ph}} = \\omega / k\\) and group velocity \\(v_g = d\\omega / dk\\) satisfy \\(v_{\\mathrm{ph}} v_g = c^2\\). Assuming \\(\\nu \\gg \\nu_p = \\omega_p / (2\\pi)\\), expand the travel time \\(t(\\nu) = \\int_0^D \\frac{dl}{v_g(\\nu)}\\) to show that the arrival-time delay relative to infinite frequency is \\(\\Delta t(\\nu) = \\mathcal{D}\\frac{\\mathrm{DM}}{\\nu^2}\\), and calculate the dispersion constant \\(\\mathcal{D} = \\frac{e^2}{8\\pi^2 \\varepsilon_0 m_e c}\\) in \\(\\mathrm{s\\,MHz^2\\,pc^{-1}\\,cm^3}\\). <em>(3.0 points)</em></li>
+    <li>Calculate the arrival-time sweep \\(\\Delta t_{12} = t(\\nu_1) - t(\\nu_2)\\) (in seconds) between the \\(400.0\\text{ MHz}\\) and \\(800.0\\text{ MHz}\\) channels, and determine the instantaneous frequency-drift rate \\(\\left.\\frac{d\\nu}{dt}\\right|_{\\nu_2}\\) (in \\(\\mathrm{MHz\\,s^{-1}}\\)) at \\(\\nu_2 = 800.0\\text{ MHz}\\). <em>(2.5 points)</em></li>
+    <li>Subtracting the foreground Milky Way contribution \\(\\mathrm{DM}_{\\mathrm{MW}} = 85.0\\ \\mathrm{pc\\,cm^{-3}}\\) and the FRB host-galaxy contribution \\(\\mathrm{DM}_{\\mathrm{host}} = 65.0\\ \\mathrm{pc\\,cm^{-3}}\\), estimate the distance \\(D\\) (in \\(\\text{Gpc}\\)) to the host galaxy given a mean intergalactic electron density of \\(n_{e,\\mathrm{IGM}} = 2.10 \\times 10^{-7}\\ \\mathrm{cm^{-3}}\\). <em>(2.0 points)</em></li>
+    <li>The burst is linearly polarized, and its polarization position angle \\(\\psi(\\lambda) = \\psi_0 + \\mathrm{RM}\\,\\lambda^2\\) rotates by \\(\\Delta\\psi = 45.0\\text{ rad}\\) between \\(\\nu_2 = 800.0\\text{ MHz}\\) and \\(\\nu_1 = 400.0\\text{ MHz}\\), where \\(\\mathrm{RM} = 0.812 \\int n_e\\,[\\mathrm{cm^{-3}}]\\,B_\\parallel\\,[\\mu\\mathrm{G}]\\,dl\\,[\\mathrm{pc}]\\ \\mathrm{rad\\,m^{-2}}\\). Calculate \\(\\mathrm{RM}\\), and assuming the Faraday rotation occurs entirely inside the host galaxy's ionized region (\\(\\mathrm{DM}_{\\mathrm{host}} = 65.0\\ \\mathrm{pc\\,cm^{-3}}\\)), find the density-weighted line-of-sight magnetic field \\(\\langle B_\\parallel \\rangle\\) in microgauss (\\(\\mu\\mathrm{G}\\)). <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Cold-plasma electromagnetic wave dispersion, intergalactic baryon column density, and magneto-ionic Faraday rotation.</p>
+
+<p><strong>(a) Group Velocity &amp; Derivation of the Dispersion Constant \\(\\mathcal{D}\\) (3.0 points):</strong><br>
+Differentiating \\(\\omega^2 = \\omega_p^2 + c^2 k^2\\) gives \\(2\\omega\\,d\\omega = 2c^2 k\\,dk \\implies v_g = \\frac{d\\omega}{dk} = \\frac{c^2 k}{\\omega} = \\frac{c^2}{v_{\\mathrm{ph}}}\\), proving \\(\\mathbf{v_{\\mathrm{ph}} v_g = c^2}\\). Expressing \\(v_g\\) in terms of frequency \\(\\nu = \\omega / (2\\pi)\\):</p>
+<p>$$ v_g(\\nu) = c\\sqrt{1 - \\frac{\\nu_p^2}{\\nu^2}} \\implies \\frac{1}{v_g(\\nu)} \\simeq \\frac{1}{c}\\left(1 + \\frac{\\nu_p^2}{2\\nu^2}\\right) = \\frac{1}{c} + \\frac{e^2 n_e}{8\\pi^2 \\varepsilon_0 m_e c\\,\\nu^2} $$</p>
+<p>Integrating along the line of sight \\(l \\in [0, D]\\) and subtracting the vacuum light-travel time \\(t(\\infty) = D/c\\):</p>
+<p>$$ \\Delta t(\\nu) = \\left(\\frac{e^2}{8\\pi^2 \\varepsilon_0 m_e c}\\right)\\frac{1}{\\nu^2}\\int_0^D n_e\\,dl = \\mathcal{D}\\frac{\\mathrm{DM}}{\\nu^2} $$</p>
+<p>Converting \\(1\\ \\mathrm{pc\\,cm^{-3}} = 3.0857 \\times 10^{22}\\ \\mathrm{m^{-2}}\\) and \\(1\\text{ MHz}^2 = 10^{12}\\ \\mathrm{s^{-2}}\\):</p>
+<p>$$ \\mathcal{D} = \\frac{(1.6022 \\times 10^{-19})^2 (3.0857 \\times 10^{22})}{8\\pi^2 (8.8542 \\times 10^{-12})(9.1094 \\times 10^{-31})(2.9979 \\times 10^8)(10^{12})} \\approx \\mathbf{4.149 \\times 10^3\\ \\mathrm{s\\,MHz^2\\,pc^{-1}\\,cm^3}} $$</p>
+
+<p><strong>(b) Pulse Sweep Delay \\(\\Delta t_{12}\\) &amp; Instantaneous Chirp Rate (2.5 points):</strong><br>
+For \\(\\mathrm{DM} = 500.0\\ \\mathrm{pc\\,cm^{-3}}\\), \\(\\nu_1 = 400.0\\text{ MHz}\\), and \\(\\nu_2 = 800.0\\text{ MHz}\\):</p>
+<p>$$ \\Delta t_{12} = (4.149 \\times 10^3)(500.0)\\left(\\frac{1}{400.0^2} - \\frac{1}{800.0^2}\\right) = 2.0745 \\times 10^6 \\times 4.6875 \\times 10^{-6}\\text{ s} \\approx \\mathbf{9.72\\text{ s}} $$</p>
+<p>Differentiating \\(t(\\nu) = t(\\infty) + \\mathcal{D}\\,\\mathrm{DM}\\,\\nu^{-2}\\) gives \\(\\frac{dt}{d\\nu} = -\\frac{2\\mathcal{D}\\,\\mathrm{DM}}{\\nu^3}\\), so at \\(\\nu_2 = 800.0\\text{ MHz}\\):</p>
+<p>$$ \\left.\\frac{d\\nu}{dt}\\right|_{\\nu_2} = -\\frac{\\nu_2^3}{2\\mathcal{D}\\,\\mathrm{DM}} = -\\frac{(800.0)^3}{2(2.0745 \\times 10^6)} \\approx \\mathbf{-123.4\\ \\mathrm{MHz\\,s^{-1}}} $$</p>
+
+<p><strong>(c) Intergalactic Dispersion Measure &amp; Distance \\(D\\) (2.0 points):</strong><br>
+The intergalactic medium contribution is \\(\\mathrm{DM}_{\\mathrm{IGM}} = 500.0 - 85.0 - 65.0 = 350.0\\ \\mathrm{pc\\,cm^{-3}}\\). Dividing by \\(n_{e,\\mathrm{IGM}} = 2.10 \\times 10^{-7}\\ \\mathrm{cm^{-3}}\\):</p>
+<p>$$ D = \\frac{\\mathrm{DM}_{\\mathrm{IGM}}}{n_{e,\\mathrm{IGM}}} = \\frac{350.0\\ \\mathrm{pc\\,cm^{-3}}}{2.10 \\times 10^{-7}\\ \\mathrm{cm^{-3}}} \\approx 1.667 \\times 10^9\\text{ pc} = \\mathbf{1.67\\text{ Gpc}} $$</p>
+
+<p><strong>(d) Rotation Measure \\(\\mathrm{RM}\\) &amp; Host Magnetic Field \\(\\langle B_\\parallel \\rangle\\) (2.5 points):</strong><br>
+The wavelengths at \\(400.0\\text{ MHz}\\) and \\(800.0\\text{ MHz}\\) are \\(\\lambda_1 = \\frac{c}{\\nu_1} = 0.7495\\text{ m}\\) and \\(\\lambda_2 = \\frac{c}{\\nu_2} = 0.3747\\text{ m}\\):</p>
+<p>$$ \\mathrm{RM} = \\frac{\\Delta\\psi}{\\lambda_1^2 - \\lambda_2^2} = \\frac{45.0\\text{ rad}}{(0.7495)^2 - (0.3747)^2\\ \\mathrm{m^2}} = \\frac{45.0}{0.4213} \\approx \\mathbf{106.8\\ \\mathrm{rad\\,m^{-2}}} $$</p>
+<p>Using \\(\\mathrm{RM} = 0.812\\,\\mathrm{DM}_{\\mathrm{host}} \\langle B_\\parallel \\rangle\\):</p>
+<p>$$ \\langle B_\\parallel \\rangle = \\frac{\\mathrm{RM}}{0.812\\,\\mathrm{DM}_{\\mathrm{host}}} = \\frac{106.8}{0.812 \\times 65.0} \\approx \\mathbf{2.02\\ \\mu\\mathrm{G}} $$</p>`
+    },
+
+    // Day 31 — 18.11.2026
+    {
+        uniqueId: "potd_2026_11_18",
+        dayNumber: 31,
+        scheduledDate: "18.11.2026",
+        title: "Synchrotron Cooling and the Spectral Aging Break of a Radio Galaxy Lobe",
+        author: "Matei",
+        module: "T2 & T11 · Relativistic Radiation & High-Energy Astrophysics",
+        difficultyClass: "medium",
+        difficultyText: "4.2 / 10.0",
+        description: `<p>Ultra-relativistic electrons with Lorentz factor \\(\\gamma \\gg 1\\) and isotropic pitch angles populate the extended radio lobe of an active galaxy at redshift \\(z \\approx 0\\), where the uniform magnetic field strength is \\(B = 1.50\\text{ nT} = 15.0\\ \\mu\\mathrm{G}\\). The electrons lose energy both to synchrotron radiation in the lobe's magnetic field and to inverse-Compton (IC) scattering off the Cosmic Microwave Background (\\(T_{\\mathrm{CMB}} = 2.725\\text{ K}\\)) at a total rate:</p>
+<p>$$ -\\frac{dE}{dt} = P_{\\mathrm{syn}} + P_{\\mathrm{IC}} = \\frac{4}{3}\\sigma_T c \\gamma^2 \\left(U_B + U_{\\mathrm{CMB}}\\right) $$</p>
+<p>where \\(U_B = \\frac{B^2}{2\\mu_0}\\) and \\(U_{\\mathrm{CMB}} = \\frac{4\\sigma_{\\mathrm{SB}}}{c}T_{\\mathrm{CMB}}^4\\). Use \\(\\sigma_T = 6.652 \\times 10^{-29}\\ \\mathrm{m^2}\\), \\(e = 1.6022 \\times 10^{-19}\\text{ C}\\), \\(m_e = 9.1094 \\times 10^{-31}\\text{ kg}\\) (\\(m_e c^2 = 0.5110\\text{ MeV}\\)), \\(\\mu_0 = 4\\pi \\times 10^{-7}\\ \\mathrm{N\\,A^{-2}}\\), and \\(\\sigma_{\\mathrm{SB}} = 5.670 \\times 10^{-8}\\ \\mathrm{W\\,m^{-2}\\,K^{-4}}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the magnetic energy density \\(U_B\\) and the CMB photon energy density \\(U_{\\mathrm{CMB}}\\) in \\(\\mathrm{J\\,m^{-3}}\\), the ratio \\(P_{\\mathrm{IC}} / P_{\\mathrm{syn}}\\), and the CMB-equivalent magnetic field \\(B_{\\mathrm{CMB}} = \\sqrt{2\\mu_0 U_{\\mathrm{CMB}}}\\) in \\(\\mu\\mathrm{G}\\). <em>(2.0 points)</em></li>
+    <li>An electron of Lorentz factor \\(\\gamma\\) radiates most of its synchrotron power near the characteristic frequency \\(\\nu_c = \\frac{3}{4\\pi}\\gamma^2 \\frac{e B}{m_e}\\). Calculate \\(\\gamma\\) and the electron energy \\(E = \\gamma m_e c^2\\) (in \\(\\mathrm{GeV}\\)) for electrons emitting at \\(\\nu_c = 1.40\\text{ GHz}\\). <em>(2.0 points)</em></li>
+    <li>Integrate the cooling equation \\(\\frac{d\\gamma}{dt} = -\\frac{4\\sigma_T}{3 m_e c}(U_B + U_{\\mathrm{CMB}})\\gamma^2\\) for an electron injected with very high initial Lorentz factor \\(\\gamma_0 \\to \\infty\\) at \\(t = 0\\) to find the maximum Lorentz factor \\(\\gamma_{\\mathrm{br}}(t)\\) surviving at age \\(t\\). If radio observations reveal a synchrotron cooling break at \\(\\nu_{\\mathrm{br}} = 5.00\\text{ GHz}\\), determine the spectral age \\(t_{\\mathrm{age}}\\) of the plasma lobe in millions of years (\\(\\text{Myr}\\)). <em>(3.5 points)</em></li>
+    <li>At the jet termination shock, relativistic electrons are continuously injected with a power-law energy spectrum \\(Q(E) \\propto E^{-p}\\) with \\(p = 2.40\\). Using the monochromatic approximation where an electron of energy \\(E\\) radiates at \\(\\nu \\propto E^2\\) with power \\(\\propto E^2\\), derive the optically thin flux-density spectral index \\(\\alpha_{\\mathrm{inj}}\\) (defined by \\(F_\\nu \\propto \\nu^{-\\alpha}\\)) below \\(\\nu_{\\mathrm{br}}\\), and show that above \\(\\nu_{\\mathrm{br}}\\) radiative cooling steepens the steady-state integrated lobe spectrum to \\(\\alpha_{\\mathrm{cool}} = \\alpha_{\\mathrm{inj}} + 0.50\\). <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Relativistic synchrotron and inverse-Compton energy losses, Kardashev–Pacholczyk spectral aging, and power-law index steepening.</p>
+
+<p><strong>(a) Magnetic vs. CMB Energy Densities &amp; \\(B_{\\mathrm{CMB}}\\) (2.0 points):</strong><br>
+For \\(B = 1.50 \\times 10^{-9}\\text{ T}\\) and \\(T_{\\mathrm{CMB}} = 2.725\\text{ K}\\):</p>
+<p>$$ U_B = \\frac{B^2}{2\\mu_0} = \\frac{(1.50 \\times 10^{-9})^2}{2(4\\pi \\times 10^{-7})} \\approx \\mathbf{8.952 \\times 10^{-13}\\ \\mathrm{J\\,m^{-3}}} $$</p>
+<p>$$ U_{\\mathrm{CMB}} = \\frac{4\\sigma_{\\mathrm{SB}}}{c}T_{\\mathrm{CMB}}^4 = \\frac{4(5.670 \\times 10^{-8})}{2.998 \\times 10^8}(2.725)^4 \\approx \\mathbf{4.171 \\times 10^{-14}\\ \\mathrm{J\\,m^{-3}}} $$</p>
+<p>The ratio of inverse-Compton to synchrotron power and the equivalent CMB magnetic field are:</p>
+<p>$$ \\frac{P_{\\mathrm{IC}}}{P_{\\mathrm{syn}}} = \\frac{U_{\\mathrm{CMB}}}{U_B} \\approx \\mathbf{0.0466} \\ (4.66\\%), \\qquad B_{\\mathrm{CMB}} = \\sqrt{2\\mu_0 U_{\\mathrm{CMB}}} \\approx 3.24 \\times 10^{-10}\\text{ T} = \\mathbf{3.24\\ \\mu\\mathrm{G}} $$</p>
+
+<p><strong>(b) Lorentz Factor &amp; Electron Energy at \\(\\nu_c = 1.40\\text{ GHz}\\) (2.0 points):</strong><br>
+The non-relativistic cyclotron frequency is \\(\\nu_L = \\frac{eB}{2\\pi m_e} = \\frac{(1.6022 \\times 10^{-19})(1.50 \\times 10^{-9})}{2\\pi(9.1094 \\times 10^{-31})} \\approx 41.99\\text{ Hz}\\). From \\(\\nu_c = \\frac{3}{2}\\gamma^2 \\nu_L\\):</p>
+<p>$$ \\gamma = \\sqrt{\\frac{2\\nu_c}{3\\nu_L}} = \\sqrt{\\frac{2(1.40 \\times 10^9\\text{ Hz})}{3(41.99\\text{ Hz})}} \\approx \\mathbf{4715} $$</p>
+<p>$$ E = \\gamma m_e c^2 = 4715 \\times 0.5110\\text{ MeV} \\approx 2409\\text{ MeV} = \\mathbf{2.41\\text{ GeV}} $$</p>
+
+<p><strong>(c) Radiative Cooling Integration &amp; Spectral Age at \\(\\nu_{\\mathrm{br}} = 5.00\\text{ GHz}\\) (3.5 points):</strong><br>
+Writing \\(\\frac{d\\gamma}{dt} = -\\beta_c \\gamma^2\\) where \\(\\beta_c = \\frac{4\\sigma_T(U_B + U_{\\mathrm{CMB}})}{3 m_e c}\\), separating variables \\(-\\gamma^{-2}d\\gamma = \\beta_c\\,dt\\), and integrating from \\(\\gamma_0 \\to \\infty\\) at \\(t = 0\\) to \\(\\gamma_{\\mathrm{br}}\\) at age \\(t\\) gives:</p>
+<p>$$ \\frac{1}{\\gamma_{\\mathrm{br}}} - \\frac{1}{\\gamma_0} = \\beta_c t \\implies \\mathbf{\\gamma_{\\mathrm{br}}(t) = \\frac{1}{\\beta_c t} = \\frac{3 m_e c}{4\\sigma_T (U_B + U_{\\mathrm{CMB}})t}} $$</p>
+<p>At the break frequency \\(\\nu_{\\mathrm{br}} = 5.00\\text{ GHz}\\), the corresponding Lorentz factor is \\(\\gamma_{\\mathrm{br}} = \\sqrt{\\frac{2(5.00 \\times 10^9)}{3(41.99)}} \\approx 8910\\). With \\(U_{\\mathrm{tot}} = U_B + U_{\\mathrm{CMB}} = 9.369 \\times 10^{-13}\\ \\mathrm{J\\,m^{-3}}\\):</p>
+<p>$$ \\beta_c = \\frac{4(6.652 \\times 10^{-29})(9.369 \\times 10^{-13})}{3(9.1094 \\times 10^{-31})(2.998 \\times 10^8)} \\approx 3.043 \\times 10^{-20}\\ \\mathrm{s^{-1}} $$</p>
+<p>$$ t_{\\mathrm{age}} = \\frac{1}{\\beta_c \\gamma_{\\mathrm{br}}} = \\frac{1}{(3.043 \\times 10^{-20}\\ \\mathrm{s^{-1}})(8910)} \\approx 3.688 \\times 10^{15}\\text{ s} \\approx \\mathbf{117\\text{ Myr}} $$</p>
+
+<p><strong>(d) Injection Spectral Index \\(\\alpha_{\\mathrm{inj}}\\) &amp; Cooling Steepening \\(\\alpha_{\\mathrm{cool}}\\) (2.5 points):</strong><br>
+Below \\(\\nu_{\\mathrm{br}}\\), the electron energy distribution retains the injected power law \\(N(E) \\propto E^{-p}\\). Since \\(\\nu \\propto E^2\\) (\\(dE/d\\nu \\propto \\nu^{-1/2}\\)) and single-electron power scales as \\(P(E) \\propto E^2\\), the emissivity scales as:</p>
+<p>$$ F_\\nu \\propto N(E) P(E)\\frac{dE}{d\\nu} \\propto \\left(\\nu^{1/2}\\right)^{-p}\\left(\\nu^{1/2}\\right)^2 \\nu^{-1/2} = \\nu^{-(p - 1)/2} \\implies \\alpha_{\\mathrm{inj}} = \\frac{p - 1}{2} = \\frac{2.40 - 1}{2} = \\mathbf{0.70} $$</p>
+<p>Above \\(\\nu_{\\mathrm{br}}\\), continuous injection balanced by radiative cooling (\\(\\frac{\\partial}{\\partial E}[\\dot{E} N(E)] = Q(E) \\propto E^{-p}\\) with \\(\\dot{E} \\propto -E^2\\)) produces a steady-state electron distribution \\(N(E) \\propto \\frac{1}{E^2}\\int_E^\\infty (E')^{-p}dE' \\propto E^{-(p+1)}\\). Increasing the electron index from \\(p\\) to \\(p + 1\\) increases the synchrotron spectral index by \\(\\Delta\\alpha = \\frac{1}{2}\\):</p>
+<p>$$ \\alpha_{\\mathrm{cool}} = \\frac{(p + 1) - 1}{2} = \\alpha_{\\mathrm{inj}} + 0.50 = \\mathbf{1.20} $$</p>`
+    },
+
+    // Day 32 — 19.11.2026
+    {
+        uniqueId: "potd_2026_11_19",
+        dayNumber: 32,
+        scheduledDate: "19.11.2026",
+        title: "Chandrasekhar's White Dwarf: Fermi Degeneracy and the Mass–Radius Law",
+        author: "Matei",
+        module: "T5 & T8 · Degenerate Matter & Compact Remnants",
+        difficultyClass: "medium",
+        difficultyText: "4.1 / 10.0",
+        description: `<p>A carbon-oxygen white dwarf of mass \\(M = 0.70\\,M_\\odot\\) (composed of fully ionized \\({}^{12}\\mathrm{C}\\) and \\({}^{16}\\mathrm{O}\\) nuclei with electron mean molecular weight \\(\\mu_e = A / Z = 2.00\\)) is modeled as a homogeneous sphere of uniform density \\(\\rho\\) supported against gravity by a completely degenerate electron gas. Use \\(\\hbar = 1.0546 \\times 10^{-34}\\ \\mathrm{J\\,s}\\), \\(m_e = 9.1094 \\times 10^{-31}\\text{ kg}\\), \\(m_u = 1.6605 \\times 10^{-27}\\text{ kg}\\), \\(G = 6.674 \\times 10^{-11}\\ \\mathrm{m^3\\,kg^{-1}\\,s^{-2}}\\), \\(M_\\odot = 1.989 \\times 10^{30}\\text{ kg}\\), and \\(R_\\oplus = 6371\\text{ km}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>By filling all momentum states up to the Fermi momentum \\(p_F\\) with two electron spin states per phase-space volume \\(h^3 = (2\\pi\\hbar)^3\\), show that \\(p_F = \\hbar(3\\pi^2 n_e)^{1/3}\\), where \\(n_e = \\frac{\\rho}{\\mu_e m_u}\\). Using the pressure integral \\(P = \\frac{1}{3}\\int_0^{p_F} v(p)\\,p\\,\\frac{8\\pi p^2\\,dp}{(2\\pi\\hbar)^3}\\) in the non-relativistic limit (\\(v = p / m_e\\)), prove that:
+    $$ P_{\\mathrm{NR}} = \\frac{(3\\pi^2)^{2/3}\\hbar^2}{5 m_e (\\mu_e m_u)^{5/3}}\\rho^{5/3} \\equiv K_{\\mathrm{NR}}\\rho^{5/3} $$ <em>(2.5 points)</em></li>
+    <li>Equating \\(P_{\\mathrm{NR}}\\) to the central hydrostatic pressure of a uniform sphere \\(P_c = \\frac{3}{8\\pi}\\frac{G M^2}{R^4}\\), derive the exact symbolic formula for the white dwarf radius \\(R(M)\\), prove that \\(R \\propto M^{-1/3}\\mu_e^{-5/3}\\), and calculate \\(R\\) (in km and Earth radii \\(R_\\oplus\\)) and the density \\(\\rho\\) (in \\(\\mathrm{kg\\,m^{-3}}\\)) for the \\(0.70\\,M_\\odot\\) white dwarf. <em>(3.0 points)</em></li>
+    <li>Calculate the electron Fermi kinetic energy \\(E_F = \\frac{p_F^2}{2m_e}\\) (in \\(\\text{keV}\\)) and Fermi temperature \\(T_F = E_F / k_B\\). If the white dwarf's interior has an isothermal temperature of \\(T_c = 1.50 \\times 10^7\\text{ K}\\), calculate the ratio \\(T_F / T_c\\) to verify whether the zero-temperature degeneracy approximation is valid. <em>(2.0 points)</em></li>
+    <li>In the ultra-relativistic limit (\\(v \\to c\\)), the electron degeneracy pressure becomes \\(P_{\\mathrm{UR}} = \\frac{(3\\pi^2)^{1/3}\\hbar c}{4(\\mu_e m_u)^{4/3}}\\rho^{4/3}\\). Equate \\(P_{\\mathrm{UR}}\\) to \\(P_c = \\frac{3}{8\\pi}\\frac{G M^2}{R^4}\\) to show that \\(R\\) cancels out completely, and calculate the resulting uniform-density Chandrasekhar limiting mass \\(M_{\\mathrm{Ch}}\\) in solar masses. <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Quantum statistical mechanics of a Fermi-Dirac electron gas, the inverse mass–radius relation of white dwarfs, and the ultra-relativistic Chandrasekhar mass limit.</p>
+
+<p><strong>(a) Fermi Momentum \\(p_F\\) &amp; Non-Relativistic Degeneracy Pressure \\(P_{\\mathrm{NR}}\\) (2.5 points):</strong><br>
+Integrating two spin states per phase-space cell \\((2\\pi\\hbar)^3\\) over a sphere in momentum space of radius \\(p_F\\) gives the electron number density:</p>
+<p>$$ n_e = 2\\int_0^{p_F} \\frac{4\\pi p^2\\,dp}{(2\\pi\\hbar)^3} = \\frac{p_F^3}{3\\pi^2 \\hbar^3} \\implies \\mathbf{p_F = \\hbar\\left(3\\pi^2 n_e\\right)^{1/3}} $$</p>
+<p>Substituting \\(v(p) = p / m_e\\) into the kinetic pressure integral:</p>
+<p>$$ P_{\\mathrm{NR}} = \\frac{1}{3}\\int_0^{p_F} \\left(\\frac{p}{m_e}\\right)p\\,\\frac{p^2\\,dp}{\\pi^2 \\hbar^3} = \\frac{p_F^5}{15\\pi^2 m_e \\hbar^3} = \\frac{(3\\pi^2)^{2/3}\\hbar^2}{5 m_e}n_e^{5/3} = \\mathbf{\\frac{(3\\pi^2)^{2/3}\\hbar^2}{5 m_e (\\mu_e m_u)^{5/3}}\\rho^{5/3}} $$</p>
+<p>For \\(\\mu_e = 2.00\\), \\(K_{\\mathrm{NR}} = \\frac{(3\\pi^2)^{2/3}(1.0546 \\times 10^{-34})^2}{5(9.1094 \\times 10^{-31})(2.00 \\times 1.6605 \\times 10^{-27})^{5/3}} \\approx 3.122 \\times 10^6\\ \\mathrm{Pa\\,m^5\\,kg^{-5/3}}\\).</p>
+
+<p><strong>(b) Mass–Radius Law \\(R(M)\\) &amp; Numerical Radius of a \\(0.70\\,M_\\odot\\) White Dwarf (3.0 points):</strong><br>
+Substituting \\(\\rho = \\frac{3M}{4\\pi R^3}\\) into \\(K_{\\mathrm{NR}}\\rho^{5/3} = \\frac{3}{8\\pi}\\frac{G M^2}{R^4}\\) gives \\(K_{\\mathrm{NR}}\\left(\\frac{3M}{4\\pi}\\right)^{5/3} R^{-5} = \\frac{3 G M^2}{8\\pi} R^{-4}\\). Solving for \\(R\\):</p>
+<p>$$ R(M) = \\left(\\frac{9\\pi}{4}\\right)^{2/3}\\frac{\\hbar^2}{5 G m_e (\\mu_e m_u)^{5/3}} M^{-1/3} \\propto \\mathbf{M^{-1/3}\\mu_e^{-5/3}} $$</p>
+<p>Evaluating for \\(M = 0.70\\,M_\\odot = 1.392 \\times 10^{30}\\text{ kg}\\):</p>
+<p>$$ R = \\frac{8\\pi K_{\\mathrm{NR}}}{3 G}\\left(\\frac{3}{4\\pi}\\right)^{5/3} M^{-1/3} \\approx 7.91 \\times 10^6\\text{ m} = \\mathbf{7910\\text{ km}} \\approx \\mathbf{1.24\\,R_\\oplus} $$</p>
+<p>$$ \\rho = \\frac{3M}{4\\pi R^3} = \\frac{3(1.392 \\times 10^{30}\\text{ kg})}{4\\pi(7.91 \\times 10^6\\text{ m})^3} \\approx \\mathbf{6.72 \\times 10^8\\ \\mathrm{kg\\,m^{-3}}} = 6.72 \\times 10^5\\ \\mathrm{g\\,cm^{-3}} $$</p>
+
+<p><strong>(c) Fermi Energy \\(E_F\\), Fermi Temperature \\(T_F\\) &amp; Degeneracy Check (2.0 points):</strong><br>
+With \\(n_e = \\frac{\\rho}{\\mu_e m_u} = \\frac{6.72 \\times 10^8}{2.00 \\times 1.6605 \\times 10^{-27}} \\approx 2.023 \\times 10^{35}\\ \\mathrm{m^{-3}}\\):</p>
+<p>$$ p_F = \\hbar(3\\pi^2 n_e)^{1/3} \\approx 1.916 \\times 10^{-22}\\ \\mathrm{kg\\,m\\,s^{-1}} $$</p>
+<p>$$ E_F = \\frac{p_F^2}{2m_e} \\approx 2.016 \\times 10^{-14}\\text{ J} \\approx \\mathbf{125.8\\text{ keV}}, \\qquad T_F = \\frac{E_F}{k_B} \\approx \\mathbf{1.46 \\times 10^9\\text{ K}} $$</p>
+<p>Comparing with \\(T_c = 1.50 \\times 10^7\\text{ K}\\) gives \\(\\frac{T_F}{T_c} = \\frac{1.46 \\times 10^9}{1.50 \\times 10^7} \\approx \\mathbf{97.3 \\gg 1}\\), confirming that the electron gas is deeply degenerate.</p>
+
+<p><strong>(d) Ultra-Relativistic Limit &amp; Chandrasekhar Mass \\(M_{\\mathrm{Ch}}\\) (2.5 points):</strong><br>
+Substituting \\(\\rho = \\frac{3M}{4\\pi R^3}\\) into \\(P_{\\mathrm{UR}}\\):
+$$ P_{\\mathrm{UR}} = \\frac{(3\\pi^2)^{1/3}\\hbar c}{4(\\mu_e m_u)^{4/3}}\\left(\\frac{3M}{4\\pi}\\right)^{4/3} R^{-4} = \\frac{3}{8\\pi}\\frac{G M_{\\mathrm{Ch}}^2}{R^4} $$
+Both sides scale as \\(R^{-4}\\), so \\(R\\) cancels identically! Solving for \\(M_{\\mathrm{Ch}}\\):</p>
+<p>$$ M_{\\mathrm{Ch}} = \\frac{3\\sqrt{\\pi}}{2}\\left(\\frac{\\hbar c}{G}\\right)^{3/2}\\frac{1}{(\\mu_e m_u)^2} \\approx 2.866 \\times 10^{30}\\text{ kg} \\approx \\mathbf{1.44\\,M_\\odot} $$</p>`
+    },
+
+    // Day 33 — 20.11.2026
+    {
+        uniqueId: "potd_2026_11_20",
+        dayNumber: 33,
+        scheduledDate: "20.11.2026",
+        title: "Solar Neutrino Flux, Matter-Enhanced Oscillations, and the Borexino Detector",
+        author: "Matei",
+        module: "T5 & T7 · Nuclear Astrophysics & Solar Interior",
+        difficultyClass: "easy",
+        difficultyText: "3.4 / 10.0",
+        description: `<p>The Sun (\\(L_\\odot = 3.828 \\times 10^{26}\\text{ W}\\), mean Earth–Sun distance \\(d_0 = 1.000\\text{ AU} = 1.496 \\times 10^{11}\\text{ m}\\)) is powered primarily by the proton–proton (\\(pp\\)) fusion chain, whose net reaction is:</p>
+<p>$$ 4\\,{}^1\\mathrm{H} + 2\\,e^- \\longrightarrow {}^4\\mathrm{He} + 2\\,\\nu_e + 26.73\\text{ MeV} $$</p>
+<p>Of the \\(Q_{\\mathrm{tot}} = 26.73\\text{ MeV}\\) released per \\({}^4\\mathrm{He}\\) nucleus formed, the two electron neutrinos carry away an average combined energy of \\(\\langle E_{2\\nu} \\rangle = 0.53\\text{ MeV}\\) directly into space, while the remaining \\(Q_{\\mathrm{th}} = 26.20\\text{ MeV}\\) is thermalized as photon luminosity \\(L_\\odot\\). Use \\(1\\text{ MeV} = 1.6022 \\times 10^{-13}\\text{ J}\\), \\(m_u = 1.6605 \\times 10^{-27}\\text{ kg}\\), and \\(N_A = 6.0221 \\times 10^{23}\\ \\mathrm{mol^{-1}}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the number of \\({}^4\\mathrm{He}\\) nuclei synthesized per second in the solar core, the total solar neutrino luminosity \\(L_\\nu\\) (in Watts and units of \\(L_\\odot\\)), and the total solar neutrino flux \\(\\Phi_\\nu\\) at \\(d_0 = 1.000\\text{ AU}\\) (in \\(\\mathrm{cm^{-2}\\,s^{-1}}\\)). <em>(2.5 points)</em></li>
+    <li>Given a neutrino–electron elastic scattering cross-section of \\(\\sigma_\\nu = 1.15 \\times 10^{-45}\\ \\mathrm{cm^2}\\), calculate the neutrino mean free path \\(\\ell_\\nu = \\frac{1}{n_e \\sigma_\\nu}\\) (in light-years) at the center of the Sun (\\(\\rho_c = 1.50 \\times 10^5\\ \\mathrm{kg\\,m^{-3}}\\), electron mean molecular weight \\(\\mu_e = 1.43\\)). Compare the neutrino escape time \\(R_\\odot / c\\) with the random-walk diffusion time \\(t_{\\mathrm{diff}} = \\frac{R_\\odot^2}{\\ell_{\\mathrm{ph}} c}\\) (in years) of a photon whose mean free path is \\(\\ell_{\\mathrm{ph}} = 0.50\\text{ mm}\\). <em>(2.5 points)</em></li>
+    <li>An underground liquid-scintillator detector contains a fiducial target mass \\(M_{\\mathrm{det}} = 300\\text{ metric tons}\\) (\\(3.00 \\times 10^5\\text{ kg}\\)) of ultrapure pseudocumene (\\(\\mathrm{C_9 H_{12}}\\), molar mass \\(M_{\\mathrm{mol}} = 120.19\\ \\mathrm{g\\,mol^{-1}}\\), \\(66\\) electrons per molecule). Accounting for neutrino flavor oscillations with an effective \\(\\nu_e\\) survival probability \\(P_{ee} = 0.550\\) and neglecting \\(\\nu_{\\mu,\\tau}\\) scattering, calculate the expected number of neutrino scattering events per day in the detector. <em>(3.0 points)</em></li>
+    <li>Because Earth's orbit has eccentricity \\(e = 0.0167\\), the observed solar neutrino rate varies annually between perihelion and aphelion. Calculate the ratio \\(\\Phi_{\\nu,\\max} / \\Phi_{\\nu,\\min}\\) and the peak-to-trough percentage variation \\(\\frac{\\Phi_{\\nu,\\max} - \\Phi_{\\nu,\\min}}{\\Phi_\\nu(d_0)} \\times 100\\%\\). <em>(2.0 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Solar nuclear energetics, neutrino vs. photon transport timescales, underground scintillation event rates, and seasonal orbital eccentricity modulation.</p>
+
+<p><strong>(a) Helium Production Rate, Neutrino Luminosity &amp; Solar Neutrino Flux (2.5 points):</strong><br>
+Each \\({}^4\\mathrm{He}\\) synthesis deposits \\(Q_{\\mathrm{th}} = 26.20\\text{ MeV} = 4.1977 \\times 10^{-12}\\text{ J}\\) of thermal photon energy:</p>
+<p>$$ \\dot{N}_{\\mathrm{He}} = \\frac{L_\\odot}{Q_{\\mathrm{th}}} = \\frac{3.828 \\times 10^{26}\\text{ W}}{4.1977 \\times 10^{-12}\\text{ J}} \\approx \\mathbf{9.119 \\times 10^{37}\\ \\mathrm{nuclei\\,s^{-1}}} $$</p>
+<p>Since \\(2\\) neutrinos are emitted per \\({}^4\\mathrm{He}\\) nucleus (\\(\\dot{N}_\\nu = 2\\dot{N}_{\\mathrm{He}} = 1.824 \\times 10^{38}\\ \\mathrm{s^{-1}}\\)):</p>
+<p>$$ L_\\nu = \\dot{N}_{\\mathrm{He}} \\langle E_{2\\nu} \\rangle = L_\\odot \\left(\\frac{0.53\\text{ MeV}}{26.20\\text{ MeV}}\\right) \\approx \\mathbf{7.74 \\times 10^{24}\\text{ W}} \\approx \\mathbf{0.0202\\,L_\\odot} $$</p>
+<p>At \\(d_0 = 1.000\\text{ AU} = 1.496 \\times 10^{13}\\text{ cm}\\), the total neutrino flux is:</p>
+<p>$$ \\Phi_\\nu = \\frac{\\dot{N}_\\nu}{4\\pi d_0^2} = \\frac{1.824 \\times 10^{38}\\ \\mathrm{s^{-1}}}{4\\pi(1.496 \\times 10^{13}\\text{ cm})^2} \\approx \\mathbf{6.48 \\times 10^{10}\\ \\mathrm{cm^{-2}\\,s^{-1}}} $$</p>
+
+<p><strong>(b) Neutrino Mean Free Path vs. Photon Random-Walk Diffusion Time (2.5 points):</strong><br>
+At the solar center, the electron number density is \\(n_e = \\frac{\\rho_c}{\\mu_e m_u} = \\frac{150\\ \\mathrm{g\\,cm^{-3}}}{1.43 \\times 1.6605 \\times 10^{-24}\\text{ g}} \\approx 6.317 \\times 10^{25}\\ \\mathrm{cm^{-3}}\\):</p>
+<p>$$ \\ell_\\nu = \\frac{1}{n_e \\sigma_\\nu} = \\frac{1}{(6.317 \\times 10^{25}\\ \\mathrm{cm^{-3}})(1.15 \\times 10^{-45}\\ \\mathrm{cm^2})} \\approx 1.377 \\times 10^{19}\\text{ cm} \\approx \\mathbf{14.55\\text{ light-years}} $$</p>
+<p>Neutrinos stream freely out of the Sun in \\(t_\\nu = R_\\odot / c = \\frac{6.957 \\times 10^8\\text{ m}}{2.998 \\times 10^8\\ \\mathrm{m\\,s^{-1}}} \\approx \\mathbf{2.32\\text{ s}}\\), whereas photons with \\(\\ell_{\\mathrm{ph}} = 5.0 \\times 10^{-4}\\text{ m}\\) require:</p>
+<p>$$ t_{\\mathrm{diff}} = \\frac{R_\\odot^2}{\\ell_{\\mathrm{ph}} c} = \\frac{(6.957 \\times 10^8\\text{ m})^2}{(5.0 \\times 10^{-4}\\text{ m})(2.998 \\times 10^8\\ \\mathrm{m\\,s^{-1}})} \\approx 3.229 \\times 10^{12}\\text{ s} \\approx \\mathbf{1.02 \\times 10^5\\text{ years}} $$</p>
+
+<p><strong>(c) Daily Event Rate in the \\(300\\text{-ton}\\) Scintillator Detector (3.0 points):</strong><br>
+The total number of target electrons in \\(M_{\\mathrm{det}} = 3.00 \\times 10^8\\text{ g}\\) of \\(\\mathrm{C_9 H_{12}}\\) is:</p>
+<p>$$ N_{e,\\mathrm{det}} = 66 \\times \\frac{M_{\\mathrm{det}}}{M_{\\mathrm{mol}}} N_A = 66 \\times \\frac{3.00 \\times 10^8\\text{ g}}{120.19\\ \\mathrm{g\\,mol^{-1}}} \\times 6.0221 \\times 10^{23}\\ \\mathrm{mol^{-1}} \\approx 9.921 \\times 10^{31}\\text{ electrons} $$</p>
+<p>Over \\(\\Delta t = 1\\text{ day} = 86,400\\text{ s}\\), the number of detected \\(\\nu_e\\) interactions is:</p>
+<p>$$ \\mathcal{N}_{\\mathrm{day}} = N_{e,\\mathrm{det}} \\left(P_{ee} \\Phi_\\nu\\right) \\sigma_\\nu \\Delta t = (9.921 \\times 10^{31})(0.550 \\times 6.484 \\times 10^{10})(1.15 \\times 10^{-45})(86,400) \\approx \\mathbf{351\\text{ events/day}} $$</p>
+
+<p><strong>(d) Annual Eccentricity Modulation (2.0 points):</strong><br>
+Since \\(\\Phi_\\nu(r) \\propto r^{-2}\\) with \\(r_{\\min} = d_0(1 - e)\\) and \\(r_{\\max} = d_0(1 + e)\\):</p>
+<p>$$ \\frac{\\Phi_{\\nu,\\max}}{\\Phi_{\\nu,\\min}} = \\left(\\frac{1 + e}{1 - e}\\right)^2 = \\left(\\frac{1.0167}{0.9833}\\right)^2 \\approx \\mathbf{1.0691} $$</p>
+<p>$$ \\frac{\\Phi_{\\nu,\\max} - \\Phi_{\\nu,\\min}}{\\Phi_\\nu(d_0)} \\times 100\\% = \\left[\\frac{1}{(1 - e)^2} - \\frac{1}{(1 + e)^2}\\right]\\times 100\\% \\simeq 4e \\times 100\\% \\approx \\mathbf{6.68\\%} $$</p>`
+    },
+
+    // Day 34 — 21.11.2026
+    {
+        uniqueId: "potd_2026_11_21",
+        dayNumber: 34,
+        scheduledDate: "21.11.2026",
+        title: "Tidal Disruption of a Solar-Type Star by a Supermassive Black Hole",
+        author: "Matei",
+        module: "T8 & T11 · Black Hole Tidal Dynamics & Transients",
+        difficultyClass: "medium",
+        difficultyText: "4.4 / 10.0",
+        description: `<p>A solar-type main-sequence star of mass \\(M_\\star = 1.00\\,M_\\odot\\) and radius \\(R_\\star = 1.00\\,R_\\odot\\) approaches a supermassive black hole of mass \\(M_{\\mathrm{BH}} = 1.00 \\times 10^6\\,M_\\odot\\) on a parabolic trajectory (specific center-of-mass orbital energy \\(\\epsilon_{\\mathrm{cm}} = 0\\)) with pericenter distance equal to the tidal disruption radius:</p>
+<p>$$ r_t = R_\\star\\left(\\frac{M_{\\mathrm{BH}}}{M_\\star}\\right)^{1/3} $$</p>
+<p>At pericenter \\(r = r_t\\), the star is torn apart instantaneously ("impulse approximation"), freezing in the spread of gravitational potential energy across the stellar diameter \\(r \\in [r_t - R_\\star, r_t + R_\\star]\\). Use \\(G = 6.674 \\times 10^{-11}\\ \\mathrm{m^3\\,kg^{-1}\\,s^{-2}}\\), \\(c = 2.998 \\times 10^8\\ \\mathrm{m\\,s^{-1}}\\), \\(M_\\odot = 1.989 \\times 10^{30}\\text{ kg}\\), and \\(R_\\odot = 6.957 \\times 10^8\\text{ m}\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the tidal disruption radius \\(r_t\\) in solar radii and in units of the black hole's Schwarzschild radius \\(R_S = \\frac{2 G M_{\\mathrm{BH}}}{c^2}\\). By setting \\(r_t = R_S\\), determine the critical Hills mass \\(M_{\\mathrm{Hills}}\\) (in \\(M_\\odot\\)) above which a solar-type star is swallowed whole across the event horizon without producing an external tidal flare. <em>(2.5 points)</em></li>
+    <li>By expanding the black hole's gravitational potential \\(\\Phi(r_t \\pm R_\\star) = -\\frac{G M_{\\mathrm{BH}}}{r_t \\pm R_\\star}\\) to first order in \\(R_\\star / r_t \\ll 1\\), show that the tidally stripped stellar debris acquires a specific orbital energy spread \\(-\\Delta\\epsilon \\le \\epsilon \\le +\\Delta\\epsilon\\) with \\(\\Delta\\epsilon = \\frac{G M_{\\mathrm{BH}} R_\\star}{r_t^2} = \\frac{G M_\\star}{R_\\star}\\left(\\frac{M_{\\mathrm{BH}}}{M_\\star}\\right)^{1/3}\\). Calculate \\(\\Delta\\epsilon\\) (in \\(\\mathrm{J\\,kg^{-1}}\\)) and the terminal escape velocity \\(v_\\infty = \\sqrt{2\\Delta\\epsilon}\\) (in \\(\\mathrm{km\\,s^{-1}}\\)) of the fastest unbound debris. <em>(2.5 points)</em></li>
+    <li>For the most tightly bound debris stream (with specific energy \\(\\epsilon_{\\min} = -\\Delta\\epsilon\\) and pericenter \\(r_p \\simeq r_t\\)), calculate its orbital semimajor axis \\(a_{\\min}\\) (in \\(\\text{AU}\\)), eccentricity \\(e_{\\min}\\), and minimum fallback time \\(t_{\\min}\\) (one full orbital period back to pericenter, in days). <em>(2.5 points)</em></li>
+    <li>Assuming the bound half of the star (\\(M_{\\mathrm{bound}} = \\frac{1}{2}M_\\star\\)) has a uniform distribution of mass per unit specific energy \\(\\frac{dM}{d|\\epsilon|} = \\frac{M_\\star}{2\\Delta\\epsilon}\\), use Kepler's Third Law \\(|\\epsilon| = \\frac{1}{2}\\left(2\\pi G M_{\\mathrm{BH}}\\right)^{2/3} t^{-2/3}\\) to prove that the mass fallback rate obeys \\(\\dot{M}_{\\mathrm{fb}}(t) = \\frac{M_\\star}{3 t_{\\min}}\\left(\\frac{t}{t_{\\min}}\\right)^{-5/3}\\) for \\(t \\ge t_{\\min}\\), and calculate the peak fallback rate \\(\\dot{M}_{\\mathrm{peak}} = \\dot{M}_{\\mathrm{fb}}(t_{\\min})\\) in \\(M_\\odot\\,\\mathrm{yr^{-1}}\\). <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Tidal disruption radius vs. event horizon (Hills limit), frozen-in tidal energy spread, and Rees's \\(t^{-5/3}\\) fallback accretion law.</p>
+
+<p><strong>(a) Tidal Disruption Radius \\(r_t\\) &amp; The Hills Mass Limit \\(M_{\\mathrm{Hills}}\\) (2.5 points):</strong><br>
+For \\(M_{\\mathrm{BH}} / M_\\star = 10^6\\), the tidal disruption radius is:</p>
+<p>$$ r_t = R_\\odot \\left(10^6\\right)^{1/3} = \\mathbf{100\\,R_\\odot} \\approx \\mathbf{6.957 \\times 10^{10}\\text{ m}} \\ (0.465\\text{ AU}) $$</p>
+<p>The Schwarzschild radius of the \\(10^6\\,M_\\odot\\) black hole is \\(R_S = \\frac{2 G M_{\\mathrm{BH}}}{c^2} \\approx 2.953 \\times 10^9\\text{ m} \\approx 4.245\\,R_\\odot\\), so:</p>
+<p>$$ \\frac{r_t}{R_S} = \\frac{6.957 \\times 10^{10}\\text{ m}}{2.953 \\times 10^9\\text{ m}} \\approx \\mathbf{23.56} $$</p>
+<p>Setting \\(r_t = R_S\\) gives \\(R_\\star \\left(\\frac{M_{\\mathrm{Hills}}}{M_\\star}\\right)^{1/3} = \\frac{2 G M_{\\mathrm{Hills}}}{c^2}\\). Solving for \\(M_{\\mathrm{Hills}}\\):</p>
+<p>$$ M_{\\mathrm{Hills}} = \\left(\\frac{c^2 R_\\star}{2 G M_\\star^{1/3}}\\right)^{3/2} = M_{\\mathrm{BH}}\\left(\\frac{r_t}{R_S}\\right)^{3/2} = 10^6\\,M_\\odot \\times (23.56)^{1.5} \\approx \\mathbf{1.14 \\times 10^8\\,M_\\odot} $$</p>
+
+<p><strong>(b) Specific Energy Spread \\(\\Delta\\epsilon\\) &amp; Unbound Escape Velocity \\(v_\\infty\\) (2.5 points):</strong><br>
+Since the star's center of mass has \\(\\epsilon_{\\mathrm{cm}} = \\frac{1}{2}v_p^2 - \\frac{G M_{\\mathrm{BH}}}{r_t} = 0\\), fluid elements at \\(r = r_t \\mp R_\\star\\) moving at \\(v_p\\) have specific energy:</p>
+<p>$$ \\epsilon = \\frac{1}{2}v_p^2 - \\frac{G M_{\\mathrm{BH}}}{r_t \\mp R_\\star} \\simeq \\mp \\frac{G M_{\\mathrm{BH}} R_\\star}{r_t^2} = \\mp \\frac{G M_\\star}{R_\\star}\\left(\\frac{M_{\\mathrm{BH}}}{M_\\star}\\right)^{1/3} $$</p>
+<p>Evaluating numerically with \\(\\frac{G M_\\odot}{R_\\odot} = 1.9076 \\times 10^{11}\\ \\mathrm{J\\,kg^{-1}}\\) and \\((M_{\\mathrm{BH}}/M_\\star)^{1/3} = 100\\):</p>
+<p>$$ \\Delta\\epsilon = 100 \\times 1.9076 \\times 10^{11}\\ \\mathrm{J\\,kg^{-1}} = \\mathbf{1.908 \\times 10^{13}\\ \\mathrm{J\\,kg^{-1}}} $$</p>
+<p>$$ v_\\infty = \\sqrt{2\\Delta\\epsilon} = \\sqrt{2(1.908 \\times 10^{13})}\\ \\mathrm{m\\,s^{-1}} \\approx \\mathbf{6177\\ \\mathrm{km\\,s^{-1}}} $$</p>
+
+<p><strong>(c) Semimajor Axis \\(a_{\\min}\\), Eccentricity \\(e_{\\min}\\) &amp; Minimum Fallback Time \\(t_{\\min}\\) (2.5 points):</strong><br>
+For the most tightly bound debris stream (\\(\\epsilon_{\\min} = -\\Delta\\epsilon = -\\frac{G M_{\\mathrm{BH}}}{2 a_{\\min}}\\)):</p>
+<p>$$ a_{\\min} = \\frac{G M_{\\mathrm{BH}}}{2\\Delta\\epsilon} = \\frac{r_t^2}{2 R_\\star} = \\frac{1}{2}R_\\star\\left(\\frac{M_{\\mathrm{BH}}}{M_\\star}\\right)^{2/3} = 5000\\,R_\\odot \\approx \\mathbf{23.25\\text{ AU}} \\ (3.479 \\times 10^{12}\\text{ m}) $$</p>
+<p>$$ e_{\\min} = 1 - \\frac{r_t}{a_{\\min}} = 1 - 2\\left(\\frac{M_\\star}{M_{\\mathrm{BH}}}\\right)^{1/3} = 1 - 0.0200 = \\mathbf{0.9800} $$</p>
+<p>By Kepler's Third Law around the \\(10^6\\,M_\\odot\\) black hole:</p>
+<p>$$ t_{\\min} = 2\\pi\\sqrt{\\frac{a_{\\min}^3}{G M_{\\mathrm{BH}}}} = \\frac{\\pi}{\\sqrt{2}}\\left(\\frac{M_{\\mathrm{BH}}}{M_\\star}\\right)^{1/2}\\sqrt{\\frac{R_\\star^3}{G M_\\star}} \\approx 3.543 \\times 10^6\\text{ s} \\approx \\mathbf{41.0\\text{ days}} $$</p>
+
+<p><strong>(d) Derivation of the \\(t^{-5/3}\\) Fallback Law &amp; Peak Accretion Rate (2.5 points):</strong><br>
+Differentiating \\(|\\epsilon|(t) = \\Delta\\epsilon\\left(\\frac{t}{t_{\\min}}\\right)^{-2/3}\\) with respect to \\(t\\) gives \\(\\left|\\frac{d|\\epsilon|}{dt}\\right| = \\frac{2\\Delta\\epsilon}{3 t_{\\min}}\\left(\\frac{t}{t_{\\min}}\\right)^{-5/3}\\). By the chain rule:</p>
+<p>$$ \\dot{M}_{\\mathrm{fb}}(t) = \\frac{dM}{d|\\epsilon|}\\left|\\frac{d|\\epsilon|}{dt}\\right| = \\left(\\frac{M_\\star}{2\\Delta\\epsilon}\\right)\\left[\\frac{2\\Delta\\epsilon}{3 t_{\\min}}\\left(\\frac{t}{t_{\\min}}\\right)^{-5/3}\\right] = \\mathbf{\\frac{M_\\star}{3 t_{\\min}}\\left(\\frac{t}{t_{\\min}}\\right)^{-5/3}} $$</p>
+<p>At \\(t = t_{\\min} = 41.00\\text{ days} = 0.11226\\text{ yr}\\), the peak fallback rate is:</p>
+<p>$$ \\dot{M}_{\\mathrm{peak}} = \\frac{M_\\star}{3 t_{\\min}} = \\frac{1.00\\,M_\\odot}{3(0.11226\\text{ yr})} \\approx \\mathbf{2.97\\,M_\\odot\\,\\mathrm{yr^{-1}}} $$</p>`
+    },
+
+    // Day 35 — 22.11.2026
+    {
+        uniqueId: "potd_2026_11_22",
+        dayNumber: 35,
+        scheduledDate: "22.11.2026",
+        title: "Acoustic Horizons and Transonic Parker Wind of the Solar Corona",
+        author: "Matei",
+        module: "T5 · Solar Physics & Magnetohydrodynamic Winds",
+        difficultyClass: "medium",
+        difficultyText: "4.6 / 10.0",
+        description: `<p>Eugene Parker (1958) demonstrated that an extended, hot solar corona cannot remain in static pressure balance with the interstellar medium and must instead expand into a transonic stellar wind. Model the solar corona as a steady, spherically symmetric, isothermal, fully ionized pure hydrogen outflow at temperature \\(T_0 = 1.50 \\times 10^6\\text{ K}\\) (mean molecular weight \\(\\mu = 0.50\\)) around the Sun (\\(M_\\odot = 1.989 \\times 10^{30}\\text{ kg}\\), \\(R_\\odot = 6.957 \\times 10^8\\text{ m}\\)). Use \\(k_B = 1.3806 \\times 10^{-23}\\ \\mathrm{J\\,K^{-1}}\\), \\(m_H = 1.6736 \\times 10^{-27}\\text{ kg}\\), \\(G = 6.674 \\times 10^{-11}\\ \\mathrm{m^3\\,kg^{-1}\\,s^{-2}}\\), and \\(1\\text{ AU} = 1.496 \\times 10^{11}\\text{ m} = 215.0\\,R_\\odot\\).</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the isothermal sound speed \\(c_s = \\sqrt{\\frac{k_B T_0}{\\mu m_H}}\\) in \\(\\mathrm{km\\,s^{-1}}\\). By combining steady-state spherical mass continuity \\(\\dot{M}_w = 4\\pi r^2 \\rho(r)v(r) = \\text{const.}\\) with the radial Euler momentum equation \\(v\\frac{dv}{dr} = -\\frac{1}{\\rho}\\frac{dP}{dr} - \\frac{G M_\\odot}{r^2}\\) (where \\(P = \\rho c_s^2\\)), derive Parker's wind equation:
+    $$ \\left(v^2 - c_s^2\\right)\\frac{1}{v}\\frac{dv}{dr} = \\frac{2 c_s^2}{r} - \\frac{G M_\\odot}{r^2} $$ <em>(2.5 points)</em></li>
+    <li>Explain why a smooth transonic acceleration from subsonic (\\(v < c_s\\)) at the coronal base to supersonic (\\(v > c_s\\)) at large radii requires the flow to pass through a critical sonic point \\((r_c, c_s)\\), and calculate the sonic radius \\(r_c\\) in solar radii \\(R_\\odot\\). <em>(2.0 points)</em></li>
+    <li>Integrate Parker's differential equation with the boundary condition \\(v(r_c) = c_s\\) to show that the Mach number \\(\\mathcal{M}(r) \\equiv v(r) / c_s\\) satisfies:
+    $$ \\mathcal{M}^2 - \\ln\\!\\left(\\mathcal{M}^2\\right) = 4\\ln\\!\\left(\\frac{r}{r_c}\\right) + 4\\frac{r_c}{r} - 3 $$
+    Hence determine the radial outflow velocity \\(v_0\\) at the coronal base (\\(r = R_\\odot\\)) and the supersonic solar wind velocity \\(v_\\oplus\\) at Earth's orbit (\\(r = 1.00\\text{ AU} = 215.0\\,R_\\odot\\)). <em>(3.0 points)</em></li>
+    <li>Spacecraft at \\(r = 1.00\\text{ AU}\\) measure a solar wind proton number density of \\(n_p = 6.00\\ \\mathrm{cm^{-3}}\\). Calculate the Sun's mass-loss rate \\(\\dot{M}_w\\) (in \\(\\mathrm{kg\\,s^{-1}}\\) and \\(M_\\odot\\,\\mathrm{yr^{-1}}\\)), and estimate the heliospheric termination-shock distance \\(R_{\\mathrm{TS}}\\) (in \\(\\text{AU}\\), assuming \\(v \\simeq v_\\oplus\\) at large \\(r\\)) where the wind ram pressure \\(P_{\\mathrm{ram}}(r) = \\rho(r)v^2\\) balances the local interstellar medium pressure \\(P_{\\mathrm{ISM}} = 1.20 \\times 10^{-13}\\text{ Pa}\\). <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Hydrodynamic Parker wind equations, transonic critical point regularity, transcendental Mach profile, and heliospheric ram-pressure confinement.</p>
+
+<p><strong>(a) Isothermal Sound Speed \\(c_s\\) &amp; Derivation of Parker's Equation (2.5 points):</strong><br>
+For \\(T_0 = 1.50 \\times 10^6\\text{ K}\\) and \\(\\mu = 0.50\\):</p>
+<p>$$ c_s = \\sqrt{\\frac{k_B T_0}{\\mu m_H}} = \\sqrt{\\frac{(1.3806 \\times 10^{-23})(1.50 \\times 10^6)}{0.50(1.6736 \\times 10^{-27})}} \\approx \\mathbf{157.3\\ \\mathrm{km\\,s^{-1}}} $$</p>
+<p>Taking the logarithmic derivative of \\(4\\pi r^2 \\rho v = \\text{const.}\\) gives \\(\\frac{1}{\\rho}\\frac{d\\rho}{dr} = -\\frac{2}{r} - \\frac{1}{v}\\frac{dv}{dr}\\). Substituting \\(\\frac{1}{\\rho}\\frac{dP}{dr} = \\frac{c_s^2}{\\rho}\\frac{d\\rho}{dr} = -\\frac{2 c_s^2}{r} - \\frac{c_s^2}{v}\\frac{dv}{dr}\\) into Euler's momentum equation yields:</p>
+<p>$$ v\\frac{dv}{dr} = \\frac{2 c_s^2}{r} + \\frac{c_s^2}{v}\\frac{dv}{dr} - \\frac{G M_\\odot}{r^2} \\implies \\mathbf{\\left(v^2 - c_s^2\\right)\\frac{1}{v}\\frac{dv}{dr} = \\frac{2 c_s^2}{r} - \\frac{G M_\\odot}{r^2}} $$</p>
+
+<p><strong>(b) Sonic Critical Radius \\(r_c\\) (2.0 points):</strong><br>
+At the sonic transition where \\(v = c_s\\), the left-hand side of Parker's equation vanishes. For the velocity gradient \\(\\frac{dv}{dr}\\) to remain finite and continuous (avoiding an unphysical infinite acceleration), the right-hand side must vanish at the exact same radius \\(r = r_c\\):</p>
+<p>$$ \\frac{2 c_s^2}{r_c} - \\frac{G M_\\odot}{r_c^2} = 0 \\implies r_c = \\frac{G M_\\odot}{2 c_s^2} = \\frac{(6.674 \\times 10^{-11})(1.989 \\times 10^{30})}{2(1.573 \\times 10^5)^2} \\approx 2.681 \\times 10^9\\text{ m} \\approx \\mathbf{3.85\\,R_\\odot} $$</p>
+
+<p><strong>(c) Integration of the Transcendental Profile, \\(v_0\\) at \\(R_\\odot\\) &amp; \\(v_\\oplus\\) at \\(1\\text{ AU}\\) (3.0 points):</strong><br>
+Rewriting Parker's equation in terms of \\(\\mathcal{M} = v / c_s\\) and \\(r_c = G M_\\odot / (2 c_s^2)\\):</p>
+<p>$$ \\left(2\\mathcal{M} - \\frac{2}{\\mathcal{M}}\\right)d\\mathcal{M} = \\left(\\frac{4}{r} - \\frac{4 r_c}{r^2}\\right)dr $$</p>
+<p>Integrating from \\((r_c, 1)\\) to \\((r, \\mathcal{M})\\) immediately gives \\(\\mathcal{M}^2 - 1 - \\ln(\\mathcal{M}^2) = 4\\ln(r/r_c) + 4(r_c/r) - 4\\), or:</p>
+<p>$$ \\mathcal{M}^2 - \\ln\\!\\left(\\mathcal{M}^2\\right) = 4\\ln\\!\\left(\\frac{r}{r_c}\\right) + 4\\frac{r_c}{r} - 3 $$</p>
+<ul>
+    <li><strong>At the coronal base (\\(r = R_\\odot,\\ r/r_c = 0.2595\\)):</strong> The right-hand side is \\(4\\ln(0.2595) + 4(3.854) - 3 = 7.019\\). Since \\(\\mathcal{M}_0 \\ll 1\\), \\(-2\\ln\\mathcal{M}_0 \\simeq 7.019 \\implies \\mathcal{M}_0 \\approx e^{-3.509} \\approx 0.0299\\), giving:
+    $$ v_0 = 0.0299\\,c_s \\approx \\mathbf{4.70\\ \\mathrm{km\\,s^{-1}}} $$</li>
+    <li><strong>At Earth's orbit (\\(r = 1.00\\text{ AU} = 215.0\\,R_\\odot,\\ r/r_c = 55.79\\)):</strong> The right-hand side is \\(4\\ln(55.79) + 4(0.01792) - 3 = 13.158\\). Solving \\(\\mathcal{M}_\\oplus^2 - 2\\ln\\mathcal{M}_\\oplus = 13.158\\) numerically yields \\(\\mathcal{M}_\\oplus \\approx 3.991\\), so:
+    $$ v_\\oplus = 3.991\\,c_s \\approx \\mathbf{628\\ \\mathrm{km\\,s^{-1}}} $$</li>
+</ul>
+
+<p><strong>(d) Solar Mass-Loss Rate \\(\\dot{M}_w\\) &amp; Termination-Shock Distance \\(R_{\\mathrm{TS}}\\) (2.5 points):</strong><br>
+At \\(1.00\\text{ AU}\\), \\(\\rho_\\oplus = n_p m_H = (6.00 \\times 10^6\\ \\mathrm{m^{-3}})(1.6736 \\times 10^{-27}\\text{ kg}) = 1.004 \\times 10^{-20}\\ \\mathrm{kg\\,m^{-3}}\\):</p>
+<p>$$ \\dot{M}_w = 4\\pi (1.496 \\times 10^{11}\\text{ m})^2 (1.004 \\times 10^{-20}\\ \\mathrm{kg\\,m^{-3}})(6.278 \\times 10^5\\ \\mathrm{m\\,s^{-1}}) \\approx \\mathbf{1.77 \\times 10^9\\ \\mathrm{kg\\,s^{-1}}} \\approx \\mathbf{2.82 \\times 10^{-14}\\,M_\\odot\\,\\mathrm{yr^{-1}}} $$</p>
+<p>The wind ram pressure at \\(1\\text{ AU}\\) is \\(P_{\\mathrm{ram}}(1\\text{ AU}) = \\rho_\\oplus v_\\oplus^2 \\approx 3.96 \\times 10^{-9}\\text{ Pa}\\). Since \\(P_{\\mathrm{ram}}(r) \\propto r^{-2}\\) at large \\(r\\):</p>
+<p>$$ R_{\\mathrm{TS}} = 1.00\\text{ AU}\\times\\sqrt{\\frac{P_{\\mathrm{ram}}(1\\text{ AU})}{P_{\\mathrm{ISM}}}} = \\sqrt{\\frac{3.96 \\times 10^{-9}\\text{ Pa}}{1.20 \\times 10^{-13}\\text{ Pa}}}\\text{ AU} \\approx \\mathbf{182\\text{ AU}} $$</p>`
     }
 ];
 
@@ -1797,6 +2141,183 @@ For the parabolic velocity profile \\(U(y) = U_{\\max} - c y^2\\), the second de
 <p>Thus \\(\\beta_{\\mathrm{eff}} = 1.35 \\times 10^{-12} + 1.82 \\times 10^{-11} \\approx \\mathbf{1.96 \\times 10^{-11}\\ \\mathrm{m^{-1}\\,s^{-1}}}\\) (dominated by the sharp jet curvature rather than planetary rotation), giving the corrected wavenumber:</p>
 <p>$$ m = R_{\\mathrm{Saturn}}\\cos\\phi\\sqrt{\\frac{\\beta_{\\mathrm{eff}}}{U_{\\max}}} \\approx (1.496 \\times 10^7\\text{ m})\\sqrt{\\frac{1.96 \\times 10^{-11}}{120}} \\approx \\mathbf{6.04 \\approx 6} $$
 *(Accepting \\(m \\in [5.5, 6.5]\\) depending on the exact points sampled along the red curve).* This confirms that the sharp meridional curvature of Saturn's polar jet acts as a waveguide that locks the standing Rossby wave into a 6-sided polygon.</p>`
+    },
+
+    // Week 05 — 16.11.2026 – 22.11.2026
+    {
+        uniqueId: "potw_2026_w5",
+        weekNumber: 5,
+        scheduledDate: "16.11.2026 – 22.11.2026",
+        title: "The Yarkovsky Effect and the Age of Asteroid Families",
+        author: "Mihai",
+        module: "T1 & T9 · Non-Gravitational Orbital Mechanics & Asteroid Families",
+        difficultyClass: "hard",
+        difficultyText: "6.9 / 10.0",
+        description: `<p>Small Main Belt asteroids (\\(D \\lesssim 30\\ \\mathrm{km}\\)) experience a tiny, continuous non-gravitational thrust known as the <strong>Yarkovsky effect</strong>. Because an asteroid's rocky surface has finite thermal inertia, it does not cool instantaneously; instead, peak thermal infrared emission occurs in the asteroid's afternoon rather than at local noon. Since thermal photons carry linear momentum (\\(p = E/c\\)), this asymmetric emission produces a net recoil force that slowly alters the asteroid's orbital semi-major axis \\(a\\) over millions of years.</p>
+
+<div class="task-box" style="margin-top: 18px; border-left: 3px solid var(--accent-blue); background: var(--bg-sidebar); padding: 18px 22px; border-radius: var(--radius-md); margin-bottom: 16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <strong style="color:var(--text-pure); font-size:1.02rem;">Part 1 — Where Does the Thrust Come From?</strong>
+        <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-gold); background:rgba(255,207,92,0.12); padding:3px 9px; border-radius:6px;">3.5 Points</span>
+    </div>
+    <p style="font-size:0.92rem; color:var(--text-main); margin-bottom:12px;">
+        Consider a small, flat surface element of area \\(dA\\) at absolute temperature \\(T\\) and thermal emissivity \\(\\epsilon\\). Assume the surface radiates diffusely according to Lambert's cosine law, meaning its emitted radiance \\(I\\) (\\(\\mathrm{W\\,m^{-2}\\,sr^{-1}}\\)) is independent of the emission angle \\(\\vartheta \\in [0, \\pi/2]\\) measured from the outward surface normal \\(\\hat{\\mathbf{n}}\\).
+    </p>
+    <ol type="a" style="padding-left: 20px; line-height: 1.85; font-size: 0.92rem;">
+        <li>Show that the thermal radiation recoil force acting on the surface element \\(dA\\) is given by:
+        $$ d\\mathbf{F}_{\\mathrm{recoil}} = -\\frac{2}{3c}\\,\\epsilon \\sigma T^4\\,\\hat{\\mathbf{n}}\\,dA $$ <em>(0.75 points)</em></li>
+    </ol>
+    <p style="font-size:0.92rem; color:var(--text-main); margin:12px 0;">
+        Now model the asteroid as a homogeneous sphere of radius \\(R\\) moving on a circular heliocentric orbit of semi-major axis \\(a\\), spinning <strong>prograde</strong> with constant angular speed \\(\\omega\\) about an axis perpendicular to its orbital plane (zero spin obliquity, \\(\\gamma = 0^\\circ\\)). Adopt asteroid-centered spherical coordinates \\((\\theta, \\varphi)\\) anchored to the Sun–asteroid line:
+    </p>
+    <ul style="padding-left: 20px; line-height: 1.7; font-size: 0.92rem; margin-bottom: 12px;">
+        <li>\\(\\theta \\in [0, \\pi]\\) is the colatitude measured from the north spin pole (\\(\\theta = \\pi/2\\) is the equator).</li>
+        <li>\\(\\varphi \\in [0, 2\\pi)\\) is the hour angle measured from local noon (\\(\\varphi = 0\\) faces the Sun, \\(\\varphi = \\pi/2\\) is local dusk, \\(\\varphi = \\pi\\) is midnight, and \\(\\varphi = 3\\pi/2\\) is local dawn).</li>
+    </ul>
+    <ol type="a" start="2" style="padding-left: 20px; line-height: 1.85; font-size: 0.92rem;">
+        <li>Model the thermally active surface as a thin shell with effective heat capacity per unit area \\(C_A\\) (\\(\\mathrm{J\\,m^{-2}\\,K^{-1}}\\)) and thermal conductivity \\(k\\). For a surface patch rotating at rate \\(d\\varphi/dt = \\omega\\), show that the temperature obeys:
+        $$ \\omega C_A\\,\\frac{dT}{d\\varphi} = F_{\\mathrm{abs}}(\\theta, \\varphi) - \\epsilon \\sigma T^4 $$
+        where \\(F_{\\mathrm{abs}}(\\theta, \\varphi)\\) is the solar flux absorbed by the asteroid. <em>(0.50 points)</em></li>
+    </ol>
+    <p style="font-size:0.92rem; color:var(--text-main); margin:12px 0;">
+        Approximate the absorbed solar flux per unit area as a global mean plus a smooth diurnal cosine modulation:
+        $$ F_{\\mathrm{abs}}(\\theta, \\varphi) = \\frac{1}{4}(1 - A)\\mathcal{F}_\\odot\\left(1 + 2\\sin\\theta\\cos\\varphi\\right) $$
+        where \\(A\\) is the Bond albedo and \\(\\mathcal{F}_\\odot = \\frac{L_\\odot}{4\\pi a^2}\\) is the solar irradiance at orbital radius \\(a\\).
+    </p>
+    <ol type="a" start="3" style="padding-left: 20px; line-height: 1.85; font-size: 0.92rem;">
+        <li>To linearize the differential equation, write \\(T(\\theta, \\varphi) = T_0 + \\Delta T(\\theta, \\varphi)\\) where \\(T_0\\) is the mean equilibrium temperature (when thermal inertia is neglected) and \\(|\\Delta T(\\theta, \\varphi)| \\ll T_0\\). Find an expression for \\(T_0\\), and show that \\(\\Delta T(\\theta, \\varphi)\\) satisfies the linear differential equation:
+        $$ \\frac{\\Theta}{4}\\,\\frac{d(\\Delta T)}{d\\varphi} + \\Delta T = \\Delta T_{\\mathrm{eq}}\\sin\\theta\\cos\\varphi $$
+        Find the dimensionless <strong>thermal parameter</strong> \\(\\Theta\\) and characteristic temperature amplitude \\(\\Delta T_{\\mathrm{eq}}\\) in terms of the problem's invariants. <em>(1.00 point)</em></li>
+        <li>Solve this differential equation for the steady-state periodic temperature perturbation \\(\\Delta T(\\theta, \\varphi)\\) in terms of \\(\\Delta T_{\\mathrm{eq}}, \\Theta, \\theta\\), and \\(\\varphi\\). <em>(0.75 points)</em></li>
+        <li>Determine the <strong>thermal phase lag angle</strong> \\(\\delta\\) between local noon (\\(\\varphi = 0\\)) and the longitude of maximum surface temperature in terms of \\(\\Theta\\). <em>(0.50 points)</em></li>
+    </ol>
+</div>
+
+<div class="task-box" style="border-left: 3px solid var(--accent-purple); background: var(--bg-sidebar); padding: 18px 22px; border-radius: var(--radius-md); margin-bottom: 16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <strong style="color:var(--text-pure); font-size:1.02rem;">Part 2 — Net Yarkovsky Thrust and Orbital Drift Rate</strong>
+        <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-gold); background:rgba(255,207,92,0.12); padding:3px 9px; border-radius:6px;">3.0 Points</span>
+    </div>
+    <ol type="a" style="padding-left: 20px; line-height: 1.85; font-size: 0.92rem;">
+        <li>Integrate the linearized recoil force over the entire spherical surface \\(S\\) of the asteroid to show that the net force component \\(F_v = \\mathbf{F}_Y \\cdot \\hat{\\mathbf{v}}\\) along the asteroid's orbital velocity unit vector \\(\\hat{\\mathbf{v}}\\) is:
+        $$ F_v = \\frac{\\pi R^2(1 - A)\\mathcal{F}_\\odot}{9c} \\cdot \\frac{\\Theta}{1 + \\Theta^2 / 16} $$ <em>(1.25 points)</em></li>
+        <li>Assuming the asteroid has bulk density \\(\\rho_{\\mathrm{bulk}}\\) and diameter \\(D = 2R\\), derive the semi-major axis drift rate \\(\\frac{da}{dt}\\) in terms of \\(A, \\mathcal{F}_\\odot, c, \\rho_{\\mathrm{bulk}}, D, \\Theta\\), and the orbital mean motion \\(n = \\sqrt{G M_\\odot / a^3}\\). Explain in one sentence how the formula modifies if the asteroid's spin axis has an arbitrary obliquity \\(\\gamma\\) relative to its orbital normal. <em>(1.00 point)</em></li>
+        <li>Find the value of the thermal parameter \\(\\Theta_{\\mathrm{opt}}\\) (and the corresponding phase lag angle \\(\\delta_{\\mathrm{opt}}\\)) that maximizes the orbital drift rate \\(\\left|\\frac{da}{dt}\\right|\\). <em>(0.75 points)</em></li>
+    </ol>
+</div>
+
+<div class="task-box" style="border-left: 3px solid var(--accent-gold); background: var(--bg-sidebar); padding: 18px 22px; border-radius: var(--radius-md);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <strong style="color:var(--text-pure); font-size:1.02rem;">Part 3 — Dating a Collisional Asteroid Family</strong>
+        <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-gold); background:rgba(255,207,92,0.12); padding:3px 9px; border-radius:6px;">3.5 Points</span>
+    </div>
+    <p style="font-size:0.92rem; color:var(--text-main); margin-bottom:12px;">
+        When a large parent asteroid shatters in a collision, its fragments are ejected into nearly identical initial orbits around a central semi-major axis \\(a_c\\). Over millions of years, fragments with prograde spins (\\(\\cos\\gamma > 0\\)) drift outward (\\(a > a_c\\)) while fragments with retrograde spins (\\(\\cos\\gamma < 0\\)) drift inward (\\(a < a_c\\)).
+    </p>
+    <p style="font-size:0.92rem; color:var(--text-main); margin-bottom:12px;">
+        The figure below shows the distribution of reciprocal diameter \\(1/D\\) (\\(\\mathrm{km^{-1}}\\)) versus proper semi-major axis \\(a\\) (\\(\\mathrm{au}\\)) for a collisional asteroid family embedded in the Main Belt background. The solid straight lines trace the outer boundaries of the family's characteristic <strong>"V-shape"</strong>, defined by the fastest-drifting fragments (\\(\\gamma = 0^\\circ\\) on the right wing and \\(\\gamma = 180^\\circ\\) on the left wing).
+    </p>
+    <img src="assets/img/potw/yarkovsky_v_shape_family.png" alt="Plot of 1/D vs a for Collisional Asteroid Family" class="user-diagram" onclick="window.openImageModal(this)">
+    <p style="font-size:0.92rem; color:var(--text-main); margin:12px 0 8px 0;">
+        All family members share the following typical physical properties:
+    </p>
+    <ul style="padding-left: 20px; line-height: 1.7; font-size: 0.92rem; margin-bottom: 12px;">
+        <li>Bulk density: \\(\\rho_{\\mathrm{bulk}} = 1000\\ \\mathrm{kg\\,m^{-3}}\\)</li>
+        <li>Bond albedo: \\(A = 0.02\\) &nbsp;|&nbsp; Geometric visual albedo: \\(p_V = 0.05\\)</li>
+        <li>Mean proper orbital eccentricity: \\(e = 0.21\\)</li>
+        <li>Thermal emissivity: \\(\\epsilon = 0.90\\)</li>
+        <li>Rotation period: \\(P_{\\mathrm{rot}} = 5.0\\ \\mathrm{h}\\)</li>
+        <li>Effective surface heat capacity per unit area: \\(C_A = 440\\ \\mathrm{J\\,m^{-2}\\,K^{-1}}\\)</li>
+        <li>Surface thermal conductivity: \\(k = 0.008\\ \\mathrm{W\\,m^{-1}\\,K^{-1}}\\)</li>
+    </ul>
+    <ol type="a" style="padding-left: 20px; line-height: 1.85; font-size: 0.92rem;">
+        <li>Explain briefly why the outer boundaries of the family form straight lines in the \\(1/D\\) vs. \\(a\\) plane, and why the region <em>inside</em> the V-shape is densely populated with family members. <em>(0.75 points)</em></li>
+        <li>From the figure, read off the family's central semi-major axis \\(a_c\\) (in \\(\\mathrm{au}\\)) and measure the magnitude of the slope \\(m\\) (in \\(\\mathrm{km^{-1}\\,au^{-1}}\\)) of the solid V-shape boundary lines. <em>(0.75 points)</em></li>
+        <li>Compute the equilibrium temperature \\(T_0\\), the thermal parameter \\(\\Theta\\), and the maximum drift constant \\(K \\equiv D\\left|\\frac{da}{dt}\\right|_{\\max}\\) (in \\(\\mathrm{km\\cdot au\\cdot Myr^{-1}}\\)) for the boundary asteroids. <em>(1.00 point)</em></li>
+        <li>Combine your measured slope \\(m\\) from (3b) with \\(K\\) from (3c) to calculate the age \\(\\Delta t\\) (in \\(\\mathrm{Myr}\\)) of the asteroid family. Name one physical effect neglected in this simple model that could alter the true age estimate. <em>(1.00 point)</em></li>
+    </ol>
+</div>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Lambertian thermal photon momentum recoil, diurnal heat-conduction phase lag, secular Yarkovsky orbital drift, and V-shape chronological dating of collisional asteroid families.</p>
+
+<p><strong>Part 1 — Where Does the Thrust Come From? (3.5 Points)</strong></p>
+
+<p><strong>1a. Lambertian Thermal Radiation Recoil Force (0.75 points):</strong><br>
+A diffuse Lambertian surface of area \\(dA\\) emits power \\(dP(\\vartheta, \\phi') = I\\cos\\vartheta\\,dA\\,d\\Omega\\) into solid angle \\(d\\Omega = \\sin\\vartheta\\,d\\vartheta\\,d\\phi'\\) at polar angle \\(\\vartheta \\in [0, \\pi/2]\\) relative to the outward normal \\(\\hat{\\mathbf{n}}\\). Integrating over the outward hemisphere relates \\(I\\) to the total emitted flux \\(\\epsilon\\sigma T^4\\):</p>
+<p>$$ \\epsilon\\sigma T^4 = \\int_0^{2\\pi} d\\phi' \\int_0^{\\pi/2} I\\cos\\vartheta\\sin\\vartheta\\,d\\vartheta = \\pi I \\implies I = \\frac{\\epsilon\\sigma T^4}{\\pi} $$</p>
+<p>By azimuthal symmetry around \\(\\hat{\\mathbf{n}}\\), the tangential momentum components cancel. Each photon emitted at angle \\(\\vartheta\\) carries normal momentum \\(\\frac{dE}{c}\\cos\\vartheta\\) along \\(+\\hat{\\mathbf{n}}\\), imparting an inward recoil force \\(-\\frac{dP}{c}\\cos\\vartheta\\,\\hat{\\mathbf{n}}\\) on \\(dA\\):</p>
+<p>$$ d\\mathbf{F}_{\\mathrm{recoil}} = -\\hat{\\mathbf{n}}\\,\\frac{dA}{c}\\int_0^{2\\pi} d\\phi' \\int_0^{\\pi/2} I\\cos^2\\vartheta\\sin\\vartheta\\,d\\vartheta = -\\hat{\\mathbf{n}}\\,\\frac{dA}{c}(2\\pi I)\\left(\\frac{1}{3}\\right) = \\mathbf{-\\frac{2}{3c}\\,\\epsilon\\sigma T^4\\,\\hat{\\mathbf{n}}\\,dA} $$</p>
+
+<p><strong>1b. Surface Thermal Energy Balance (0.50 points):</strong><br>
+A surface element of area \\(dA\\) and heat capacity per unit area \\(C_A\\) stores internal thermal energy \\(dU = C_A T\\,dA\\). Conservation of energy requires the rate of change of stored heat per unit area to equal absorbed solar flux minus emitted thermal flux:</p>
+<p>$$ C_A\\frac{dT}{dt} = F_{\\mathrm{abs}}(\\theta, \\varphi) - \\epsilon\\sigma T^4 $$</p>
+<p>Because the surface patch rotates through hour angle \\(\\varphi\\) at steady rate \\(\\frac{d\\varphi}{dt} = \\omega\\), the chain rule \\(\\frac{dT}{dt} = \\frac{d\\varphi}{dt}\\frac{dT}{d\\varphi} = \\omega\\frac{dT}{d\\varphi}\\) yields:</p>
+<p>$$ \\mathbf{\\omega C_A\\,\\frac{dT}{d\\varphi} = F_{\\mathrm{abs}}(\\theta, \\varphi) - \\epsilon\\sigma T^4} $$</p>
+
+<p><strong>1c. Linearization, Equilibrium Temperature \\(T_0\\) &amp; Thermal Parameter \\(\\Theta\\) (1.00 point):</strong><br>
+Substituting \\(T(\\theta, \\varphi) = T_0 + \\Delta T(\\theta, \\varphi)\\) with \\(|\\Delta T| \\ll T_0\\), we expand \\(\\epsilon\\sigma T^4 \\simeq \\epsilon\\sigma T_0^4 + 4\\epsilon\\sigma T_0^3\\,\\Delta T\\). Matching the \\(\\varphi\\)-independent mean terms gives the equilibrium temperature \\(T_0\\):</p>
+<p>$$ \\epsilon\\sigma T_0^4 = \\frac{1}{4}(1 - A)\\mathcal{F}_\\odot \\implies \\mathbf{T_0 = \\left[\\frac{(1 - A)\\mathcal{F}_\\odot}{4\\epsilon\\sigma}\\right]^{1/4}} $$</p>
+<p>The remaining fluctuating terms satisfy:</p>
+<p>$$ \\omega C_A\\,\\frac{d(\\Delta T)}{d\\varphi} + 4\\epsilon\\sigma T_0^3\\,\\Delta T = \\frac{1}{2}(1 - A)\\mathcal{F}_\\odot\\sin\\theta\\cos\\varphi = 2\\epsilon\\sigma T_0^4\\sin\\theta\\cos\\varphi $$</p>
+<p>Dividing through by \\(4\\epsilon\\sigma T_0^3\\) yields \\(\\frac{\\Theta}{4}\\frac{d(\\Delta T)}{d\\varphi} + \\Delta T = \\Delta T_{\\mathrm{eq}}\\sin\\theta\\cos\\varphi\\), where:</p>
+<p>$$ \\mathbf{\\Theta = \\frac{\\omega C_A}{\\epsilon\\sigma T_0^3}}, \\qquad \\mathbf{\\Delta T_{\\mathrm{eq}} = \\frac{T_0}{2} = \\frac{(1 - A)\\mathcal{F}_\\odot}{8\\epsilon\\sigma T_0^3}} $$</p>
+
+<p><strong>1d. Steady-State Periodic Solution \\(\\Delta T(\\theta, \\varphi)\\) (0.75 points):</strong><br>
+Substituting the periodic ansatz \\(\\Delta T(\\theta, \\varphi) = \\Delta T_{\\mathrm{eq}}\\sin\\theta\\left(\\alpha\\cos\\varphi + \\beta\\sin\\varphi\\right)\\) into the ODE gives \\(\\left(\\alpha + \\frac{\\Theta}{4}\\beta\\right)\\cos\\varphi + \\left(\\beta - \\frac{\\Theta}{4}\\alpha\\right)\\sin\\varphi = \\cos\\varphi\\), so \\(\\beta = \\frac{\\Theta}{4}\\alpha\\) and \\(\\alpha = \\frac{1}{1 + \\Theta^2/16}\\):</p>
+<p>$$ \\mathbf{\\Delta T(\\theta, \\varphi) = \\frac{\\Delta T_{\\mathrm{eq}}\\sin\\theta}{1 + \\Theta^2 / 16}\\left(\\cos\\varphi + \\frac{\\Theta}{4}\\sin\\varphi\\right) = \\frac{\\Delta T_{\\mathrm{eq}}\\sin\\theta}{\\sqrt{1 + \\Theta^2 / 16}}\\cos(\\varphi - \\delta)} $$</p>
+
+<p><strong>1e. Thermal Phase Lag Angle \\(\\delta\\) (0.50 points):</strong><br>
+From the trigonometric identity \\(\\cos\\varphi + \\frac{\\Theta}{4}\\sin\\varphi = \\sqrt{1 + \\Theta^2/16}\\cos(\\varphi - \\delta)\\), surface temperature peaks in the afternoon at hour angle \\(\\varphi = \\delta\\):</p>
+<p>$$ \\mathbf{\\tan\\delta = \\frac{\\Theta}{4} \\implies \\delta = \\arctan\\!\\left(\\frac{\\Theta}{4}\\right)} $$</p>
+
+<hr style="border:none; border-top:1px solid var(--border-subtle); margin:16px 0;">
+
+<p><strong>Part 2 — Net Yarkovsky Thrust and Orbital Drift Rate (3.0 Points)</strong></p>
+
+<p><strong>2a. Surface Integration for the Along-Track Force \\(F_v\\) (1.25 points):</strong><br>
+For a prograde-spinning asteroid (\\(\\gamma = 0^\\circ\\)), the local dusk meridian (\\(\\varphi = +\\pi/2\\)) trails the asteroid's motion (pointing along \\(-\\hat{\\mathbf{v}}\\)), while the dawn meridian (\\(\\varphi = 3\\pi/2\\)) faces forward along \\(+\\hat{\\mathbf{v}}\\). Thus, the outward normal \\(\\hat{\\mathbf{n}}(\\theta, \\varphi)\\) has projection \\(\\hat{\\mathbf{n}} \\cdot \\hat{\\mathbf{v}} = -\\sin\\theta\\sin\\varphi\\), and the recoil force \\(d\\mathbf{F}_{\\mathrm{recoil}} \\propto -\\hat{\\mathbf{n}}\\) has projection \\(-\\hat{\\mathbf{n}} \\cdot \\hat{\\mathbf{v}} = +\\sin\\theta\\sin\\varphi\\). Linearizing \\(T^4 \\simeq T_0^4 + 4T_0^3\\,\\Delta T\\) (where the isotropic \\(T_0^4\\) term integrates to zero) over \\(dA = R^2\\sin\\theta\\,d\\theta\\,d\\varphi\\):</p>
+<p>$$ F_v = \\frac{2}{3c}\\epsilon\\sigma\\left(4T_0^3\\right)R^2 \\int_0^\\pi \\sin\\theta\\,d\\theta \\int_0^{2\\pi} \\Delta T(\\theta, \\varphi)\\sin\\theta\\sin\\varphi\\,d\\varphi $$</p>
+<p>Using \\(4\\epsilon\\sigma T_0^3\\,\\Delta T_{\\mathrm{eq}} = \\frac{1}{2}(1 - A)\\mathcal{F}_\\odot\\), \\(\\int_0^\\pi \\sin^3\\theta\\,d\\theta = \\frac{4}{3}\\), \\(\\int_0^{2\\pi}\\cos\\varphi\\sin\\varphi\\,d\\varphi = 0\\), and \\(\\int_0^{2\\pi}\\sin^2\\varphi\\,d\\varphi = \\pi\\):</p>
+<p>$$ F_v = \\frac{2}{3c}\\left[\\frac{1}{2}(1 - A)\\mathcal{F}_\\odot\\right]R^2\\left(\\frac{\\Theta / 4}{1 + \\Theta^2 / 16}\\right)\\left(\\frac{4}{3}\\right)\\pi = \\mathbf{\\frac{\\pi R^2(1 - A)\\mathcal{F}_\\odot}{9c}\\cdot\\frac{\\Theta}{1 + \\Theta^2 / 16}} $$</p>
+
+<p><strong>2b. Semi-Major Axis Drift Rate \\(da/dt\\) &amp; Obliquity Dependence (1.00 point):</strong><br>
+The orbital mechanical energy of the asteroid (mass \\(m = \\frac{4}{3}\\pi R^3 \\rho_{\\mathrm{bulk}} = \\frac{\\pi}{6}\\rho_{\\mathrm{bulk}}D^3\\)) is \\(E = -\\frac{G M_\\odot m}{2a}\\). Differentiating with respect to time and equating to the mechanical power \\(\\frac{dE}{dt} = F_v v_{\\mathrm{orb}} = F_v n a\\) (with \\(G M_\\odot = n^2 a^3\\)) gives \\(\\frac{da}{dt} = \\frac{2 F_v}{m n}\\). Substituting \\(F_v\\) and \\(R = D/2\\):</p>
+<p>$$ \\frac{da}{dt} = \\frac{2}{\\left(\\frac{\\pi}{6}\\rho_{\\mathrm{bulk}}D^3\\right)n}\\cdot\\frac{\\pi(D/2)^2(1 - A)\\mathcal{F}_\\odot}{9c}\\cdot\\frac{\\Theta}{1 + \\Theta^2 / 16} = \\mathbf{\\frac{(1 - A)\\mathcal{F}_\\odot}{3 c \\rho_{\\mathrm{bulk}} D n}\\cdot\\frac{\\Theta}{1 + \\Theta^2 / 16}} $$</p>
+<p>For an arbitrary spin obliquity \\(\\gamma\\), the diurnal drift rate is multiplied by \\(\\mathbf{\\cos\\gamma}\\) (the projection of the asteroid's spin axis onto the orbital angular momentum vector).</p>
+
+<p><strong>2c. Optimal Thermal Parameter \\(\\Theta_{\\mathrm{opt}}\\) &amp; Phase Lag \\(\\delta_{\\mathrm{opt}}\\) (0.75 points):</strong><br>
+Maximizing \\(g(\\Theta) = \\frac{\\Theta}{1 + \\Theta^2 / 16}\\) via \\(g'(\\Theta) = \\frac{1 - \\Theta^2 / 16}{(1 + \\Theta^2 / 16)^2} = 0\\) yields:</p>
+<p>$$ \\mathbf{\\Theta_{\\mathrm{opt}} = 4}, \\qquad \\mathbf{\\delta_{\\mathrm{opt}} = \\arctan\\!\\left(\\frac{4}{4}\\right) = 45^\\circ = \\frac{\\pi}{4}\\text{ rad}} $$</p>
+
+<hr style="border:none; border-top:1px solid var(--border-subtle); margin:16px 0;">
+
+<p><strong>Part 3 — Dating a Collisional Asteroid Family (3.5 Points)</strong></p>
+
+<p><strong>3a. Physical Origin of the Linear V-Shape Boundaries &amp; Interior Filling (0.75 points):</strong><br>
+Over family age \\(\\Delta t\\), an asteroid of diameter \\(D\\) and spin obliquity \\(\\gamma\\) drifts by \\(\\Delta a = a - a_c = \\frac{K\\,\\Delta t}{D}\\cos\\gamma\\), where \\(K \\equiv D\\left|\\frac{da}{dt}\\right|_{\\max}\\) is independent of \\(D\\). The fastest-drifting asteroids have \\(\\cos\\gamma = \\pm 1\\) (\\(\\gamma = 0^\\circ\\) or \\(180^\\circ\\)), tracing straight boundary lines \\(\\frac{1}{D} = \\frac{|a - a_c|}{K\\,\\Delta t}\\) of slope \\(\\pm m = \\pm\\frac{1}{K\\,\\Delta t}\\) in the \\(1/D\\) vs. \\(a\\) plane. The interior of the V-shape is densely populated because fragments have random spin obliquities \\(\\cos\\gamma \\in (-1, +1)\\) (as well as YORP spin-axis reorientation), causing most fragments to drift less than the maximum \\(|\\cos\\gamma| = 1\\) envelope.</p>
+
+<p><strong>3b. Reading \\(a_c\\) and Boundary Slope \\(m\\) from the V-Shape Plot (0.75 points):</strong><br>
+From the vertex where the two solid boundary lines intersect (or extrapolate to \\(1/D = 0\\)) in the inner Main Belt dark-family plot (representing the Nysa–Polana / Eulalia low-albedo complex):</p>
+<p>$$ a_c \\approx \\mathbf{2.42\\text{ au}} \\quad (\\text{accepting } 2.38\\text{--}2.46\\text{ au}), \\qquad m = \\left|\\frac{\\Delta(1/D)}{\\Delta a}\\right| \\approx \\mathbf{1.25\\ \\mathrm{km^{-1}\\,au^{-1}}} \\quad (\\text{accepting } 1.10\\text{--}1.45\\ \\mathrm{km^{-1}\\,au^{-1}}) $$</p>
+
+<p><strong>3c. Equilibrium Temperature \\(T_0\\), Thermal Parameter \\(\\Theta\\) &amp; Drift Constant \\(K\\) (1.00 point):</strong><br>
+At \\(a_c = 2.42\\text{ au}\\), the solar irradiance is \\(\\mathcal{F}_\\odot = \\frac{1361\\ \\mathrm{W\\,m^{-2}}}{(2.42)^2} \\approx 232.4\\ \\mathrm{W\\,m^{-2}}\\). With \\(A = 0.02\\), \\(\\epsilon = 0.90\\), and \\(\\sigma = 5.670 \\times 10^{-8}\\ \\mathrm{W\\,m^{-2}\\,K^{-4}}\\):</p>
+<p>$$ T_0 = \\left[\\frac{(1 - 0.02)(232.4)}{4(0.90)(5.670 \\times 10^{-8})}\\right]^{1/4} \\approx \\mathbf{182.7\\text{ K}} \\qquad \\left(T_0 = \\frac{284.3\\text{ K}}{\\sqrt{a_c\\,[\\mathrm{au}]}}\\right) $$</p>
+<p>With rotation period \\(P_{\\mathrm{rot}} = 5.0\\text{ h} = 18,000\\text{ s}\\) (\\(\\omega = \\frac{2\\pi}{18,000\\text{ s}} = 3.491 \\times 10^{-4}\\ \\mathrm{rad\\,s^{-1}}\\)) and \\(C_A = 440\\ \\mathrm{J\\,m^{-2}\\,K^{-1}}\\):</p>
+<p>$$ \\Theta = \\frac{\\omega C_A}{\\epsilon\\sigma T_0^3} = \\frac{(3.491 \\times 10^{-4})(440)}{0.90(5.670 \\times 10^{-8})(182.7)^3} \\approx \\mathbf{0.493} \\qquad \\left(\\frac{\\Theta}{1 + \\Theta^2 / 16} \\approx \\mathbf{0.486}\\right) $$</p>
+<p>At \\(a_c = 2.42\\text{ au}\\), the orbital mean motion is \\(n = \\frac{1.991 \\times 10^{-7}\\ \\mathrm{rad\\,s^{-1}}}{(2.42)^{3/2}} \\approx 5.288 \\times 10^{-8}\\ \\mathrm{rad\\,s^{-1}}\\). Evaluating \\(K = D\\left|\\frac{da}{dt}\\right|_{\\max}\\) for \\(D = 1\\text{ km} = 1000\\text{ m}\\):</p>
+<p>$$ \\left|\\frac{da}{dt}\\right|_{1\\text{ km}} = \\frac{(1 - 0.02)(232.4)}{3(2.998 \\times 10^8)(1000)(1000)(5.288 \\times 10^{-8})}\\times 0.486 \\approx 2.33 \\times 10^{-7}\\ \\mathrm{m\\,s^{-1}} $$</p>
+<p>Converting to \\(\\mathrm{au\\,Myr^{-1}}\\) (\\(1\\text{ Myr} = 3.1558 \\times 10^{13}\\text{ s},\\ 1\\text{ au} = 1.496 \\times 10^{11}\\text{ m}\\)):</p>
+<p>$$ K = D\\left|\\frac{da}{dt}\\right|_{\\max} \\approx \\mathbf{4.91 \\times 10^{-5}\\ \\mathrm{km\\cdot au\\cdot Myr^{-1}}} $$</p>
+
+<p><strong>3d. Collisional Family Age \\(\\Delta t\\) &amp; Neglected Physical Effects (1.00 point):</strong><br>
+Since the V-shape boundary satisfies \\(\\frac{1}{D} = m|a - a_c| = \\frac{|a - a_c|}{K\\,\\Delta t}\\), the family age is \\(\\Delta t = \\frac{1}{m K}\\):</p>
+<p>$$ \\Delta t = \\frac{1}{(1.25\\ \\mathrm{km^{-1}\\,au^{-1}})(4.91 \\times 10^{-5}\\ \\mathrm{km\\cdot au\\cdot Myr^{-1}})} \\approx \\mathbf{1630\\text{ Myr}} \\quad (\\approx 1.4\\text{--}1.8\\text{ Gyr depending on } m) $$</p>
+<p><strong>Neglected physical effects (any one for full credit):</strong></p>
+<ul>
+    <li><strong>Initial collisional ejection velocity dispersion (\\(\\Delta a_{\\mathrm{init}}\\)):</strong> Fragments are not born at a single point \\(a_c\\), giving the V-shape a finite initial width at \\(t = 0\\) (which causes a pure Yarkovsky fit to slightly overestimate the true age).</li>
+    <li><strong>YORP effect &amp; spin-state evolution:</strong> Radiative torques (YORP) and sub-catastrophic collisions periodically flip spin axes (stochastic Yarkovsky/YORP random walks) and alter \\(P_{\\mathrm{rot}}\\), slowing the net long-term drift compared to constant \\(\\gamma = 0^\\circ\\) or \\(180^\\circ\\).</li>
+    <li><strong>Non-zero orbital eccentricity (\\(e = 0.21\\)) and seasonal Yarkovsky component:</strong> Eccentricity increases the orbit-averaged solar flux by \\((1 - e^2)^{-1/2}\\) and planetary secular/mean-motion resonances can scatter fragments out of the V-shape wings.</li>
+</ul>`
     }
 ];
 
