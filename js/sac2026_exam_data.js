@@ -457,7 +457,7 @@ export const EXAM_QUESTIONS = [
         "module": "T9 · Radial Velocity & Astrometry",
         "points": "1.0 Point",
         "lore": "<strong>Part III — The Intermission (The Games of the Gods):</strong> The POTD War was on pause. Alex and Robert finally dared to sit down. The three gods, Mihai, Albert and Matei, the keepers of Theory, Time and Creation, did not rest. With no war to watch, the silence was unbearable. <em>\"I am bored,\"</em> said Matei. <em>\"So am I,\"</em> said Mihai. <em>\"Then let us play,\"</em> said Albert, and the universe became their game board. They appointed Alex and Robert as referees and made them check every move with a calculator. Nine games and one grand finale followed.",
-        "statement": "<strong>Game 3: The Treasure Hun (Mihai).</strong><br>Mihai hides a planet. Alex and Robert may only watch the star: a $1.00\\,M_\\odot$ star whose radial velocity oscillates with a semi-amplitude of $12.0\\ \\mathrm{m/s}$ and a period of $4.00\\ \\mathrm{years}$. A sky-plane astrometric survey shows that the star's apparent orbit around the barycentre is an ellipse whose minor axis is $0.600$ times its major axis (only the shape is known, not the scale). The planet's orbit is circular, and the planet's mass is negligible compared to the star's when applying Kepler's third law.<br><br><strong>What is the true mass of the hidden planet in Jupiter masses?</strong>",
+        "statement": "<strong>Game 3: The Treasure Hunt (Mihai).</strong><br>Mihai hides a planet. Alex and Robert may only watch the star: a $1.00\\,M_\\odot$ star whose radial velocity oscillates with a semi-amplitude of $12.0\\ \\mathrm{m/s}$ and a period of $4.00\\ \\mathrm{years}$. A sky-plane astrometric survey shows that the star's apparent orbit around the barycentre is an ellipse whose minor axis is $0.600$ times its major axis (only the shape is known, not the scale). The planet's orbit is circular, and the planet's mass is negligible compared to the star's when applying Kepler's third law.<br><br><strong>What is the true mass of the hidden planet in Jupiter masses?</strong>",
         "options": [
             "$0.67\\,M_J$",
             "$0.54\\,M_J$",
@@ -564,6 +564,7 @@ export const EXAM_QUESTIONS = [
         ]
     }
 ];
+
 export const EXAM_PARTICIPANTS = [
     {
         "bib": "SNG-2026-1046",
@@ -638,7 +639,7 @@ export const EXAM_PARTICIPANTS = [
         "aliasEmails": [],
         "sngUser": "Darius S.",
         "name": "Solcan-Luca Darius-Florin",
-        "country": "Romania , Botoşani",
+        "country": "Romania",
         "school": "Școala gimnazială numărul 7 Botoșani",
         "mode": "Solo (Dar!u$)",
         "canStartAnytime": false

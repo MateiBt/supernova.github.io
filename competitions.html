@@ -860,7 +860,7 @@
             <div class="pd-receipt-banner" id="pd-receipt-banner">
                 <div>
                     <i class="fa-solid fa-circle-check"></i>
-                    <strong>Official Cloud Submission Verified:</strong>
+                    <strong id="pd-receipt-heading">Official Cloud Submission Verified:</strong>
                     <span id="pd-receipt-details">Receipt ID: —</span>
                 </div>
                 <span id="pd-receipt-time" style="color:var(--text-muted);">—</span>
@@ -1345,8 +1345,8 @@
                     <div class="prize-tier" style="border-left-color: #C0C0C0;">
                         <strong>2nd – 5th Place (Silver Medal):</strong> Silver Certificate + <strong>$25 Voucher on AoPS</strong> + <strong>Kerbal Space Program</strong> Steam key.<br>
                         <span style="font-size:0.82rem; color:var(--text-muted);">
-• <strong>2nd &amp; 3rd Place:</strong> Astro Pixel Processor Lifetime License ($200)<br>
-• <strong>4th &amp; 5th Place:</strong> Physical copy of <em>Mastering image processing with Siril</em> (€59, shipped worldwide)
+- <strong>2nd &amp; 3rd Place:</strong> Astro Pixel Processor Lifetime License ($200)<br>
+- <strong>4th &amp; 5th Place:</strong> Physical copy of <em>Mastering image processing with Siril</em> (€59, shipped worldwide)
                         </span>
                     </div>
                     <div class="prize-tier" style="border-left-color: #CD7F32;">
@@ -1355,8 +1355,8 @@
                     <div class="prize-tier" style="border-left-color: var(--accent-blue);">
                         <strong>11th – 20th Place (Honorable Mention):</strong> Honorable Mention Certificate + Sponsor Steam Key:<br>
                         <span style="font-size:0.82rem; color:var(--text-muted);">
-• <strong>11th – 15th Place:</strong> <em>Juno: New Origins</em> Steam key ($20 value by Jundroo Games)<br>
-• <strong>16th – 20th Place:</strong> <em>Universe Sandbox</em> Steam key ($30 value by Giant Army)
+- <strong>11th – 15th Place:</strong> <em>Juno: New Origins</em> Steam key ($20 value by Jundroo Games)<br>
+- <strong>16th – 20th Place:</strong> <em>Universe Sandbox</em> Steam key ($30 value by Giant Army)
                         </span>
                     </div>
                     <div class="prize-tier" style="border-left-color: var(--accent-green);">
@@ -2956,6 +2956,9 @@
             "mihai.tesileanu2@gmail.com"
         ];
 
+        // Session identifier matching exam.html so Round 1 receipts NEVER lock out the Mock Exam
+        const CURRENT_SESSION_ID = "sac2026_mock";
+
         // Official Window A Key (10:00–11:00 UT)
         const R1_WINDOW_A_KEY = [
             "B", "A", "B", "B", "D", "C", "C", "D", "C", "B",
@@ -2997,7 +3000,22 @@
         let isOrganizerAdmin = false;
         let liveSubmissionsMap = {};
         let finalSubmissionsMap = {};
+        let submittedEmailsMap = {};
         let resultsPublished = false;
+
+        function normalizeEmail(e) {
+            return (e || "").trim().toLowerCase();
+        }
+
+        function isMockSessionRecord(rec) {
+            if (!rec || typeof rec !== 'object') return false;
+            if (rec.sessionId) return rec.sessionId === CURRENT_SESSION_ID;
+            const rid = String(rec.receiptId || "").toUpperCase();
+            const wz = String(rec.windowZone || "").toLowerCase();
+            if (rid.startsWith("SAC26-MOCK-")) return true;
+            if (wz.includes("mock")) return true;
+            return false;
+        }
 
         window.switchDashTab = function(tabId, btnEl) {
             document.querySelectorAll('.pd-tab-pane').forEach(p => p.classList.remove('active'));
@@ -3024,14 +3042,19 @@
             return { raw, tie: raw > 0 ? wSum / raw : 0 };
         }
 
+        // Only lock the Mock Exam launch button if this candidate/team has ALREADY submitted the Mock Exam
         function hasCandidateAlreadyParticipated(p) {
             if (!p || p.canStartAnytime) return false;
-            if (finalSubmissionsMap[p.bib]) return true;
-            if (p.partnerBib && finalSubmissionsMap[p.partnerBib]) return true;
-            const liveRec = liveSubmissionsMap[p.bib] || (p.partnerBib ? liveSubmissionsMap[p.partnerBib] : null);
-            if (liveRec) {
-                const ts = Date.parse(liveRec.updatedAt || 0);
-                if (ts > 0 && ts < Date.parse("2026-11-14T16:00:00Z")) return true;
+
+            if (isMockSessionRecord(finalSubmissionsMap[p.bib])) return true;
+            if (p.partnerBib && isMockSessionRecord(finalSubmissionsMap[p.partnerBib])) return true;
+
+            const primaryEmail = normalizeEmail(p.email);
+            if (primaryEmail && isMockSessionRecord(submittedEmailsMap[primaryEmail])) return true;
+            if (Array.isArray(p.aliasEmails)) {
+                for (const alias of p.aliasEmails) {
+                    if (isMockSessionRecord(submittedEmailsMap[normalizeEmail(alias)])) return true;
+                }
             }
             return false;
         }
@@ -3165,10 +3188,21 @@
                 finalSubmissionsMap = snap.val() || {};
                 renderAllScorecardsAndReceipts();
             });
+
+            onValue(ref(db, 'sac2026/submitted_emails'), (snap) => {
+                const raw = snap.val() || {};
+                submittedEmailsMap = {};
+                Object.entries(raw).forEach(([encodedEmail, sub]) => {
+                    const decoded = encodedEmail.replace(/,/g, '.').toLowerCase();
+                    if (sub) submittedEmailsMap[decoded] = sub;
+                });
+                renderAllScorecardsAndReceipts();
+            });
         }
 
         function renderAllScorecardsAndReceipts() {
             const banner = document.getElementById('pd-receipt-banner');
+            const bannerHeading = document.getElementById('pd-receipt-heading');
             const mockStatus = document.getElementById('mock-live-status');
             const mockTel = document.getElementById('mock-live-telemetry');
             const mockRec = document.getElementById('mock-live-receipt');
@@ -3180,13 +3214,16 @@
 
             if (currentParticipant) {
                 const bib = currentParticipant.bib;
-                const finalRec = finalSubmissionsMap[bib] || (currentParticipant.partnerBib ? finalSubmissionsMap[currentParticipant.partnerBib] : null);
-                const liveRec = liveSubmissionsMap[bib] || (currentParticipant.partnerBib ? liveSubmissionsMap[currentParticipant.partnerBib] : null);
-                const rec = finalRec || liveRec;
-                const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
-                const sc = computeCandidateScore(rec?.answers, rec);
+                const rawFinalRec = finalSubmissionsMap[bib] || (currentParticipant.partnerBib ? finalSubmissionsMap[currentParticipant.partnerBib] : null);
+                const rawLiveRec = liveSubmissionsMap[bib] || (currentParticipant.partnerBib ? liveSubmissionsMap[currentParticipant.partnerBib] : null);
 
-                // Lock Launch Exam Terminal buttons if already participated (unless Organizer)
+                // Separate Mock Exam records from Phase 1 records so Round 1 never blocks or spoofs Mock Exam status
+                const mockFinalRec = isMockSessionRecord(rawFinalRec) ? rawFinalRec : null;
+                const mockLiveRec = isMockSessionRecord(rawLiveRec) ? rawLiveRec : null;
+                const r1FinalRec = (rawFinalRec && !isMockSessionRecord(rawFinalRec)) ? rawFinalRec : null;
+                const r1LiveRec = (rawLiveRec && !isMockSessionRecord(rawLiveRec)) ? rawLiveRec : null;
+
+                // Lock Launch Exam Terminal buttons ONLY if already submitted THIS Mock Exam (unless Organizer)
                 const isLockedOut = hasCandidateAlreadyParticipated(currentParticipant);
                 [enterBtn, footerBtn].forEach(btn => {
                     if (!btn) return;
@@ -3194,7 +3231,7 @@
                         btn.disabled = true;
                         btn.style.opacity = "0.45";
                         btn.style.cursor = "not-allowed";
-                        btn.innerHTML = `<i class="fa-solid fa-lock"></i> Exam Completed (1 Attempt Limit)`;
+                        btn.innerHTML = `<i class="fa-solid fa-lock"></i> Mock Exam Completed (1 Attempt Limit)`;
                     } else {
                         btn.disabled = false;
                         btn.style.opacity = "1";
@@ -3203,32 +3240,60 @@
                     }
                 });
 
-                if (finalRec) {
-                    if (banner) {
-                        document.getElementById('pd-receipt-details').textContent =
-                            `Bib: ${bib} · Receipt ID: ${finalRec.receiptId} · Answered: ${ansCount}/30 · Score: ${sc.raw.toFixed(1)} / 30.0 pt (Tie-Break: ${sc.tie.toFixed(2)})`;
-                        document.getElementById('pd-receipt-time').textContent = `Submitted: ${finalRec.submittedAtUTC || ''}`;
-                        banner.style.display = 'flex';
-                    }
+                // Top Receipt Banner (prefers Mock receipt if completed, otherwise shows Phase 1 receipt clearly labeled)
+                if (mockFinalRec && banner) {
+                    const ansCount = mockFinalRec.answers ? Object.keys(mockFinalRec.answers).length : 0;
+                    const sc = computeCandidateScore(mockFinalRec.answers, mockFinalRec);
+                    if (bannerHeading) bannerHeading.textContent = "Official Mock Exam Submission Verified:";
+                    document.getElementById('pd-receipt-details').textContent =
+                        `Bib: ${bib} · Receipt ID: ${mockFinalRec.receiptId} · Answered: ${ansCount}/30 · Score: ${sc.raw.toFixed(1)} / 30.0 pt (Tie-Break: ${sc.tie.toFixed(2)})`;
+                    document.getElementById('pd-receipt-time').textContent = `Submitted: ${mockFinalRec.submittedAtUTC || ''}`;
+                    banner.style.display = 'flex';
+                } else if (r1FinalRec && banner) {
+                    const ansCount = r1FinalRec.answers ? Object.keys(r1FinalRec.answers).length : 0;
+                    const sc = computeCandidateScore(r1FinalRec.answers, r1FinalRec);
+                    if (bannerHeading) bannerHeading.textContent = "Phase 1 Submission Verified (Mock Exam Still Open):";
+                    document.getElementById('pd-receipt-details').textContent =
+                        `Bib: ${bib} · Receipt ID: ${r1FinalRec.receiptId} · Answered: ${ansCount}/30 · Score: ${sc.raw.toFixed(1)} / 30.0 pt (Tie-Break: ${sc.tie.toFixed(2)})`;
+                    document.getElementById('pd-receipt-time').textContent = `Submitted: ${r1FinalRec.submittedAtUTC || ''}`;
+                    banner.style.display = 'flex';
+                } else if (banner) {
+                    banner.style.display = 'none';
+                }
+
+                // Official Mock Exam Row
+                if (mockFinalRec) {
+                    const ansCount = mockFinalRec.answers ? Object.keys(mockFinalRec.answers).length : 0;
+                    const sc = computeCandidateScore(mockFinalRec.answers, mockFinalRec);
                     if (mockStatus) mockStatus.innerHTML = `<span class="c-badge badge-green">Submitted ✓</span>`;
-                    if (mockTel) mockTel.textContent = `${ansCount} / 30 · ${finalRec.strikes || 0} Strikes`;
-                    if (mockRec) mockRec.textContent = `${sc.raw.toFixed(1)} / 30.0 pt · ${finalRec.receiptId || 'Verified'}`;
-                    if (p1Status) p1Status.innerHTML = `<span class="c-badge badge-green">Submitted ✓</span>`;
-                    if (p1Tel) p1Tel.textContent = `${ansCount} / 30 · ${finalRec.strikes || 0} Strikes`;
-                    if (p1Rec) p1Rec.textContent = `${sc.raw.toFixed(1)} / 30.0 pt · ${finalRec.receiptId || 'Verified'}`;
-                } else if (liveRec) {
-                    if (banner) banner.style.display = 'none';
+                    if (mockTel) mockTel.textContent = `${ansCount} / 30 · ${mockFinalRec.strikes || 0} Strikes`;
+                    if (mockRec) mockRec.textContent = `${sc.raw.toFixed(1)} / 30.0 pt · ${mockFinalRec.receiptId || 'Verified'}`;
+                } else if (mockLiveRec) {
+                    const ansCount = mockLiveRec.answers ? Object.keys(mockLiveRec.answers).length : 0;
+                    const sc = computeCandidateScore(mockLiveRec.answers, mockLiveRec);
                     if (mockStatus) mockStatus.innerHTML = `<span class="c-badge badge-blue">In Progress (Live)</span>`;
-                    if (mockTel) mockTel.textContent = `${ansCount} / 30 · ${liveRec.strikes || 0} Strikes`;
+                    if (mockTel) mockTel.textContent = `${ansCount} / 30 · ${mockLiveRec.strikes || 0} Strikes`;
                     if (mockRec) mockRec.textContent = isOrganizerAdmin ? `Live Score: ${sc.raw.toFixed(1)} / 30.0 pt` : `Syncing Live`;
-                    if (p1Status) p1Status.innerHTML = `<span class="c-badge badge-blue">In Progress (Live)</span>`;
-                    if (p1Tel) p1Tel.textContent = `${ansCount} / 30 · ${liveRec.strikes || 0} Strikes`;
-                    if (p1Rec) p1Rec.textContent = isOrganizerAdmin ? `Live Score: ${sc.raw.toFixed(1)} / 30.0 pt` : `Syncing Live`;
                 } else {
-                    if (banner) banner.style.display = 'none';
-                    if (mockStatus) mockStatus.innerHTML = `<span class="c-badge badge-blue">Opens 14:00 UT</span>`;
+                    if (mockStatus) mockStatus.innerHTML = `<span class="c-badge badge-blue">Ready · 1 Attempt</span>`;
                     if (mockTel) mockTel.textContent = `0 / 30 · 0 Strikes`;
                     if (mockRec) mockRec.textContent = `14:00–20:00 UT`;
+                }
+
+                // Phase 1: Open Qualifier Row
+                if (r1FinalRec) {
+                    const ansCount = r1FinalRec.answers ? Object.keys(r1FinalRec.answers).length : 0;
+                    const sc = computeCandidateScore(r1FinalRec.answers, r1FinalRec);
+                    if (p1Status) p1Status.innerHTML = `<span class="c-badge badge-green">Submitted ✓</span>`;
+                    if (p1Tel) p1Tel.textContent = `${ansCount} / 30 · ${r1FinalRec.strikes || 0} Strikes`;
+                    if (p1Rec) p1Rec.textContent = `${sc.raw.toFixed(1)} / 30.0 pt · ${r1FinalRec.receiptId || 'Verified'}`;
+                } else if (r1LiveRec) {
+                    const ansCount = r1LiveRec.answers ? Object.keys(r1LiveRec.answers).length : 0;
+                    const sc = computeCandidateScore(r1LiveRec.answers, r1LiveRec);
+                    if (p1Status) p1Status.innerHTML = `<span class="c-badge badge-blue">Recorded</span>`;
+                    if (p1Tel) p1Tel.textContent = `${ansCount} / 30 · ${r1LiveRec.strikes || 0} Strikes`;
+                    if (p1Rec) p1Rec.textContent = isOrganizerAdmin ? `Recorded Score: ${sc.raw.toFixed(1)} / 30.0 pt` : `Recorded`;
+                } else {
                     if (p1Status) p1Status.innerHTML = `<span class="c-badge badge-green">Enrolled · Ready</span>`;
                     if (p1Tel) p1Tel.textContent = `0 / 30 · 0 Strikes`;
                     if (p1Rec) p1Rec.textContent = `30.0 pt Scale`;
@@ -3454,13 +3519,13 @@
 
         window.enterCompetitionRound = function() {
             if (currentParticipant && hasCandidateAlreadyParticipated(currentParticipant)) {
-                alert(`Bib ${currentParticipant.bib} has already completed this session. Only 1 attempt is permitted.`);
+                alert(`Bib ${currentParticipant.bib} has already completed this Mock Exam session. Only 1 attempt is permitted.`);
                 return;
             }
             const stage = currentParticipant?.stage || 'qualifier';
             const baseUrl = ROUND_EXAM_LINKS[stage] || 'exam.html';
             if (currentParticipant) {
-                window.location.href = `${baseUrl}?bib=${encodeURIComponent(currentParticipant.bib)}&email=${encodeURIComponent(currentParticipant.email)}&zone=americas`;
+                window.location.href = `${baseUrl}?bib=${encodeURIComponent(currentParticipant.bib)}&email=${encodeURIComponent(currentParticipant.email)}`;
             } else {
                 window.location.href = baseUrl;
             }

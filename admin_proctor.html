@@ -568,7 +568,7 @@
                 <div class="kpi-sub" id="kpi-phone-live-sub">0 Phone Cams Paired (3s)</div>
             </div>
             <div class="kpi-card">
-                <span class="kpi-lbl">Final Submissions</span>
+                <span class="kpi-lbl">Final Submissions (Mock)</span>
                 <div class="kpi-val" id="kpi-final-submitted" style="color:var(--text-pure);">0</div>
                 <div class="kpi-sub">1-Attempt Lock Enforced on Submit</div>
             </div>
@@ -632,7 +632,7 @@
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
                     <div>
                         <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Real-Time Triple-Camera Wall (Webcam + Screen + 2nd-Angle Phone)</h3>
-                        <p style="font-size:0.81rem; color:var(--text-muted);">Each card streams <strong>Laptop Cam (left)</strong>, <strong>Shared Screen (middle)</strong>, and <strong>Mobile Desk Cam (right)</strong> every 3 seconds. Alerts trigger if a live candidate's phone drops for 25s+.</p>
+                        <p style="font-size:0.81rem; color:var(--text-muted);">Each card streams <strong>Laptop Cam (left)</strong>, <strong>Shared Screen (middle)</strong>, and <strong>Mobile Desk Cam (right)</strong> every 3 seconds. Filtered to <strong>Mock Exam</strong> records so Round 1 entries never collide.</p>
                     </div>
                     <div style="display:flex; gap:8px; flex-wrap:wrap;">
                         <button type="button" class="btn-action" onclick="window.filterProctorWall('all')">Show Staff + Active / Submitted</button>
@@ -661,7 +661,7 @@
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
                     <div>
                         <h3 style="font-family:var(--font-display); font-size:1.15rem; color:var(--text-pure);">Uncensored Master Competitor Roster (43 Competitors + 3 Organizers)</h3>
-                        <p style="font-size:0.82rem; color:var(--text-muted);">Includes full legal names, emails, aliases, Discord handles, DOBs, schools, cities, grades, shared Team IDs, and 1-attempt reset controls.</p>
+                        <p style="font-size:0.82rem; color:var(--text-muted);">Includes full legal names, emails, aliases, Discord handles, DOBs, schools, cities, grades, shared Team IDs, and 1-attempt reset controls (clears both Bib &amp; Email locks).</p>
                     </div>
                     <div style="display:flex; gap:8px; flex-wrap:wrap;">
                         <button type="button" class="btn-action btn-green" id="btn-copy-all-emails">
@@ -708,7 +708,7 @@
                                 <th>Academic Grade</th>
                                 <th>Format / Callsign</th>
                                 <th>Shared Team / Partner</th>
-                                <th>Exam Status</th>
+                                <th>Mock Exam Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -826,6 +826,9 @@ Supernova Guide Scientific Committee</textarea>
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getDatabase, ref, onValue, set, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+        // Session identifier matching exam.html & competitions.html so Round 1 data never leaks into Mock Exam
+        const CURRENT_SESSION_ID = "sac2026_mock";
+
         const REGISTERED_PARTICIPANTS = [
             {"bib": "SNG-2026-1046", "email": "matei.butnaru@yahoo.com", "aliasEmails": ["contact.supernovaguide@gmail.com", "contact@supernovaguide.com", "matei.butnaru@yahoo.ro", "mateibutnaru5@gmail.com"], "sngUser": "Matei", "name": "Matei Butnaru", "discord": "matei_admin", "dob": "2008-01-01", "country": "Romania", "school": "Supernova Guide Scientific Committee", "city": "Botoșani, Romania", "grade": "Lead Organizer & Scientific Committee", "experience": "IOAA / National Astronomy & Physics Olympiad", "mode": "Solo (Test Participant & Lead Organizer)", "teamType": "admin", "callsign": "Matei", "partner": null, "partnerBib": null, "partnerDiscord": "Albert / Mihai", "partnerCountry": "Romania", "partnerSchool": "Supernova Guide Scientific Committee", "publicPrivacy": "full", "ageConsent": "Organizer", "sponsorConsent": true, "referredBy": "Founder", "regTimestamp": "2026-10-19 00:00:00", "stage": "mock", "isAdmin": true, "aliasBibs": ["SNG-ADMIN-01"], "canStartAnytime": true, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1044", "email": "albert_voicu_olteanu@yahoo.com", "aliasEmails": [], "sngUser": "Albert", "name": "Albert Voicu Olteanu", "discord": "albert_admin", "dob": "2008-01-01", "country": "Romania", "school": "Supernova Guide Scientific Committee", "city": "Romania", "grade": "High School — Grade 12 / Final Secondary Year", "experience": "IOAA / National Astronomy & Physics Olympiad", "mode": "Solo (Test Participant & Co-Founder)", "teamType": "solo", "callsign": "Albert", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "publicPrivacy": "full", "ageConsent": "Organizer", "sponsorConsent": true, "referredBy": "Co-Founder", "regTimestamp": "2026-10-19 00:00:00", "stage": "mock", "isAdmin": true, "aliasBibs": ["SNG-ADMIN-02"], "canStartAnytime": true, "isParticipant": true, "teamId": null},
@@ -892,6 +895,7 @@ Supernova Guide Scientific Committee</textarea>
 
         let liveSubmissions = {};
         let finalSubmissions = {};
+        let submittedEmailsMap = {};
         let webcamSnapshots = {};
         let phoneProctorFeeds = {};
         let phoneEntryReceivedAt = {};
@@ -899,6 +903,32 @@ Supernova Guide Scientific Committee</textarea>
         let proctorFilter = "all";
         let currentInspectedBib = null;
         let listenersStarted = false;
+
+        function normalizeEmail(e) {
+            return (e || "").trim().toLowerCase();
+        }
+
+        function emailKeyForFirebase(e) {
+            return normalizeEmail(e).replace(/\./g, ',');
+        }
+
+        function isMockSessionRecord(rec) {
+            if (!rec || typeof rec !== 'object') return false;
+            if (rec.sessionId) return rec.sessionId === CURRENT_SESSION_ID;
+            const rid = String(rec.receiptId || "").toUpperCase();
+            const wz = String(rec.windowZone || "").toLowerCase();
+            if (rid.startsWith("SAC26-MOCK-")) return true;
+            if (wz.includes("mock")) return true;
+            return false;
+        }
+
+        function hasEmailLockForParticipant(p) {
+            if (!p) return false;
+            const emails = [p.email, ...(Array.isArray(p.aliasEmails) ? p.aliasEmails : [])]
+                .map(normalizeEmail)
+                .filter(Boolean);
+            return emails.some(em => Boolean(submittedEmailsMap[em]));
+        }
 
         function parseTimestampMs(val) {
             if (!val) return 0;
@@ -1060,15 +1090,16 @@ Supernova Guide Scientific Committee</textarea>
             }
         });
 
-        // 1. One-Click Wipe of All Test Data & Submissions
+        // 1. One-Click Wipe of All Test Data & Submissions (Including submitted_emails)
         window.wipeAllTestData = async function() {
-            if (!confirm("Are you sure you want to WIPE ALL test submissions, camera snapshots, phone feeds, team sessions, and strikes so the competition starts at 0?")) return;
+            if (!confirm("Are you sure you want to WIPE ALL test submissions, email locks, camera snapshots, phone feeds, team sessions, and strikes so the competition starts at 0?")) return;
             if (getApps().length === 0) return;
             const db = getDatabase(getApp());
             try {
                 await Promise.all([
                     remove(ref(db, 'sac2026/submissions')),
                     remove(ref(db, 'sac2026/final_submissions')),
+                    remove(ref(db, 'sac2026/submitted_emails')),
                     remove(ref(db, 'sac2026/snapshots')),
                     remove(ref(db, 'sac2026/phone_proctor')),
                     remove(ref(db, 'sac2026/team_sessions')),
@@ -1077,9 +1108,15 @@ Supernova Guide Scientific Committee</textarea>
                 ]);
                 phoneEntryReceivedAt = {};
                 Object.keys(localStorage).forEach(k => {
-                    if (k.startsWith('sac_2026_exam_state_')) localStorage.removeItem(k);
+                    if (
+                        k.startsWith('sac_2026_exam_state_') ||
+                        k.startsWith('sac_2026_mock_') ||
+                        k.startsWith('sac_2026_submitted_email_')
+                    ) {
+                        localStorage.removeItem(k);
+                    }
                 });
-                alert("✓ All test submissions, camera/screen/phone feeds, team sessions, and strikes have been wiped to 0!");
+                alert("✓ All submissions, email locks, camera/screen/phone feeds, team sessions, and strikes have been wiped to 0!");
             } catch (e) {
                 alert("Error wiping test data: " + e.message);
             }
@@ -1117,6 +1154,7 @@ Supernova Guide Scientific Committee</textarea>
             const newStrikes = Math.max(0, currentStrikes + delta);
             try {
                 await update(ref(db, `sac2026/submissions/${bib}`), {
+                    sessionId: CURRENT_SESSION_ID,
                     bib,
                     strikes: newStrikes,
                     lastEvent: `admin_manual_strike_${delta > 0 ? '+' + delta : delta}`
@@ -1144,17 +1182,37 @@ Supernova Guide Scientific Committee</textarea>
             }
         };
 
-        // 4b. Reset 1-Attempt Lock for a Specific Candidate (Allow Retake)
+        // 4b. Reset 1-Attempt Lock for a Specific Candidate (Clears Bib, Email & Partner Locks)
         window.resetCandidateAttempt = async function(bib) {
             if (getApps().length === 0) return;
             const p = REGISTERED_PARTICIPANTS.find(x => x.bib === bib);
             const label = p ? `${p.name} (${bib})` : bib;
-            if (!confirm(`Reset 1-attempt lock and clear existing submission data for ${label}? This will allow them to take the exam again.`)) return;
+            if (!confirm(`Reset 1-attempt lock (Bib + Email) and clear existing submission data for ${label}? This will allow them to take the Mock Exam again.`)) return;
 
             const db = getDatabase(getApp());
             try {
                 const bibsToClear = [bib];
-                if (p?.partnerBib) bibsToClear.push(p.partnerBib);
+                const emailsToClear = new Set();
+
+                const collectParticipantEmails = (entry) => {
+                    if (!entry) return;
+                    if (entry.email) emailsToClear.add(normalizeEmail(entry.email));
+                    if (Array.isArray(entry.aliasEmails)) {
+                        entry.aliasEmails.forEach(a => emailsToClear.add(normalizeEmail(a)));
+                    }
+                };
+
+                collectParticipantEmails(p);
+                if (p?.partnerBib) {
+                    bibsToClear.push(p.partnerBib);
+                    const partnerEntry = REGISTERED_PARTICIPANTS.find(x => x.bib === p.partnerBib);
+                    collectParticipantEmails(partnerEntry);
+                }
+
+                bibsToClear.forEach(b => {
+                    if (finalSubmissions[b]?.email) emailsToClear.add(normalizeEmail(finalSubmissions[b].email));
+                    if (liveSubmissions[b]?.email) emailsToClear.add(normalizeEmail(liveSubmissions[b].email));
+                });
 
                 const ops = [];
                 bibsToClear.forEach(b => {
@@ -1163,16 +1221,26 @@ Supernova Guide Scientific Committee</textarea>
                     ops.push(remove(ref(db, `sac2026/force_submit/${b}`)));
                     ops.push(remove(ref(db, `sac2026/snapshots/${b}`)));
                     ops.push(remove(ref(db, `sac2026/live_watch/${b}`)));
+                    ops.push(remove(ref(db, `sac2026/phone_proctor/${b}`)));
                 });
+
+                emailsToClear.forEach(em => {
+                    if (em) {
+                        ops.push(remove(ref(db, `sac2026/submitted_emails/${emailKeyForFirebase(em)}`)));
+                    }
+                });
+
                 if (p?.teamId) {
                     ops.push(remove(ref(db, `sac2026/team_sessions/${p.teamId}`)));
                 }
+
                 await Promise.all(ops);
-                alert(`✓ 1-Attempt lock cleared for ${label}. They may now launch exam.html again.`);
+                alert(`✓ 1-Attempt lock (Bib + Email) cleared for ${label}. They may now launch exam.html again.`);
             } catch (e) {
                 alert("Error resetting candidate attempt: " + e.message);
             }
         };
+
         // 5. Admin-Triggered Force Auto-Submission (Supports Solo & Shared Duo Teams)
         window.forceSubmitCandidate = async function(bib, skipConfirm = false) {
             if (getApps().length === 0) return;
@@ -1198,14 +1266,16 @@ Supernova Guide Scientific Committee</textarea>
 
                 const liveRec = liveSubmissions[bib];
                 if (!finalSubmissions[bib] && liveRec) {
-                    const receiptId = `SAC26-${(p?.teamId || bib).split('-').pop()}-${Date.now().toString(36).toUpperCase()}`;
+                    const receiptId = `SAC26-MOCK-${(p?.teamId || bib).split('-').pop()}-${Date.now().toString(36).toUpperCase()}`;
+                    const candEmail = normalizeEmail(liveRec.email || p?.email || "");
                     const payload = {
+                        sessionId: CURRENT_SESSION_ID,
                         bib,
                         teamId: p?.teamId || null,
                         partnerBib: p?.partnerBib || null,
                         name: liveRec.name || p?.name || bib,
-                        email: liveRec.email || p?.email || "",
-                        windowZone: liveRec.windowZone || "Mock Exam (Proctor Force-Submit)",
+                        email: candEmail,
+                        windowZone: liveRec.windowZone || "Mock Exam · 19 Nov 2026 (Proctor Force-Submit)",
                         answers: liveRec.answers || {},
                         strikes: liveRec.strikes || 0,
                         remainingSeconds: liveRec.remainingSeconds || 0,
@@ -1214,13 +1284,36 @@ Supernova Guide Scientific Committee</textarea>
                         submittedAtUTC: nowIso
                     };
                     await set(ref(db, `sac2026/final_submissions/${bib}`), payload);
+                    if (candEmail) {
+                        await set(ref(db, `sac2026/submitted_emails/${emailKeyForFirebase(candEmail)}`), {
+                            sessionId: CURRENT_SESSION_ID,
+                            bib,
+                            email: candEmail,
+                            windowZone: payload.windowZone,
+                            receiptId,
+                            submittedAtUTC: nowIso
+                        });
+                    }
                     if (p?.partnerBib) {
+                        const partnerEntry = REGISTERED_PARTICIPANTS.find(x => x.bib === p.partnerBib);
+                        const partnerEmail = normalizeEmail(partnerEntry?.email || "");
                         await set(ref(db, `sac2026/final_submissions/${p.partnerBib}`), {
                             ...payload,
                             bib: p.partnerBib,
                             partnerBib: bib,
-                            name: p.partner || p.partnerBib
+                            name: p.partner || p.partnerBib,
+                            email: partnerEmail
                         });
+                        if (partnerEmail) {
+                            await set(ref(db, `sac2026/submitted_emails/${emailKeyForFirebase(partnerEmail)}`), {
+                                sessionId: CURRENT_SESSION_ID,
+                                bib: p.partnerBib,
+                                email: partnerEmail,
+                                windowZone: payload.windowZone,
+                                receiptId,
+                                submittedAtUTC: nowIso
+                            });
+                        }
                     }
                 }
                 await set(ref(db, `sac2026/live_watch/${bib}`), null);
@@ -1317,8 +1410,15 @@ Supernova Guide Scientific Committee</textarea>
                 }
             }, handleDbError('config'));
 
+            // Filter submissions & final_submissions to THIS Mock Exam session only (ignore Round 1)
             onValue(ref(db, 'sac2026/submissions'), (snap) => {
-                liveSubmissions = snap.val() || {};
+                const raw = snap.val() || {};
+                liveSubmissions = {};
+                Object.entries(raw).forEach(([bibKey, rec]) => {
+                    if (isMockSessionRecord(rec)) {
+                        liveSubmissions[bibKey] = rec;
+                    }
+                });
                 updateTelemetryKPIs();
                 renderProctorWall();
                 renderMasterTable();
@@ -1326,12 +1426,29 @@ Supernova Guide Scientific Committee</textarea>
             }, handleDbError('submissions'));
 
             onValue(ref(db, 'sac2026/final_submissions'), (snap) => {
-                finalSubmissions = snap.val() || {};
+                const raw = snap.val() || {};
+                finalSubmissions = {};
+                Object.entries(raw).forEach(([bibKey, rec]) => {
+                    if (isMockSessionRecord(rec)) {
+                        finalSubmissions[bibKey] = rec;
+                    }
+                });
                 updateTelemetryKPIs();
                 renderProctorWall();
                 renderMasterTable();
                 renderGraderTable();
             }, handleDbError('final_submissions'));
+
+            onValue(ref(db, 'sac2026/submitted_emails'), (snap) => {
+                const raw = snap.val() || {};
+                submittedEmailsMap = {};
+                Object.entries(raw).forEach(([encodedEmail, sub]) => {
+                    if (isMockSessionRecord(sub)) {
+                        submittedEmailsMap[encodedEmail.replace(/,/g, '.').toLowerCase()] = sub;
+                    }
+                });
+                renderMasterTable();
+            }, handleDbError('submitted_emails'));
 
             onValue(ref(db, 'sac2026/snapshots'), (snap) => {
                 webcamSnapshots = snap.val() || {};
@@ -1507,7 +1624,7 @@ Supernova Guide Scientific Committee</textarea>
                     ? `<button type="button" class="btn-action" style="padding:5px 8px; border-color:var(--accent-red); color:var(--accent-red);" title="Force Auto-Submit Now" onclick="window.forceSubmitCandidate('${p.bib}')">
                         <i class="fa-solid fa-paper-plane"></i> Submit
                        </button>`
-                    : `<button type="button" class="btn-action" style="padding:5px 8px; border-color:var(--accent-blue); color:var(--accent-blue);" title="Clear 1-Attempt Lock & Allow Retake" onclick="window.resetCandidateAttempt('${p.bib}')">
+                    : `<button type="button" class="btn-action" style="padding:5px 8px; border-color:var(--accent-blue); color:var(--accent-blue);" title="Clear 1-Attempt Lock (Bib + Email) & Allow Retake" onclick="window.resetCandidateAttempt('${p.bib}')">
                         <i class="fa-solid fa-rotate-left"></i> Reset 1-Try
                        </button>`;
 
@@ -1583,14 +1700,19 @@ Supernova Guide Scientific Committee</textarea>
             tbody.innerHTML = rows.map(p => {
                 const isFinal = !!finalSubmissions[p.bib];
                 const isLive = !!liveSubmissions[p.bib];
+                const hasEmailLock = hasEmailLockForParticipant(p);
                 const rec = finalSubmissions[p.bib] || liveSubmissions[p.bib];
                 const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
                 const statusHtml = isFinal
                     ? `<span style="color:var(--accent-green); font-family:var(--font-mono); font-weight:700;">Submitted (${ansCount}/40 · ${rec.strikes||0} str)</span>`
-                    : (isLive ? `<span style="color:var(--accent-blue); font-family:var(--font-mono);">Live (${ansCount}/40)</span>` : `<span style="color:var(--text-muted); font-family:var(--font-mono);">Registered</span>`);
+                    : (isLive
+                        ? `<span style="color:var(--accent-blue); font-family:var(--font-mono);">Live (${ansCount}/40)</span>`
+                        : (hasEmailLock
+                            ? `<span style="color:var(--accent-gold); font-family:var(--font-mono);">Email Locked</span>`
+                            : `<span style="color:var(--text-muted); font-family:var(--font-mono);">Ready</span>`));
 
-                const resetBtnHtml = (isFinal || isLive)
-                    ? `<button type="button" class="btn-action" style="padding:4px 8px; font-size:0.68rem; border-color:var(--accent-red); color:var(--accent-red);" onclick="window.resetCandidateAttempt('${p.bib}')" title="Clear 1-Attempt Lock">Reset</button>`
+                const resetBtnHtml = (isFinal || isLive || hasEmailLock)
+                    ? `<button type="button" class="btn-action" style="padding:4px 8px; font-size:0.68rem; border-color:var(--accent-red); color:var(--accent-red);" onclick="window.resetCandidateAttempt('${p.bib}')" title="Clear 1-Attempt Lock (Bib + Email)">Reset</button>`
                     : '';
 
                 return `

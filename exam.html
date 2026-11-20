@@ -1482,6 +1482,9 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
+        // Session-isolated identifiers so Round 1 localStorage / receipts NEVER lock the Mock Exam
+        const CURRENT_SESSION_ID = "sac2026_mock";
+        const SESSION_STORAGE_PREFIX = "sac_2026_mock";
         const EXAM_DURATION_SECONDS = 60 * 60; // 60 Minutes per individual / Duo team
 
         // Official SAC 2026 Mock Exam Entry Window (UTC): 19 Nov 2026 · 14:00–20:00 UT
@@ -1530,8 +1533,11 @@
         let snapshotInterval = null;
         let isLiveWatchedByAdmin = false;
         let adminWindowOverride = "auto";
+
         let submittedBibsMap = {};
         let submittedEmailsMap = {};
+        let cloudFinalSubsLoaded = false;
+        let cloudSubmittedEmailsLoaded = false;
 
         function normalizeEmail(e) {
             return (e || "").trim().toLowerCase();
@@ -1541,6 +1547,46 @@
             return normalizeEmail(e).replace(/\./g, ',');
         }
 
+        function isSubmissionForThisSession(sub) {
+            if (!sub || typeof sub !== 'object') return false;
+            if (sub.sessionId) return sub.sessionId === CURRENT_SESSION_ID;
+            const rid = String(sub.receiptId || "").toUpperCase();
+            const wz = String(sub.windowZone || "").toLowerCase();
+            if (rid.startsWith("SAC26-MOCK-")) return true;
+            if (wz.includes("mock")) return true;
+            return false;
+        }
+
+        function getSessionStateKey(bibOrTeamId) {
+            return `${SESSION_STORAGE_PREFIX}_state_${bibOrTeamId}`;
+        }
+
+        function getSessionSubmittedKey(bibOrTeamId) {
+            return `${SESSION_STORAGE_PREFIX}_state_${bibOrTeamId}_submitted`;
+        }
+
+        function getSessionEmailLockKey(emailStr) {
+            return `${SESSION_STORAGE_PREFIX}_submitted_email_${normalizeEmail(emailStr)}`;
+        }
+
+        function clearStaleSessionLocalLocks(p, rawEmailInput = "") {
+            if (!p) return;
+            localStorage.removeItem(getSessionSubmittedKey(p.teamId || p.bib));
+            localStorage.removeItem(getSessionSubmittedKey(p.bib));
+            if (p.partnerBib) {
+                localStorage.removeItem(getSessionSubmittedKey(p.partnerBib));
+            }
+            if (p.email) {
+                localStorage.removeItem(getSessionEmailLockKey(p.email));
+            }
+            if (rawEmailInput) {
+                localStorage.removeItem(getSessionEmailLockKey(rawEmailInput));
+            }
+            if (Array.isArray(p.aliasEmails)) {
+                p.aliasEmails.forEach(a => localStorage.removeItem(getSessionEmailLockKey(a)));
+            }
+        }
+
         onValue(ref(db, 'sac2026/config/windowOverride'), (snap) => {
             if (snap.exists()) {
                 adminWindowOverride = snap.val();
@@ -1548,37 +1594,70 @@
             }
         });
 
-        // Track all final submissions by BOTH Bib ID and Normalized Email to strictly prevent repeat attempts
+        // Track final submissions for THIS session only (ignoring Round 1 records)
         onValue(ref(db, 'sac2026/final_submissions'), (snap) => {
             const raw = snap.val() || {};
-            submittedBibsMap = raw;
-            submittedEmailsMap = {};
+            submittedBibsMap = {};
+            const rebuiltEmails = {};
+
             Object.entries(raw).forEach(([bibKey, sub]) => {
-                if (!sub) return;
+                if (!isSubmissionForThisSession(sub)) return;
+                submittedBibsMap[bibKey] = sub;
                 if (sub.email) {
-                    submittedEmailsMap[normalizeEmail(sub.email)] = sub;
+                    rebuiltEmails[normalizeEmail(sub.email)] = sub;
                 }
                 const rosterEntry = EXAM_PARTICIPANTS.find(p => p.bib.toUpperCase() === bibKey.toUpperCase());
                 if (rosterEntry) {
-                    submittedEmailsMap[normalizeEmail(rosterEntry.email)] = sub;
+                    rebuiltEmails[normalizeEmail(rosterEntry.email)] = sub;
                     if (Array.isArray(rosterEntry.aliasEmails)) {
                         rosterEntry.aliasEmails.forEach(a => {
-                            submittedEmailsMap[normalizeEmail(a)] = sub;
+                            rebuiltEmails[normalizeEmail(a)] = sub;
                         });
                     }
                 }
             });
+
+            // Preserve any valid current-session entries already loaded from submitted_emails
+            Object.entries(submittedEmailsMap).forEach(([emailKey, sub]) => {
+                if (isSubmissionForThisSession(sub) && !rebuiltEmails[emailKey]) {
+                    rebuiltEmails[emailKey] = sub;
+                }
+            });
+
+            submittedEmailsMap = rebuiltEmails;
+            cloudFinalSubsLoaded = true;
             checkGateReady();
         });
 
         onValue(ref(db, 'sac2026/submitted_emails'), (snap) => {
             const raw = snap.val() || {};
-            Object.entries(raw).forEach(([encodedEmail, sub]) => {
-                const decoded = encodedEmail.replace(/,/g, '.').toLowerCase();
-                if (sub && !submittedEmailsMap[decoded]) {
-                    submittedEmailsMap[decoded] = sub;
+            const nextEmails = {};
+
+            // Keep entries derived from final_submissions for this session
+            Object.entries(submittedBibsMap).forEach(([bibKey, sub]) => {
+                if (!isSubmissionForThisSession(sub)) return;
+                if (sub.email) nextEmails[normalizeEmail(sub.email)] = sub;
+                const rosterEntry = EXAM_PARTICIPANTS.find(p => p.bib.toUpperCase() === bibKey.toUpperCase());
+                if (rosterEntry) {
+                    nextEmails[normalizeEmail(rosterEntry.email)] = sub;
+                    if (Array.isArray(rosterEntry.aliasEmails)) {
+                        rosterEntry.aliasEmails.forEach(a => {
+                            nextEmails[normalizeEmail(a)] = sub;
+                        });
+                    }
                 }
             });
+
+            Object.entries(raw).forEach(([encodedEmail, sub]) => {
+                if (!isSubmissionForThisSession(sub)) return;
+                const decoded = encodedEmail.replace(/,/g, '.').toLowerCase();
+                if (!nextEmails[decoded]) {
+                    nextEmails[decoded] = sub;
+                }
+            });
+
+            submittedEmailsMap = nextEmails;
+            cloudSubmittedEmailsLoaded = true;
             checkGateReady();
         });
 
@@ -1587,6 +1666,7 @@
             document.querySelectorAll('.zone-option').forEach(z => z.classList.remove('active'));
             if (el) el.classList.add('active');
         };
+
         const gateScreen = document.getElementById('gatekeeper-screen');
         const btnEnableCam = document.getElementById('btn-enable-cam');
         const btnEnableScreen = document.getElementById('btn-enable-screen');
@@ -1816,25 +1896,31 @@
                 return `Your Duo teammate (${p.partnerBib}) has already submitted this Mock Exam for your team (Receipt: ${submittedBibsMap[p.partnerBib].receiptId || 'Verified'}).`;
             }
             if (submittedEmailsMap[primaryEmailNorm]) {
-                return `Account email ${p.email} has already completed an attempt (Receipt: ${submittedEmailsMap[primaryEmailNorm].receiptId || 'Verified'}). Repeat attempts are locked.`;
+                return `Account email ${p.email} has already completed this Mock Exam (Receipt: ${submittedEmailsMap[primaryEmailNorm].receiptId || 'Verified'}). Repeat attempts are locked.`;
             }
             if (eNorm && submittedEmailsMap[eNorm]) {
-                return `Account email ${eNorm} has already completed an attempt (Receipt: ${submittedEmailsMap[eNorm].receiptId || 'Verified'}). Repeat attempts are locked.`;
+                return `Account email ${eNorm} has already completed this Mock Exam (Receipt: ${submittedEmailsMap[eNorm].receiptId || 'Verified'}). Repeat attempts are locked.`;
             }
             if (Array.isArray(p.aliasEmails)) {
                 for (const alias of p.aliasEmails) {
                     const aNorm = normalizeEmail(alias);
                     if (submittedEmailsMap[aNorm]) {
-                        return `Registered email (${alias}) has already completed an attempt. Repeat attempts are locked.`;
+                        return `Registered email (${alias}) has already completed this Mock Exam. Repeat attempts are locked.`;
                     }
                 }
             }
 
-            // Local backup lock check (Bib + Email)
-            const localSubKey = `sac_2026_exam_state_${p.teamId || p.bib}_submitted`;
-            const localEmailKey = `sac_2026_submitted_email_${primaryEmailNorm}`;
+            // Firebase is the source of truth once loaded: clear any stale local lock if cloud confirms no Mock submission
+            if (cloudFinalSubsLoaded && cloudSubmittedEmailsLoaded) {
+                clearStaleSessionLocalLocks(p, rawEmailInput);
+                return null;
+            }
+
+            // Offline fallback only (scoped strictly to this Mock Exam session, never Round 1 keys)
+            const localSubKey = getSessionSubmittedKey(p.teamId || p.bib);
+            const localEmailKey = getSessionEmailLockKey(primaryEmailNorm);
             if (localStorage.getItem(localSubKey) || localStorage.getItem(localEmailKey)) {
-                return `This Bib ID (${p.bib}) or Email (${p.email}) already has a completed submission recorded on this device.`;
+                return `This Bib ID (${p.bib}) or Email (${p.email}) already has a completed Mock Exam submission recorded on this device.`;
             }
 
             return null;
@@ -1842,12 +1928,12 @@
 
         function hasActiveUnexpiredSession(bibOrTeamId) {
             if (!bibOrTeamId) return false;
-            if (localStorage.getItem(`sac_2026_exam_state_${bibOrTeamId}_submitted`)) return false;
-            const raw = localStorage.getItem(`sac_2026_exam_state_${bibOrTeamId}`);
+            if (localStorage.getItem(getSessionSubmittedKey(bibOrTeamId))) return false;
+            const raw = localStorage.getItem(getSessionStateKey(bibOrTeamId));
             if (!raw) return false;
             try {
                 const parsed = JSON.parse(raw);
-                return parsed.endTimeMs && parsed.endTimeMs > Date.now();
+                return parsed.sessionId === CURRENT_SESSION_ID && parsed.endTimeMs && parsed.endTimeMs > Date.now();
             } catch (e) {
                 return false;
             }
@@ -1942,13 +2028,17 @@
                 authText.textContent = "Enter your registered EXAM_PARTICIPANTS email and Bib ID to verify eligibility.";
             }
 
-            // Block if already submitted (by Bib ID, Duo Partner Bib, or Email)
+            // Block if already submitted THIS Mock Exam (by Bib ID, Duo Partner Bib, or Email)
             const lockReason = hasCandidateAlreadyParticipated(strictMatch || looseMatch, emailVal);
             if (lockReason) {
                 btnStartExam.disabled = true;
                 btnStartExam.innerHTML = `<i class="fa-solid fa-ban"></i> Attempt Already Used (1 Attempt Limit)`;
                 gateError.textContent = lockReason;
+                gateError.dataset.lockError = "true";
                 return;
+            } else if (gateError.dataset.lockError === "true") {
+                gateError.textContent = "";
+                gateError.dataset.lockError = "";
             }
 
             const ws = getWindowState();
@@ -1969,12 +2059,14 @@
 
         emailInput.addEventListener('input', () => {
             gateError.textContent = "";
+            gateError.dataset.lockError = "";
             const foundByEmail = findParticipantByEmailOrBib(emailInput.value, "");
             if (foundByEmail) bibInput.value = foundByEmail.bib;
             checkGateReady();
         });
         bibInput.addEventListener('input', () => {
             gateError.textContent = "";
+            gateError.dataset.lockError = "";
             checkGateReady();
         });
         pledgeCheck.addEventListener('change', checkGateReady);
@@ -2094,24 +2186,42 @@
                 return;
             }
 
-            // Direct Firebase verification on BOTH Bib ID and Normalized Email before launching
+            // Direct Firebase verification on BOTH Bib ID and Normalized Email for THIS session before launching
             try {
-                const [cloudFinalBibSnap, cloudEmailSnap, cloudLiveSnap] = await Promise.all([
+                const reads = [
                     get(ref(db, `sac2026/final_submissions/${candidateBib}`)),
                     get(ref(db, `sac2026/submitted_emails/${emailKeyForFirebase(candidateEmail)}`)),
                     get(ref(db, `sac2026/submissions/${candidateBib}`))
-                ]);
+                ];
+                if (partnerBib) {
+                    reads.push(get(ref(db, `sac2026/final_submissions/${partnerBib}`)));
+                }
 
-                if (!cloudFinalBibSnap.exists() && !cloudEmailSnap.exists() && !cloudLiveSnap.exists()) {
+                const [cloudFinalBibSnap, cloudEmailSnap, cloudLiveSnap, cloudPartnerSnap] = await Promise.all(reads);
+
+                const bibFinalSub = cloudFinalBibSnap.exists() && isSubmissionForThisSession(cloudFinalBibSnap.val())
+                    ? cloudFinalBibSnap.val() : null;
+                const emailFinalSub = cloudEmailSnap.exists() && isSubmissionForThisSession(cloudEmailSnap.val())
+                    ? cloudEmailSnap.val() : null;
+                const partnerFinalSub = cloudPartnerSnap && cloudPartnerSnap.exists() && isSubmissionForThisSession(cloudPartnerSnap.val())
+                    ? cloudPartnerSnap.val() : null;
+                const liveSub = cloudLiveSnap.exists() && isSubmissionForThisSession(cloudLiveSnap.val())
+                    ? cloudLiveSnap.val() : null;
+
+                if (!bibFinalSub && !emailFinalSub && !partnerFinalSub && !liveSub) {
                     localStorage.removeItem(getStorageKey());
-                    localStorage.removeItem(`${getStorageKey()}_submitted`);
+                    clearStaleSessionLocalLocks(participant, candidateEmail);
                 } else if (!participant.canStartAnytime) {
-                    if (cloudFinalBibSnap.exists()) {
-                        gateError.textContent = `Bib ${candidateBib} has already submitted this Mock Exam (Receipt: ${cloudFinalBibSnap.val().receiptId || 'Verified'}).`;
+                    if (bibFinalSub) {
+                        gateError.textContent = `Bib ${candidateBib} has already submitted this Mock Exam (Receipt: ${bibFinalSub.receiptId || 'Verified'}).`;
                         return;
                     }
-                    if (cloudEmailSnap.exists()) {
-                        gateError.textContent = `Email ${candidateEmail} has already submitted this Mock Exam (Receipt: ${cloudEmailSnap.val().receiptId || 'Verified'}).`;
+                    if (partnerFinalSub) {
+                        gateError.textContent = `Your Duo teammate (${partnerBib}) has already submitted this Mock Exam (Receipt: ${partnerFinalSub.receiptId || 'Verified'}).`;
+                        return;
+                    }
+                    if (emailFinalSub) {
+                        gateError.textContent = `Email ${candidateEmail} has already submitted this Mock Exam (Receipt: ${emailFinalSub.receiptId || 'Verified'}).`;
                         return;
                     }
                 }
@@ -2130,7 +2240,7 @@
         });
 
         function getStorageKey() {
-            return `sac_2026_exam_state_${activeTeamId || candidateBib}`;
+            return getSessionStateKey(activeTeamId || candidateBib);
         }
 
         async function initializeExamSession() {
@@ -2154,23 +2264,32 @@
                 }
             }
 
-            // Recover unexpired active session from Firebase Team Session, Individual Session, or localStorage
+            // Recover unexpired active Mock Exam session only (never recover Round 1 state)
             let recovered = null;
             try {
                 if (activeTeamId) {
                     const tSnap = await get(ref(db, `sac2026/team_sessions/${activeTeamId}`));
-                    if (tSnap.exists() && !tSnap.val().submitted) recovered = tSnap.val();
+                    if (tSnap.exists() && !tSnap.val().submitted && isSubmissionForThisSession(tSnap.val())) {
+                        recovered = tSnap.val();
+                    }
                 }
                 if (!recovered) {
                     const sSnap = await get(ref(db, `sac2026/submissions/${candidateBib}`));
-                    if (sSnap.exists()) recovered = sSnap.val();
+                    if (sSnap.exists() && isSubmissionForThisSession(sSnap.val())) {
+                        recovered = sSnap.val();
+                    }
                 }
             } catch (e) {}
 
             if (!recovered) {
                 const savedRaw = localStorage.getItem(getStorageKey());
                 if (savedRaw) {
-                    try { recovered = JSON.parse(savedRaw); } catch (e) {}
+                    try {
+                        const parsed = JSON.parse(savedRaw);
+                        if (parsed && parsed.sessionId === CURRENT_SESSION_ID) {
+                            recovered = parsed;
+                        }
+                    } catch (e) {}
                 }
             }
 
@@ -2211,6 +2330,7 @@
                 onValue(ref(db, `sac2026/team_sessions/${activeTeamId}`), (snap) => {
                     if (!examActive || !snap.exists()) return;
                     const tData = snap.val();
+                    if (!isSubmissionForThisSession(tData)) return;
                     if (tData.submitted && tData.finalPayload && !isSubmitting) {
                         const subAt = Date.parse(tData.finalPayload.submittedAtUTC || 0);
                         if (subAt >= sessionStartedAtMs - 2000) {
@@ -2257,6 +2377,7 @@
             remainingSeconds = Math.max(0, Math.floor((endTimeMs - Date.now()) / 1000));
 
             const payload = {
+                sessionId: CURRENT_SESSION_ID,
                 bib: candidateBib,
                 teamId: activeTeamId,
                 partnerBib: partnerBib,
@@ -2282,6 +2403,7 @@
             try {
                 const nowIso = new Date().toISOString();
                 await update(ref(db, `sac2026/submissions/${candidateBib}`), {
+                    sessionId: CURRENT_SESSION_ID,
                     bib: candidateBib,
                     teamId: activeTeamId,
                     partnerBib: partnerBib,
@@ -2299,7 +2421,9 @@
 
                 if (activeTeamId) {
                     await set(ref(db, `sac2026/team_sessions/${activeTeamId}`), {
+                        sessionId: CURRENT_SESSION_ID,
                         teamId: activeTeamId,
+                        windowZone: selectedWindowZone,
                         answers,
                         flagged,
                         endTimeMs,
@@ -2309,6 +2433,7 @@
                     });
                     if (partnerBib) {
                         await update(ref(db, `sac2026/submissions/${partnerBib}`), {
+                            sessionId: CURRENT_SESSION_ID,
                             bib: partnerBib,
                             teamId: activeTeamId,
                             partnerBib: candidateBib,
@@ -2647,7 +2772,14 @@
 
         window.resetTestAttempt = async function() {
             localStorage.removeItem(getStorageKey());
-            localStorage.removeItem(`${getStorageKey()}_submitted`);
+            localStorage.removeItem(getSessionSubmittedKey(activeTeamId || candidateBib));
+            localStorage.removeItem(getSessionEmailLockKey(candidateEmail));
+            if (matchedParticipant?.email) {
+                localStorage.removeItem(getSessionEmailLockKey(matchedParticipant.email));
+            }
+            // Also clear any legacy Round 1 local keys on organizer reset
+            localStorage.removeItem(`sac_2026_exam_state_${activeTeamId || candidateBib}`);
+            localStorage.removeItem(`sac_2026_exam_state_${activeTeamId || candidateBib}_submitted`);
             localStorage.removeItem(`sac_2026_submitted_email_${normalizeEmail(candidateEmail)}`);
             if (matchedParticipant?.email) {
                 localStorage.removeItem(`sac_2026_submitted_email_${normalizeEmail(matchedParticipant.email)}`);
@@ -2683,6 +2815,7 @@
             const nowIso = new Date().toISOString();
 
             const finalPayload = {
+                sessionId: CURRENT_SESSION_ID,
                 bib: candidateBib,
                 teamId: activeTeamId,
                 partnerBib: partnerBib,
@@ -2697,25 +2830,29 @@
                 submittedAtUTC: nowIso
             };
 
-            localStorage.setItem(`${getStorageKey()}_submitted`, JSON.stringify(finalPayload));
-            localStorage.setItem(`sac_2026_submitted_email_${normalizeEmail(candidateEmail)}`, receiptId);
+            localStorage.setItem(getSessionSubmittedKey(activeTeamId || candidateBib), JSON.stringify(finalPayload));
+            localStorage.setItem(getSessionEmailLockKey(candidateEmail), receiptId);
             if (matchedParticipant?.email) {
-                localStorage.setItem(`sac_2026_submitted_email_${normalizeEmail(matchedParticipant.email)}`, receiptId);
+                localStorage.setItem(getSessionEmailLockKey(matchedParticipant.email), receiptId);
             }
             localStorage.removeItem(getStorageKey());
 
             try {
                 await set(ref(db, `sac2026/final_submissions/${candidateBib}`), finalPayload);
                 await set(ref(db, `sac2026/submitted_emails/${emailKeyForFirebase(candidateEmail)}`), {
+                    sessionId: CURRENT_SESSION_ID,
                     bib: candidateBib,
                     email: candidateEmail,
+                    windowZone: selectedWindowZone,
                     receiptId,
                     submittedAtUTC: nowIso
                 });
                 if (matchedParticipant?.email && normalizeEmail(matchedParticipant.email) !== normalizeEmail(candidateEmail)) {
                     await set(ref(db, `sac2026/submitted_emails/${emailKeyForFirebase(matchedParticipant.email)}`), {
+                        sessionId: CURRENT_SESSION_ID,
                         bib: candidateBib,
                         email: matchedParticipant.email,
+                        windowZone: selectedWindowZone,
                         receiptId,
                         submittedAtUTC: nowIso
                     });
@@ -2724,6 +2861,7 @@
 
                 if (activeTeamId) {
                     await update(ref(db, `sac2026/team_sessions/${activeTeamId}`), {
+                        sessionId: CURRENT_SESSION_ID,
                         submitted: true,
                         finalPayload
                     });
@@ -2739,8 +2877,10 @@
                         });
                         if (partnerEntry?.email) {
                             await set(ref(db, `sac2026/submitted_emails/${emailKeyForFirebase(partnerEntry.email)}`), {
+                                sessionId: CURRENT_SESSION_ID,
                                 bib: partnerBib,
                                 email: partnerEntry.email,
+                                windowZone: selectedWindowZone,
                                 receiptId,
                                 submittedAtUTC: nowIso
                             });
