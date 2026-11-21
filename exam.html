@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Mock Exam Terminal — SAC 2026 | Supernova Guide</title>
+    <title>Grand Final Live Exam Terminal — SAC 2026 | Supernova Guide</title>
     <link rel="icon" type="image/png" href="assets/img/supernova_logo.png">
 
     <!-- Google Fonts -->
@@ -164,7 +164,7 @@
             font-size: 0.74rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            color: var(--accent-blue);
+            color: var(--accent-gold);
             display: block;
         }
 
@@ -484,6 +484,7 @@
             border-color: rgba(43, 227, 138, 0.45);
             background: rgba(43, 227, 138, 0.06);
         }
+
         .qr-code-box {
             width: 84px;
             height: 84px;
@@ -571,9 +572,9 @@
             font-size: 0.74rem;
             padding: 4px 10px;
             border-radius: 99px;
-            background: rgba(53, 230, 255, 0.12);
-            color: var(--accent-blue);
-            border: 1px solid rgba(53, 230, 255, 0.3);
+            background: rgba(255, 207, 92, 0.14);
+            color: var(--accent-gold);
+            border: 1px solid rgba(255, 207, 92, 0.35);
             font-weight: 700;
         }
 
@@ -654,27 +655,28 @@
         .question-ribbon {
             background: var(--bg-base);
             border-bottom: 1px solid var(--border-subtle);
-            padding: 10px 24px;
+            padding: 9px 24px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             overflow-x: auto;
             flex-shrink: 0;
         }
 
         .q-nav-btn {
-            min-width: 34px;
-            height: 32px;
+            min-width: 30px;
+            height: 30px;
             border-radius: 6px;
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
             color: var(--text-muted);
             font-family: var(--font-mono);
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.15s;
             position: relative;
+            flex-shrink: 0;
         }
 
         .q-nav-btn.active {
@@ -815,6 +817,7 @@
             line-height: 1.72;
             color: var(--text-pure);
             margin-bottom: 24px;
+            overflow-x: auto;
         }
 
         .options-list {
@@ -1067,7 +1070,7 @@
 
         .constants-table th,
         .constants-table td {
-            padding: 9px 12px;
+            padding: 8px 12px;
             border-bottom: 1px solid var(--border-subtle);
             text-align: left;
         }
@@ -1095,15 +1098,15 @@
                         <img src="assets/img/supernova_logo.png" alt="Supernova Guide" onerror="this.style.display='none'">
                         <div>
                             <span class="gate-eyebrow">Supernova Astrophysics Cup · Autumn 2026</span>
-                            <strong style="font-family:var(--font-display); color:var(--text-pure);">Official Mock Exam Terminal (30 MCQs · 60 Min)</strong>
+                            <strong style="font-family:var(--font-display); color:var(--text-pure);">Grand Final Terminal (45 MCQs · 90 Min)</strong>
                         </div>
                     </div>
                     <span class="gate-utc-badge" id="gate-utc-clock">UTC: Loading...</span>
                 </div>
 
-                <h1 class="gate-title">Competitor Verification</h1>
+                <h1 class="gate-title">Grand Finalist Verification</h1>
                 <p class="gate-desc">
-                    Only registered competitors in <strong>EXAM_PARTICIPANTS</strong> may enter. The Mock Exam terminal unlocks on <strong>19 Nov 2026 between 14:00 and 20:00 UT</strong> with a <strong>60-minute</strong> exam timer. Each candidate or Duo team is permitted strictly <strong>1 attempt</strong>.
+                    Restricted strictly to our <strong>Top 16 Qualified Finalists</strong>. The Grand Final unlocks on <strong>Saturday, 21 Nov 2026</strong> during <strong>10:00–11:00 UT</strong> or <strong>18:00–19:00 UT</strong> with a <strong>90-minute</strong> exam timer. Each finalist or Duo team is permitted strictly <strong>1 attempt</strong> across both windows.
                 </p>
 
                 <div class="auth-status-banner" id="auth-status-banner">
@@ -1113,17 +1116,22 @@
 
                 <!-- Live Window Schedule & Countdown Banner -->
                 <div class="window-status-banner locked" id="window-status-banner">
-                    <span id="window-status-label"><i class="fa-regular fa-clock"></i> Checking Mock Exam window...</span>
+                    <span id="window-status-label"><i class="fa-regular fa-clock"></i> Checking Grand Final entry window...</span>
                     <strong id="window-countdown-text">--:--:--</strong>
                 </div>
 
-                <!-- Mock Exam Official Window Card -->
-                <label class="form-label">Active Competition Session</label>
-                <div class="window-zone-grid" style="grid-template-columns: 1fr;">
-                    <div class="zone-option active" id="zone-opt-mock" onclick="window.selectExamZone('Mock Exam · 19 Nov 2026 (14:00–20:00 UT)', this)">
-                        <span class="zone-tag">Official Mock Exam · 60-Minute Individual / Duo Timer</span>
-                        <div class="zone-title">Thursday, 19 November 2026</div>
-                        <div class="zone-hours">Entry Window: 14:00 UT – 20:00 UT (16:00 – 22:00 EET) · 1 Attempt Limit</div>
+                <!-- 2-Window Zone Selector -->
+                <label class="form-label">Select Your Entry Window (Sat, 21 Nov 2026)</label>
+                <div class="window-zone-grid">
+                    <div class="zone-option active" id="zone-opt-wina" onclick="window.selectExamZone('Grand Final · Window A (10:00–11:00 UT)', this)">
+                        <span class="zone-tag">Window A · Session 1</span>
+                        <div class="zone-title">Morning / Europe &amp; Asia</div>
+                        <div class="zone-hours">10:00 UT – 11:00 UT (12:00 EET)</div>
+                    </div>
+                    <div class="zone-option" id="zone-opt-winb" onclick="window.selectExamZone('Grand Final · Window B (18:00–19:00 UT)', this)">
+                        <span class="zone-tag">Window B · Session 2</span>
+                        <div class="zone-title">Evening / Americas &amp; Europe</div>
+                        <div class="zone-hours">18:00 UT – 19:00 UT (20:00 EET)</div>
                     </div>
                 </div>
 
@@ -1133,19 +1141,20 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="cand-bib">Assigned Candidate Bib ID</label>
+                    <label class="form-label" for="cand-bib">Assigned Finalist Bib ID</label>
                     <input type="text" id="cand-bib" class="form-input" placeholder="SNG-2026-1001" required>
                 </div>
 
                 <label class="pledge-label">
                     <input type="checkbox" id="pledge-check">
                     <span>
-                        I confirm that I am using only a non-programmable scientific calculator and the built-in Supernova Constants Sheet, and that my webcam shows my writing and work paper. I consent to continuous live webcam + screen + secondary phone camera streaming (every 3s) and full-screen lockdown.
+                        I confirm that I am using only a non-programmable scientific calculator and the built-in Supernova Constants Sheet, and that my webcam and side phone camera show both me working and my screen. I consent to continuous live webcam + screen + phone camera streaming (every 3s) and full-screen lockdown.
                     </span>
                 </label>
 
                 <div id="gate-error" class="gate-error"></div>
             </div>
+
             <!-- Right Column: Hardware Permissions & Proctoring Rules -->
             <div class="preflight-box">
                 <div>
@@ -1190,7 +1199,7 @@
                         <div class="qr-code-box" id="phone-qr-container" title="Scan with your phone camera"></div>
                         <div class="qr-pairing-details">
                             <strong style="color:var(--text-pure); display:block;">Pair Secondary Phone Camera</strong>
-                            <span>Scan this QR code with your phone and position it to show your desk &amp; screen.</span>
+                            <span>Scan this QR code and place your phone camera so proctors can see <strong>both you working and your screen</strong>.</span>
                             <div class="qr-pairing-status" id="qr-pairing-status">
                                 <i class="fa-solid fa-spinner fa-spin"></i> Waiting for phone scan...
                             </div>
@@ -1200,8 +1209,8 @@
 
                     <!-- Work Paper Framing Notice -->
                     <div class="hide-bar-alert" style="border-left-color: var(--accent-blue); background: rgba(53, 230, 255, 0.09); border-color: rgba(53, 230, 255, 0.35);">
-                        <i class="fa-solid fa-pen-to-square" style="color:var(--accent-blue);"></i>
-                        <strong>WEBCAM ANGLE (WORK PAPER):</strong> Angle your webcam slightly downward so both <strong>you and your scratch/work paper</strong> are visible while writing.
+                        <i class="fa-solid fa-video" style="color:var(--accent-blue);"></i>
+                        <strong>CAMERA PLACEMENT:</strong> Angle your webcam downward so <strong>you are visible</strong>, and position your <strong>phone side-camera</strong> so we can see <strong>both you working and your screen</strong>.
                     </div>
 
                     <!-- Hide Screen-Share Bar Notice -->
@@ -1213,13 +1222,13 @@
                     <!-- Teams of 2 Communication Notice -->
                     <div class="hide-bar-alert" style="border-left-color: var(--accent-green); background: rgba(43, 227, 138, 0.08); border-color: rgba(43, 227, 138, 0.35);">
                         <i class="fa-solid fa-headset" style="color:var(--accent-green);"></i>
-                        <strong>TEAMS OF 2:</strong> You may communicate via <strong>a second device (must stay visible on your webcam)</strong> or <strong>Discord voice</strong> (do not click out of fullscreen or switch windows).
+                        <strong>TEAMS OF 2:</strong> Communicate via <strong>a second device (kept visible on your webcam)</strong> or <strong>Discord voice</strong> (do not click out of fullscreen or switch windows).
                     </div>
                 </div>
 
                 <div>
                     <button type="button" class="btn-launch" id="btn-start-exam" disabled>
-                        <i class="fa-solid fa-play"></i> Enter Fullscreen &amp; Start Mock Exam (30 MCQs)
+                        <i class="fa-solid fa-play"></i> Enter Fullscreen &amp; Start Grand Final (45 MCQs)
                     </button>
                 </div>
             </div>
@@ -1233,7 +1242,7 @@
         <div class="header-left">
             <img src="assets/img/supernova_logo.png" alt="Logo" onerror="this.style.display='none'">
             <strong style="font-family:var(--font-display); font-size:1.05rem; color:var(--text-pure);">SUPERNOVA GUIDE</strong>
-            <span class="exam-phase-pill" id="header-phase-label">SAC 2026 · OFFICIAL MOCK EXAM (30 MCQs · 60 MIN)</span>
+            <span class="exam-phase-pill" id="header-phase-label">SAC 2026 · GRAND FINAL (45 MCQs · 90 MIN)</span>
         </div>
 
         <div class="header-right">
@@ -1242,7 +1251,7 @@
             </button>
             <div class="timer-box" id="exam-timer-box">
                 <i class="fa-regular fa-clock"></i>
-                <span id="exam-timer-display">60:00</span>
+                <span id="exam-timer-display">90:00</span>
             </div>
             <button type="button" class="btn-submit-exam" id="btn-finish-exam">
                 <i class="fa-solid fa-paper-plane"></i> Finish &amp; Submit
@@ -1262,8 +1271,8 @@
 
                 <div class="problem-meta">
                     <div class="meta-left">
-                        <span class="q-num-badge" id="q-number-title">Question 1 of 30</span>
-                        <span class="q-part-badge" id="q-part-tag">Mock Exam</span>
+                        <span class="q-num-badge" id="q-number-title">Question 1 of 45</span>
+                        <span class="q-part-badge" id="q-part-tag">Part I · Fundamentals</span>
                         <span class="q-module-badge" id="q-module-tag">Module T1</span>
                         <span class="q-pts-badge" id="q-points-tag">1.0 Point</span>
                     </div>
@@ -1320,16 +1329,16 @@
                     <span class="telemetry-val" id="tel-bib" style="color:var(--accent-blue);">SNG-2026-0000</span>
                 </div>
                 <div class="telemetry-row">
-                    <span style="color:var(--text-muted);">Competitor</span>
+                    <span style="color:var(--text-muted);">Finalist</span>
                     <span class="telemetry-val" id="tel-name" style="font-size:0.72rem; color:var(--text-pure);">—</span>
                 </div>
                 <div class="telemetry-row">
                     <span style="color:var(--text-muted);">Session</span>
-                    <span class="telemetry-val" id="tel-zone" style="font-size:0.68rem; color:var(--accent-purple);">Mock Exam</span>
+                    <span class="telemetry-val" id="tel-zone" style="font-size:0.68rem; color:var(--accent-purple);">Grand Final (90m)</span>
                 </div>
                 <div class="telemetry-row">
                     <span style="color:var(--text-muted);">Progress</span>
-                    <span class="telemetry-val" id="tel-answered" style="color:var(--accent-green);">0 / 30</span>
+                    <span class="telemetry-val" id="tel-answered" style="color:var(--accent-green);">0 / 45</span>
                 </div>
                 <div class="telemetry-row">
                     <span style="color:var(--text-muted);">Fullscreen</span>
@@ -1383,9 +1392,9 @@
     <div class="modal-overlay" id="submit-confirm-modal">
         <div class="violation-box" style="border-color:var(--accent-green);">
             <i class="fa-solid fa-paper-plane" style="font-size:2.2rem; color:var(--accent-green); margin-bottom:12px;"></i>
-            <h2 style="font-family:var(--font-display); color:var(--text-pure); margin-bottom:8px;">Finalize &amp; Submit Mock Exam?</h2>
+            <h2 style="font-family:var(--font-display); color:var(--text-pure); margin-bottom:8px;">Finalize &amp; Submit Grand Final?</h2>
             <p id="submit-confirm-text" style="font-size:0.9rem; color:var(--text-muted); line-height:1.55; margin-bottom:22px;">
-                You have answered 0 of 30 questions. Are you sure you want to finalize and submit your official Mock Exam sheet?
+                You have answered 0 of 45 questions. Are you sure you want to finalize and submit your official Grand Final sheet?
             </p>
             <div style="display:flex; gap:12px;">
                 <button type="button" class="btn-nav" id="btn-cancel-submit" style="flex:1; justify-content:center;">
@@ -1421,12 +1430,12 @@
     </div>
 
     <!-- =========================================================
-         5. OFFICIAL PROBLEM SET & IAU CONSTANTS MODAL
+         5. OFFICIAL GRAND FINAL USEFUL CONSTANTS MODAL
          ========================================================= -->
     <div class="modal-overlay" id="constants-modal">
         <div class="constants-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                <h3 style="font-family:var(--font-display); color:var(--text-pure);">SAC 2026 Mock Exam · Official Useful Constants Sheet</h3>
+                <h3 style="font-family:var(--font-display); color:var(--text-pure);">SAC 2026 Grand Final · Official Useful Constants Sheet</h3>
                 <button type="button" id="btn-close-constants" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
@@ -1436,24 +1445,30 @@
                     <tr>
                         <th>Quantity</th>
                         <th>Symbol</th>
-                        <th>Official Exam Value</th>
+                        <th>Official Grand Final Value</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr><td>Gravitational Constant</td><td>$G$</td><td>$6.67 \times 10^{-11}\ \mathrm{m^3\,kg^{-1}\,s^{-2}}$</td></tr>
+                    <tr><td>Solar Gravitational Parameter</td><td>$GM_\odot$</td><td>$1.327 \times 10^{20}\ \mathrm{m^3\,s^{-2}}$</td></tr>
+                    <tr><td>Speed of Light</td><td>$c$</td><td>$3.00 \times 10^8\ \mathrm{m/s}$</td></tr>
                     <tr><td>Earth Mass</td><td>$M_E$</td><td>$5.97 \times 10^{24}\ \mathrm{kg}$</td></tr>
-                    <tr><td>Earth Radius</td><td>$R_E$</td><td>$6.37 \times 10^6\ \mathrm{m}$</td></tr>
-                    <tr><td>Earth Gravitational Parameter</td><td>$\mu_E$</td><td>$3.986 \times 10^{14}\ \mathrm{m^3/s^2}$</td></tr>
-                    <tr><td>Standard Surface Gravity</td><td>$g_0$</td><td>$9.81\ \mathrm{m/s^2}$</td></tr>
-                    <tr><td>Moon Mass</td><td>$M_M$</td><td>$7.35 \times 10^{22}\ \mathrm{kg}$</td></tr>
-                    <tr><td>Moon Radius</td><td>$R_M$</td><td>$1.74 \times 10^6\ \mathrm{m}$</td></tr>
+                    <tr><td>Earth Radius</td><td>$R_E$</td><td>$6.40 \times 10^6\ \mathrm{m}$</td></tr>
                     <tr><td>Solar Mass</td><td>$M_\odot$</td><td>$1.99 \times 10^{30}\ \mathrm{kg}$</td></tr>
-                    <tr><td>Solar Absolute V-Band Magnitude</td><td>$M_\odot$</td><td>$4.83$</td></tr>
+                    <tr><td>Solar Radius</td><td>$R_\odot$</td><td>$6.96 \times 10^8\ \mathrm{m}$</td></tr>
+                    <tr><td>Solar Luminosity</td><td>$L_\odot$</td><td>$3.83 \times 10^{26}\ \mathrm{W}$</td></tr>
                     <tr><td>Astronomical Unit</td><td>$1\ \mathrm{AU}$</td><td>$1.496 \times 10^{11}\ \mathrm{m}$</td></tr>
-                    <tr><td>Obliquity of the Ecliptic</td><td>$\varepsilon$</td><td>$23.44^\circ$</td></tr>
-                    <tr><td>Speed of Light</td><td>$c$</td><td>$2.99792458 \times 10^8\ \mathrm{m\,s^{-1}}$</td></tr>
-                    <tr><td>Stefan-Boltzmann Constant</td><td>$\sigma$</td><td>$5.670374 \times 10^{-8}\ \mathrm{W\,m^{-2}\,K^{-4}}$</td></tr>
-                    <tr><td>Parsec</td><td>$1\ \mathrm{pc}$</td><td>$3.0857 \times 10^{16}\ \mathrm{m} = 206,265\ \mathrm{AU}$</td></tr>
+                    <tr><td>Parsec</td><td>$1\ \mathrm{pc}$</td><td>$3.086 \times 10^{16}\ \mathrm{m}$</td></tr>
+                    <tr><td>Julian Year</td><td>$1\ \mathrm{yr}$</td><td>$3.156 \times 10^7\ \mathrm{s}$</td></tr>
+                    <tr><td>Standard Surface Gravity</td><td>$g_0$</td><td>$9.80\ \mathrm{m/s^2}$</td></tr>
+                    <tr><td>Earth Escape Velocity</td><td>$v_{\mathrm{esc},\oplus}$</td><td>$11.2\ \mathrm{km/s}$</td></tr>
+                    <tr><td>Thomson Scattering Cross-Section</td><td>$\sigma_T$</td><td>$6.65 \times 10^{-29}\ \mathrm{m^2}$</td></tr>
+                    <tr><td>Proton Mass</td><td>$m_p$</td><td>$1.67 \times 10^{-27}\ \mathrm{kg}$</td></tr>
+                    <tr><td>Hubble Constant (Default)</td><td>$H_0$</td><td>$70\ \mathrm{km\,s^{-1}\,Mpc^{-1}}$</td></tr>
+                    <tr><td>Hubble Time</td><td>$1/H_0$</td><td>$13.97\ \mathrm{Gyr}$</td></tr>
+                    <tr><td>Hubble Distance</td><td>$c/H_0$</td><td>$4283\ \mathrm{Mpc}$</td></tr>
+                    <tr><td>Boltzmann Constant</td><td>$k_B$</td><td>$1.380649 \times 10^{-23}\ \mathrm{J/K}$</td></tr>
+                    <tr><td>Hydrogen Atom Mass</td><td>$m_H$</td><td>$1.67356 \times 10^{-27}\ \mathrm{kg}$</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1482,17 +1497,25 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        // Session-isolated identifiers so Round 1 localStorage / receipts NEVER lock the Mock Exam
-        const CURRENT_SESSION_ID = "sac2026_mock";
-        const SESSION_STORAGE_PREFIX = "sac_2026_mock";
-        const EXAM_DURATION_SECONDS = 60 * 60; // 60 Minutes per individual / Duo team
+        // Session-isolated identifiers so Round 1 & Mock Exam receipts NEVER lock out Grand Finalists
+        const CURRENT_SESSION_ID = "sac2026_phase3_final";
+        const SESSION_STORAGE_PREFIX = "sac_2026_phase3_final";
+        const EXAM_DURATION_SECONDS = 90 * 60; // 90 Minutes (1.5 hours) for 45 MCQs
 
-        // Official SAC 2026 Mock Exam Entry Window (UTC): 19 Nov 2026 · 14:00–20:00 UT
+        // Official SAC 2026 Grand Final Entry Windows (UTC): Saturday, 21 Nov 2026
+        const WINDOW_A_CUTOFF_MS = Date.parse("2026-11-21T16:30:00Z"); // Boundary separating Window A from Window B
         const OFFICIAL_WINDOWS_UTC = [
             {
-                label: "Official Mock Exam (19 Nov 2026 · 14:00–20:00 UT)",
-                startMs: Date.parse("2026-11-19T14:00:00Z"),
-                endMs: Date.parse("2026-11-19T20:00:00Z")
+                label: "Grand Final · Window A (10:00–11:00 UT)",
+                shortLabel: "Final · Win A (90m)",
+                startMs: Date.parse("2026-11-21T10:00:00Z"),
+                endMs: Date.parse("2026-11-21T11:00:00Z")
+            },
+            {
+                label: "Grand Final · Window B (18:00–19:00 UT)",
+                shortLabel: "Final · Win B (90m)",
+                startMs: Date.parse("2026-11-21T18:00:00Z"),
+                endMs: Date.parse("2026-11-21T19:00:00Z")
             }
         ];
 
@@ -1523,7 +1546,9 @@
         let matchedParticipant = null;
         let activeTeamId = null;
         let partnerBib = null;
-        let selectedWindowZone = "Mock Exam · 19 Nov 2026 (14:00–20:00 UT)";
+        let selectedWindowZone = Date.now() >= Date.parse("2026-11-21T11:15:00Z")
+            ? "Grand Final · Window B (18:00–19:00 UT)"
+            : "Grand Final · Window A (10:00–11:00 UT)";
         let answers = {};
         let flagged = {};
         let strikes = 0;
@@ -1536,6 +1561,7 @@
 
         let submittedBibsMap = {};
         let submittedEmailsMap = {};
+        let windowAParticipatedBibsMap = {};
         let cloudFinalSubsLoaded = false;
         let cloudSubmittedEmailsLoaded = false;
 
@@ -1549,11 +1575,13 @@
 
         function isSubmissionForThisSession(sub) {
             if (!sub || typeof sub !== 'object') return false;
-            if (sub.sessionId) return sub.sessionId === CURRENT_SESSION_ID;
+            if (sub.sessionId) {
+                return String(sub.sessionId).toLowerCase() === CURRENT_SESSION_ID;
+            }
             const rid = String(sub.receiptId || "").toUpperCase();
             const wz = String(sub.windowZone || "").toLowerCase();
-            if (rid.startsWith("SAC26-MOCK-")) return true;
-            if (wz.includes("mock")) return true;
+            if (rid.startsWith("SAC26-FINAL-") || rid.startsWith("SAC26-P3-")) return true;
+            if (wz.includes("grand final") || wz.includes("phase 3")) return true;
             return false;
         }
 
@@ -1594,7 +1622,7 @@
             }
         });
 
-        // Track final submissions for THIS session only (ignoring Round 1 records)
+        // Track final submissions for GRAND FINAL only (ignoring Round 1 & Mock Exam records)
         onValue(ref(db, 'sac2026/final_submissions'), (snap) => {
             const raw = snap.val() || {};
             submittedBibsMap = {};
@@ -1617,7 +1645,6 @@
                 }
             });
 
-            // Preserve any valid current-session entries already loaded from submitted_emails
             Object.entries(submittedEmailsMap).forEach(([emailKey, sub]) => {
                 if (isSubmissionForThisSession(sub) && !rebuiltEmails[emailKey]) {
                     rebuiltEmails[emailKey] = sub;
@@ -1633,7 +1660,6 @@
             const raw = snap.val() || {};
             const nextEmails = {};
 
-            // Keep entries derived from final_submissions for this session
             Object.entries(submittedBibsMap).forEach(([bibKey, sub]) => {
                 if (!isSubmissionForThisSession(sub)) return;
                 if (sub.email) nextEmails[normalizeEmail(sub.email)] = sub;
@@ -1661,11 +1687,32 @@
             checkGateReady();
         });
 
+        // Prevent anyone who already launched in Grand Final Window A from taking Window B again
+        onValue(ref(db, 'sac2026/submissions'), (snap) => {
+            const allSubs = snap.val() || {};
+            windowAParticipatedBibsMap = {};
+            Object.entries(allSubs).forEach(([b, data]) => {
+                if (!isSubmissionForThisSession(data)) return;
+                const ts = Date.parse(data?.updatedAt || 0);
+                if (ts > 0 && ts < WINDOW_A_CUTOFF_MS && Date.now() >= WINDOW_A_CUTOFF_MS) {
+                    windowAParticipatedBibsMap[b] = data;
+                }
+            });
+            checkGateReady();
+        });
+
         window.selectExamZone = function(zoneLabel, el) {
             selectedWindowZone = zoneLabel;
             document.querySelectorAll('.zone-option').forEach(z => z.classList.remove('active'));
             if (el) el.classList.add('active');
         };
+
+        // Highlight default zone card on load
+        if (selectedWindowZone.includes("Window B")) {
+            window.selectExamZone(selectedWindowZone, document.getElementById('zone-opt-winb'));
+        } else {
+            window.selectExamZone(selectedWindowZone, document.getElementById('zone-opt-wina'));
+        }
 
         const gateScreen = document.getElementById('gatekeeper-screen');
         const btnEnableCam = document.getElementById('btn-enable-cam');
@@ -1767,6 +1814,7 @@
 
             try {
                 await set(ref(db, `sac2026/phone_proctor/${cleanBib}`), {
+                    sessionId: CURRENT_SESSION_ID,
                     bib: cleanBib,
                     pairingToken: phonePairingToken,
                     connected: false,
@@ -1890,37 +1938,43 @@
             const primaryEmailNorm = normalizeEmail(p.email);
 
             if (submittedBibsMap[p.bib]) {
-                return `Bib ${p.bib} has already submitted this Mock Exam (Receipt: ${submittedBibsMap[p.bib].receiptId || 'Verified'}). Only 1 attempt is permitted.`;
+                return `Bib ${p.bib} has already submitted the Grand Final (Receipt: ${submittedBibsMap[p.bib].receiptId || 'Verified'}). Only 1 attempt is permitted.`;
             }
             if (p.partnerBib && submittedBibsMap[p.partnerBib]) {
-                return `Your Duo teammate (${p.partnerBib}) has already submitted this Mock Exam for your team (Receipt: ${submittedBibsMap[p.partnerBib].receiptId || 'Verified'}).`;
+                return `Your Duo teammate (${p.partnerBib}) has already submitted the Grand Final for your team (Receipt: ${submittedBibsMap[p.partnerBib].receiptId || 'Verified'}).`;
+            }
+            if (windowAParticipatedBibsMap[p.bib]) {
+                return `Bib ${p.bib} already started the Grand Final during Window A. Repeat participation in Window B is not permitted.`;
+            }
+            if (p.partnerBib && windowAParticipatedBibsMap[p.partnerBib]) {
+                return `Your Duo teammate (${p.partnerBib}) already started the Grand Final during Window A. Repeat participation in Window B is not permitted.`;
             }
             if (submittedEmailsMap[primaryEmailNorm]) {
-                return `Account email ${p.email} has already completed this Mock Exam (Receipt: ${submittedEmailsMap[primaryEmailNorm].receiptId || 'Verified'}). Repeat attempts are locked.`;
+                return `Account email ${p.email} has already completed the Grand Final (Receipt: ${submittedEmailsMap[primaryEmailNorm].receiptId || 'Verified'}). Repeat attempts are locked.`;
             }
             if (eNorm && submittedEmailsMap[eNorm]) {
-                return `Account email ${eNorm} has already completed this Mock Exam (Receipt: ${submittedEmailsMap[eNorm].receiptId || 'Verified'}). Repeat attempts are locked.`;
+                return `Account email ${eNorm} has already completed the Grand Final (Receipt: ${submittedEmailsMap[eNorm].receiptId || 'Verified'}). Repeat attempts are locked.`;
             }
             if (Array.isArray(p.aliasEmails)) {
                 for (const alias of p.aliasEmails) {
                     const aNorm = normalizeEmail(alias);
                     if (submittedEmailsMap[aNorm]) {
-                        return `Registered email (${alias}) has already completed this Mock Exam. Repeat attempts are locked.`;
+                        return `Registered email (${alias}) has already completed the Grand Final. Repeat attempts are locked.`;
                     }
                 }
             }
 
-            // Firebase is the source of truth once loaded: clear any stale local lock if cloud confirms no Mock submission
+            // Firebase is the source of truth once loaded: clear any stale local lock if cloud confirms no Grand Final submission
             if (cloudFinalSubsLoaded && cloudSubmittedEmailsLoaded) {
                 clearStaleSessionLocalLocks(p, rawEmailInput);
                 return null;
             }
 
-            // Offline fallback only (scoped strictly to this Mock Exam session, never Round 1 keys)
+            // Offline fallback only (scoped strictly to Grand Final session)
             const localSubKey = getSessionSubmittedKey(p.teamId || p.bib);
             const localEmailKey = getSessionEmailLockKey(primaryEmailNorm);
             if (localStorage.getItem(localSubKey) || localStorage.getItem(localEmailKey)) {
-                return `This Bib ID (${p.bib}) or Email (${p.email}) already has a completed Mock Exam submission recorded on this device.`;
+                return `This Bib ID (${p.bib}) or Email (${p.email}) already has a completed Grand Final submission recorded on this device.`;
             }
 
             return null;
@@ -1983,19 +2037,19 @@
                 winBanner.className = "window-status-banner open";
                 winLabel.innerHTML = `<i class="fa-solid fa-user-shield"></i> <strong>ORGANIZER / OVERRIDE ACCESS UNLOCKED</strong>`;
                 winCountdown.textContent = ws.nextWin
-                    ? `Mock Opens in ${formatCountdownMs(ws.nextWin.startMs - ws.now)}`
+                    ? `Next Window in ${formatCountdownMs(ws.nextWin.startMs - ws.now)}`
                     : "Ready";
             } else if (ws.canResume) {
                 winBanner.className = "window-status-banner open";
                 winLabel.innerHTML = `<i class="fa-solid fa-rotate-right"></i> <strong>ACTIVE SESSION RECOVERY ENABLED</strong>`;
-                winCountdown.textContent = "Resume Exam";
+                winCountdown.textContent = "Resume Final";
             } else if (ws.nextWin) {
                 winBanner.className = "window-status-banner locked";
                 winLabel.innerHTML = `<i class="fa-solid fa-lock"></i> <strong>LOCKED UNTIL:</strong> ${ws.nextWin.label}`;
                 winCountdown.textContent = `Opens in ${formatCountdownMs(ws.nextWin.startMs - ws.now)}`;
             } else {
                 winBanner.className = "window-status-banner locked";
-                winLabel.innerHTML = `<i class="fa-solid fa-lock"></i> <strong>MOCK EXAM WINDOW CLOSED (19 Nov · 14:00–20:00 UT)</strong>`;
+                winLabel.innerHTML = `<i class="fa-solid fa-lock"></i> <strong>GRAND FINAL ENTRY WINDOWS CLOSED (21 Nov)</strong>`;
                 winCountdown.textContent = "Closed";
             }
 
@@ -2012,23 +2066,23 @@
                 matchedParticipant = strictMatch;
                 authBanner.className = "auth-status-banner";
                 const teamTag = strictMatch.teamId ? ` · <span style="color:var(--accent-blue);">Shared Team Exam (${strictMatch.partnerBib})</span>` : '';
-                authText.innerHTML = `Verified: <strong>${strictMatch.name}</strong> (Bib: <strong>${strictMatch.bib}</strong> · ${strictMatch.country})${teamTag}${strictMatch.canStartAnytime ? ' · <span style="color:var(--accent-gold);">Organizer Test Access</span>' : ''}`;
+                authText.innerHTML = `Finalist Verified: <strong>${strictMatch.name}</strong> (Bib: <strong>${strictMatch.bib}</strong> · ${strictMatch.country})${teamTag}${strictMatch.canStartAnytime ? ' · <span style="color:var(--accent-gold);">Organizer Test Access</span>' : ''}`;
                 setupPhonePairingForBib(strictMatch.bib);
             } else if (emailVal.length > 0 || bibVal.length > 0) {
                 matchedParticipant = null;
                 authBanner.className = "auth-status-banner unverified";
                 if (looseMatch) {
-                    authText.innerHTML = `Email &amp; Bib mismatch: Enter the registered email and Bib ID together from <strong>EXAM_PARTICIPANTS</strong>.`;
+                    authText.innerHTML = `Email &amp; Bib mismatch: Enter your exact registered email and Grand Finalist Bib ID together.`;
                 } else {
-                    authText.innerHTML = `Access Restricted: Account email or Bib ID is not listed in <strong>EXAM_PARTICIPANTS</strong>.`;
+                    authText.innerHTML = `Access Restricted: Only the <strong>Top 16 Qualified Finalists</strong> may enter the Grand Final terminal.`;
                 }
             } else {
                 matchedParticipant = null;
                 authBanner.className = "auth-status-banner";
-                authText.textContent = "Enter your registered EXAM_PARTICIPANTS email and Bib ID to verify eligibility.";
+                authText.textContent = "Enter your registered email and Grand Finalist Bib ID to verify eligibility.";
             }
 
-            // Block if already submitted THIS Mock Exam (by Bib ID, Duo Partner Bib, or Email)
+            // Block if already submitted THIS Grand Final (by Bib ID, Duo Partner Bib, or Email)
             const lockReason = hasCandidateAlreadyParticipated(strictMatch || looseMatch, emailVal);
             if (lockReason) {
                 btnStartExam.disabled = true;
@@ -2047,10 +2101,10 @@
 
             if (!ws.isAllowedNow) {
                 btnStartExam.disabled = true;
-                btnStartExam.innerHTML = `<i class="fa-solid fa-lock"></i> Locked Until Mock Exam (19 Nov · 14:00–20:00 UT)`;
+                btnStartExam.innerHTML = `<i class="fa-solid fa-lock"></i> Locked Until Official Grand Final Window`;
             } else {
                 btnStartExam.disabled = !hardwareAndFormReady;
-                btnStartExam.innerHTML = `<i class="fa-solid fa-play"></i> Enter Fullscreen &amp; Start Mock Exam (30 MCQs)`;
+                btnStartExam.innerHTML = `<i class="fa-solid fa-play"></i> Enter Fullscreen &amp; Start Grand Final (45 MCQs)`;
             }
         }
 
@@ -2158,7 +2212,7 @@
 
             const participant = verifyStrictRosterMatch(emailVal, bibVal);
             if (!participant) {
-                gateError.textContent = "Access Denied: Your email and Candidate Bib ID must both match an entry in EXAM_PARTICIPANTS.";
+                gateError.textContent = "Access Denied: Your email and Bib ID must match an authorized Grand Finalist.";
                 return;
             }
 
@@ -2182,11 +2236,14 @@
 
             const ws = getWindowState();
             if (!ws.isAllowedNow) {
-                gateError.textContent = "Entry Locked: The Mock Exam terminal can only be opened on 19 Nov 2026 between 14:00 and 20:00 UT.";
+                gateError.textContent = "Entry Locked: The Grand Final opens on 21 Nov 2026 during 10:00–11:00 UT and 18:00–19:00 UT.";
                 return;
             }
+            if (ws.activeWin) {
+                selectedWindowZone = ws.activeWin.label;
+            }
 
-            // Direct Firebase verification on BOTH Bib ID and Normalized Email for THIS session before launching
+            // Direct Firebase verification on BOTH Bib ID and Normalized Email for GRAND FINAL before launching
             try {
                 const reads = [
                     get(ref(db, `sac2026/final_submissions/${candidateBib}`)),
@@ -2213,16 +2270,23 @@
                     clearStaleSessionLocalLocks(participant, candidateEmail);
                 } else if (!participant.canStartAnytime) {
                     if (bibFinalSub) {
-                        gateError.textContent = `Bib ${candidateBib} has already submitted this Mock Exam (Receipt: ${bibFinalSub.receiptId || 'Verified'}).`;
+                        gateError.textContent = `Bib ${candidateBib} has already submitted the Grand Final (Receipt: ${bibFinalSub.receiptId || 'Verified'}).`;
                         return;
                     }
                     if (partnerFinalSub) {
-                        gateError.textContent = `Your Duo teammate (${partnerBib}) has already submitted this Mock Exam (Receipt: ${partnerFinalSub.receiptId || 'Verified'}).`;
+                        gateError.textContent = `Your Duo teammate (${partnerBib}) has already submitted the Grand Final (Receipt: ${partnerFinalSub.receiptId || 'Verified'}).`;
                         return;
                     }
                     if (emailFinalSub) {
-                        gateError.textContent = `Email ${candidateEmail} has already submitted this Mock Exam (Receipt: ${emailFinalSub.receiptId || 'Verified'}).`;
+                        gateError.textContent = `Email ${candidateEmail} has already submitted the Grand Final (Receipt: ${emailFinalSub.receiptId || 'Verified'}).`;
                         return;
+                    }
+                    if (liveSub) {
+                        const liveTs = Date.parse(liveSub.updatedAt || 0);
+                        if (liveTs > 0 && liveTs < WINDOW_A_CUTOFF_MS && Date.now() >= WINDOW_A_CUTOFF_MS) {
+                            gateError.textContent = `Bib ${candidateBib} already participated in Window A and cannot re-enter in Window B.`;
+                            return;
+                        }
                     }
                 }
             } catch (e) {}
@@ -2253,18 +2317,20 @@
 
             document.getElementById('tel-bib').textContent = candidateBib;
             document.getElementById('tel-name').textContent = candidateName;
-            document.getElementById('tel-zone').textContent = "Mock Exam (60m)";
+            document.getElementById('tel-zone').textContent = selectedWindowZone.includes("Window B")
+                ? "Final · Win B (90m)"
+                : "Final · Win A (90m)";
 
             if (activeTeamId && matchedParticipant?.partnerName) {
                 const duoBanner = document.getElementById('duo-sync-banner');
                 const duoText = document.getElementById('duo-sync-partner-text');
                 if (duoBanner && duoText) {
                     duoBanner.style.display = 'block';
-                    duoText.textContent = `${matchedParticipant.partnerName} (${partnerBib}) — Answers & 60-min timer sync live!`;
+                    duoText.textContent = `${matchedParticipant.partnerName} (${partnerBib}) — Answers & 90-min timer sync live!`;
                 }
             }
 
-            // Recover unexpired active Mock Exam session only (never recover Round 1 state)
+            // Recover unexpired active Grand Final session only (never recover Round 1 or Mock Exam state)
             let recovered = null;
             try {
                 if (activeTeamId) {
@@ -2293,7 +2359,7 @@
                 }
             }
 
-            // Only resume 60-minute timer if endTimeMs is still strictly in the future
+            // Only resume 90-minute timer if endTimeMs is still strictly in the future
             if (recovered && recovered.endTimeMs && recovered.endTimeMs > Date.now() + 5000) {
                 answers = recovered.answers || {};
                 flagged = recovered.flagged || {};
@@ -2518,7 +2584,7 @@
             const q = EXAM_QUESTIONS[idx];
 
             document.getElementById('q-number-title').textContent = `Question ${idx + 1} of ${EXAM_QUESTIONS.length}`;
-            document.getElementById('q-part-tag').textContent = q.part || "Mock Exam";
+            document.getElementById('q-part-tag').textContent = q.part || "Grand Final";
             document.getElementById('q-module-tag').textContent = q.module;
             document.getElementById('q-points-tag').textContent = q.points;
 
@@ -2559,6 +2625,11 @@
             refreshCurrentQuestionSelectionUI();
             updateRibbonStates();
 
+            const activeBtn = document.getElementById(`ribbon-btn-${idx}`);
+            if (activeBtn && activeBtn.scrollIntoView) {
+                activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+
             if (window.MathJax && window.MathJax.typesetPromise) {
                 window.MathJax.typesetPromise([
                     loreBanner,
@@ -2593,13 +2664,13 @@
         });
 
         // =========================================================
-        // 60-MINUTE COUNTDOWN TIMER (DISPLAY ONLY — NEVER AUTO-SUBMITS)
+        // 90-MINUTE COUNTDOWN TIMER (DISPLAY ONLY — NEVER AUTO-SUBMITS)
         // =========================================================
         function startCountdownTimer() {
             const timerDisplay = document.getElementById('exam-timer-display');
             const timerBox = document.getElementById('exam-timer-box');
 
-            timerInterval = setInterval(() => {
+            const tick = () => {
                 if (!examActive || isSubmitting) return;
                 remainingSeconds = Math.max(0, Math.floor((endTimeMs - Date.now()) / 1000));
 
@@ -2611,8 +2682,12 @@
                     timerBox.className = 'timer-box warning';
                 } else if (remainingSeconds <= 60) {
                     timerBox.className = 'timer-box critical';
+                } else {
+                    timerBox.className = 'timer-box';
                 }
-            }, 1000);
+            };
+            tick();
+            timerInterval = setInterval(tick, 1000);
         }
 
         // =========================================================
@@ -2626,6 +2701,7 @@
             const scrVideo = document.getElementById('hidden-screen-video');
 
             const snapPayload = {
+                sessionId: CURRENT_SESSION_ID,
                 fpsMode: isLiveWatchedByAdmin ? "1 FPS LIVE" : "3s Stream",
                 timestampUTC: new Date().toISOString()
             };
@@ -2757,7 +2833,7 @@
             const answeredCount = Object.keys(answers).length;
             const teamNote = activeTeamId ? ` (Shared Team Submission with ${partnerBib})` : '';
             document.getElementById('submit-confirm-text').textContent =
-                `You have answered ${answeredCount} of ${EXAM_QUESTIONS.length} questions${teamNote}. Are you sure you want to finalize and submit your Mock Exam?`;
+                `You have answered ${answeredCount} of ${EXAM_QUESTIONS.length} questions${teamNote}. Are you sure you want to finalize and submit your Grand Final exam?`;
             document.getElementById('submit-confirm-modal').classList.add('active');
         });
 
@@ -2777,13 +2853,11 @@
             if (matchedParticipant?.email) {
                 localStorage.removeItem(getSessionEmailLockKey(matchedParticipant.email));
             }
-            // Also clear any legacy Round 1 local keys on organizer reset
-            localStorage.removeItem(`sac_2026_exam_state_${activeTeamId || candidateBib}`);
-            localStorage.removeItem(`sac_2026_exam_state_${activeTeamId || candidateBib}_submitted`);
-            localStorage.removeItem(`sac_2026_submitted_email_${normalizeEmail(candidateEmail)}`);
-            if (matchedParticipant?.email) {
-                localStorage.removeItem(`sac_2026_submitted_email_${normalizeEmail(matchedParticipant.email)}`);
-            }
+            // Also clear any legacy Round 1 / Mock local keys on organizer reset
+            ['sac_2026_exam_state', 'sac_2026_mock_state'].forEach(prefix => {
+                localStorage.removeItem(`${prefix}_${activeTeamId || candidateBib}`);
+                localStorage.removeItem(`${prefix}_${activeTeamId || candidateBib}_submitted`);
+            });
             try {
                 await remove(ref(db, `sac2026/submissions/${candidateBib}`));
                 await remove(ref(db, `sac2026/final_submissions/${candidateBib}`));
@@ -2811,7 +2885,7 @@
             clearInterval(phoneMonitorInterval);
             if (typeof phoneUnsubscribe === 'function') phoneUnsubscribe();
 
-            const receiptId = `SAC26-MOCK-${(activeTeamId || candidateBib).split('-').pop()}-${Date.now().toString(36).toUpperCase()}`;
+            const receiptId = `SAC26-FINAL-${(activeTeamId || candidateBib).split('-').pop()}-${Date.now().toString(36).toUpperCase()}`;
             const nowIso = new Date().toISOString();
 
             const finalPayload = {
@@ -2918,7 +2992,7 @@
                 <div style="height:100vh; display:flex; align-items:center; justify-content:center; background:var(--bg-base); padding:24px;">
                     <div style="max-width:580px; width:100%; background:var(--bg-card); border:1px solid var(--accent-green); border-radius:16px; padding:36px; text-align:center;">
                         <i class="fa-solid fa-circle-check" style="font-size:3rem; color:var(--accent-green); margin-bottom:16px;"></i>
-                        <h1 style="font-family:var(--font-display); color:var(--text-pure); margin-bottom:8px;">Mock Exam Submitted Successfully</h1>
+                        <h1 style="font-family:var(--font-display); color:var(--text-pure); margin-bottom:8px;">Grand Final Submitted Successfully</h1>
                         <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:22px;">${finalPayload.submissionReason}</p>
                         <div style="background:var(--bg-sidebar); border:1px solid var(--border-subtle); border-radius:10px; padding:16px; text-align:left; font-family:var(--font-mono); font-size:0.8rem; margin-bottom:24px; line-height:1.8;">
                             <div><span style="color:var(--text-muted);">RECEIPT ID:</span> <strong style="color:var(--accent-blue);">${finalPayload.receiptId}</strong></div>
