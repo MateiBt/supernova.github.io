@@ -109,7 +109,7 @@ function buildSearchIndex() {
             icon: 'fa-solid fa-satellite-dish',
             title: 'Planetarium',
             subtitle: 'Interactive 3D celestial sphere, constellations, Messier catalog & star chart',
-            url: 'planetariu.html',
+            url: 'planetarium.html',
             keywords: 'planetarium 3d sky map star chart constellations messier celestial sphere simulator'
         },
         {

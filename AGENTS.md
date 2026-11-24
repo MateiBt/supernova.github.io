@@ -5,7 +5,7 @@ All changes to `MateiBt/supernova.github.io` must strictly adhere to the convent
 ## 1. Stack & Directory Structure
 - **Tech Stack**: Vanilla HTML5, CSS3, and modular ES6 JavaScript in `js/`.
 - **Directory Layout**:
-  - Root (`/`): Core application pages only (e.g., `index.html`, `dashboard.html`, `planetariu.html`, `problems.html`, `courses.html`, `exam.html`, etc.).
+  - Root (`/`): Core application pages only (e.g., `index.html`, `dashboard.html`, `planetarium.html`, `problems.html`, `courses.html`, `exam.html`, etc.).
   - `practice/`: All 16 problem sets.
   - `handouts/`: All 16 theoretical handouts.
   - `js/`: Modular ES6 JavaScript files.
@@ -33,4 +33,4 @@ All changes to `MateiBt/supernova.github.io` must strictly adhere to the convent
   - Display equations: `$$...$$` or `\[...\]`
 
 ## 4. Safety Rules
-- **3D & Orbital Mechanics**: Do **not** modify 3D coordinate math or orbital mechanics formulas inside `planetariu.html` or `index.html` without explicit instruction.
+- **3D & Orbital Mechanics**: Do **not** modify 3D coordinate math or orbital mechanics formulas inside `planetarium.html` or `index.html` without explicit instruction.

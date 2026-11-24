@@ -4,7 +4,7 @@ Repository maintenance & catalog cleaner utility for MateiBt/supernova.github.io
 
 Performs two tasks:
 1. HYG star catalog cleaning (existing behavior): filters hyg_v42.csv down to
-   stars with apparent magnitude <= 6.5 and writes hyg_optimizat.csv when the
+   stars with apparent magnitude <= 6.5 and writes hyg_catalog.csv when the
    raw hyg_v42.csv input is present.
 2. difficultyMap synchronization: parses all uniqueId entries from
    js/data/rotations_data.js and all problem IDs from practice/*.html (both
@@ -32,8 +32,8 @@ VALID_DIFFICULTIES = {"easy", "medium", "hard", "theory"}
 
 # Existing HYG catalog cleaning parameters
 INPUT_FILENAME = "hyg_v42.csv"
-OUTPUT_FILENAME = "hyg_optimizat.csv"
-LIMITA_MAGNITUDINE = 6.5
+OUTPUT_FILENAME = "hyg_catalog.csv"
+MAGNITUDE_LIMIT = 6.5
 
 
 def clean_hyg_catalog() -> None:
@@ -49,7 +49,7 @@ def clean_hyg_catalog() -> None:
         return
 
     output_path = input_path.parent / OUTPUT_FILENAME
-    print(f"[HYG Catalog] Se inițiază curățarea catalogului stelar ({input_path})...")
+    print(f"[HYG Catalog] Cleaning stellar catalog ({input_path})...")
 
     with open(input_path, "r", encoding="utf-8") as f_in, \
          open(output_path, "w", newline="", encoding="utf-8") as f_out:
@@ -59,25 +59,25 @@ def clean_hyg_catalog() -> None:
         header = next(reader)
         writer.writerow(header)
 
-        randuri_pastrate = 0
-        randuri_eliminate = 0
+        rows_kept = 0
+        rows_dropped = 0
 
         for row in reader:
             if len(row) <= 13:
                 continue
             try:
                 mag = float(row[13])
-                if mag <= LIMITA_MAGNITUDINE:
+                if mag <= MAGNITUDE_LIMIT:
                     writer.writerow(row)
-                    randuri_pastrate += 1
+                    rows_kept += 1
                 else:
-                    randuri_eliminate += 1
+                    rows_dropped += 1
             except ValueError:
                 writer.writerow(row)
 
-    print("[HYG Catalog] Curățare finalizată!")
-    print(f"[HYG Catalog] Păstrate (<= {LIMITA_MAGNITUDINE}): {randuri_pastrate}")
-    print(f"[HYG Catalog] Eliminate: {randuri_eliminate}")
+    print("[HYG Catalog] Cleaning complete!")
+    print(f"[HYG Catalog] Kept (<= {MAGNITUDE_LIMIT}): {rows_kept}")
+    print(f"[HYG Catalog] Dropped: {rows_dropped}")
 
 
 def _strip_js_comments_preserving_strings(src: str) -> str:
