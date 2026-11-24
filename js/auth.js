@@ -25,7 +25,7 @@ let progressChart = null;
 const COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000;
 
 export const difficultyMap = {
-    // --- POTD Rotations (19.10.2026 - 29.11.2026) ---
+    // --- POTD Rotations (19.10.2026 - 06.12.2026) ---
     'potd_2026_10_19': 'medium',
     'potd_2026_10_20': 'medium',
     'potd_2026_10_21': 'easy',
@@ -68,6 +68,13 @@ export const difficultyMap = {
     'potd_2026_11_27': 'medium',
     'potd_2026_11_28': 'hard',
     'potd_2026_11_29': 'hard',
+    'potd_2026_11_30': 'easy',
+    'potd_2026_12_01': 'easy',
+    'potd_2026_12_02': 'easy',
+    'potd_2026_12_03': 'easy',
+    'potd_2026_12_04': 'easy',
+    'potd_2026_12_05': 'easy',
+    'potd_2026_12_06': 'easy',
 
     // --- POTW & POTM Rotations ---
     'potw_2026_w1': 'medium',
