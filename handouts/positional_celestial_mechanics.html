@@ -41,6 +41,7 @@
             --accent-rose: #FFC1CC;
             --accent-gold: #FFCF5C;
             --track-accent: #B39CD0;
+            --track-accent-rgb: 179, 156, 208;
             
             --text-pure: #FFFFFF;
             --text-main: #EDEDED;
@@ -119,7 +120,7 @@
         }
         .nav-item i { width: 20px; text-align: center; font-size: 1.05rem; }
         .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
-        .nav-item.active { background-color: rgba(179, 156, 208, 0.12); color: var(--track-accent); border-left: 3px solid var(--track-accent); }
+        .nav-item.active { background-color: rgba(var(--track-accent-rgb), 0.12); color: var(--track-accent); border-left: 3px solid var(--track-accent); }
 
         /* --- MAIN WORKSPACE --- */
         .dashboard-main {
@@ -241,9 +242,9 @@
             color: var(--text-pure);
         }
         .toc-btn.active {
-            background: rgba(179, 156, 208, 0.14);
+            background: rgba(var(--track-accent-rgb), 0.14);
             color: var(--text-pure);
-            border-color: rgba(179, 156, 208, 0.35);
+            border-color: rgba(var(--track-accent-rgb), 0.35);
             font-weight: 600;
         }
         .toc-num {
@@ -288,8 +289,8 @@
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: var(--track-accent);
-            background: rgba(179, 156, 208, 0.1);
-            border: 1px solid rgba(179, 156, 208, 0.25);
+            background: rgba(var(--track-accent-rgb), 0.1);
+            border: 1px solid rgba(var(--track-accent-rgb), 0.25);
             padding: 4px 12px;
             border-radius: 99px;
             display: inline-block;
@@ -331,6 +332,13 @@
         }
         .subchapter-panel li { padding-left: 4px; }
         .subchapter-panel strong { color: var(--text-pure); font-weight: 600; }
+        .subchapter-panel a { color: var(--track-accent); text-decoration: underline; text-underline-offset: 3px; }
+        .subchapter-panel code {
+            font-family: var(--font-mono); font-size: 0.84em;
+            background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
+            padding: 1px 6px; border-radius: 6px; color: var(--text-pure);
+        }
+        .subchapter-panel .coverage-list li::marker { color: var(--track-accent); }
 
         .math-block {
             background: var(--bg-sidebar);
@@ -342,7 +350,7 @@
         }
 
         .handout-note {
-            background: rgba(179, 156, 208, 0.07);
+            background: rgba(var(--track-accent-rgb), 0.07);
             border-left: 3px solid var(--track-accent);
             border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
             padding: 16px 20px;
@@ -425,6 +433,8 @@
             color: var(--track-accent);
         }
         .btn-step:disabled { opacity: 0.35; cursor: not-allowed; }
+        .subchapter-nav-bar .btn-step { min-width: 0; max-width: 50%; text-align: left; line-height: 1.35; }
+        .subchapter-nav-bar .btn-step:last-child { margin-left: auto; text-align: right; }
 
         @media (max-width: 1100px) {
             .reader-grid { grid-template-columns: 1fr; }
@@ -432,7 +442,11 @@
         }
         @media (max-width: 800px) {
 .dashboard-main { padding: 20px 16px 60px; }
-            .subchapter-panel { padding: 26px 20px; }
+            .subchapter-panel { padding: 26px 20px; min-width: 0; max-width: 100%; overflow-x: hidden; }
+            .subchapter-nav-bar { flex-direction: column; align-items: stretch; }
+            .subchapter-nav-bar .btn-step { max-width: 100%; justify-content: center; text-align: center; }
+            .subchapter-nav-bar .btn-step:last-child { margin-left: 0; text-align: center; }
+            .hero-actions { width: 100%; }
         }
 
         /* --- RESPONSIVE MOBILE HEADER & SLIDE-OUT DRAWER (<= 800px) --- */
@@ -809,8 +823,8 @@
                 </div>
             </aside>
 
-            <!-- Right Dynamic Chapter Container (Ordered Slots 1 to 9) -->
-            <div class="reader-content" id="handout-reader-panels">
+            <!-- Right Dynamic Chapter Container (Ordered Slots 1 to 9, lazily loaded by ../js/handout_reader.js) -->
+            <div class="reader-content" id="handout-reader-panels" data-chapter-path="./t1_chapters/ch{n}.html" data-module-code="Module T1">
                 <div class="chapter-slot" id="ch-slot-1"></div>
                 <div class="chapter-slot" id="ch-slot-2"></div>
                 <div class="chapter-slot" id="ch-slot-3"></div>
@@ -826,89 +840,6 @@
     </main>
 
     <script type="module" src="../js/auth.js"></script>
-    <script>
-        const loadedChapters = new Set();
-        const readerContainer = document.getElementById('handout-reader-panels');
-        const toggleViewBtn = document.getElementById('toggle-view-mode');
-        const viewModeLabel = document.getElementById('view-mode-label');
-        const mainScroll = document.getElementById('main-scroll-container');
-        const tocButtons = document.querySelectorAll('.toc-btn[data-target]');
-
-        let isContinuousMode = false;
-
-        async function ensureChapterLoaded(chapterNum) {
-            if (loadedChapters.has(chapterNum)) return;
-            const slot = document.getElementById(`ch-slot-${chapterNum}`);
-            if (!slot) return;
-
-            try {
-                const response = await fetch(`./t1_chapters/ch${chapterNum}.html`);
-                if (!response.ok) throw new Error('Not uploaded yet');
-                const html = await response.text();
-                slot.innerHTML = html;
-                loadedChapters.add(chapterNum);
-            } catch (err) {
-                // Graceful fallback if chX.html hasn't been created yet
-                const chapterBtns = Array.from(tocButtons).filter(b => b.dataset.target.startsWith(`${chapterNum}.`));
-                slot.innerHTML = chapterBtns.map(btn => `
-                    <article class="subchapter-panel" data-sub="${btn.dataset.target}">
-                        <span class="chapter-badge">Chapter ${chapterNum} · In Production</span>
-                        <h2>${btn.querySelector('span').textContent}</h2>
-                        <p>This subchapter file (<code>handouts/t1_chapters/ch${chapterNum}.html</code>) is currently being compiled.</p>
-                    </article>
-                `).join('');
-                loadedChapters.add(chapterNum);
-            }
-        }
-
-        window.switchSubchapter = async function(subId) {
-            const chapterNum = subId.split('.')[0];
-            await ensureChapterLoaded(chapterNum);
-
-            tocButtons.forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.target === subId);
-            });
-
-            const allPanels = document.querySelectorAll('.subchapter-panel');
-            allPanels.forEach(panel => {
-                panel.classList.toggle('active', panel.dataset.sub === subId);
-            });
-
-            const activePanel = document.querySelector(`.subchapter-panel[data-sub="${subId}"]`);
-
-            if (isContinuousMode) {
-                if (activePanel) activePanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } else if (mainScroll) {
-                mainScroll.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-
-            if (activePanel && window.MathJax && window.MathJax.typesetPromise) {
-                await window.MathJax.typesetPromise([activePanel]).catch(() => {});
-            }
-        };
-
-        tocButtons.forEach(btn => {
-            btn.addEventListener('click', () => switchSubchapter(btn.dataset.target));
-        });
-
-        toggleViewBtn.addEventListener('click', async () => {
-            isContinuousMode = !isContinuousMode;
-            if (isContinuousMode) {
-                // Load all available chapters in parallel for full continuous scroll
-                await Promise.all([1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => ensureChapterLoaded(String(n))));
-            }
-            readerContainer.classList.toggle('continuous-mode', isContinuousMode);
-            viewModeLabel.textContent = isContinuousMode ? 'Single Subchapter View' : 'Full Continuous View';
-
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                await window.MathJax.typesetPromise([readerContainer]).catch(() => {});
-            }
-        });
-
-        // Automatically load Subchapter 1.1 on initial visit
-        document.addEventListener('DOMContentLoaded', () => {
-            switchSubchapter('1.1');
-        });
-    </script>
+    <script type="module" src="../js/handout_reader.js"></script>
 </body>
 </html>
