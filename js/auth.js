@@ -25,7 +25,7 @@ let progressChart = null;
 const COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000;
 
 export const difficultyMap = {
-    // --- POTD Rotations (19.10.2026 - 01.11.2026) ---
+    // --- POTD Rotations (19.10.2026 - 29.11.2026) ---
     'potd_2026_10_19': 'medium',
     'potd_2026_10_20': 'medium',
     'potd_2026_10_21': 'easy',
@@ -40,10 +40,41 @@ export const difficultyMap = {
     'potd_2026_10_30': 'easy',
     'potd_2026_10_31': 'easy',
     'potd_2026_11_01': 'easy',
+    'potd_2026_11_02': 'easy',
+    'potd_2026_11_03': 'easy',
+    'potd_2026_11_04': 'medium',
+    'potd_2026_11_05': 'easy',
+    'potd_2026_11_06': 'medium',
+    'potd_2026_11_07': 'easy',
+    'potd_2026_11_08': 'easy',
+    'potd_2026_11_09': 'medium',
+    'potd_2026_11_10': 'medium',
+    'potd_2026_11_11': 'medium',
+    'potd_2026_11_12': 'medium',
+    'potd_2026_11_13': 'medium',
+    'potd_2026_11_14': 'medium',
+    'potd_2026_11_15': 'medium',
+    'potd_2026_11_16': 'medium',
+    'potd_2026_11_17': 'medium',
+    'potd_2026_11_18': 'medium',
+    'potd_2026_11_19': 'medium',
+    'potd_2026_11_20': 'easy',
+    'potd_2026_11_21': 'medium',
+    'potd_2026_11_22': 'medium',
+    'potd_2026_11_23': 'easy',
+    'potd_2026_11_24': 'medium',
+    'potd_2026_11_25': 'easy',
+    'potd_2026_11_26': 'medium',
+    'potd_2026_11_27': 'medium',
+    'potd_2026_11_28': 'hard',
+    'potd_2026_11_29': 'hard',
 
     // --- POTW & POTM Rotations ---
     'potw_2026_w1': 'medium',
     'potw_2026_w2': 'hard',
+    'potw_2026_w3': 'hard',
+    'potw_2026_w4': 'hard',
+    'potw_2026_w5': 'hard',
     'potm_2026_m1': 'hard',
 
     // --- USAAAO 2026 (Q1 - Q30) ---
