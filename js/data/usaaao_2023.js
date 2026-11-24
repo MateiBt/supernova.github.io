@@ -196,7 +196,7 @@ The Balmer lines are a series of spectral lines of hydrogen. In the low-temperat
 (c) 100% <br>
 (d) \\( \\frac{v}{V} \\) <br>
 (e) \\( 1 - \\frac{v}{V} \\)`,
-        solutionHtml: `<img src="assets/img/USAAAO_2023/Q08_USAAAO_2023.png" alt="Comet Fragmentation Escape Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2023/Q08_USAAAO_2023.jpeg" alt="Comet Fragmentation Escape Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: For a comet on a parabolic orbit, its velocity \\(V\\) is exactly equal to the local escape velocity. For fragments to escape the solar system, their new total velocity relative to the Sun must be greater than or equal to \\(V\\).</p>
 <p><strong>Step 1: Apply the Law of Cosines</strong></p>
@@ -226,7 +226,7 @@ The Balmer lines are a series of spectral lines of hydrogen. In the low-temperat
 (c) \\( v^2R/G \\) ; \\( 5/4 v^2R/G \\) <br>
 (d) \\( v^2R/G \\) ; \\( 5v^2R/G \\) <br>
 (e) \\( 5/2 v^2R/G \\) ; \\( v^2R/G \\)`,
-        solutionHtml: `<img src="assets/img/USAAAO_2023/Q09_USAAAO_2023.png" alt="Galaxy Mass Calculation Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2023/Q09_USAAAO_2023.jpeg" alt="Galaxy Mass Calculation Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Mass derivation from dynamics. For a spiral galaxy, the mass is derived using circular motion. For an elliptical galaxy, the mass is derived using the Virial Theorem.</p>
 <p><strong>Step 1: Mass of Galaxy A (Spiral)</strong></p>
@@ -253,7 +253,7 @@ The Balmer lines are a series of spectral lines of hydrogen. In the low-temperat
 (c) 11 days.<br>
 (d) 25 days.<br>
 (e) 37 days.`,
-        solutionHtml: `<img src="assets/img/USAAAO_2023/Q10_USAAAO_2023.png" alt="Free-Fall to Venus Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2023/Q10_USAAAO_2023.jpeg" alt="Free-Fall to Venus Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Radial free-fall time modeled as half the period of a degenerate Keplerian ellipse with semi-major axis \\(a = R_0 / 2\\).</p>
 <p><strong>Step 1: Identify Degenerate Orbit Parameters</strong></p>
@@ -305,7 +305,7 @@ The Balmer lines are a series of spectral lines of hydrogen. In the low-temperat
 (c) 57% <br>
 (d) 69% <br>
 (e) 77%`,
-        solutionHtml: `<img src="assets/img/USAAAO_2023/Q12_USAAAO_2023.png" alt="Time Segment of an Elliptical Orbit Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2023/Q12_USAAAO_2023.jpeg" alt="Time Segment of an Elliptical Orbit Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Time spent on a segment of an elliptical orbit via Eccentric Anomaly (\\(E\\)) and Kepler's Equation (\\(M = E - e\\sin E\\)).</p>
 <p><strong>Step 1: Find Eccentricity and Semi-Major Axis</strong></p>
@@ -471,7 +471,7 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
 (c) \\( 0.69 M_J \\) <br>
 (d) \\( 0.47 M_J \\) <br>
 (e) \\( 0.33 M_J \\)`,
-        solutionHtml: `<img src="assets/img/USAAAO_2023/Q19_USAAAO_2023.png" alt="Radial Velocity and Exoplanet Mass Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2023/Q19_USAAAO_2023.jpeg" alt="Radial Velocity and Exoplanet Mass Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Exoplanet mass determination using the radial velocity method, where the star is pulled into a small reflex orbit.</p>
 <p><strong>Step 1: The Radial Velocity Equation</strong></p>
@@ -527,7 +527,7 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
 (c) \\( 0.891 M_\\odot \\) <br>
 (d) \\( 0.987 M_\\odot \\) <br>
 (e) \\( 1.326 M_\\odot \\)`,
-        solutionHtml: `<img src="assets/img/USAAAO_2023/Q21_USAAAO_2023.png" alt="Binary Mass from Astrometry Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2023/Q21_USAAAO_2023.jpeg" alt="Binary Mass from Astrometry Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Determining the total mass of a binary system using Kepler's Third Law combined with visual binary astrometry (angular separation and parallax).</p>
 <p><strong>Step 1: Calculate the Physical Semi-Major Axis</strong></p>
@@ -554,7 +554,7 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
 (c) 0.316 <br>
 (d) 0.328 <br>
 (e) 0.540`,
-        solutionHtml: `<img src="assets/img/USAAAO_2023/Q22_USAAAO_2023.png" alt="Habitable Zone Eccentricity Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2023/Q22_USAAAO_2023.jpeg" alt="Habitable Zone Eccentricity Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Planetary equilibrium temperature (\\(T \\propto r^{-1/2}\\)) and orbital eccentricity bounds within the Habitable Zone.</p>
 <p><strong>Solution:</strong></p>
@@ -667,7 +667,7 @@ where \\(T\\) is the stellar lifetime and \\(M\\) is the mass of the star. If th
 (c) 1.0000014 <br>
 (d) 1.00000014 <br>
 (e) 1.000000014`,
-        solutionHtml: `<img src="assets/img/USAAAO_2023/Q26_USAAAO_2023.png" alt="Grazing Comet Hyperbola Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2023/Q26_USAAAO_2023.jpeg" alt="Grazing Comet Hyperbola Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Hyperbolic orbit geometry based on impact parameters and asymptotes.</p>
 <p><strong>Solution:</strong></p>

@@ -17,7 +17,7 @@ export const usaaao_2025 = [
 (c) 377 m/s <br>
 (d) 207 m/s <br>
 (e) None`,
-        solutionHtml: `<img src="assets/img/USAAAO_2025/Q01_USAAAO_2025.png" alt="User Solution Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2025/Q01_USAAAO_2025.jpeg" alt="User Solution Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Escape velocity calculation from a specific orbital distance compared to the current orbital velocity.</p>
 <p><strong>Solution:</strong></p>
@@ -91,7 +91,7 @@ export const usaaao_2025 = [
 (c) \\( \\frac{1}{6} + \\frac{1}{2\\sqrt{2}} \\) <br>
 (d) \\( \\frac{3}{\\sqrt{10}} - \\frac{1}{2} \\) <br>
 (e) \\( \\frac{3}{\\sqrt{10}} - \\frac{1}{4} \\)`,
-        solutionHtml: `<img src="assets/img/USAAAO_2025/Q04_USAAAO_2025.png" alt="Hohmann Transfer Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2025/Q04_USAAAO_2025.jpeg" alt="Hohmann Transfer Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: A Hohmann transfer involves two instantaneous impulse burns. The first burn transitions the spacecraft from the initial circular orbit to an elliptical transfer orbit. The second burn circularizes the orbit at the target radius.</p>
 <p><strong>Solution:</strong></p>
@@ -132,7 +132,7 @@ export const usaaao_2025 = [
 (c) 0.9999 <br>
 (d) 0.99995 <br>
 (e) 0.999999`,
-        solutionHtml: `<img src="assets/img/USAAAO_2025/Q05_USAAAO_2025.png" alt="Semi-latus Rectum Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2025/Q05_USAAAO_2025.jpeg" alt="Semi-latus Rectum Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: The geometric properties of an ellipse. The semi-latus rectum \\(l\\) is geometrically related to the semi-major axis \\(a\\) and the eccentricity \\(e\\).</p>
 <p><strong>Solution:</strong></p>
@@ -321,7 +321,7 @@ Match each imaginary line (1, 2, 3) to its label:<br><br>
 (c) \\( -1/2 \\) <br>
 (d) \\( 0 \\) <br>
 (e) \\( -2/3 \\)`,
-        solutionHtml: `<img src="assets/img/USAAAO_2025/Q11-12_USAAAO_2025.png" alt="Log-Log Plot Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2025/Q11-12_USAAAO_2025.jpeg" alt="Log-Log Plot Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Linearization of Kepler's Third Law using logarithms to find the slope and y-intercept of a power-law relationship.</p>
 <p><strong>Solution:</strong></p>
@@ -353,7 +353,7 @@ Match each imaginary line (1, 2, 3) to its label:<br><br>
 (c) \\( 2.86 \\times 10^7 \\) km <br>
 (d) \\( 3.36 \\times 10^7 \\) km <br>
 (e) \\( 3.86 \\times 10^7 \\) km`,
-        solutionHtml: `<img src="assets/img/USAAAO_2025/Q13_USAAAO_2025.png" alt="Triple System Orbit Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2025/Q13_USAAAO_2025.jpeg" alt="Triple System Orbit Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Applying Kepler's Third Law to two different systems (the planet-satellite system and the star-planet system) and using proportional reasoning to eliminate constants.</p>
 <p><strong>Solution:</strong></p>
@@ -688,7 +688,7 @@ Let \\(R_A\\) and \\(R_B\\) be the core radii estimated by Alice and Bob. Which 
 (c) 46 days <br>
 (d) 48 days <br>
 (e) 50 days`,
-        solutionHtml: `<img src="assets/img/USAAAO_2025/Q26_USAAAO_2025.png" alt="Ecliptic Longitude Projection Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2025/Q26_USAAAO_2025.jpeg" alt="Ecliptic Longitude Projection Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Spherical trigonometry applied to orbital planes. The ecliptic longitude (\\(\\lambda\\)) is the projection of the planet's true anomaly (\\(\\theta\\)) onto the reference ecliptic plane, adjusted by the orbital inclination (\\(i\\)).</p>
 <p><strong>Solution:</strong></p>

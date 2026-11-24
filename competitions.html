@@ -17,7 +17,11 @@
     <!-- MathJax -->
     <script>
         window.MathJax = {
-            tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            }
         };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -883,7 +887,7 @@
                             <td style="font-weight:700; color:var(--accent-gold);">Phase 3: Grand Final (LIVE TODAY)</td>
                             <td style="font-family:var(--font-mono); font-size:0.78rem;">Sat, 21 Nov · Win A: 10:00 UT | Win B: 18:00 UT</td>
                             <td>45 MCQs · 90 min (10E, 20M, 15H)</td>
-                            <td style="color:var(--accent-gold); font-family:var(--font-mono); font-weight:700;">Global Medals &amp; $2,300+ Prizes</td>
+                            <td style="color:var(--accent-gold); font-family:var(--font-mono); font-weight:700;">Global Medals &amp; \$2,300+ Prizes</td>
                             <td id="p3-live-status"><span class="c-badge badge-gold">Sign In to Verify</span></td>
                             <td id="p3-live-telemetry" style="font-family:var(--font-mono);">0 / 45 · 0 Strikes</td>
                             <td id="p3-live-receipt" style="font-family:var(--font-mono); color:var(--accent-gold);">Win A: 10:00 UT / Win B: 18:00 UT</td>
@@ -1073,7 +1077,7 @@
                     <div class="comp-badges">
                         <span class="c-badge badge-gold"><i class="fa-solid fa-trophy"></i> GRAND FINAL TODAY · SAT 21 NOV</span>
                         <span class="c-badge badge-blue">45 MCQs · 90 Min · Top 16 Finalists</span>
-                        <span class="c-badge badge-green">Over $2,300 in Prizes</span>
+                        <span class="c-badge badge-green">Over \$2,300 in Prizes</span>
                     </div>
                     <h2 class="comp-title">Supernova Autumn Cup 2026</h2>
                     <p class="comp-subtitle">
@@ -1091,7 +1095,7 @@
             <!-- SPONSORS BAR -->
             <div class="sponsors-panel">
                 <div class="sponsors-header">
-                    <h3>Sponsored By (Over $2,300 in Prizes)</h3>
+                    <h3>Sponsored By (Over \$2,300 in Prizes)</h3>
                     <span style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-gold);">
                         Software Bisque · Aries Productions · Axilone &amp; Siril · Pavonis Interactive · Giant Army · Jundroo · KSP · AoPS
                     </span>
@@ -1100,12 +1104,12 @@
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/software_bisque.png" alt="Software Bisque" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none;">SOFTWARE BISQUE</div>
-                        <span class="sponsor-sub">TheSky™ Imaging Bundle ($695)</span>
+                        <span class="sponsor-sub">TheSky™ Imaging Bundle (\$695)</span>
                     </div>
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/aries_productions.png" alt="Aries Productions" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none; color:var(--accent-purple);">ARIES PRODUCTIONS</div>
-                        <span class="sponsor-sub">3× Astro Pixel Processor ($600)</span>
+                        <span class="sponsor-sub">3× Astro Pixel Processor (\$600)</span>
                     </div>
                     <div class="sponsor-item">
                         <div style="display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;">
@@ -1118,12 +1122,12 @@
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/pavonis.png" alt="Pavonis Interactive" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none; color:var(--accent-green);">PAVONIS INTERACTIVE</div>
-                        <span class="sponsor-sub">5× Terra Invicta Keys ($200)</span>
+                        <span class="sponsor-sub">5× Terra Invicta Keys (\$200)</span>
                     </div>
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/universe_sandbox.png" alt="Universe Sandbox" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none; color:var(--accent-blue);">UNIVERSE SANDBOX</div>
-                        <span class="sponsor-sub">6× Universe Sandbox Keys ($180)</span>
+                        <span class="sponsor-sub">6× Universe Sandbox Keys (\$180)</span>
                     </div>
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/ksp.png" alt="Kerbal Space Program" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -1133,7 +1137,7 @@
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/jundroo.png" alt="Jundroo Games" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none;">jundroo</div>
-                        <span class="sponsor-sub">6× Juno: New Origins Keys ($120)</span>
+                        <span class="sponsor-sub">6× Juno: New Origins Keys (\$120)</span>
                     </div>
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/aops.png" alt="Art of Problem Solving" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -1168,7 +1172,7 @@
                 <div class="phase-card" style="border-color: rgba(255, 207, 92, 0.5); background: rgba(255, 207, 92, 0.04);">
                     <span class="phase-num" style="color: var(--accent-gold);">Stage 03 · Saturday, 21 Nov 2026 (TODAY)</span>
                     <h3>Grand Final — The POTD War (90 Min)</h3>
-                    <p>Our Top 16 Qualified Finalists compete in the 45 MCQ Grand Final (Window A: 10:00–11:00 UT | Window B: 18:00–19:00 UT) to decide final global standings, medals, and our $2,300+ sponsor prize pool.</p>
+                    <p>Our Top 16 Qualified Finalists compete in the 45 MCQ Grand Final (Window A: 10:00–11:00 UT | Window B: 18:00–19:00 UT) to decide final global standings, medals, and our \$2,300+ sponsor prize pool.</p>
                     <div class="phase-meta">
                         <span>Format: 45 MCQs (1.5 hr)</span>
                         <span style="color:var(--accent-gold); font-weight:700;">Medals &amp; Prizes</span>
@@ -1181,23 +1185,23 @@
                 <div class="prizes-panel">
                     <div class="panel-heading" style="margin-bottom:4px;"><i class="fa-solid fa-trophy" style="color: var(--accent-gold);"></i> What Do You Win?</div>
                     <div class="prize-tier" style="border-left-color: #FFD700;">
-                        <strong>1st Place (Gold Medal):</strong> Gold Certificate + <strong>TheSky™ Imaging Bundle</strong> ($695) + <strong>Astro Pixel Processor</strong> Lifetime License ($200) + Physical copy of <strong>Mastering image processing with Siril</strong> (€59) + <strong>Kerbal Space Program</strong> Steam key + <strong>Juno: New Origins</strong> Steam key.
+                        <strong>1st Place (Gold Medal):</strong> Gold Certificate + <strong>TheSky™ Imaging Bundle</strong> (\$695) + <strong>Astro Pixel Processor</strong> Lifetime License (\$200) + Physical copy of <strong>Mastering image processing with Siril</strong> (€59) + <strong>Kerbal Space Program</strong> Steam key + <strong>Juno: New Origins</strong> Steam key.
                     </div>
                     <div class="prize-tier" style="border-left-color: #C0C0C0;">
-                        <strong>2nd – 5th Place (Silver Medal):</strong> Silver Certificate + <strong>$25 Voucher on AoPS</strong> + <strong>Kerbal Space Program</strong> Steam key.<br>
+                        <strong>2nd – 5th Place (Silver Medal):</strong> Silver Certificate + <strong>\$25 Voucher on AoPS</strong> + <strong>Kerbal Space Program</strong> Steam key.<br>
                         <span style="font-size:0.82rem; color:var(--text-muted);">
-                            • <strong>2nd &amp; 3rd Place:</strong> Astro Pixel Processor Lifetime License ($200)<br>
+                            • <strong>2nd &amp; 3rd Place:</strong> Astro Pixel Processor Lifetime License (\$200)<br>
                             • <strong>4th &amp; 5th Place:</strong> Physical copy of <em>Mastering image processing with Siril</em> (€59, shipped worldwide)
                         </span>
                     </div>
                     <div class="prize-tier" style="border-left-color: #CD7F32;">
-                        <strong>6th – 10th Place (Bronze Medal):</strong> Bronze Certificate + <strong>Terra Invicta</strong> Steam key ($40 value by Pavonis Interactive).
+                        <strong>6th – 10th Place (Bronze Medal):</strong> Bronze Certificate + <strong>Terra Invicta</strong> Steam key (\$40 value by Pavonis Interactive).
                     </div>
                     <div class="prize-tier" style="border-left-color: var(--accent-blue);">
                         <strong>11th – 20th Place (Honorable Mention):</strong> Honorable Mention Certificate + Sponsor Steam Key:<br>
                         <span style="font-size:0.82rem; color:var(--text-muted);">
-                            • <strong>11th – 15th Place:</strong> <em>Juno: New Origins</em> Steam key ($20 value by Jundroo Games)<br>
-                            • <strong>16th – 20th Place:</strong> <em>Universe Sandbox</em> Steam key ($30 value by Giant Army)
+                            • <strong>11th – 15th Place:</strong> <em>Juno: New Origins</em> Steam key (\$20 value by Jundroo Games)<br>
+                            • <strong>16th – 20th Place:</strong> <em>Universe Sandbox</em> Steam key (\$30 value by Giant Army)
                         </span>
                     </div>
                     <div class="prize-tier" style="border-left-color: var(--accent-green);">
@@ -1216,8 +1220,8 @@
                         </p>
                         <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:12px 15px; font-family:var(--font-mono); font-size:0.76rem; color:var(--accent-gold); line-height:1.8;">
                             🥇 1st Ambassador: <strong>@user_41612 (SNG-2026-1011)</strong> — 5 Verified Referrals (Universe Sandbox Key)<br>
-                            🥈 2nd Ambassador: <strong>kerem_45.sjk_37712 (SNG-2026-1025)</strong> — Verified Referrer ($25 AoPS Voucher)<br>
-                            🥉 3rd Ambassador: <strong>selmama.h (SNG-2026-1032)</strong> — Verified Referrer ($25 AoPS Voucher)
+                            🥈 2nd Ambassador: <strong>kerem_45.sjk_37712 (SNG-2026-1025)</strong> — Verified Referrer (\$25 AoPS Voucher)<br>
+                            🥉 3rd Ambassador: <strong>selmama.h (SNG-2026-1032)</strong> — Verified Referrer (\$25 AoPS Voucher)
                         </div>
                     </div>
 
