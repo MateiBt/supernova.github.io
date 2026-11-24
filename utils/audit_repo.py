@@ -48,7 +48,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "radiation_relativity": {
         "code": "T2",
         "accent": "#B39CD0",
-        "handout_eyebrow": "Theory Track · Module 02 · Coming Soon",
+        "handout_eyebrow": "Theory Track · Module 02 · Theoretical Handout",
         "handout_title": "2. Radiation Physics & Relativity Fundamentals",
         "practice_eyebrow": "Theory Track · Module 02",
         "practice_title": "Radiation Physics & Relativity Fundamentals",
@@ -59,7 +59,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "astronomical_instrumentation": {
         "code": "T3",
         "accent": "#B39CD0",
-        "handout_eyebrow": "Theory Track · Module 03 · Coming Soon",
+        "handout_eyebrow": "Theory Track · Module 03 · Theoretical Handout",
         "handout_title": "3. Astronomical Instrumentation",
         "practice_eyebrow": "Theory Track · Module 03",
         "practice_title": "Astronomical Instrumentation",
@@ -70,7 +70,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "stellar_parameters": {
         "code": "T4",
         "accent": "#B39CD0",
-        "handout_eyebrow": "Theory Track · Module 04 · Coming Soon",
+        "handout_eyebrow": "Theory Track · Module 04 · Theoretical Handout",
         "handout_title": "4. Stellar Parameters & Spectral Classification",
         "practice_eyebrow": "Theory Track · Module 04",
         "practice_title": "Stellar Parameters & Spectral Classification",
@@ -81,7 +81,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "stellar_structure": {
         "code": "T5",
         "accent": "#B39CD0",
-        "handout_eyebrow": "Theory Track · Module 05 · Coming Soon",
+        "handout_eyebrow": "Theory Track · Module 05 · Theoretical Handout",
         "handout_title": "5. Stellar Structure & Atmospheres",
         "practice_eyebrow": "Theory Track · Module 05",
         "practice_title": "Stellar Structure & Atmospheres",
@@ -92,7 +92,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "interstellar_medium": {
         "code": "T6",
         "accent": "#B39CD0",
-        "handout_eyebrow": "Theory Track · Module 06 · Coming Soon",
+        "handout_eyebrow": "Theory Track · Module 06 · Theoretical Handout",
         "handout_title": "6. Interstellar Medium & Star Formation",
         "practice_eyebrow": "Theory Track · Module 06",
         "practice_title": "Interstellar Medium & Star Formation",
@@ -103,7 +103,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "stellar_evolution": {
         "code": "T7",
         "accent": "#B39CD0",
-        "handout_eyebrow": "Theory Track · Module 07 · Coming Soon",
+        "handout_eyebrow": "Theory Track · Module 07 · Theoretical Handout",
         "handout_title": "7. Stellar Evolution",
         "practice_eyebrow": "Theory Track · Module 07",
         "practice_title": "Stellar Evolution",
@@ -114,7 +114,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "stellar_remnants": {
         "code": "T8",
         "accent": "#B39CD0",
-        "handout_eyebrow": "Theory Track · Module 08 · Coming Soon",
+        "handout_eyebrow": "Theory Track · Module 08 · Theoretical Handout",
         "handout_title": "8. Stellar Remnants & General Relativity",
         "practice_eyebrow": "Theory Track · Module 08",
         "practice_title": "Stellar Remnants & General Relativity",
@@ -125,7 +125,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "planetary_systems": {
         "code": "T9",
         "accent": "#B39CD0",
-        "handout_eyebrow": "Theory Track · Module 09 · Coming Soon",
+        "handout_eyebrow": "Theory Track · Module 09 · Theoretical Handout",
         "handout_title": "9. Planetary Systems & Formation",
         "practice_eyebrow": "Theory Track · Module 09",
         "practice_title": "Planetary Systems & Formation",
@@ -136,7 +136,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "galactic_structure": {
         "code": "T10",
         "accent": "#B39CD0",
-        "handout_eyebrow": "Theory Track · Module 10 · Coming Soon",
+        "handout_eyebrow": "Theory Track · Module 10 · Theoretical Handout",
         "handout_title": "10. Galactic Structure",
         "practice_eyebrow": "Theory Track · Module 10",
         "practice_title": "Galactic Structure",
@@ -147,7 +147,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "galactic_evolution": {
         "code": "T11",
         "accent": "#B39CD0",
-        "handout_eyebrow": "Theory Track · Module 11 · Coming Soon",
+        "handout_eyebrow": "Theory Track · Module 11 · Theoretical Handout",
         "handout_title": "11. Galactic Evolution & Active Galaxies",
         "practice_eyebrow": "Theory Track · Module 11",
         "practice_title": "Galactic Evolution & Active Galaxies",
@@ -158,7 +158,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "cosmology": {
         "code": "T12",
         "accent": "#B39CD0",
-        "handout_eyebrow": "Theory Track · Module 12 · Coming Soon",
+        "handout_eyebrow": "Theory Track · Module 12 · Theoretical Handout",
         "handout_title": "12. Cosmology & Structure of the Universe",
         "practice_eyebrow": "Theory Track · Module 12",
         "practice_title": "Cosmology & Structure of the Universe",
@@ -169,7 +169,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "data_methods_plotting": {
         "code": "D1",
         "accent": "#35E6FF",
-        "handout_eyebrow": "Data Analysis Track · Module 01 · Coming Soon",
+        "handout_eyebrow": "Data Analysis Track · Module 01 · Theoretical Handout",
         "handout_title": "1. Methods & Plotting Guide",
         "practice_eyebrow": "Data Analysis Track · Module 01",
         "practice_title": "Methods & Plotting",
@@ -180,7 +180,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "data_full_sets": {
         "code": "D2",
         "accent": "#35E6FF",
-        "handout_eyebrow": "Data Analysis Track · Module 02 · Coming Soon",
+        "handout_eyebrow": "Data Analysis Track · Module 02 · Theoretical Handout",
         "handout_title": "2. Interpreting Full Data Sets",
         "practice_eyebrow": "Data Analysis Track · Module 02",
         "practice_title": "Full Data Sets",
@@ -191,7 +191,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "obs_blind_map": {
         "code": "O1",
         "accent": "#FFC1CC",
-        "handout_eyebrow": "Observational Track · Manual 01 · Coming Soon",
+        "handout_eyebrow": "Observational Track · Manual 01 · Theoretical Handout",
         "handout_title": "Blind Map Observation Manual",
         "practice_eyebrow": "Observational Track · Module 01",
         "practice_title": "Blind Map Practice",
@@ -202,7 +202,7 @@ CANONICAL_MODULES: dict[str, dict[str, str]] = {
     "obs_telescope": {
         "code": "O2",
         "accent": "#FFC1CC",
-        "handout_eyebrow": "Observational Track · Manual 02 · Coming Soon",
+        "handout_eyebrow": "Observational Track · Manual 02 · Theoretical Handout",
         "handout_title": "Practical Telescope Operations Manual",
         "practice_eyebrow": "Observational Track · Module 02",
         "practice_title": "Telescope Practice",
@@ -746,6 +746,90 @@ def check_syllabus_labels(html_files: list[Path], js_files: list[Path]) -> list[
     return issues
 
 
+UNIFIED_SIDEBAR_HREFS = [
+    "../dashboard.html", "../challenges.html", "../planetariu.html", "../problems.html",
+    "../courses.html", "../competitions.html", "../analytics.html", "../tools.html",
+    "../notebook.html", "../resources.html", "../profile.html", "../community.html",
+]
+
+ACCENT_RGB = {"#B39CD0": "179, 156, 208", "#35E6FF": "53, 230, 255", "#FFC1CC": "255, 193, 204"}
+
+
+def check_module_shells() -> list[dict]:
+    """Verify the standardized outer shell of all 16 practice/ and handouts/ module pages
+    (mirroring handouts/positional_celestial_mechanics.html) and problems.html links."""
+    issues: list[dict] = []
+
+    def add(rel: str, rule: str, snippet: str) -> None:
+        issues.append({"file": rel, "line": 1, "rule": rule, "snippet": snippet})
+
+    sidebar_re = re.compile(r'<aside class="sidebar">(.*?)</aside>', re.S)
+    for stem, meta in CANONICAL_MODULES.items():
+        for folder in ("handouts", "practice"):
+            f = REPO_ROOT / folder / f"{stem}.html"
+            rel = f"{folder}/{stem}.html"
+            if not f.exists():
+                add(rel, "missing_module_page", "File does not exist")
+                continue
+            text = f.read_text(encoding="utf-8", errors="replace")
+            accent = meta["accent"]
+
+            if not re.search(rf"--track-accent:\s*{re.escape(accent)};", text, re.I):
+                add(rel, "wrong_track_accent", f"Expected --track-accent: {accent}")
+            if f"--track-accent-rgb: {ACCENT_RGB[accent]};" not in text:
+                add(rel, "wrong_track_accent_rgb", f"Expected --track-accent-rgb: {ACCENT_RGB[accent]}")
+            style = "".join(re.findall(r"<style[^>]*>(.*?)</style>", text, re.S))
+            for selector in (r"\.nav-item\.active", r"\.toc-btn\.active", r"\.chapter-badge", r"\.handout-note"):
+                m = re.search(selector + r"\s*\{([^}]*)\}", style)
+                if m and "179, 156, 208" in m.group(1):
+                    add(rel, "hardcoded_theory_tint", f"{selector} uses hardcoded purple instead of --track-accent-rgb")
+
+            sb = sidebar_re.search(text)
+            if not sb:
+                add(rel, "missing_unified_sidebar", '<aside class="sidebar"> not found')
+            else:
+                for href in UNIFIED_SIDEBAR_HREFS:
+                    if f'href="{href}"' not in sb.group(1):
+                        add(rel, "incomplete_unified_sidebar", f"Sidebar missing link {href}")
+                for needle in ('id="btn-logout"', 'class="sidebar-close-btn"', 'class="nav-item active"'):
+                    if needle not in sb.group(1):
+                        add(rel, "incomplete_unified_sidebar", f"Sidebar missing {needle}")
+            for needle in ('class="mobile-topbar"', 'id="sidebar-backdrop"', 'class="module-hero"',
+                           'class="hero-icon"', f'src="{meta["logo"]}"', 'class="hero-actions"',
+                           'href="../problems.html" class="btn-nav-pill"'):
+                if needle not in text:
+                    add(rel, "incomplete_module_shell", f"Missing {needle}")
+
+            if folder == "handouts":
+                for needle in ('class="reader-grid"', 'class="toc-panel"', 'class="toc-btn',
+                               'id="toggle-view-mode"', 'id="view-mode-label"', 'id="handout-reader-panels"',
+                               f'href="../practice/{stem}.html" class="btn-nav-pill primary-pill"',
+                               'src="../js/handout_reader.js"'):
+                    if needle not in text:
+                        add(rel, "incomplete_handout_reader", f"Missing {needle}")
+                targets = re.findall(r'class="toc-btn[^"]*" data-target="([^"]+)"', text)
+                if len(targets) != len(set(targets)):
+                    add(rel, "duplicate_toc_target", "TOC data-target values must be unique")
+                if 'data-chapter-path="' not in text:
+                    panels = re.findall(r'<article class="subchapter-panel[^"]*"[^>]*data-sub="([^"]+)"', text)
+                    if panels != targets:
+                        add(rel, "toc_panel_mismatch", f"TOC {targets} vs panels {panels}")
+                    if text.count('class="subchapter-nav-bar"') != len(panels):
+                        add(rel, "missing_subchapter_nav", "Every subchapter panel needs Previous/Next buttons")
+            else:
+                if f'id="mod-handout-link" href="../handouts/{stem}.html"' not in text:
+                    add(rel, "broken_module_crosslink", f"Missing link to ../handouts/{stem}.html")
+
+    problems = REPO_ROOT / "problems.html"
+    if problems.exists():
+        ptext = problems.read_text(encoding="utf-8", errors="replace")
+        for stem in CANONICAL_MODULES:
+            for folder in ("practice", "handouts"):
+                if f'href="{folder}/{stem}.html"' not in ptext:
+                    add("problems.html", "missing_hub_link", f"Missing link to {folder}/{stem}.html")
+    return issues
+
+
 def strip_html_scripts_and_styles(html: str) -> str:
     def _preserve_newlines(match: re.Match) -> str:
         return "\n" * match.group(0).count("\n")
@@ -964,6 +1048,7 @@ def run_audit() -> dict:
         "legacy_styling_and_classes": [],
         "syllabus_mismatches": [],
         "mathjax_issues": [],
+        "module_shell_issues": [],
     }
 
     for f in html_files:
@@ -988,6 +1073,7 @@ def run_audit() -> dict:
             report["mathjax_issues"].extend(check_mathjax_in_js_data(f))
 
     report["syllabus_mismatches"] = check_syllabus_labels(html_files, js_files)
+    report["module_shell_issues"] = check_module_shells()
     return report
 
 
@@ -1010,6 +1096,7 @@ def main() -> int:
         + len(report["legacy_styling_and_classes"])
         + len(report["syllabus_mismatches"])
         + len(report["mathjax_issues"])
+        + len(report["module_shell_issues"])
     )
     print("\n=== AUDIT SUMMARY ===", file=sys.stderr)
     print(f"HTML files scanned:    {report['scanned']['html_files']}", file=sys.stderr)
@@ -1019,6 +1106,7 @@ def main() -> int:
     print(f"Legacy/CSS issues:     {len(report['legacy_styling_and_classes'])}", file=sys.stderr)
     print(f"Syllabus issues:       {len(report['syllabus_mismatches'])}", file=sys.stderr)
     print(f"MathJax issues:        {len(report['mathjax_issues'])}", file=sys.stderr)
+    print(f"Module shell issues:   {len(report['module_shell_issues'])}", file=sys.stderr)
     print(f"Actionable findings:   {actionable_total}", file=sys.stderr)
     return 1 if actionable_total > 0 else 0
 

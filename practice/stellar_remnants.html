@@ -38,6 +38,7 @@
             --accent-rose: #FFC1CC;
             --accent-gold: #FFCF5C;
             --track-accent: #B39CD0;
+            --track-accent-rgb: 179, 156, 208;
             
             --text-pure: #FFFFFF;
             --text-main: #EDEDED;
@@ -85,45 +86,39 @@
         }
         @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
 
-        /* Sidebar */
+        /* --- UNIFIED APP SIDEBAR --- */
         .sidebar {
             width: 260px; background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border-subtle);
             display: flex; flex-direction: column;
             padding: 24px 20px; flex-shrink: 0; z-index: 100;
+            overflow-y: auto;
         }
         .brand {
             display: flex; align-items: center; gap: 16px;
             font-family: var(--font-display); font-size: 1.3rem;
             font-weight: 700; color: var(--text-pure);
-            margin-bottom: 40px; padding-left: 4px; line-height: 1.2;
+            margin-bottom: 32px; padding-left: 4px; line-height: 1.2;
             text-decoration: none;
         }
         .brand img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
 
         .menu-label {
-            font-family: var(--font-mono); font-size: 0.7rem;
+            font-family: var(--font-mono); font-size: 0.68rem;
             color: var(--text-muted); text-transform: uppercase;
-            letter-spacing: 0.05em; margin: 20px 0 10px 8px;
+            letter-spacing: 0.05em; margin: 18px 0 8px 8px;
         }
         .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
         .nav-item {
             display: flex; align-items: center; gap: 12px;
-            padding: 10px 12px; border-radius: var(--radius-sm);
+            padding: 9px 12px; border-radius: var(--radius-sm);
             color: var(--text-muted); text-decoration: none;
-            font-weight: 500; font-size: 0.9rem; transition: all 0.2s ease;
+            font-weight: 500; font-size: 0.88rem; transition: all 0.2s ease;
         }
-        .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.05rem; }
         .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
-        .nav-item.active { background-color: rgba(255,255,255,0.06); color: var(--track-accent); border-left: 3px solid var(--track-accent); }
+        .nav-item.active { background-color: rgba(var(--track-accent-rgb), 0.12); color: var(--track-accent); border-left: 3px solid var(--track-accent); }
 
-        .sidebar-footer { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
-        .btn-auth {
-            background: var(--bg-card); border: 1px solid var(--border-light); color: var(--text-pure);
-            padding: 10px 16px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600;
-            transition: all 0.2s ease; font-size: 0.85rem; width: 100%; font-family: var(--font-body);
-        }
-        .btn-auth:hover { background: var(--track-accent); color: var(--bg-base); border-color: var(--track-accent); }
 
         /* Main Workspace */
         .dashboard-main {
@@ -144,7 +139,7 @@
         }
         .hero-left { display: flex; align-items: center; gap: 22px; }
         .hero-icon {
-            width: 84px; height: 84px; border-radius: var(--radius-md);
+            width: 80px; height: 80px; border-radius: var(--radius-md);
             background: #FFFFFF; display: flex; align-items: center; justify-content: center;
             overflow: hidden; flex-shrink: 0; border: 1px solid var(--border-light);
         }
@@ -154,22 +149,30 @@
             color: var(--track-accent); letter-spacing: 0.08em; display: block; margin-bottom: 4px;
         }
         .hero-meta h1 {
-            font-family: var(--font-display); font-size: 1.75rem; font-weight: 700;
+            font-family: var(--font-display); font-size: 1.7rem; font-weight: 700;
             color: var(--text-pure); margin-bottom: 6px;
         }
         .hero-meta p { font-size: 0.88rem; color: var(--text-muted); }
 
-        .hero-actions { display: flex; gap: 10px; }
+        .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn-nav-pill {
             display: inline-flex; align-items: center; gap: 8px;
             padding: 10px 16px; border-radius: var(--radius-sm);
             font-size: 0.84rem; font-weight: 600; text-decoration: none;
             background: var(--bg-sidebar); color: var(--text-main);
-            border: 1px solid var(--border-light); transition: all 0.2s;
+            border: 1px solid var(--border-light); transition: all 0.2s; cursor: pointer;
+            font-family: var(--font-body);
         }
         .btn-nav-pill:hover { border-color: var(--track-accent); color: var(--text-pure); }
+        .btn-nav-pill.primary-pill {
+            background: var(--track-accent); color: var(--bg-base);
+            border-color: var(--track-accent); font-weight: 700;
+        }
+        .btn-nav-pill.primary-pill:hover { opacity: 0.92; transform: translateY(-1px); }
+
         .btn-nav-pill.handout-link { color: var(--track-accent); border-color: var(--track-accent); }
         .btn-nav-pill.handout-link:hover { background: var(--track-accent); color: var(--bg-base); }
+
 
         /* Filters + Problems Layout */
         .layout-wrapper {
@@ -689,9 +692,10 @@
         </button>
     </header>
 
+    <!-- UNIFIED SIDEBAR NAVIGATION -->
     <aside class="sidebar">
         <button type="button" class="sidebar-close-btn" aria-label="Close navigation menu"><i class="fa-solid fa-xmark"></i></button>
-        <a href="../index.html" class="brand">
+        <a href="../dashboard.html" class="brand">
             <img src="../assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>
         </a>
@@ -699,22 +703,27 @@
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
             <li><a href="../dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="../challenges.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
             <li><a href="../planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
-            <li><a href="../problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
-            <li><a href="../courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="../problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="../courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
+            <li><a href="../competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
+        </ul>
+
+        <div class="menu-label">Tools &amp; Analytics</div>
+        <ul class="nav-menu">
             <li><a href="../analytics.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="../tools.html" class="nav-item"><i class="fa-solid fa-calculator"></i> Formula &amp; Tools</a></li>
+            <li><a href="../notebook.html" class="nav-item"><i class="fa-solid fa-book-open"></i> Mistake Notebook</a></li>
+            <li><a href="../resources.html" class="nav-item"><i class="fa-solid fa-book-atlas"></i> External Library</a></li>
         </ul>
         
         <div class="menu-label">General</div>
         <ul class="nav-menu">
-            <li><a href="../profile.html" class="nav-item" id="profileLink"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="../profile.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
             <li><a href="../community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
+            <li><a href="#" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
         </ul>
-        
-        <div class="sidebar-footer">
-            <button id="loginBtn" class="btn-auth">Student Login</button>
-            <button id="logoutBtn" class="btn-auth" style="display: none;">Logout</button>
-        </div>
     </aside>
     <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
@@ -723,7 +732,7 @@
         <section class="module-hero">
             <div class="hero-left">
                 <div class="hero-icon">
-                    <img id="mod-logo" src="../assets/img/theory/stellar_remnants_logo.png" alt="Module Icon">
+                    <img id="mod-logo" src="../assets/img/theory/stellar_remnants_logo.png" alt="Stellar Remnants and General Relativity">
                 </div>
                 <div class="hero-meta">
                     <span class="eyebrow" id="mod-eyebrow">Theory Track · Module 08</span>
@@ -732,8 +741,8 @@
                 </div>
             </div>
             <div class="hero-actions">
-                <a href="../problems.html" class="btn-nav-pill"><i class="fa-solid fa-arrow-left"></i> All Modules</a>
-                <a id="mod-handout-link" href="../handouts/stellar_remnants.html" class="btn-nav-pill handout-link"><i class="fa-solid fa-book-open"></i> Read Module Handout</a>
+                <a href="../problems.html" class="btn-nav-pill"><i class="fa-solid fa-arrow-left"></i> Curriculum Hub</a>
+                <a id="mod-handout-link" href="../handouts/stellar_remnants.html" class="btn-nav-pill primary-pill"><i class="fa-solid fa-book-open"></i> Read Module Handout</a>
             </div>
         </section>
 

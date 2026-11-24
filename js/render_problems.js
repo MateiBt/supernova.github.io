@@ -57,6 +57,8 @@ let filteredProblems = [...allProblems];
 function syncPracticeSidebar() {
     const sidebar = document.querySelector('aside.sidebar');
     if (!sidebar) return;
+    // practice/*.html now ship the unified sidebar statically; only rebuild legacy markup.
+    if (sidebar.querySelector('#btn-logout') && sidebar.querySelector('a[href="../competitions.html"]')) return;
     sidebar.style.overflowY = 'auto';
     sidebar.innerHTML = `
         <button type="button" class="sidebar-close-btn" aria-label="Close navigation menu"><i class="fa-solid fa-xmark"></i></button>
