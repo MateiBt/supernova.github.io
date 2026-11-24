@@ -1081,6 +1081,43 @@
             color: var(--accent-blue);
             text-transform: uppercase;
         }
+
+        @media (max-width: 800px) {
+            body {
+                overflow-x: hidden;
+            }
+            #gatekeeper-screen {
+                padding: 16px 12px;
+            }
+            .gate-card {
+                padding: 20px 16px;
+            }
+            .window-zone-grid {
+                grid-template-columns: 1fr;
+            }
+            .exam-header {
+                height: auto;
+                min-height: 58px;
+                padding: 10px 14px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .header-left,
+            .header-right {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .exam-body {
+                grid-template-columns: 1fr;
+                overflow-y: auto;
+            }
+            .problem-pane {
+                padding: 18px 14px;
+            }
+            .problem-card {
+                padding: 20px 16px;
+            }
+        }
     </style>
 </head>
 <body>

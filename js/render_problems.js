@@ -59,6 +59,7 @@ function syncPracticeSidebar() {
     if (!sidebar) return;
     sidebar.style.overflowY = 'auto';
     sidebar.innerHTML = `
+        <button type="button" class="sidebar-close-btn" aria-label="Close navigation menu"><i class="fa-solid fa-xmark"></i></button>
         <a href="../dashboard.html" class="brand" style="margin-bottom: 32px;">
             <img src="../assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>

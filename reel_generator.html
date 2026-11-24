@@ -192,6 +192,24 @@
             margin-bottom: 4px;
             font-weight: 700;
         }
+
+        @media (max-width: 800px) {
+            body {
+                padding: 16px 12px;
+                overflow-x: hidden;
+            }
+            .preview-wrapper {
+                max-width: 100%;
+            }
+            .canvas-shell {
+                width: min(378px, calc(100vw - 24px));
+                height: auto;
+                aspect-ratio: 9 / 16;
+            }
+            .studio-panel {
+                padding: 20px 16px;
+            }
+        }
     </style>
 </head>
 <body>
