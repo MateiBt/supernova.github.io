@@ -554,7 +554,7 @@
         </section>
 
         <!-- OFFICIAL IAU / IOAA CONSTANTS TABLE -->
-        <section class="constants-card">
+        <section class="constants-card" id="iau-constants">
             <h3 style="font-family:var(--font-display); font-size:1.2rem; color:var(--text-pure);">
                 <i class="fa-solid fa-table-list" style="color:var(--accent-green); margin-right:8px;"></i>
                 IAU &amp; Olympiad Physical Constants
@@ -651,5 +651,6 @@
             document.getElementById('bb-out').textContent = `${lamNm.toFixed(1)} nm | ${ratio.toPrecision(4)}×`;
         };
     </script>
+    <script type="module" src="js/quick_search.js"></script>
 </body>
 </html>
