@@ -747,7 +747,7 @@ def check_syllabus_labels(html_files: list[Path], js_files: list[Path]) -> list[
 
 
 UNIFIED_SIDEBAR_HREFS = [
-    "../dashboard.html", "../challenges.html", "../planetariu.html", "../problems.html",
+    "../dashboard.html", "../challenges.html", "../planetarium.html", "../problems.html",
     "../courses.html", "../competitions.html", "../analytics.html", "../tools.html",
     "../notebook.html", "../resources.html", "../profile.html", "../community.html",
 ]
