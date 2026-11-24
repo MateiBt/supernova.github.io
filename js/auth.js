@@ -212,7 +212,7 @@ export const difficultyMap = {
     'q29-30_usaaao_2023': 'easy',
 
     // --- USAAAO 2022 ---
-    'q1_usaaao_2022': 'easy',
+    'q1_usaaao_2022': 'theory',
     'q2_usaaao_2022': 'easy',
     'q3_usaaao_2022': 'easy',
     'q4_usaaao_2022': 'easy',
@@ -242,6 +242,12 @@ export const difficultyMap = {
     'q28_usaaao_2022': 'easy',
     'q29_usaaao_2022': 'easy',
     'q30_usaaao_2022': 'easy',
+    'q17_18_usaaao_2022': 'easy',
+    'q17-18_usaaao_2022': 'easy',
+    'q21_22_usaaao_2022': 'medium',
+    'q21-22_usaaao_2022': 'medium',
+    'q24_25_usaaao_2022': 'easy',
+    'q24-25_usaaao_2022': 'easy',
 
     // --- Earlier Archives ---
     'q1_usaaao_2018': 'easy',
