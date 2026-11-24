@@ -283,7 +283,8 @@ onAuthStateChanged(auth, (user) => {
         if (sidebarLogout) {
             sidebarLogout.onclick = (e) => {
                 e.preventDefault();
-                signOut(auth).then(() => window.location.href = 'landing.html');
+                const inSubfolder = /\/(practice|handouts)\//i.test(window.location.pathname);
+                signOut(auth).then(() => window.location.href = inSubfolder ? '../index.html' : 'index.html');
             };
         }
     } else {
@@ -702,8 +703,8 @@ if (authForm) {
             signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
                     window.closeModal();
-                    if (window.location.pathname.endsWith('landing.html')) {
-                        window.location.href = 'index.html';
+                    if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+                        window.location.href = 'dashboard.html';
                     }
                 })
                 .catch(err => { if (authError) authError.innerText = err.message.replace('Firebase: ', ''); });
@@ -711,8 +712,8 @@ if (authForm) {
             createUserWithEmailAndPassword(auth, email, password)
                 .then((cred) => updateProfile(cred.user, { displayName: username }))
                 .then(() => {
-                    if (window.location.pathname.endsWith('landing.html')) {
-                        window.location.href = 'index.html';
+                    if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+                        window.location.href = 'dashboard.html';
                     } else {
                         window.location.reload();
                     }
@@ -724,7 +725,10 @@ if (authForm) {
 
 const logoutBtnEl = document.getElementById('logoutBtn');
 if (logoutBtnEl) {
-    logoutBtnEl.addEventListener('click', () => signOut(auth).then(() => window.location.href = 'landing.html'));
+    logoutBtnEl.addEventListener('click', () => {
+        const inSubfolder = /\/(practice|handouts)\//i.test(window.location.pathname);
+        signOut(auth).then(() => window.location.href = inSubfolder ? '../index.html' : 'index.html');
+    });
 }
 
 window.openAuthModal = () => { if (authModal) authModal.style.display = 'flex'; };

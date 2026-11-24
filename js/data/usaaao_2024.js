@@ -323,7 +323,7 @@ Which of the following is true?<br><br>
         difficultyText: "2.5 / 10.0",
         title: "Binary Star Kinematics Snapshot",
         description: `Samvit observes a binary star system of masses \\(M_1\\) and \\(M_2\\). Unfortunately, the star with mass \\(M_2\\) is too dim for him to observe it, leading to the following snapshot below.<br><br>
-<img src="assets/img/USAAAO_2024/Q13_USAAAO_2024.png" alt="Binary System Snapshot Diagram" style="max-width: 100%; border-radius: 2px; margin: 15px 0;"><br>
+<img src="../assets/img/USAAAO_2024/Q13_USAAAO_2024.jpeg" alt="Binary System Snapshot Diagram" style="max-width: 100%; border-radius: 2px; margin: 15px 0;"><br>
 What could Samvit hypothesize to be the position and mass of the other star at this instant that would be consistent with the laws of physics and the orbit snapshot that he sees? To be clear, he has no knowledge of the value of \\(M_2\\) or the period of the binary system.<br><br>
 (a) At \\(\\left(\\sqrt{a^2-b^2}, 0\\right)\\) with mass \\(M_1+M_2\\)<br>
 (b) At \\((0,-b)\\) with mass \\(M_1\\)<br>
@@ -488,7 +488,7 @@ What could Samvit hypothesize to be the position and mass of the other star at t
     <li>(d) \\( \\frac{d}{R} \\sqrt{\\frac{4\\pi}{G\\rho}} \\)</li>
     <li>(e) \\( \\frac{d}{R} \\sqrt{\\frac{\\pi}{G\\rho}} \\)</li>
 </ul>`,
-        solutionHtml: `<img src="assets/img/USAAAO_2024/Q20_USAAAO_2024.png" alt="Solution Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2024/Q20_USAAAO_2024.jpeg" alt="Solution Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Applying Gauss's Law for gravity to an infinite cylinder and equating the radial gravitational field to centripetal acceleration.</p>
 <p><strong>Step 1: Gravitational Field of a Cylinder</strong></p>
 <p>Using Gauss's Law for gravity (\\(\\oint \\vec{g} \\cdot d\\vec{A} = -4\\pi G M_{enc}\\)) for a coaxial Gaussian cylinder of radius \\(d\\) and length \\(L\\) enclosing mass \\(M_{enc} = \\rho \\pi R^2 L\\):</p>

@@ -1043,7 +1043,7 @@
             max-width: 520px;
             width: 100%;
             background: var(--bg-card);
-            border: 2px solid var(--accent-gold);
+            border: 1px solid var(--accent-gold);
             border-radius: var(--radius-lg);
             padding: 28px;
             text-align: center;
@@ -1478,23 +1478,11 @@
          6. FIREBASE AUTH, SHARED DUO SYNC & 3s CAM+SCREEN ENGINE
          ========================================================= -->
     <script type="module">
-        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { app, auth } from "./js/auth.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getDatabase, ref, set, update, remove, get, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
         import { EXAM_QUESTIONS as LOCAL_QUESTIONS, EXAM_PARTICIPANTS } from "./js/sac2026_exam_data.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBZT_CK1nA24qYSzkQ2iNCwCDPiouR-uv8",
-            authDomain: "supernova-auth-92414.firebaseapp.com",
-            databaseURL: "https://supernova-auth-92414-default-rtdb.europe-west1.firebasedatabase.app/",
-            projectId: "supernova-auth-92414",
-            storageBucket: "supernova-auth-92414.firebasestorage.app",
-            messagingSenderId: "761827551286",
-            appId: "1:761827551286:web:e4bdb744264402c1f61097"
-        };
-
-        const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const db = getDatabase(app);
 
         // Session-isolated identifiers so Round 1 & Mock Exam receipts NEVER lock out Grand Finalists

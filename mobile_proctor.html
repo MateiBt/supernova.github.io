@@ -253,20 +253,9 @@
     </div>
 
     <script type="module">
-        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { app } from "./js/auth.js";
         import { getDatabase, ref, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBZT_CK1nA24qYSzkQ2iNCwCDPiouR-uv8",
-            authDomain: "supernova-auth-92414.firebaseapp.com",
-            databaseURL: "https://supernova-auth-92414-default-rtdb.europe-west1.firebasedatabase.app/",
-            projectId: "supernova-auth-92414",
-            storageBucket: "supernova-auth-92414.firebasestorage.app",
-            messagingSenderId: "761827551286",
-            appId: "1:761827551286:web:e4bdb744264402c1f61097"
-        };
-
-        const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
         const params = new URLSearchParams(window.location.search);

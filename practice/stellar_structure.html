@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practice Workspace | Supernova Guide</title>
+    <title>Stellar Structure &amp; Atmospheres — Practice | Supernova Guide</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,8 +13,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- MathJax -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <!-- MathJax v3 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            }
+        };
+    </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
@@ -468,7 +476,7 @@
         
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
-            <li><a href="../index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="../dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
             <li><a href="../planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
             <li><a href="../problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
             <li><a href="../courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
@@ -492,17 +500,17 @@
         <section class="module-hero">
             <div class="hero-left">
                 <div class="hero-icon">
-                    <img id="mod-logo" src="../assets/img/theory/positional_celestial_mechanics_logo.png" alt="Module Icon">
+                    <img id="mod-logo" src="../assets/img/theory/stellar_structure_logo.png" alt="Module Icon">
                 </div>
                 <div class="hero-meta">
-                    <span class="eyebrow" id="mod-eyebrow">Theory Track</span>
-                    <h1 id="mod-title">Practice Workspace</h1>
-                    <p id="mod-desc">Curated IOAA & national Olympiad problem sets with full analytical derivations.</p>
+                    <span class="eyebrow" id="mod-eyebrow">Theory Track · Module 05</span>
+                    <h1 id="mod-title">Stellar Structure &amp; Atmospheres</h1>
+                    <p id="mod-desc">Hydrostatic equilibrium, radiative transfer, solar physics, and stellar interiors.</p>
                 </div>
             </div>
             <div class="hero-actions">
                 <a href="../problems.html" class="btn-nav-pill"><i class="fa-solid fa-arrow-left"></i> All Modules</a>
-                <a id="mod-handout-link" href="../problems.html" class="btn-nav-pill handout-link"><i class="fa-solid fa-book-open"></i> Read Module Handout</a>
+                <a id="mod-handout-link" href="../handouts/stellar_structure.html" class="btn-nav-pill handout-link"><i class="fa-solid fa-book-open"></i> Read Module Handout</a>
             </div>
         </section>
 
@@ -550,7 +558,7 @@
                         <p>Curated Olympiad problems, LaTeX solutions, and grading rubrics for this module are currently being formatted and verified. Check back shortly or explore the Module Handout.</p>
                         <div style="display:flex; gap:12px; margin-top:8px;">
                             <a href="../problems.html" class="btn-nav-pill"><i class="fa-solid fa-grid-2"></i> Return to Hub</a>
-                            <a id="empty-handout-btn" href="../problems.html" class="btn-nav-pill handout-link"><i class="fa-solid fa-book-open"></i> Open Handout</a>
+                            <a id="empty-handout-btn" href="../handouts/stellar_structure.html" class="btn-nav-pill handout-link"><i class="fa-solid fa-book-open"></i> Open Handout</a>
                         </div>
                     </div>
                 </div>
@@ -580,9 +588,9 @@
             "galactic_evolution": { eyebrow: "Theory Track · Module 11", title: "Galactic Evolution & Active Galaxies", desc: "Galaxy interactions, supermassive black holes, AGN unified model, and relativistic jets.", logo: "../assets/img/theory/galactic_evolution_logo.png", accent: "#B39CD0" },
             "cosmology": { eyebrow: "Theory Track · Module 12", title: "Cosmology & Structure of the Universe", desc: "Friedmann equations, Hubble flow, cosmic microwave background, and early universe.", logo: "../assets/img/theory/cosmology_logo.png", accent: "#B39CD0" },
             "data_methods_plotting": { eyebrow: "Data Analysis Track · Module 01", title: "Methods & Plotting", desc: "Error propagation, weighted linear regression, linearization, and residual plotting.", logo: "../assets/img/data_analysis/methods_plotting_logo.png", accent: "#35E6FF" },
-            "data_full_sets": { eyebrow: "Data Analysis Track · Module 02", title: "Full Data Sets", desc: "Comprehensive real-world datasets from past IOAA exams: light curves and spectra.", logo: "../assets/img/data_analysis/full_data_sets_logo.png", accent: "#35E6FF" },
+            "data_full_sets": { eyebrow: "Data Analysis Track · Module 02", title: "Full Data Sets", desc: "Comprehensive real-world datasets from past IOAA exams: light curves and spectra.", logo: "../assets/img/data_analysis/methods_plotting_logo.png", accent: "#35E6FF" },
             "obs_blind_map": { eyebrow: "Observational Track · Module 01", title: "Blind Map Practice", desc: "Naked-eye star identification, constellation boundaries, and coordinate estimation.", logo: "../assets/img/observational/blind_map_logo.png", accent: "#FFC1CC" },
-            "obs_telescope": { eyebrow: "Observational Track · Module 02", title: "Telescope Practice", desc: "Equatorial mount calibration, polar alignment, FOV mapping, and deep-sky pointing.", logo: "../assets/img/observational/telescope_practice_logo.png", accent: "#FFC1CC" }
+            "obs_telescope": { eyebrow: "Observational Track · Module 02", title: "Telescope Practice", desc: "Equatorial mount calibration, polar alignment, FOV mapping, and deep-sky pointing.", logo: "../assets/img/theory/astronomical_instrumentation_logo.png", accent: "#FFC1CC" }
         };
 
         (function hydratePracticePage() {
