@@ -33,7 +33,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-from PIL import Image
+from PIL import Image, ImageFilter
 
 # =============================================================================
 # PATHS & CONSTANTS
@@ -42,6 +42,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 COMPETITIONS_HTML = REPO_ROOT / "competitions.html"
 ASSETS_IMG = REPO_ROOT / "assets" / "img"
 SPONSORS_DIR = ASSETS_IMG / "sponsors"
+SIGNATURES_DIR = ASSETS_IMG / "signatures"
 DEFAULT_OUTPUT_DIR = REPO_ROOT / "output_diplomas"
 DIPLOMAS_HTML_PATH = REPO_ROOT / "diplomas.html"
 
@@ -56,9 +57,9 @@ EVENT_DATES = (
 ISSUE_DATE = "November 2026"
 
 COMMITTEE = [
-    ("Matei Butnaru", "Lead Organizer, Supernova Guide", "sig-matei"),
-    ("Albert Voicu Olteanu", "Scientific Committee, Supernova Guide", "sig-albert"),
-    ("Mihai Teșileanu", "Scientific Committee, Supernova Guide", "sig-mihai"),
+    ("Matei Butnaru", "Lead Organizer, Supernova Guide", "sig_matei", "matei.png"),
+    ("Albert Voicu Olteanu", "Scientific Committee, Supernova Guide", "sig_albert", "albert.png"),
+    ("Mihai Teșileanu", "Scientific Committee, Supernova Guide", "sig_mihai", "mihai.png"),
 ]
 
 # =============================================================================
@@ -147,7 +148,7 @@ FINALIST_ENTRIES = [
         "tier_label": "Silver Medal",
         "tier_slug": "Silver_Medal",
         "bibs": ["SNG-2026-1001", "SNG-2026-1019"],
-        "team_name": "Team Pair #3 · Eurasia",
+        "team_name": "Team λεμμα",
         "issue_team_diploma": True,
     },
     {
@@ -441,7 +442,7 @@ class CertificateSpec:
 # =============================================================================
 def sanitize_filename_token(text: str) -> str:
     """Convert Unicode name/title into a clean ASCII filename token."""
-    # Map special Turkish/Romanian characters cleanly before NFKD
+    # Map special Turkish, Romanian, and Greek characters cleanly before NFKD
     replacements = {
         "Ș": "S", "ș": "s", "Ş": "S", "ş": "s",
         "Ț": "T", "ț": "t", "Ţ": "T", "ţ": "t",
@@ -449,6 +450,14 @@ def sanitize_filename_token(text: str) -> str:
         "Î": "I", "î": "i", "İ": "I", "ı": "i",
         "Ğ": "G", "ğ": "g", "Ü": "U", "ü": "u",
         "Ö": "O", "ö": "o", "Ç": "C", "ç": "c",
+        "Α": "A", "α": "a", "Β": "B", "β": "b", "Γ": "G", "γ": "g",
+        "Δ": "D", "δ": "d", "Ε": "E", "ε": "e", "Ζ": "Z", "ζ": "z",
+        "Η": "E", "η": "e", "Θ": "Th", "θ": "th", "Ι": "I", "ι": "i",
+        "Κ": "K", "κ": "k", "Λ": "L", "λ": "l", "Μ": "M", "μ": "m",
+        "Ν": "N", "ν": "n", "Ξ": "X", "ξ": "x", "Ο": "O", "ο": "o",
+        "Π": "P", "π": "p", "Ρ": "R", "ρ": "r", "Σ": "S", "σ": "s", "ς": "s",
+        "Τ": "T", "τ": "t", "Υ": "Y", "υ": "y", "Φ": "Ph", "φ": "ph",
+        "Χ": "Ch", "χ": "ch", "Ψ": "Ps", "ψ": "ps", "Ω": "O", "ω": "o",
         "’": "", "'": "",
     }
     for src, dst in replacements.items():
@@ -722,13 +731,144 @@ def inspect_and_encode_logo(key: str, path: Path) -> LogoAsset:
     )
 
 
+def inspect_and_encode_signature(key: str, path: Path) -> LogoAsset:
+    """Process a real handwritten signature PNG if present:
+    - Near-white digital backgrounds (RGB > 220) -> transparent alpha
+    - Photographed paper backgrounds (e.g. shaded tan/gray paper) -> adaptive local background subtraction
+    - Connected-component filter strips isolated stray dust specks before auto-cropping
+    - Preserves ultra-fine pen strokes and boosts ink contrast to rich archival midnight ink
+    """
+    if not path.exists():
+        return LogoAsset(
+            key=key,
+            filename=f"signatures/{path.name}",
+            exists=False,
+            data_uri=None,
+            needs_dark_pill=False,
+            notes="not provided -> printed line + verification seal",
+        )
+
+    im = Image.open(path).convert("RGBA")
+    w, h = im.size
+    gray = im.convert("L")
+    corners = [gray.getpixel((x, y)) for x in (min(2, w - 1), max(0, w - 3)) for y in (min(2, h - 1), max(0, h - 3))]
+    bg_est = sum(corners) / max(1, len(corners))
+
+    alpha = Image.new("L", (w, h), 0)
+    a_px = alpha.load()
+    g_px = gray.load()
+    rgba_px = im.load()
+
+    if bg_est >= 230.0:
+        # Clean white-background digital signature (RGB > 220 -> transparent alpha)
+        for y in range(h):
+            for x in range(w):
+                r, g, b, a0 = rgba_px[x, y]
+                if a0 < 15 or (r > 220 and g > 220 and b > 220):
+                    a_px[x, y] = 0
+                else:
+                    lum = g_px[x, y]
+                    strength = min(1.0, max(0.0, (220.0 - lum) / 140.0))
+                    a_px[x, y] = int(min(255, (strength ** 0.65) * a0))
+        mode_note = "white-bg>220 transparent"
+    else:
+        # Photographed paper signature: adaptive local background subtraction
+        blur = gray.filter(ImageFilter.GaussianBlur(radius=18))
+        b_px = blur.load()
+        for y in range(h):
+            for x in range(w):
+                diff = b_px[x, y] - g_px[x, y]
+                if diff <= 16:
+                    a_px[x, y] = 0
+                else:
+                    strength = min(1.0, (diff - 16.0) / 30.0)
+                    a_px[x, y] = int(min(255, (strength ** 0.55) * 255))
+        mode_note = f"paper-bg ({bg_est:.0f}) adaptive extract"
+
+    # Strip tiny isolated dust specks before auto-cropping via coarse component filter
+    scale = min(1.0, 320.0 / max(w, h))
+    sw, sh = max(1, int(w * scale)), max(1, int(h * scale))
+    small_a = alpha.resize((sw, sh), Image.Resampling.BILINEAR)
+    sp = small_a.load()
+    vis = bytearray(sw * sh)
+    kept_boxes = []
+    for sy in range(sh):
+        for sx in range(sw):
+            if sp[sx, sy] > 18 and not vis[sy * sw + sx]:
+                stack = [(sx, sy)]
+                vis[sy * sw + sx] = 1
+                cnt = 0
+                x0 = x1 = sx
+                y0 = y1 = sy
+                while stack:
+                    cx, cy = stack.pop()
+                    cnt += 1
+                    if cx < x0: x0 = cx
+                    if cx > x1: x1 = cx
+                    if cy < y0: y0 = cy
+                    if cy > y1: y1 = cy
+                    for dx in (-2, -1, 0, 1, 2):
+                        for dy in (-2, -1, 0, 1, 2):
+                            nx, ny = cx + dx, cy + dy
+                            if 0 <= nx < sw and 0 <= ny < sh:
+                                idx = ny * sw + nx
+                                if not vis[idx] and sp[nx, ny] > 18:
+                                    vis[idx] = 1
+                                    stack.append((nx, ny))
+                if cnt >= 12:
+                    kept_boxes.append((x0, y0, x1 + 1, y1 + 1))
+
+    if kept_boxes:
+        bx0 = max(0, int(min(b[0] for b in kept_boxes) / scale) - 8)
+        by0 = max(0, int(min(b[1] for b in kept_boxes) / scale) - 8)
+        bx1 = min(w, int(max(b[2] for b in kept_boxes) / scale) + 8)
+        by1 = min(h, int(max(b[3] for b in kept_boxes) / scale) + 8)
+        alpha = alpha.crop((bx0, by0, bx1, by1))
+        tb = alpha.point(lambda v: 255 if v > 30 else 0).getbbox()
+        if tb:
+            alpha = alpha.crop(tb)
+    else:
+        tb = alpha.getbbox()
+        if tb:
+            alpha = alpha.crop(tb)
+
+    # Preserve ultra-fine pen strokes on large canvases before thumbnailing
+    cw, ch = alpha.size
+    flat_alpha = list(alpha.get_flattened_data()) if hasattr(alpha, "get_flattened_data") else list(alpha.getdata())
+    ink_ratio = sum(1 for v in flat_alpha if v > 40) / max(1, cw * ch)
+    if max(cw, ch) > 650 and ink_ratio < 0.03:
+        alpha = alpha.filter(ImageFilter.MaxFilter(5))
+    elif max(cw, ch) > 350 and ink_ratio < 0.06:
+        alpha = alpha.filter(ImageFilter.MaxFilter(3))
+
+    out = Image.new("RGBA", alpha.size, (20, 27, 45, 255))
+    out.putalpha(alpha)
+    out.thumbnail((420, 170), Image.Resampling.LANCZOS)
+
+    buf = io.BytesIO()
+    out.save(buf, format="PNG", optimize=True)
+    b64 = base64.b64encode(buf.getvalue()).decode("ascii")
+    return LogoAsset(
+        key=key,
+        filename=f"signatures/{path.name}",
+        exists=True,
+        data_uri=f"data:image/png;base64,{b64}",
+        needs_dark_pill=False,
+        width=out.width,
+        height=out.height,
+        notes=f"real signature ({mode_note}, ink boosted, auto-cropped)",
+    )
+
+
 def load_all_logo_assets() -> Dict[str, LogoAsset]:
-    """Load Supernova Guide brand logo and all 9 sponsor logo assets."""
+    """Load Supernova Guide brand logo, all 9 sponsor logos, and optional committee signatures."""
     assets: Dict[str, LogoAsset] = {}
     assets["supernova"] = inspect_and_encode_logo("supernova", ASSETS_IMG / "supernova_logo.png")
     for spec in SPONSOR_SPECS:
         for key, filename in spec["files"]:
             assets[key] = inspect_and_encode_logo(key, SPONSORS_DIR / filename)
+    for _, _, sig_key, sig_filename in COMMITTEE:
+        assets[sig_key] = inspect_and_encode_signature(sig_key, SIGNATURES_DIR / sig_filename)
     return assets
 
 
@@ -1005,6 +1145,7 @@ CERT_FONTS_LINK = (
     "family=Bricolage+Grotesque:wght@500;600;700;800&"
     "family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600&"
     "family=Inter:wght@400;500;600;700&"
+    "family=Noto+Serif:ital,wght@0,600;0,700;1,500&"
     "family=Space+Mono:wght@400;700&display=swap"
 )
 
@@ -1032,7 +1173,7 @@ CERTIFICATE_CORE_CSS = r"""
     overflow: hidden;
     background: radial-gradient(ellipse at 50% 42%, #FFFFFF 0%, #FCFBF7 56%, #F3EEE1 100%);
     color: #101115;
-    font-family: 'Inter', 'Liberation Sans', 'DejaVu Sans', sans-serif;
+    font-family: 'Inter', 'DejaVu Sans', 'Liberation Sans', sans-serif;
     page-break-after: always;
     break-after: page;
     page-break-inside: avoid;
@@ -1170,7 +1311,7 @@ CERTIFICATE_CORE_CSS = r"""
 }
 
 .brand-name {
-    font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
+    font-family: 'Bricolage Grotesque', 'Inter', 'DejaVu Sans', sans-serif;
     font-size: 11.2pt;
     font-weight: 800;
     letter-spacing: 0.05em;
@@ -1180,7 +1321,7 @@ CERTIFICATE_CORE_CSS = r"""
 }
 
 .brand-domain {
-    font-family: 'Space Mono', 'Liberation Mono', monospace;
+    font-family: 'Space Mono', 'DejaVu Sans Mono', 'Liberation Mono', monospace;
     font-size: 6.7pt;
     font-weight: 700;
     color: #525C6E;
@@ -1196,7 +1337,7 @@ CERTIFICATE_CORE_CSS = r"""
 }
 
 .event-subtitle {
-    font-family: 'Space Mono', 'Liberation Mono', monospace;
+    font-family: 'Space Mono', 'DejaVu Sans Mono', 'Liberation Mono', monospace;
     font-size: 6.2pt;
     font-weight: 700;
     text-transform: uppercase;
@@ -1206,7 +1347,7 @@ CERTIFICATE_CORE_CSS = r"""
 }
 
 .event-title {
-    font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
+    font-family: 'Bricolage Grotesque', 'Inter', 'DejaVu Sans', sans-serif;
     font-size: 13.4pt;
     font-weight: 800;
     color: #101115;
@@ -1216,7 +1357,7 @@ CERTIFICATE_CORE_CSS = r"""
 }
 
 .event-dates {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'DejaVu Sans', sans-serif;
     font-size: 6.8pt;
     font-weight: 500;
     color: #4A5568;
@@ -1249,7 +1390,7 @@ CERTIFICATE_CORE_CSS = r"""
 }
 
 .cert-doc-heading {
-    font-family: 'Space Mono', 'Liberation Mono', monospace;
+    font-family: 'Space Mono', 'DejaVu Sans Mono', 'Liberation Mono', monospace;
     font-size: 7.5pt;
     font-weight: 700;
     letter-spacing: 0.28em;
@@ -1272,7 +1413,7 @@ CERTIFICATE_CORE_CSS = r"""
     border-radius: 99px;
     background: var(--tier-badge-bg);
     border: 0.9pt solid var(--tier-border);
-    font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
+    font-family: 'Bricolage Grotesque', 'Inter', 'DejaVu Sans', sans-serif;
     font-size: 11.2pt;
     font-weight: 800;
     letter-spacing: 0.09em;
@@ -1281,7 +1422,7 @@ CERTIFICATE_CORE_CSS = r"""
 }
 
 .tier-subline {
-    font-family: 'Space Mono', 'Liberation Mono', monospace;
+    font-family: 'Space Mono', 'DejaVu Sans Mono', 'Liberation Mono', monospace;
     font-size: 7.4pt;
     font-weight: 700;
     color: var(--tier-primary);
@@ -1289,7 +1430,7 @@ CERTIFICATE_CORE_CSS = r"""
 }
 
 .intro-phrase {
-    font-family: 'Cormorant Garamond', 'Liberation Serif', Georgia, serif;
+    font-family: 'Cormorant Garamond', 'Noto Serif', 'DejaVu Serif', Georgia, serif;
     font-style: italic;
     font-weight: 600;
     font-size: 11.5pt;
@@ -1298,7 +1439,7 @@ CERTIFICATE_CORE_CSS = r"""
 }
 
 .recipient-name {
-    font-family: 'Cormorant Garamond', 'Liberation Serif', Georgia, serif;
+    font-family: 'Cormorant Garamond', 'Noto Serif', 'DejaVu Serif', Georgia, serif;
     font-weight: 700;
     font-size: 31pt;
     line-height: 1.05;
@@ -1306,6 +1447,12 @@ CERTIFICATE_CORE_CSS = r"""
     letter-spacing: 0.01em;
     padding: 0 6mm;
     max-width: 248mm;
+}
+
+.recipient-name.has-greek {
+    font-family: 'Noto Serif', 'DejaVu Serif', 'Inter', 'DejaVu Sans', serif;
+    font-size: 26.5pt;
+    letter-spacing: 0.015em;
 }
 
 .recipient-name.name-long {
@@ -1336,7 +1483,7 @@ CERTIFICATE_CORE_CSS = r"""
 }
 
 .bib-chip {
-    font-family: 'Space Mono', 'Liberation Mono', monospace;
+    font-family: 'Space Mono', 'DejaVu Sans Mono', 'Liberation Mono', monospace;
     font-size: 7.6pt;
     font-weight: 700;
     color: #101115;
@@ -1363,7 +1510,7 @@ CERTIFICATE_CORE_CSS = r"""
 }
 
 .duo-meta-line {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'DejaVu Sans', 'Noto Serif', sans-serif;
     font-size: 8.1pt;
     font-weight: 600;
     color: #2D3748;
@@ -1415,7 +1562,7 @@ CERTIFICATE_CORE_CSS = r"""
 }
 
 .citation-text {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'DejaVu Sans', 'Noto Serif', sans-serif;
     font-size: 8.45pt;
     line-height: 1.48;
     color: #2D3748;
@@ -1429,12 +1576,19 @@ CERTIFICATE_CORE_CSS = r"""
     font-weight: 700;
 }
 
-/* 3. SIGNATURES BLOCK */
+/* 3. SIGNATURES & COMMITTEE VERIFICATION BLOCK */
 .signatures-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12mm;
+    gap: 10mm;
     padding: 0 10mm 2.3mm 10mm;
+    align-items: end;
+}
+
+.signatures-row.with-committee-seal {
+    grid-template-columns: 1fr 1fr 1fr 27mm;
+    gap: 7mm;
+    padding: 0 6mm 2.3mm 8mm;
     align-items: end;
 }
 
@@ -1445,22 +1599,36 @@ CERTIFICATE_CORE_CSS = r"""
     text-align: center;
 }
 
-.sig-svg {
-    width: 44mm;
-    height: 10.2mm;
-    margin-bottom: -0.8mm;
+.sig-img-slot {
+    height: 12.2mm;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 0.7mm;
+}
+
+.sig-real-img {
+    max-height: 11.8mm;
+    max-width: 50mm;
+    width: auto;
+    height: auto;
+    object-fit: contain;
     display: block;
 }
 
+.sig-blank-space {
+    height: 6.5mm;
+}
+
 .sig-line {
-    width: 58mm;
-    height: 0.7pt;
-    background: rgba(16, 17, 21, 0.38);
-    margin-bottom: 1.3mm;
+    width: 54mm;
+    height: 0.75pt;
+    background: rgba(16, 17, 21, 0.42);
+    margin-bottom: 1.4mm;
 }
 
 .sig-name {
-    font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
+    font-family: 'Bricolage Grotesque', 'Inter', 'DejaVu Sans', sans-serif;
     font-size: 9.2pt;
     font-weight: 700;
     color: #101115;
@@ -1468,11 +1636,24 @@ CERTIFICATE_CORE_CSS = r"""
 }
 
 .sig-role {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'DejaVu Sans', sans-serif;
     font-size: 7pt;
     font-weight: 500;
     color: #525C6E;
     margin-top: 0.35mm;
+}
+
+.committee-seal-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 0.4mm;
+}
+
+.committee-seal-svg {
+    width: 24mm;
+    height: 24mm;
+    display: block;
 }
 
 /* 4. MANDATORY 9-SPONSOR BAR */
@@ -1738,23 +1919,42 @@ def build_tier_seal_svg(seal_top: str, seal_main: str, seal_bottom: str) -> str:
 </svg>"""
 
 
-SIGNATURE_SVGS = {
-    "sig-matei": """<svg class="sig-svg" viewBox="0 0 180 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M 22 33 C 26 14, 31 8, 34 25 C 37 14, 43 9, 46 27 C 50 32, 55 21, 61 23 C 66 25, 68 29, 73 24 C 77 19, 80 12, 81 30 C 82 26, 87 22, 92 24 C 98 26, 102 18, 109 16 C 107 24, 106 31, 113 26 C 119 22, 127 21, 134 25 C 141 28, 150 22, 160 20"
-              fill="none" stroke="#182032" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M 74 17 C 82 15, 92 14, 102 13" fill="none" stroke="#182032" stroke-width="1.15" stroke-linecap="round"/>
-    </svg>""",
-    "sig-albert": """<svg class="sig-svg" viewBox="0 0 180 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M 24 34 C 31 16, 38 8, 42 10 C 44 12, 43 27, 47 31 C 52 24, 57 11, 60 28 C 63 23, 68 20, 72 25 C 76 29, 82 20, 88 22 C 94 24, 96 15, 101 29 C 106 23, 112 18, 118 24 C 125 30, 134 21, 145 23 C 151 24, 156 22, 162 19"
-              fill="none" stroke="#182032" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M 28 24 C 37 22, 47 20, 56 19" fill="none" stroke="#182032" stroke-width="1.15" stroke-linecap="round"/>
-    </svg>""",
-    "sig-mihai": """<svg class="sig-svg" viewBox="0 0 180 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M 20 32 C 25 14, 30 9, 34 26 C 39 14, 45 10, 49 28 C 54 21, 60 20, 64 27 C 69 17, 73 10, 75 29 C 79 23, 84 22, 89 26 C 95 29, 100 18, 107 15 C 104 26, 108 31, 116 25 C 124 20, 134 22, 143 25 C 150 27, 157 23, 164 21"
-              fill="none" stroke="#182032" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M 97 15 C 107 13, 118 12, 128 13" fill="none" stroke="#182032" stroke-width="1.15" stroke-linecap="round"/>
-    </svg>""",
-}
+def build_committee_verification_seal_svg(cert_id: str) -> str:
+    """Crisp circular SVG verification seal reading:
+    SUPERNOVA GUIDE · SCIENTIFIC COMMITTEE · VERIFIED 2026
+    Uses per-certificate unique SVG path IDs so multi-page PDFs never collide.
+    """
+    uid = re.sub(r"[^A-Za-z0-9_-]", "_", cert_id)
+    return f"""<svg class="committee-seal-svg" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+        <!-- Upper circular arc (clockwise from ~160 deg to ~20 deg across 12 o'clock) -->
+        <path id="cseal-top-{uid}" d="M 19.48,67.93 A 37.8,37.8 0 1,1 90.52,67.93"/>
+        <!-- Lower circular arc (counter-clockwise from ~160 deg to ~20 deg across 6 o'clock so text reads upright) -->
+        <path id="cseal-bot-{uid}" d="M 15.72,69.30 A 41.8,41.8 0 0,0 94.28,69.30"/>
+    </defs>
+    <!-- Concentric Stamp Rings -->
+    <circle cx="55" cy="55" r="51.2" fill="rgba(255, 255, 255, 0.55)" stroke="var(--tier-primary)" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="55" cy="55" r="47.6" fill="none" stroke="var(--tier-primary)" stroke-width="0.6" opacity="0.72"/>
+    <circle cx="55" cy="55" r="31.5" fill="none" stroke="var(--tier-primary)" stroke-width="0.85" opacity="0.82"/>
+    <circle cx="55" cy="55" r="28.2" fill="none" stroke="var(--tier-primary)" stroke-width="0.45" stroke-dasharray="1.6 1.7" opacity="0.68"/>
+
+    <!-- Curved Verification Ring Typography -->
+    <text font-family="Space Mono, DejaVu Sans Mono, monospace" font-size="5.35" font-weight="700" letter-spacing="0.52" fill="var(--tier-primary)" opacity="0.92">
+        <textPath href="#cseal-top-{uid}" startOffset="50%" text-anchor="middle">SUPERNOVA GUIDE · SCIENTIFIC COMMITTEE</textPath>
+    </text>
+    <text font-family="Space Mono, DejaVu Sans Mono, monospace" font-size="5.55" font-weight="700" letter-spacing="0.85" fill="var(--tier-primary)" opacity="0.92">
+        <textPath href="#cseal-bot-{uid}" startOffset="50%" text-anchor="middle">· VERIFIED 2026 ·</textPath>
+    </text>
+
+    <!-- Center Celestial Compass Star & Official Stamp Label -->
+    <g fill="var(--tier-primary)" opacity="0.9">
+        <polygon points="55,34.5 56.9,43.2 65.5,45 56.9,46.8 55,55.5 53.1,46.8 44.5,45 53.1,43.2"/>
+        <polygon points="55,39.5 56.1,43.9 60.5,45 56.1,46.1 55,50.5 53.9,46.1 49.5,45 53.9,43.9" transform="rotate(45 55 45)" opacity="0.62"/>
+    </g>
+    <line x1="36" y1="60.5" x2="74" y2="60.5" stroke="var(--tier-primary)" stroke-width="0.55" opacity="0.65"/>
+    <text x="55" y="69.5" text-anchor="middle" font-family="Bricolage Grotesque, Inter, DejaVu Sans, sans-serif" font-size="7.4" font-weight="800" letter-spacing="0.9" fill="var(--tier-primary)">SAC 2026</text>
+    <text x="55" y="76.2" text-anchor="middle" font-family="Space Mono, DejaVu Sans Mono, monospace" font-size="4.4" font-weight="700" letter-spacing="0.7" fill="var(--tier-primary)" opacity="0.82">OFFICIAL SEAL</text>
+</svg>"""
 
 
 def render_sponsor_bar_html(logos: Dict[str, LogoAsset]) -> str:
@@ -1830,7 +2030,10 @@ def render_certificate_page_html(cert: CertificateSpec, logos: Dict[str, LogoAss
     )
 
     name_len = len(cert.recipient_title)
+    has_greek = any("\u0370" <= ch <= "\u03ff" or "\u1f00" <= ch <= "\u1fff" for ch in cert.recipient_title)
     name_cls = "recipient-name"
+    if has_greek:
+        name_cls += " has-greek"
     if name_len > 30:
         name_cls += " name-xlong"
     elif name_len > 24:
@@ -1858,16 +2061,38 @@ def render_certificate_page_html(cert: CertificateSpec, logos: Dict[str, LogoAss
         </div>
         {duo_html}"""
 
+    # Signatures Block: real PNGs if available, else clean printed lines + circular SVG verification seal
+    all_real_sigs = all(logos.get(sig_key) and logos[sig_key].exists for _, _, sig_key, _ in COMMITTEE)
     sig_cols = []
-    for sig_name, sig_role, sig_key in COMMITTEE:
+    for sig_name, sig_role, sig_key, _ in COMMITTEE:
+        sig_asset = logos.get(sig_key)
+        if sig_asset and sig_asset.exists and sig_asset.data_uri:
+            sig_top_html = (
+                f'<div class="sig-img-slot">'
+                f'<img class="sig-real-img" src="{sig_asset.data_uri}" alt="{html.escape(sig_name)} Signature">'
+                f'</div>'
+            )
+        else:
+            sig_top_html = '<div class="sig-blank-space"></div>'
         sig_cols.append(
             f'<div class="sig-col">'
-            f'{SIGNATURE_SVGS[sig_key]}'
+            f'{sig_top_html}'
             f'<div class="sig-line"></div>'
             f'<div class="sig-name">{html.escape(sig_name)}</div>'
             f'<div class="sig-role">{html.escape(sig_role)}</div>'
             f'</div>'
         )
+
+    if not all_real_sigs:
+        sig_row_cls = "signatures-row with-committee-seal"
+        committee_seal_html = (
+            f'<div class="committee-seal-wrap">'
+            f'{build_committee_verification_seal_svg(cert.cert_id)}'
+            f'</div>'
+        )
+    else:
+        sig_row_cls = "signatures-row"
+        committee_seal_html = ""
 
     bg_svg = build_celestial_background_svg()
     seal_svg = build_tier_seal_svg(cert.seal_top, cert.seal_main, cert.seal_bottom)
@@ -1906,8 +2131,9 @@ def render_certificate_page_html(cert: CertificateSpec, logos: Dict[str, LogoAss
             <p class="citation-text">{cert.citation_html}</p>
         </main>
 
-        <div class="signatures-row">
+        <div class="{sig_row_cls}">
             {"".join(sig_cols)}
+            {committee_seal_html}
         </div>
 
         {sponsor_bar_html}
