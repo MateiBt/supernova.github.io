@@ -57,8 +57,11 @@ let filteredProblems = [...allProblems];
 function syncPracticeSidebar() {
     const sidebar = document.querySelector('aside.sidebar');
     if (!sidebar) return;
+    // practice/*.html now ship the unified sidebar statically; only rebuild legacy markup.
+    if (sidebar.querySelector('#btn-logout') && sidebar.querySelector('a[href="../competitions.html"]')) return;
     sidebar.style.overflowY = 'auto';
     sidebar.innerHTML = `
+        <button type="button" class="sidebar-close-btn" aria-label="Close navigation menu"><i class="fa-solid fa-xmark"></i></button>
         <a href="../dashboard.html" class="brand" style="margin-bottom: 32px;">
             <img src="../assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>
@@ -68,7 +71,7 @@ function syncPracticeSidebar() {
         <ul class="nav-menu">
             <li><a href="../dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
             <li><a href="../challenges.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
-            <li><a href="../planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="../planetarium.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
             <li><a href="../problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
             <li><a href="../courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
             <li><a href="../competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>

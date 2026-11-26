@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Observatory &amp; Planetarium | Supernova Guide</title>
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Canonical Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Observatory Styles -->
+    <link rel="stylesheet" href="css/planetarium.css">
+
+    <!-- Three.js r128 & OrbitControls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+    <!-- FULL-VIEWPORT LIVE 3D CELESTIAL SPHERE -->
+    <main class="sky-stage" aria-label="Interactive 3D Celestial Sphere">
+        <div id="sky-canvas-stage"></div>
+        <canvas id="sky-overlay-2d" aria-hidden="true"></canvas>
+    </main>
+
+    <div id="sky-loading-badge" class="sky-loading-badge">
+        <i class="fa-solid fa-satellite-dish"></i> Loading HYG star catalog &amp; deep sky objects...
+    </div>
+
+    <!-- MOBILE HEADER BAR (<= 800px) -->
+    <header class="mobile-topbar">
+        <a href="dashboard.html" class="mobile-brand">
+            <img src="assets/img/supernova_logo.png" alt="Supernova Guide Logo">
+            <span>SUPERNOVA PLANETARIUM</span>
+        </a>
+        <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Open navigation menu" aria-expanded="false">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- UNIFIED 3-SECTION SIDEBAR (Collapsible Slim Rail on Desktop, Slide-Out Drawer on Mobile) -->
+    <aside class="sidebar rail-collapsed" id="obs-sidebar" aria-label="Primary Navigation">
+        <button type="button" class="sidebar-close-btn" aria-label="Close navigation menu">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="sidebar-head">
+            <a href="dashboard.html" class="brand" title="Supernova Guide Dashboard">
+                <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
+                <span>SUPERNOVA<br>GUIDE</span>
+            </a>
+            <button type="button" class="rail-toggle-btn" id="btn-rail-toggle" aria-label="Expand navigation sidebar" aria-expanded="false" title="Expand navigation rail">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+        </div>
+
+        <div class="menu-label">Menu</div>
+        <ul class="nav-menu">
+            <li><a href="dashboard.html" class="nav-item" title="Dashboard"><i class="fa-solid fa-border-all"></i><span class="nav-label">Dashboard</span></a></li>
+            <li><a href="challenges.html" class="nav-item" title="POTD · POTW · POTM"><i class="fa-solid fa-clock-rotate-left"></i><span class="nav-label">POTD · POTW · POTM</span></a></li>
+            <li><a href="planetarium.html" class="nav-item active" title="Planetarium"><i class="fa-solid fa-satellite-dish"></i><span class="nav-label">Planetarium</span></a></li>
+            <li><a href="problems.html" class="nav-item" title="Study &amp; Practice"><i class="fa-solid fa-rocket"></i><span class="nav-label">Study &amp; Practice</span></a></li>
+            <li><a href="courses.html" class="nav-item" title="Supernova Courses"><i class="fa-solid fa-circle-play"></i><span class="nav-label">Supernova Courses</span></a></li>
+            <li><a href="competitions.html" class="nav-item" title="Competitions"><i class="fa-solid fa-trophy"></i><span class="nav-label">Competitions</span></a></li>
+        </ul>
+
+        <div class="menu-label">Tools &amp; Analytics</div>
+        <ul class="nav-menu">
+            <li><a href="analytics.html" class="nav-item" title="Analytics"><i class="fa-solid fa-chart-simple"></i><span class="nav-label">Analytics</span></a></li>
+            <li><a href="tools.html" class="nav-item" title="Formula &amp; Tools"><i class="fa-solid fa-calculator"></i><span class="nav-label">Formula &amp; Tools</span></a></li>
+            <li><a href="notebook.html" class="nav-item" title="Mistake Notebook"><i class="fa-solid fa-book-open"></i><span class="nav-label">Mistake Notebook</span></a></li>
+            <li><a href="resources.html" class="nav-item" title="External Library"><i class="fa-solid fa-book-atlas"></i><span class="nav-label">External Library</span></a></li>
+        </ul>
+
+        <div class="menu-label">General</div>
+        <ul class="nav-menu">
+            <li><a href="profile.html" class="nav-item" title="Settings"><i class="fa-solid fa-gear"></i><span class="nav-label">Settings</span></a></li>
+            <li><a href="community.html" class="nav-item" title="Community"><i class="fa-solid fa-users"></i><span class="nav-label">Community</span></a></li>
+            <li><a href="#" class="nav-item" id="btn-logout" title="Logout"><i class="fa-solid fa-arrow-right-from-bracket"></i><span class="nav-label">Logout</span></a></li>
+        </ul>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+    <!-- TOP FLOATING OBSERVATORY HUD -->
+    <section class="obs-top-hud" id="obs-top-hud" aria-label="Observatory Controls">
+        <div class="hud-cluster">
+            <div class="goto-search-wrap" id="goto-search-wrap">
+                <div class="goto-input-shell">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input
+                        type="text"
+                        id="goto-search-input"
+                        autocomplete="off"
+                        spellcheck="false"
+                        placeholder="Go-To star, Messier/NGC, Bayer, constellation..."
+                        aria-label="Go-To Celestial Object Search"
+                    >
+                    <kbd class="goto-kbd">/</kbd>
+                    <button type="button" class="goto-clear-btn" id="goto-search-clear" aria-label="Clear search">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="goto-results" id="goto-results" role="listbox"></div>
+            </div>
+        </div>
+
+        <div class="hud-cluster">
+            <div class="hud-mode-pill-group" role="toolbar" aria-label="Training and Arena Modes">
+                <button type="button" class="hud-mode-btn" data-drawer-tab="drills">
+                    <i class="fa-solid fa-crosshairs"></i><span>Blind Drills</span>
+                </button>
+                <button type="button" class="hud-mode-btn" data-drawer-tab="constellations">
+                    <i class="fa-solid fa-diagram-project"></i><span>88 Constellations</span>
+                </button>
+                <button type="button" class="hud-mode-btn" data-drawer-tab="arena">
+                    <i class="fa-solid fa-khanda"></i><span>1v1 Arena</span>
+                </button>
+                <button type="button" class="hud-mode-btn" data-drawer-tab="records">
+                    <i class="fa-solid fa-ranking-star"></i><span>Records</span>
+                </button>
+            </div>
+
+            <button type="button" class="hud-telemetry-pill" id="btn-site-popover" title="Observer location &amp; sidereal clock">
+                <span id="hud-utc-clock">--:--:-- UTC</span>
+                <span class="hud-clock-sep"></span>
+                <span class="hud-lst" id="hud-lst-clock">LST --h --m</span>
+                <span class="hud-clock-sep site-sep"></span>
+                <span class="hud-site-tag" id="hud-site-coords">44.4°N 26.1°E</span>
+            </button>
+
+            <div class="hud-operator-pill" title="Signed-in Observatory Operator">
+                <span id="hud-user-name">Guest</span>
+                <span class="hud-elo-tag"><i class="fa-solid fa-star"></i> <span id="hud-elo-val">1200</span></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- OBSERVER SITE POPOVER -->
+    <div class="site-popover" id="site-popover" role="dialog" aria-label="Observer Location Settings">
+        <h4><i class="fa-solid fa-location-crosshairs"></i> Observer Coordinates</h4>
+        <div class="site-presets-grid" id="site-presets"></div>
+        <div class="site-custom-row">
+            <div class="site-field">
+                <label for="inp-site-lat">Latitude (°N)</label>
+                <input type="number" step="0.01" min="-90" max="90" id="inp-site-lat" value="44.43">
+            </div>
+            <div class="site-field">
+                <label for="inp-site-lon">Longitude (°E)</label>
+                <input type="number" step="0.01" min="-180" max="180" id="inp-site-lon" value="26.10">
+            </div>
+        </div>
+        <button type="button" class="btn-secondary-obs" id="btn-apply-site" style="width:100%;">
+            Apply Observer Site
+        </button>
+    </div>
+
+    <!-- TARGET TELEMETRY FLOATING HUD CARD -->
+    <aside class="telemetry-card" id="telemetry-card" aria-label="Selected Target Telemetry">
+        <div class="tel-header">
+            <div class="tel-badges">
+                <span class="tel-kind-badge star" id="tel-type-badge">STAR</span>
+                <button type="button" class="tel-con-btn" id="tel-constellation" data-con="">Orion (Ori)</button>
+            </div>
+            <button type="button" class="icon-close-btn" id="btn-tel-close" aria-label="Close telemetry card">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <h2 class="tel-title" id="tel-name">Betelgeuse</h2>
+        <div class="tel-designations" id="tel-designations">α Ori · Alpha Ori · HIP 27989</div>
+
+        <div class="tel-horizon-row">
+            <span style="color:var(--text-muted); font-family:var(--font-mono); font-size:0.68rem;">LIVE LOCAL VISIBILITY</span>
+            <span class="tel-horizon-pill above" id="tel-horizon">Above Horizon</span>
+        </div>
+
+        <div class="tel-grid">
+            <div class="tel-metric">
+                <span class="tel-metric-label">RA (J2000)</span>
+                <span class="tel-metric-val cyan" id="tel-ra">05h 55m 10.3s</span>
+            </div>
+            <div class="tel-metric">
+                <span class="tel-metric-label">Dec (J2000)</span>
+                <span class="tel-metric-val cyan" id="tel-dec">+07° 24' 25"</span>
+            </div>
+            <div class="tel-metric">
+                <span class="tel-metric-label">Altitude</span>
+                <span class="tel-metric-val" id="tel-alt">+42.1°</span>
+            </div>
+            <div class="tel-metric">
+                <span class="tel-metric-label">Azimuth</span>
+                <span class="tel-metric-val" id="tel-az">182.4° S</span>
+            </div>
+            <div class="tel-metric">
+                <span class="tel-metric-label">Magnitude (m<sub>V</sub>)</span>
+                <span class="tel-metric-val" id="tel-mag">0.45 mag</span>
+            </div>
+            <div class="tel-metric">
+                <span class="tel-metric-label">Spectral / Type</span>
+                <span class="tel-metric-val" id="tel-spect">M2Iab</span>
+            </div>
+            <div class="tel-metric" style="grid-column: span 2;">
+                <span class="tel-metric-label">Catalog Distance</span>
+                <span class="tel-metric-val" id="tel-dist">498.0 ly</span>
+            </div>
+        </div>
+
+        <div class="tel-sep-box" id="tel-sep-box">
+            <div class="tel-sep-info">
+                <span class="tel-sep-label">Angular Sep. from <strong id="tel-sep-ref">Rigel</strong></span>
+                <span class="tel-sep-val" id="tel-sep-val">18.60° (18° 36' 00")</span>
+            </div>
+            <button type="button" class="icon-close-btn" id="btn-tel-clear-sep" title="Clear angular separation arc" aria-label="Clear separation measurement">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="tel-actions">
+            <button type="button" class="tel-act-btn" id="btn-tel-slew">
+                <i class="fa-solid fa-crosshairs"></i> Center
+            </button>
+            <button type="button" class="tel-act-btn" id="btn-tel-pin">
+                <i class="fa-solid fa-thumbtack"></i> Pin Ref
+            </button>
+        </div>
+    </aside>
+
+    <!-- BOTTOM OBSERVATORY CONTROL DOCK -->
+    <nav class="obs-control-dock" id="obs-control-dock" aria-label="Celestial Sphere Layers">
+        <div class="dock-items">
+            <button type="button" class="dock-toggle" data-layer="equatorialGrid" title="Toggle Equatorial Grid (RA/Dec)">
+                <i class="fa-solid fa-globe"></i><span>Equatorial</span>
+            </button>
+            <button type="button" class="dock-toggle" data-layer="altAzGrid" title="Toggle Local Alt-Az Horizon Grid">
+                <i class="fa-regular fa-compass"></i><span>Alt-Az</span>
+            </button>
+            <button type="button" class="dock-toggle active" data-layer="eclipticPlane" title="Toggle Ecliptic Plane">
+                <i class="fa-solid fa-sun"></i><span>Ecliptic</span>
+            </button>
+            <button type="button" class="dock-toggle active" data-layer="constellationLines" title="Toggle Constellation Stick Figures">
+                <i class="fa-solid fa-diagram-project"></i><span>Lines</span>
+            </button>
+            <button type="button" class="dock-toggle" data-layer="constellationBoundaries" title="Toggle IAU Constellation Boundaries">
+                <i class="fa-solid fa-border-none"></i><span>IAU Bounds</span>
+            </button>
+            <button type="button" class="dock-toggle active" data-layer="starLabels" title="Toggle Star Labels">
+                <i class="fa-solid fa-tag"></i><span>Labels</span>
+            </button>
+            <button type="button" class="dock-toggle active" data-layer="dsoMarkers" title="Toggle Deep Sky Object Markers">
+                <i class="fa-solid fa-burst"></i><span>DSO</span>
+            </button>
+
+            <span class="dock-divider"></span>
+
+            <div class="dock-mag-control" title="Real-time Limiting Apparent Magnitude">
+                <span class="dock-mag-label">m ≤ <strong id="mag-limit-val">6.5</strong></span>
+                <input type="range" id="mag-limit-slider" min="1.5" max="6.5" step="0.1" value="6.5" aria-label="Magnitude limit">
+            </div>
+
+            <span class="dock-divider"></span>
+
+            <div class="dock-zoom-group">
+                <button type="button" class="dock-icon-btn" id="btn-zoom-out" title="Zoom Out (Wider FOV)" aria-label="Zoom out">
+                    <i class="fa-solid fa-minus"></i>
+                </button>
+                <span class="dock-fov-readout" id="dock-fov-readout">58° FOV</span>
+                <button type="button" class="dock-icon-btn" id="btn-zoom-in" title="Zoom In (Narrower FOV)" aria-label="Zoom in">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+        </div>
+
+        <button type="button" class="dock-collapse-btn" id="btn-dock-collapse" aria-expanded="true" title="Collapse or expand control dock">
+            <i class="fa-solid fa-chevron-down"></i>
+        </button>
+    </nav>
+
+    <!-- ACTIVE DRILL / CONSTELLATION PRACTICE / 1V1 ARENA HUD -->
+    <section class="drill-hud-bar" id="drill-hud-bar" aria-label="Active Training HUD">
+        <div class="drill-hud-left">
+            <span class="drill-mode-badge" id="drill-mode-badge">BLIND-MAP DRILL</span>
+            <div class="drill-prompt" id="drill-prompt">Identify highlighted target</div>
+        </div>
+
+        <div class="drill-hud-right">
+            <div class="drill-arena-strip" id="drill-arena-strip"></div>
+            <div class="drill-sparkline" id="drill-sparkline"></div>
+            <div class="drill-stat-chip">
+                <span>Score</span>
+                <strong id="drill-score">0 pts</strong>
+            </div>
+            <div class="drill-stat-chip">
+                <span>Streak</span>
+                <strong class="streak" id="drill-streak">0</strong>
+            </div>
+            <div class="drill-stat-chip">
+                <span>Missed</span>
+                <strong class="mistakes" id="drill-mistakes">0</strong>
+            </div>
+            <div class="drill-stat-chip">
+                <span>Clock</span>
+                <strong class="timer" id="drill-timer">05:00</strong>
+            </div>
+            <button type="button" class="btn-exit-drill" id="btn-exit-drill">
+                <i class="fa-solid fa-right-from-bracket"></i> Exit
+            </button>
+        </div>
+    </section>
+
+    <section class="drill-answer-dock" id="drill-answer-dock" aria-label="Drill Answer Bar">
+        <div class="drill-feedback" id="drill-feedback" role="status"></div>
+        <div class="drill-input-row">
+            <div class="drill-field-wrap" id="drill-name-wrap">
+                <input
+                    type="text"
+                    class="drill-text-input"
+                    id="drill-name-input"
+                    autocomplete="off"
+                    spellcheck="false"
+                    placeholder="Type English proper name or Messier/NGC ID (leave blank if unnamed)..."
+                >
+            </div>
+            <div class="drill-field-wrap" id="drill-mag-wrap" style="display:none;">
+                <input
+                    type="number"
+                    step="0.1"
+                    min="-2"
+                    max="15"
+                    class="drill-text-input"
+                    id="drill-mag-input"
+                    placeholder="Estimated apparent magnitude (e.g., 1.25)..."
+                >
+            </div>
+            <div class="drill-field-wrap drill-type-wrap" id="drill-type-wrap" style="display:none;">
+                <div class="drill-type-grid" id="drill-type-grid"></div>
+            </div>
+            <div class="drill-pos-hint" id="drill-pos-hint" style="display:none;">
+                Click directly on the matching star or DSO on the sky sphere.
+            </div>
+            <button type="button" class="btn-primary-obs" id="btn-drill-submit">Submit</button>
+        </div>
+    </section>
+
+    <!-- RIGHT SLIDE-OVER OBSERVATORY DRAWER -->
+    <div class="obs-drawer-backdrop" id="obs-drawer-backdrop"></div>
+    <aside class="obs-drawer" id="obs-drawer" aria-label="Planetarium Training and Arena Drawer">
+        <div class="drawer-header">
+            <h2><i class="fa-solid fa-satellite-dish"></i> Observatory Console</h2>
+            <button type="button" class="icon-close-btn" id="btn-drawer-close" aria-label="Close drawer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="drawer-tabs" role="tablist">
+            <button type="button" class="drawer-tab-btn active" data-tab="drills" role="tab">Blind Drills</button>
+            <button type="button" class="drawer-tab-btn" data-tab="constellations" role="tab">88 Const.</button>
+            <button type="button" class="drawer-tab-btn" data-tab="arena" role="tab">1v1 Arena</button>
+            <button type="button" class="drawer-tab-btn" data-tab="records" role="tab">Records</button>
+        </div>
+
+        <div class="drawer-body">
+            <!-- TAB 1: SINGLEPLAYER BLIND-MAP DRILLS -->
+            <div class="drawer-panel active" id="drawer-panel-drills">
+                <p class="drawer-desc">
+                    IOAA/USAAAO-grade blind sky drills. Labels, stick figures, grids, and DSO markers are automatically suppressed during timed runs and restored on exit.
+                </p>
+
+                <div class="form-block">
+                    <span class="form-label">Target Catalog Pool</span>
+                    <div class="seg-group" id="drill-target-group">
+                        <button type="button" class="seg-btn active" data-val="stars">Stars Only</button>
+                        <button type="button" class="seg-btn" data-val="dso">Deep Sky Objects</button>
+                    </div>
+                </div>
+
+                <div class="form-block">
+                    <span class="form-label">Assessment Skill</span>
+                    <div class="seg-group" id="drill-mode-group">
+                        <button type="button" class="seg-btn active" data-val="name">Identify Name</button>
+                        <button type="button" class="seg-btn" data-val="position">Locate Object</button>
+                        <button type="button" class="seg-btn" data-val="type">Classify Type</button>
+                        <button type="button" class="seg-btn" data-val="mag">Estimate Mag</button>
+                    </div>
+                </div>
+
+                <div class="form-block">
+                    <span class="form-label">Limiting Magnitude / Depth</span>
+                    <div class="seg-group" id="drill-diff-group">
+                        <button type="button" class="seg-btn" data-val="easy">Easy (m ≤ 2.0)</button>
+                        <button type="button" class="seg-btn active" data-val="medium">Medium (m ≤ 4.0)</button>
+                        <button type="button" class="seg-btn" data-val="hard">Hard (m ≤ 5.0)</button>
+                        <button type="button" class="seg-btn" data-val="extreme">Extreme (m ≤ 6.5)</button>
+                    </div>
+                </div>
+
+                <div class="form-block">
+                    <span class="form-label">Session Duration</span>
+                    <div class="seg-group cols-4" id="drill-time-group">
+                        <button type="button" class="seg-btn" data-val="2">2 min</button>
+                        <button type="button" class="seg-btn active" data-val="5">5 min</button>
+                        <button type="button" class="seg-btn" data-val="10">10 min</button>
+                        <button type="button" class="seg-btn" data-val="unlimited">Untimed</button>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-primary-obs drawer-cta" id="btn-start-drill">
+                    <i class="fa-solid fa-play"></i> Launch Blind-Map Drill
+                </button>
+            </div>
+
+            <!-- TAB 2: ALL 88 IAU CONSTELLATIONS -->
+            <div class="drawer-panel" id="drawer-panel-constellations">
+                <p class="drawer-desc">
+                    Explore or drill any of the 88 official IAU constellations. Isolated drills run a millisecond stopwatch (+3s penalty per miss) and requeue missed stars until mastered.
+                </p>
+                <input
+                    type="text"
+                    class="con-search-box"
+                    id="constellation-filter-input"
+                    placeholder="Filter 88 IAU constellations (e.g., Orion, Ursa Major, Cyg)..."
+                    aria-label="Filter constellations"
+                >
+                <div class="constellation-grid" id="constellation-grid"></div>
+            </div>
+
+            <!-- TAB 3: 1V1 RANKED ELO ARENA -->
+            <div class="drawer-panel" id="drawer-panel-arena">
+                <div class="arena-elo-banner">
+                    <span>Active Skill Rating</span>
+                    <strong id="arena-my-elo">1200 ELO</strong>
+                </div>
+
+                <div class="form-block">
+                    <span class="form-label">Match Format</span>
+                    <div class="seg-group cols-3" id="arena-opp-group">
+                        <button type="button" class="seg-btn active" data-val="bot">vs Bot</button>
+                        <button type="button" class="seg-btn" data-val="local">Local 1v1</button>
+                        <button type="button" class="seg-btn" data-val="online-ranked">Online Ranked</button>
+                    </div>
+                </div>
+
+                <div class="form-block">
+                    <span class="form-label">Duel Skill Mode</span>
+                    <div class="seg-group" id="arena-skill-group">
+                        <button type="button" class="seg-btn active" data-val="name">Identify Name</button>
+                        <button type="button" class="seg-btn" data-val="position">Locate Object</button>
+                        <button type="button" class="seg-btn" data-val="type">Classify Type</button>
+                        <button type="button" class="seg-btn" data-val="mag">Estimate Mag</button>
+                    </div>
+                </div>
+
+                <!-- Bot Config -->
+                <div class="arena-subcard" id="arena-bot-panel">
+                    <span class="form-label">Practice Bot Calibration</span>
+                    <div class="seg-group cols-4" id="arena-bot-acc-group">
+                        <button type="button" class="seg-btn" data-val="0.45">45%</button>
+                        <button type="button" class="seg-btn active" data-val="0.70">70%</button>
+                        <button type="button" class="seg-btn" data-val="0.82">82%</button>
+                        <button type="button" class="seg-btn" data-val="0.92">92%</button>
+                    </div>
+                </div>
+
+                <!-- Local 1v1 Config -->
+                <div class="arena-subcard" id="arena-local-panel" style="display:none;">
+                    <span class="form-label">Local Hot-Seat Players</span>
+                    <div class="site-custom-row" style="margin-bottom:0;">
+                        <div class="site-field">
+                            <label for="arena-p1-name">Player 1</label>
+                            <input type="text" id="arena-p1-name" placeholder="Player 1">
+                        </div>
+                        <div class="site-field">
+                            <label for="arena-p2-name">Player 2</label>
+                            <input type="text" id="arena-p2-name" placeholder="Player 2">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Online Ranked 1v1 Room Panel -->
+                <div class="arena-subcard" id="arena-online-panel" style="display:none;">
+                    <span class="form-label">Firebase Ranked 1v1 Lobby</span>
+                    <button type="button" class="btn-secondary-obs" id="btn-arena-host" style="width:100%;">
+                        <i class="fa-solid fa-tower-broadcast"></i> Host New Ranked Room
+                    </button>
+
+                    <div class="arena-room-box">
+                        <span class="arena-room-code" id="arena-room-code">------</span>
+                        <button type="button" class="btn-secondary-obs" id="btn-arena-copy-code">
+                            <i class="fa-regular fa-copy"></i> Copy
+                        </button>
+                    </div>
+
+                    <div class="arena-join-row">
+                        <input type="text" id="arena-join-code" maxlength="6" placeholder="ROOM CODE">
+                        <button type="button" class="btn-secondary-obs" id="btn-arena-join">Join</button>
+                    </div>
+
+                    <div class="arena-room-status" id="arena-room-status">
+                        Host a room or enter a 6-character code to connect for a 10-round ranked duel.
+                    </div>
+                </div>
+
+                <button type="button" class="btn-primary-obs drawer-cta" id="btn-launch-arena">
+                    Start 1v1 vs Bot
+                </button>
+            </div>
+
+            <!-- TAB 4: RECORDS & ELO LEADERBOARDS -->
+            <div class="drawer-panel" id="drawer-panel-records">
+                <div class="rec-subtabs">
+                    <button type="button" class="rec-subtab-btn active" data-sub="global">Global</button>
+                    <button type="button" class="rec-subtab-btn" data-sub="elo">ELO</button>
+                    <button type="button" class="rec-subtab-btn" data-sub="constellations">88 Const.</button>
+                    <button type="button" class="rec-subtab-btn" data-sub="personal">Personal</button>
+                </div>
+
+                <!-- Subtab: Global Drills -->
+                <div class="rec-subpanel active" id="rec-sub-global">
+                    <div class="form-block">
+                        <div class="seg-group" id="rec-target-group" style="margin-bottom:6px;">
+                            <button type="button" class="seg-btn active" data-val="stars">Stars</button>
+                            <button type="button" class="seg-btn" data-val="dso">DSO</button>
+                        </div>
+                        <div class="seg-group cols-4" id="rec-mode-group" style="margin-bottom:6px;">
+                            <button type="button" class="seg-btn active" data-val="name">Name</button>
+                            <button type="button" class="seg-btn" data-val="position">Locate</button>
+                            <button type="button" class="seg-btn" data-val="type">Type</button>
+                            <button type="button" class="seg-btn" data-val="mag">Mag</button>
+                        </div>
+                        <div class="seg-group cols-4" id="rec-diff-group" style="margin-bottom:6px;">
+                            <button type="button" class="seg-btn" data-val="easy">Easy</button>
+                            <button type="button" class="seg-btn active" data-val="medium">Med</button>
+                            <button type="button" class="seg-btn" data-val="hard">Hard</button>
+                            <button type="button" class="seg-btn" data-val="extreme">Ext</button>
+                        </div>
+                        <div class="seg-group cols-3" id="rec-time-group">
+                            <button type="button" class="seg-btn" data-val="2">2m</button>
+                            <button type="button" class="seg-btn active" data-val="5">5m</button>
+                            <button type="button" class="seg-btn" data-val="10">10m</button>
+                        </div>
+                    </div>
+                    <ul class="obs-lb-list" id="records-global-list"></ul>
+                </div>
+
+                <!-- Subtab: Ranked ELO Standings -->
+                <div class="rec-subpanel" id="rec-sub-elo">
+                    <div class="form-block">
+                        <div class="seg-group cols-4" id="rec-elo-mode-group">
+                            <button type="button" class="seg-btn active" data-val="name">Name</button>
+                            <button type="button" class="seg-btn" data-val="position">Locate</button>
+                            <button type="button" class="seg-btn" data-val="type">Type</button>
+                            <button type="button" class="seg-btn" data-val="mag">Mag</button>
+                        </div>
+                    </div>
+                    <ul class="obs-lb-list" id="records-elo-list"></ul>
+                </div>
+
+                <!-- Subtab: Constellation Practice Records -->
+                <div class="rec-subpanel" id="rec-sub-constellations">
+                    <select class="rec-select" id="records-con-select" aria-label="Select constellation"></select>
+                    <ul class="obs-lb-list" id="records-con-list"></ul>
+                </div>
+
+                <!-- Subtab: Personal Records & Match History -->
+                <div class="rec-subpanel" id="rec-sub-personal">
+                    <span class="form-label">Personal Best Drills</span>
+                    <ul class="obs-lb-list" id="records-personal-list" style="margin-bottom:16px;"></ul>
+
+                    <span class="form-label">1v1 Ranked Match History</span>
+                    <ul class="obs-lb-list" id="records-history-list"></ul>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- INLINE SESSION SUMMARY OVERLAY (Replaces legacy alert popups) -->
+    <div class="session-summary-overlay" id="session-summary-overlay" role="dialog" aria-modal="true" aria-label="Session Summary">
+        <div class="session-summary-card">
+            <h3 id="summary-title">Drill Complete</h3>
+            <div class="summary-subtitle" id="summary-subtitle">Blind-Map Assessment</div>
+            <div class="summary-stats" id="summary-stats"></div>
+            <p class="summary-note" id="summary-note"></p>
+            <div class="summary-actions">
+                <button type="button" class="btn-secondary-obs" id="btn-summary-close">Return to Sky</button>
+                <button type="button" class="btn-primary-obs" id="btn-summary-replay">Run Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NON-BLOCKING OBSERVATORY TOAST -->
+    <div class="obs-toast" id="obs-toast" role="status" aria-live="polite"></div>
+
+    <!-- MODULAR ES6 SCRIPTS (Auth + Planetarium + Quick Search) -->
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/planetarium/app.js"></script>
+    <script type="module" src="js/quick_search.js"></script>
+</body>
+</html>

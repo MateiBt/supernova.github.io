@@ -1,0 +1,3 @@
+{
+  "install": "python3 --version && node --version && python3 -c \"import ast; ast.parse(open('utils/cleaner.py', encoding='utf-8').read())\" && for f in js/*.js js/data/*.js js/planetarium/*.js; do [ -f \"$f\" ] && node --check \"$f\"; done"
+}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practice Workspace | Supernova Guide</title>
+    <title>Planetary Systems &amp; Formation — Practice | Supernova Guide</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,8 +13,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- MathJax -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <!-- MathJax v3 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            }
+        };
+    </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
@@ -30,6 +38,7 @@
             --accent-rose: #FFC1CC;
             --accent-gold: #FFCF5C;
             --track-accent: #B39CD0;
+            --track-accent-rgb: 179, 156, 208;
             
             --text-pure: #FFFFFF;
             --text-main: #EDEDED;
@@ -77,45 +86,39 @@
         }
         @keyframes shooting { 0% { transform: rotate(145deg) translateX(-200px); opacity: 0; } 10% { opacity: 1; } 100% { transform: rotate(145deg) translateX(2500px); opacity: 0; } }
 
-        /* Sidebar */
+        /* --- UNIFIED APP SIDEBAR --- */
         .sidebar {
             width: 260px; background-color: var(--bg-sidebar);
             border-right: 1px solid var(--border-subtle);
             display: flex; flex-direction: column;
             padding: 24px 20px; flex-shrink: 0; z-index: 100;
+            overflow-y: auto;
         }
         .brand {
             display: flex; align-items: center; gap: 16px;
             font-family: var(--font-display); font-size: 1.3rem;
             font-weight: 700; color: var(--text-pure);
-            margin-bottom: 40px; padding-left: 4px; line-height: 1.2;
+            margin-bottom: 32px; padding-left: 4px; line-height: 1.2;
             text-decoration: none;
         }
         .brand img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
 
         .menu-label {
-            font-family: var(--font-mono); font-size: 0.7rem;
+            font-family: var(--font-mono); font-size: 0.68rem;
             color: var(--text-muted); text-transform: uppercase;
-            letter-spacing: 0.05em; margin: 20px 0 10px 8px;
+            letter-spacing: 0.05em; margin: 18px 0 8px 8px;
         }
         .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
         .nav-item {
             display: flex; align-items: center; gap: 12px;
-            padding: 10px 12px; border-radius: var(--radius-sm);
+            padding: 9px 12px; border-radius: var(--radius-sm);
             color: var(--text-muted); text-decoration: none;
-            font-weight: 500; font-size: 0.9rem; transition: all 0.2s ease;
+            font-weight: 500; font-size: 0.88rem; transition: all 0.2s ease;
         }
-        .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.05rem; }
         .nav-item:hover { background-color: rgba(255,255,255,0.03); color: var(--text-main); }
-        .nav-item.active { background-color: rgba(255,255,255,0.06); color: var(--track-accent); border-left: 3px solid var(--track-accent); }
+        .nav-item.active { background-color: rgba(var(--track-accent-rgb), 0.12); color: var(--track-accent); border-left: 3px solid var(--track-accent); }
 
-        .sidebar-footer { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
-        .btn-auth {
-            background: var(--bg-card); border: 1px solid var(--border-light); color: var(--text-pure);
-            padding: 10px 16px; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600;
-            transition: all 0.2s ease; font-size: 0.85rem; width: 100%; font-family: var(--font-body);
-        }
-        .btn-auth:hover { background: var(--track-accent); color: var(--bg-base); border-color: var(--track-accent); }
 
         /* Main Workspace */
         .dashboard-main {
@@ -136,7 +139,7 @@
         }
         .hero-left { display: flex; align-items: center; gap: 22px; }
         .hero-icon {
-            width: 84px; height: 84px; border-radius: var(--radius-md);
+            width: 80px; height: 80px; border-radius: var(--radius-md);
             background: #FFFFFF; display: flex; align-items: center; justify-content: center;
             overflow: hidden; flex-shrink: 0; border: 1px solid var(--border-light);
         }
@@ -146,22 +149,30 @@
             color: var(--track-accent); letter-spacing: 0.08em; display: block; margin-bottom: 4px;
         }
         .hero-meta h1 {
-            font-family: var(--font-display); font-size: 1.75rem; font-weight: 700;
+            font-family: var(--font-display); font-size: 1.7rem; font-weight: 700;
             color: var(--text-pure); margin-bottom: 6px;
         }
         .hero-meta p { font-size: 0.88rem; color: var(--text-muted); }
 
-        .hero-actions { display: flex; gap: 10px; }
+        .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn-nav-pill {
             display: inline-flex; align-items: center; gap: 8px;
             padding: 10px 16px; border-radius: var(--radius-sm);
             font-size: 0.84rem; font-weight: 600; text-decoration: none;
             background: var(--bg-sidebar); color: var(--text-main);
-            border: 1px solid var(--border-light); transition: all 0.2s;
+            border: 1px solid var(--border-light); transition: all 0.2s; cursor: pointer;
+            font-family: var(--font-body);
         }
         .btn-nav-pill:hover { border-color: var(--track-accent); color: var(--text-pure); }
+        .btn-nav-pill.primary-pill {
+            background: var(--track-accent); color: var(--bg-base);
+            border-color: var(--track-accent); font-weight: 700;
+        }
+        .btn-nav-pill.primary-pill:hover { opacity: 0.92; transform: translateY(-1px); }
+
         .btn-nav-pill.handout-link { color: var(--track-accent); border-color: var(--track-accent); }
         .btn-nav-pill.handout-link:hover { background: var(--track-accent); color: var(--bg-base); }
+
 
         /* Filters + Problems Layout */
         .layout-wrapper {
@@ -449,8 +460,218 @@
             .filters-container { position: relative; }
         }
         @media (max-width: 800px) {
-            .sidebar { display: none; }
-            .dashboard-main { padding: 24px 20px; }
+.dashboard-main { padding: 24px 20px; }
+        }
+
+        /* --- RESPONSIVE MOBILE HEADER & SLIDE-OUT DRAWER (<= 800px) --- */
+        .mobile-topbar {
+            display: none;
+        }
+        .sidebar-backdrop {
+            display: none;
+        }
+        .sidebar-close-btn {
+            display: none;
+        }
+
+        @media (max-width: 800px) {
+            body {
+                flex-direction: column;
+                height: 100vh;
+                height: 100dvh;
+                overflow-x: hidden;
+            }
+
+            .mobile-topbar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: sticky;
+                top: 0;
+                z-index: 900;
+                width: 100%;
+                height: 60px;
+                padding: 0 16px;
+                background-color: var(--bg-sidebar);
+                border-bottom: 1px solid var(--border-subtle);
+                flex-shrink: 0;
+            }
+
+            .mobile-brand {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                text-decoration: none;
+                color: var(--text-pure);
+                font-family: var(--font-display);
+                font-size: 1.02rem;
+                font-weight: 700;
+                letter-spacing: 0.02em;
+                min-width: 0;
+            }
+
+            .mobile-brand img {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                object-fit: cover;
+                flex-shrink: 0;
+            }
+
+            .mobile-menu-toggle {
+                width: 40px;
+                height: 40px;
+                border-radius: var(--radius-sm);
+                background: var(--bg-card);
+                border: 1px solid var(--border-light);
+                color: var(--text-pure);
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.08rem;
+                cursor: pointer;
+                flex-shrink: 0;
+                transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+            }
+
+            .mobile-menu-toggle:hover,
+            .mobile-menu-toggle:focus-visible {
+                border-color: var(--accent-blue);
+                color: var(--accent-blue);
+                background: var(--bg-card-hover);
+                outline: none;
+            }
+
+            .sidebar-backdrop {
+                display: block;
+                position: fixed;
+                inset: 0;
+                z-index: 990;
+                background: rgba(10, 10, 12, 0.72);
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transition: opacity 0.25s ease, visibility 0.25s ease;
+            }
+
+            .sidebar-backdrop.active {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+            }
+
+            .sidebar {
+                display: flex !important;
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                height: 100vh;
+                height: 100dvh;
+                width: min(280px, 84vw);
+                max-width: 84vw;
+                z-index: 1000;
+                transform: translateX(-105%);
+                transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+                box-shadow: 16px 0 48px rgba(0, 0, 0, 0.75);
+                overflow-y: auto;
+            }
+
+            .sidebar.drawer-open {
+                transform: translateX(0);
+            }
+
+            .sidebar-close-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                top: 18px;
+                right: 14px;
+                width: 34px;
+                height: 34px;
+                border-radius: var(--radius-sm);
+                background: var(--bg-card);
+                border: 1px solid var(--border-light);
+                color: var(--text-muted);
+                font-size: 1rem;
+                cursor: pointer;
+                transition: color 0.2s ease, border-color 0.2s ease;
+            }
+
+            .sidebar-close-btn:hover {
+                color: var(--text-pure);
+                border-color: var(--accent-blue);
+            }
+
+            .sidebar .brand {
+                padding-right: 40px;
+            }
+
+            .dashboard-main {
+                width: 100%;
+                max-width: 100vw;
+                min-width: 0;
+                overflow-x: hidden;
+            }
+
+            .layout-wrapper > *,
+            .problem-section,
+            #problems-container,
+            .problem-card,
+            .filters-container,
+            .reader-grid > *,
+            .grid-layout > *,
+            .constants-card {
+                min-width: 0;
+                max-width: 100%;
+            }
+
+            .constants-card {
+                overflow-x: auto;
+            }
+
+            .calc-inputs {
+                grid-template-columns: 1fr;
+            }
+
+            .module-hero {
+                padding: 20px 16px;
+            }
+
+            .hero-left {
+                flex-wrap: wrap;
+                min-width: 0;
+                max-width: 100%;
+                gap: 14px;
+            }
+
+            .hero-meta {
+                min-width: 0;
+                max-width: 100%;
+            }
+
+            .hero-meta h1 {
+                font-size: 1.4rem;
+                overflow-wrap: anywhere;
+            }
+
+            .problem-card {
+                padding: 20px 16px;
+                overflow-x: hidden;
+            }
+
+            .pagination-container {
+                flex-wrap: wrap;
+            }
+
+            mjx-container {
+                max-width: 100%;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
         }
     </style>
 </head>
@@ -460,49 +681,68 @@
         <div class="comet" style="top: 8%; left: 85%; animation: shooting 9s infinite linear 1s;"></div>
     </div>
 
+    <!-- MOBILE HEADER BAR (<= 800px) -->
+    <header class="mobile-topbar">
+        <a href="../dashboard.html" class="mobile-brand">
+            <img src="../assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span>SUPERNOVA GUIDE</span>
+        </a>
+        <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Open navigation menu" aria-expanded="false">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- UNIFIED SIDEBAR NAVIGATION -->
     <aside class="sidebar">
-        <a href="../index.html" class="brand">
+        <button type="button" class="sidebar-close-btn" aria-label="Close navigation menu"><i class="fa-solid fa-xmark"></i></button>
+        <a href="../dashboard.html" class="brand">
             <img src="../assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>
         </a>
         
         <div class="menu-label">Menu</div>
         <ul class="nav-menu">
-            <li><a href="../index.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
-            <li><a href="../planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
-            <li><a href="../problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study & Practice</a></li>
-            <li><a href="../courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Courses</a></li>
+            <li><a href="../dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="../challenges.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
+            <li><a href="../planetarium.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="../problems.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
+            <li><a href="../courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
+            <li><a href="../competitions.html" class="nav-item"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
+        </ul>
+
+        <div class="menu-label">Tools &amp; Analytics</div>
+        <ul class="nav-menu">
             <li><a href="../analytics.html" class="nav-item"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+            <li><a href="../tools.html" class="nav-item"><i class="fa-solid fa-calculator"></i> Formula &amp; Tools</a></li>
+            <li><a href="../notebook.html" class="nav-item"><i class="fa-solid fa-book-open"></i> Mistake Notebook</a></li>
+            <li><a href="../resources.html" class="nav-item"><i class="fa-solid fa-book-atlas"></i> External Library</a></li>
         </ul>
         
         <div class="menu-label">General</div>
         <ul class="nav-menu">
-            <li><a href="../profile.html" class="nav-item" id="profileLink"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="../profile.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a></li>
             <li><a href="../community.html" class="nav-item"><i class="fa-solid fa-users"></i> Community</a></li>
+            <li><a href="#" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
         </ul>
-        
-        <div class="sidebar-footer">
-            <button id="loginBtn" class="btn-auth">Student Login</button>
-            <button id="logoutBtn" class="btn-auth" style="display: none;">Logout</button>
-        </div>
     </aside>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
     <main class="dashboard-main">
         
         <section class="module-hero">
             <div class="hero-left">
                 <div class="hero-icon">
-                    <img id="mod-logo" src="../assets/img/theory/positional_celestial_mechanics_logo.png" alt="Module Icon">
+                    <img id="mod-logo" src="../assets/img/theory/planetary_systems_logo.png" alt="Planetary Systems and Formation">
                 </div>
                 <div class="hero-meta">
-                    <span class="eyebrow" id="mod-eyebrow">Theory Track</span>
-                    <h1 id="mod-title">Practice Workspace</h1>
-                    <p id="mod-desc">Curated IOAA & national Olympiad problem sets with full analytical derivations.</p>
+                    <span class="eyebrow" id="mod-eyebrow">Theory Track · Module 09</span>
+                    <h1 id="mod-title">Planetary Systems &amp; Formation</h1>
+                    <p id="mod-desc">Solar system dynamics, exoplanet transit/RV detection, and planetary atmospheres.</p>
                 </div>
             </div>
             <div class="hero-actions">
-                <a href="../problems.html" class="btn-nav-pill"><i class="fa-solid fa-arrow-left"></i> All Modules</a>
-                <a id="mod-handout-link" href="../problems.html" class="btn-nav-pill handout-link"><i class="fa-solid fa-book-open"></i> Read Module Handout</a>
+                <a href="../problems.html" class="btn-nav-pill"><i class="fa-solid fa-arrow-left"></i> Curriculum Hub</a>
+                <a id="mod-handout-link" href="../handouts/planetary_systems.html" class="btn-nav-pill primary-pill"><i class="fa-solid fa-book-open"></i> Read Module Handout</a>
             </div>
         </section>
 
@@ -550,7 +790,7 @@
                         <p>Curated Olympiad problems, LaTeX solutions, and grading rubrics for this module are currently being formatted and verified. Check back shortly or explore the Module Handout.</p>
                         <div style="display:flex; gap:12px; margin-top:8px;">
                             <a href="../problems.html" class="btn-nav-pill"><i class="fa-solid fa-grid-2"></i> Return to Hub</a>
-                            <a id="empty-handout-btn" href="../problems.html" class="btn-nav-pill handout-link"><i class="fa-solid fa-book-open"></i> Open Handout</a>
+                            <a id="empty-handout-btn" href="../handouts/planetary_systems.html" class="btn-nav-pill handout-link"><i class="fa-solid fa-book-open"></i> Open Handout</a>
                         </div>
                     </div>
                 </div>
@@ -580,9 +820,9 @@
             "galactic_evolution": { eyebrow: "Theory Track · Module 11", title: "Galactic Evolution & Active Galaxies", desc: "Galaxy interactions, supermassive black holes, AGN unified model, and relativistic jets.", logo: "../assets/img/theory/galactic_evolution_logo.png", accent: "#B39CD0" },
             "cosmology": { eyebrow: "Theory Track · Module 12", title: "Cosmology & Structure of the Universe", desc: "Friedmann equations, Hubble flow, cosmic microwave background, and early universe.", logo: "../assets/img/theory/cosmology_logo.png", accent: "#B39CD0" },
             "data_methods_plotting": { eyebrow: "Data Analysis Track · Module 01", title: "Methods & Plotting", desc: "Error propagation, weighted linear regression, linearization, and residual plotting.", logo: "../assets/img/data_analysis/methods_plotting_logo.png", accent: "#35E6FF" },
-            "data_full_sets": { eyebrow: "Data Analysis Track · Module 02", title: "Full Data Sets", desc: "Comprehensive real-world datasets from past IOAA exams: light curves and spectra.", logo: "../assets/img/data_analysis/full_data_sets_logo.png", accent: "#35E6FF" },
+            "data_full_sets": { eyebrow: "Data Analysis Track · Module 02", title: "Full Data Sets", desc: "Comprehensive real-world datasets from past IOAA exams: light curves and spectra.", logo: "../assets/img/data_analysis/methods_plotting_logo.png", accent: "#35E6FF" },
             "obs_blind_map": { eyebrow: "Observational Track · Module 01", title: "Blind Map Practice", desc: "Naked-eye star identification, constellation boundaries, and coordinate estimation.", logo: "../assets/img/observational/blind_map_logo.png", accent: "#FFC1CC" },
-            "obs_telescope": { eyebrow: "Observational Track · Module 02", title: "Telescope Practice", desc: "Equatorial mount calibration, polar alignment, FOV mapping, and deep-sky pointing.", logo: "../assets/img/observational/telescope_practice_logo.png", accent: "#FFC1CC" }
+            "obs_telescope": { eyebrow: "Observational Track · Module 02", title: "Telescope Practice", desc: "Equatorial mount calibration, polar alignment, FOV mapping, and deep-sky pointing.", logo: "../assets/img/theory/astronomical_instrumentation_logo.png", accent: "#FFC1CC" }
         };
 
         (function hydratePracticePage() {
@@ -605,5 +845,6 @@
     </script>
     <script type="module" src="../js/auth.js"></script>
     <script type="module" src="../js/render_problems.js"></script>
+    <script type="module" src="../js/quick_search.js"></script>
 </body>
 </html>

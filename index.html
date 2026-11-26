@@ -448,11 +448,103 @@
             color: var(--accent-green); font-size: 0.8rem; margin-top: 10px; text-align: center; display: none;
         }
 
+        .landing-menu-toggle,
+        .landing-drawer,
+        .landing-backdrop {
+            display: none;
+        }
+
         @media (max-width: 1024px) {
             .hero { grid-template-columns: 1fr; padding-top: 110px; }
             .hero-right { height: 480px; margin: 0 auto; }
             .grid-3, .grid-4 { grid-template-columns: 1fr; }
             .grid-guide, .nav-center { display: none; }
+        }
+
+        @media (max-width: 800px) {
+            html, body {
+                overflow-x: hidden;
+            }
+            nav {
+                position: sticky;
+                top: 0;
+                padding: 10px 16px;
+            }
+            .nav-logo { gap: 10px; }
+            .nav-logo img { width: 34px; height: 34px; }
+            .logo-text { font-size: 1.02rem; }
+            .nav-actions .btn-outline { display: none; }
+            .landing-menu-toggle {
+                width: 40px; height: 40px;
+                border-radius: var(--radius-sm);
+                background: var(--bg-card);
+                border: 1px solid var(--border-light);
+                color: var(--text-pure);
+                display: inline-flex; align-items: center; justify-content: center;
+                font-size: 1.08rem; cursor: pointer;
+            }
+            .landing-backdrop {
+                display: block;
+                position: fixed; inset: 0; z-index: 1090;
+                background: rgba(10, 10, 12, 0.72);
+                backdrop-filter: blur(4px);
+                opacity: 0; visibility: hidden; pointer-events: none;
+                transition: opacity 0.25s ease, visibility 0.25s ease;
+            }
+            .landing-backdrop.active {
+                opacity: 1; visibility: visible; pointer-events: auto;
+            }
+            .landing-drawer {
+                display: flex; flex-direction: column; gap: 6px;
+                position: fixed; top: 0; left: 0; bottom: 0;
+                width: min(280px, 84vw);
+                background: var(--bg-sidebar);
+                border-right: 1px solid var(--border-subtle);
+                padding: 24px 20px; z-index: 1100;
+                transform: translateX(-105%);
+                transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+                box-shadow: 16px 0 48px rgba(0, 0, 0, 0.75);
+                overflow-y: auto;
+            }
+            .landing-drawer.drawer-open {
+                transform: translateX(0);
+            }
+            .landing-drawer-header {
+                display: flex; align-items: center; justify-content: space-between;
+                margin-bottom: 20px; padding-bottom: 14px;
+                border-bottom: 1px solid var(--border-subtle);
+            }
+            .landing-drawer-close {
+                width: 34px; height: 34px;
+                border-radius: var(--radius-sm);
+                background: var(--bg-card);
+                border: 1px solid var(--border-light);
+                color: var(--text-muted);
+                display: inline-flex; align-items: center; justify-content: center;
+                font-size: 1rem; cursor: pointer;
+            }
+            .landing-drawer a {
+                color: var(--text-main); text-decoration: none;
+                padding: 10px 12px; border-radius: var(--radius-sm);
+                font-size: 0.92rem; font-weight: 500;
+            }
+            .landing-drawer a:hover {
+                background: rgba(255, 255, 255, 0.04); color: var(--accent-blue);
+            }
+            .hero {
+                padding: 36px 20px 44px;
+                overflow: hidden;
+            }
+            .hero-right {
+                height: 320px;
+                overflow: hidden;
+            }
+            section.content-section {
+                padding: 56px 20px;
+            }
+            footer {
+                padding: 40px 20px !important;
+            }
         }
     </style>
 </head>
@@ -478,8 +570,25 @@
         </div>
         <div class="nav-actions">
             <button id="login-trigger" class="btn-outline">Student Login</button>
+            <button type="button" class="landing-menu-toggle" id="landing-menu-toggle" aria-label="Open navigation menu" aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
         </div>
     </nav>
+    <div class="landing-backdrop" id="landing-backdrop"></div>
+    <aside class="landing-drawer" id="landing-drawer" aria-label="Mobile navigation">
+        <div class="landing-drawer-header">
+            <span class="logo-text" style="font-size:1rem;">SUPERNOVA GUIDE</span>
+            <button type="button" class="landing-drawer-close" id="landing-drawer-close" aria-label="Close navigation menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <a href="#problems">Featured Problems</a>
+        <a href="#disciplines">Tracks &amp; Modules</a>
+        <a href="#seasons">Seasonal Competitions</a>
+        <a href="#community">Our Scope</a>
+        <button type="button" onclick="openLoginModal()" class="btn-primary" style="margin-top:12px; justify-content:center; width:100%;">Student Login</button>
+    </aside>
 
     <!-- HERO -->
     <section id="top" class="hero">
@@ -597,7 +706,7 @@
             <div class="flat-card pillar-obs">
                 <div class="card-meta"><span>Track 04 · Instruments</span></div>
                 <div class="pillar-art">
-                    <img src="assets/img/observational/telescope_practice_logo.png" alt="Telescope Practice">
+                    <img src="assets/img/theory/astronomical_instrumentation_logo.png" alt="Telescope Practice">
                 </div>
                 <h3>Telescopes &amp; Imaging</h3>
                 <p>Optics, equatorial mount alignment, field-of-view calculations, detector plate scales, and practical astrophotography challenges.</p>
@@ -1016,5 +1125,6 @@
             }
         });
     </script>
+    <script type="module" src="js/quick_search.js"></script>
 </body>
 </html>

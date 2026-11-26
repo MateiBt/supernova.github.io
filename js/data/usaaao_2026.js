@@ -19,7 +19,7 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
 (c) \\(\\vec{a}\\) is zero since the magnitude of \\(\\vec{v}\\) is constant <br>
 (d) \\(\\vec{v} \\cdot \\vec{a} = v_0^2\\omega\\) <br>
 (e) \\(\\vec{a}\\) is parallel to \\(\\hat{n}\\)`,
-        solutionHtml: `<img src="assets/img/USAAAO_2026/Q01_USAAAO_2026.png" alt="Circular Orbit Kinematics Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2026/Q01_USAAAO_2026.jpeg" alt="Circular Orbit Kinematics Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Kinematics of uniform circular motion utilizing vector calculus. The acceleration vector of a particle is defined as the first time derivative of its velocity vector. In a uniform circular orbit, the acceleration is purely centripetal, meaning it must be orthogonal to the tangential velocity vector at all times.</p>
 <p><strong>Solution:</strong></p>
@@ -271,7 +271,7 @@ Define \\(\\vec{a}(t) = \\frac{d\\vec{v}}{dt}\\). Which of the following stateme
 (c) \\( 4.22 \\times 10^7 \\) m <br>
 (d) \\( 3.58 \\times 10^7 \\) m <br>
 (e) None of the above`,
-        solutionHtml: `<img src="assets/img/USAAAO_2026/Q10_USAAAO_2026.png" alt="Geostationary Satellite Orbit Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2026/Q10_USAAAO_2026.jpeg" alt="Geostationary Satellite Orbit Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Newtonian gravitation applied to a geostationary orbit. A satellite in a geostationary orbit has a period equal to the Earth's sidereal rotation period, allowing it to remain fixed relative to a point on the equator.</p>
 <p><strong>Solution:</strong></p>
@@ -766,7 +766,7 @@ Order these lines from the shortest to longest wavelength.<br><br>
         difficultyText: "1.5 / 10.0",
         title: "Kirkwood Gaps and Orbital Resonance",
         description: `When plotting the distribution of asteroids in the asteroid belt by their semi-major axis, we can see several regions, known as "Kirkwood gaps," where asteroids' orbits are unstable due to an orbital resonance with Jupiter (\\(a = 5.20\\) AU). What orbital resonance is responsible for the gap marked with the arrow?<br><br>
-<img src="assets/img/USAAAO_2026/Q27_USAAAO_2026.png" alt="Kirkwood Gaps Histogram" style="max-width: 100%; border-radius: 2px; margin: 15px 0;"><br>
+<img src="../assets/img/USAAAO_2026/Q27_USAAAO_2026.jpeg" alt="Kirkwood Gaps Histogram" style="max-width: 100%; border-radius: 2px; margin: 15px 0;"><br>
 (a) 8:5 <br>
 (b) 11:6 <br>
 (c) 9:4 <br>

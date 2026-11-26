@@ -17,7 +17,7 @@ export const usaaao_2018 = [
 (c) 64 years <br>
 (d) 256 years <br>
 (e) 4096 years`,
-        solutionHtml: `<img src="assets/img/USAAAO_2018/Q01_USAAAO_2018.png" alt="Elliptical Orbit Diagram" class="user-diagram" onclick="window.openImageModal(this)">
+        solutionHtml: `<img src="../assets/img/USAAAO_2018/Q01_USAAAO_2018.jpeg" alt="Elliptical Orbit Diagram" class="user-diagram" onclick="window.openImageModal(this)">
 <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: -20px; margin-bottom: 20px;">(Click image to enlarge)</div>
 
 <p style="color: var(--text-muted); font-style: italic; margin-bottom: 20px;">Concept: Use the simplified form of Kepler's Third Law for a system where distances are in Astronomical Units (AU), time is in years, and the central mass is implicitly assumed to be 1 Solar Mass.</p>

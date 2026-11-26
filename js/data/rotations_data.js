@@ -1627,6 +1627,797 @@ At \\(1.00\\text{ AU}\\), \\(\\rho_\\oplus = n_p m_H = (6.00 \\times 10^6\\ \\ma
 <p>$$ \\dot{M}_w = 4\\pi (1.496 \\times 10^{11}\\text{ m})^2 (1.004 \\times 10^{-20}\\ \\mathrm{kg\\,m^{-3}})(6.278 \\times 10^5\\ \\mathrm{m\\,s^{-1}}) \\approx \\mathbf{1.77 \\times 10^9\\ \\mathrm{kg\\,s^{-1}}} \\approx \\mathbf{2.82 \\times 10^{-14}\\,M_\\odot\\,\\mathrm{yr^{-1}}} $$</p>
 <p>The wind ram pressure at \\(1\\text{ AU}\\) is \\(P_{\\mathrm{ram}}(1\\text{ AU}) = \\rho_\\oplus v_\\oplus^2 \\approx 3.96 \\times 10^{-9}\\text{ Pa}\\). Since \\(P_{\\mathrm{ram}}(r) \\propto r^{-2}\\) at large \\(r\\):</p>
 <p>$$ R_{\\mathrm{TS}} = 1.00\\text{ AU}\\times\\sqrt{\\frac{P_{\\mathrm{ram}}(1\\text{ AU})}{P_{\\mathrm{ISM}}}} = \\sqrt{\\frac{3.96 \\times 10^{-9}\\text{ Pa}}{1.20 \\times 10^{-13}\\text{ Pa}}}\\text{ AU} \\approx \\mathbf{182\\text{ AU}} $$</p>`
+    },
+
+    // Day 36 — 23.11.2026
+    {
+        uniqueId: "potd_2026_11_23",
+        dayNumber: 36,
+        scheduledDate: "23.11.2026",
+        title: "Oort's Differential Rotation and the Local Milky Way Mass Profile",
+        author: "Matei",
+        module: "T10 · Galactic Structure & Differential Rotation",
+        difficultyClass: "easy",
+        difficultyText: "3.2 / 10.0",
+        description: `<p>Radio and astrometric surveys map the differential rotation of the Milky Way disk around the Galactic center. At the solar Galactocentric distance $R_0 = 8.20\\text{ kpc}$, the locally measured Oort constants are:</p>
+<p>$$ A = 15.3\\ \\mathrm{km\\,s^{-1}\\,kpc^{-1}}, \\qquad B = -11.9\\ \\mathrm{km\\,s^{-1}\\,kpc^{-1}} $$</p>
+<p>Assume circular, coplanar Galactic orbits and spherical symmetry when estimating enclosed gravitational mass. Use $G = 6.674 \\times 10^{-11}\\ \\mathrm{m^3\\,kg^{-1}\\,s^{-2}}$, $M_\\odot = 1.989 \\times 10^{30}\\text{ kg}$, $c = 2.998 \\times 10^8\\ \\mathrm{m\\,s^{-1}}$, $1\\text{ kpc} = 3.086 \\times 10^{19}\\text{ m}$, $1\\text{ yr} = 3.15576 \\times 10^7\\text{ s}$, and the proper-motion conversion $v_t\\,[\\mathrm{km\\,s^{-1}}] = 4.7405\\,\\mu_l\\,[\\mathrm{mas\\,yr^{-1}}]\\,d\\,[\\mathrm{kpc}]$.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the local circular orbital speed $V_0 = R_0(A - B)$ in $\\mathrm{km\\,s^{-1}}$, the Sun's Galactocentric orbital period $P_0$ in $\\text{Myr}$, and the local rotation-curve gradient $\\left.\\frac{dV}{dR}\\right|_{R_0} = -(A + B)$ in $\\mathrm{km\\,s^{-1}\\,kpc^{-1}}$. <em>(2.5 points)</em></li>
+    <li>A giant molecular cloud in the Galactic plane lies at Galactic longitude $l = 35.0^\\circ$ and heliocentric distance $d = 2.00\\text{ kpc}$. Using the small-distance Oort approximations $v_r \\simeq A d \\sin(2l)$ and $v_t \\simeq d\\left(A\\cos(2l) + B\\right)$, compute its radial velocity $v_r$ (in $\\mathrm{km\\,s^{-1}}$), transverse velocity $v_t$ (in $\\mathrm{km\\,s^{-1}}$), and Galactic proper motion $\\mu_l$ (in $\\mathrm{mas\\,yr^{-1}}$). <em>(2.5 points)</em></li>
+    <li>Along the line of sight $l = 30.0^\\circ$ ($0^\\circ < l < 90^\\circ$), neutral hydrogen $21\\text{-cm}$ emission (rest wavelength $\\lambda_0 = 21.1061\\text{ cm}$) is detected up to a maximum LSR-corrected redshifted wavelength $\\lambda_{\\max} = 21.1134\\text{ cm}$. Determine the tangent-point Galactocentric radius $R_{\\min} = R_0 \\sin l$ (in $\\text{kpc}$), the maximum radial velocity $v_{r,\\max}$ (in $\\mathrm{km\\,s^{-1}}$), and the circular rotation speed $V(R_{\\min})$ at the tangent point. <em>(3.0 points)</em></li>
+    <li>Calculate the total Galactic mass $M(R_{\\min})$ enclosed within $R_{\\min}$ and $M(R_0)$ enclosed within $R_0$ (in $M_\\odot$), and determine the mass ratio $M(R_0)/M(R_{\\min})$. <em>(2.0 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Oort constants $A$ and $B$, local Galactic kinematics, $21\\text{-cm}$ tangent-point method, and enclosed dynamical mass.</p>
+
+<p><strong>(a) Local Circular Speed $V_0$, Orbital Period $P_0$ &amp; Slope $\\left.\\frac{dV}{dR}\\right|_{R_0}$ (2.5 points):</strong><br>
+From the definitions $A = \\frac{1}{2}\\left(\\frac{V_0}{R_0} - \\left.\\frac{dV}{dR}\\right|_{R_0}\\right)$ and $B = -\\frac{1}{2}\\left(\\frac{V_0}{R_0} + \\left.\\frac{dV}{dR}\\right|_{R_0}\\right)$, we have $A - B = \\frac{V_0}{R_0} = 15.3 - (-11.9) = 27.2\\ \\mathrm{km\\,s^{-1}\\,kpc^{-1}}$:</p>
+<p>$$ V_0 = R_0(A - B) = (8.20\\text{ kpc})(27.2\\ \\mathrm{km\\,s^{-1}\\,kpc^{-1}}) = \\mathbf{223.0\\ \\mathrm{km\\,s^{-1}}} \\quad (223.04\\ \\mathrm{km\\,s^{-1}}) $$</p>
+<p>The orbital period of the Local Standard of Rest around the Galactic center is:</p>
+<p>$$ P_0 = \\frac{2\\pi R_0}{V_0} = \\frac{2\\pi (8.20 \\times 3.086 \\times 10^{19}\\text{ m})}{2.2304 \\times 10^5\\ \\mathrm{m\\,s^{-1}}} = 7.129 \\times 10^{15}\\text{ s} \\approx \\mathbf{225.9\\text{ Myr}} $$</p>
+<p>The local radial gradient of the rotation curve is:</p>
+<p>$$ \\left.\\frac{dV}{dR}\\right|_{R_0} = -(A + B) = -(15.3 - 11.9) = \\mathbf{-3.4\\ \\mathrm{km\\,s^{-1}\\,kpc^{-1}}} $$</p>
+
+<p><strong>(b) Radial Velocity, Transverse Velocity &amp; Proper Motion at $l = 35.0^\\circ$ (2.5 points):</strong><br>
+With $2l = 70.0^\\circ$ ($\\sin 70.0^\\circ = 0.93969$, $\\cos 70.0^\\circ = 0.34202$) and $d = 2.00\\text{ kpc}$:</p>
+<p>$$ v_r \\simeq A d \\sin(2l) = (15.3)(2.00)(0.93969) \\approx \\mathbf{+28.8\\ \\mathrm{km\\,s^{-1}}} \\quad (28.75\\ \\mathrm{km\\,s^{-1}}) $$</p>
+<p>$$ v_t \\simeq d\\left(A\\cos(2l) + B\\right) = 2.00\\left[15.3(0.34202) - 11.9\\right] = 2.00(-6.667) \\approx \\mathbf{-13.3\\ \\mathrm{km\\,s^{-1}}} \\quad (-13.33\\ \\mathrm{km\\,s^{-1}}) $$</p>
+<p>Converting the transverse speed to Galactic proper motion $\\mu_l$:</p>
+<p>$$ \\mu_l = \\frac{v_t}{4.7405\\,d} = \\frac{-13.334}{4.7405 \\times 2.00} \\approx \\mathbf{-1.41\\ \\mathrm{mas\\,yr^{-1}}} $$</p>
+
+<p><strong>(c) Tangent-Point Radius $R_{\\min}$ &amp; Circular Speed $V(R_{\\min})$ at $l = 30.0^\\circ$ (3.0 points):</strong><br>
+In the first quadrant ($0^\\circ < l < 90^\\circ$), the line of sight passes closest to the Galactic center at the tangent point:</p>
+<p>$$ R_{\\min} = R_0 \\sin l = 8.20\\text{ kpc} \\times \\sin 30.0^\\circ = \\mathbf{4.10\\text{ kpc}} $$</p>
+<p>From the non-relativistic Doppler shift $\\Delta\\lambda = \\lambda_{\\max} - \\lambda_0 = 21.1134 - 21.1061 = 0.0073\\text{ cm}$:</p>
+<p>$$ v_{r,\\max} = c\\frac{\\Delta\\lambda}{\\lambda_0} = (2.998 \\times 10^5\\ \\mathrm{km\\,s^{-1}})\\frac{0.0073}{21.1061} \\approx \\mathbf{103.7\\ \\mathrm{km\\,s^{-1}}} \\quad (103.69\\ \\mathrm{km\\,s^{-1}}) $$</p>
+<p>At the tangent point, the gas velocity vector points strictly along the line of sight, so $v_{r,\\max} = V(R_{\\min}) - V_0 \\sin l$:</p>
+<p>$$ V(R_{\\min}) = v_{r,\\max} + V_0 \\sin 30.0^\\circ = 103.69 + 223.04(0.500) = 103.69 + 111.52 \\approx \\mathbf{215.2\\ \\mathrm{km\\,s^{-1}}} $$</p>
+
+<p><strong>(d) Enclosed Dynamical Masses $M(R_{\\min})$, $M(R_0)$ &amp; Ratio (2.0 points):</strong><br>
+Equating centripetal and gravitational acceleration gives $M(R) = \\frac{R V^2(R)}{G}$:</p>
+<p>$$ M(R_{\\min}) = \\frac{(4.10 \\times 3.086 \\times 10^{19}\\text{ m})(2.1521 \\times 10^5\\ \\mathrm{m\\,s^{-1}})^2}{6.674 \\times 10^{-11}\\ \\mathrm{m^3\\,kg^{-1}\\,s^{-2}}} = 8.781 \\times 10^{40}\\text{ kg} \\approx \\mathbf{4.41 \\times 10^{10}\\,M_\\odot} $$</p>
+<p>$$ M(R_0) = \\frac{(8.20 \\times 3.086 \\times 10^{19}\\text{ m})(2.2304 \\times 10^5\\ \\mathrm{m\\,s^{-1}})^2}{6.674 \\times 10^{-11}\\ \\mathrm{m^3\\,kg^{-1}\\,s^{-2}}} = 1.886 \\times 10^{41}\\text{ kg} \\approx \\mathbf{9.48 \\times 10^{10}\\,M_\\odot} $$</p>
+<p>$$ \\frac{M(R_0)}{M(R_{\\min})} = \\frac{R_0}{R_{\\min}}\\left(\\frac{V_0}{V(R_{\\min})}\\right)^2 = 2.00\\left(\\frac{223.04}{215.21}\\right)^2 \\approx \\mathbf{2.15} $$</p>`
+    },
+
+    // Day 37 — 24.11.2026
+    {
+        uniqueId: "potd_2026_11_24",
+        dayNumber: 37,
+        scheduledDate: "24.11.2026",
+        title: "Weighted Least-Squares Calibration of the Cepheid Period–Luminosity Law",
+        author: "Matei",
+        module: "D1 · Data Analysis: Methods & Plotting",
+        difficultyClass: "medium",
+        difficultyText: "4.2 / 10.0",
+        description: `<p>Deep space-telescope photometry of a nearby spiral galaxy yields extinction-corrected apparent $I$-band mean magnitudes $m_I$ and photometric uncertainties $\\sigma_i$ for $N = 6$ classical Cepheid variables:</p>
+<table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:14px; font-family:var(--font-mono); font-size:0.82rem;">
+    <thead>
+        <tr style="border-bottom:1px solid var(--border-light); color:var(--accent-blue); text-align:left;">
+            <th style="padding:8px;">Cepheid</th>
+            <th style="padding:8px;">Period $P_i$ (days)</th>
+            <th style="padding:8px;">$x_i = \\log_{10}(P_i / 10\\text{ d})$</th>
+            <th style="padding:8px;">$m_{I,i}$ (mag)</th>
+            <th style="padding:8px;">$\\sigma_i$ (mag)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">C1</td><td style="padding:8px;">5.01</td><td style="padding:8px;">$-0.300$</td><td style="padding:8px;">25.44</td><td style="padding:8px;">0.08</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">C2</td><td style="padding:8px;">7.94</td><td style="padding:8px;">$-0.100$</td><td style="padding:8px;">24.75</td><td style="padding:8px;">0.05</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">C3</td><td style="padding:8px;">10.00</td><td style="padding:8px;">$0.000$</td><td style="padding:8px;">24.53</td><td style="padding:8px;">0.04</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">C4</td><td style="padding:8px;">15.85</td><td style="padding:8px;">$+0.200$</td><td style="padding:8px;">23.85</td><td style="padding:8px;">0.05</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">C5</td><td style="padding:8px;">25.12</td><td style="padding:8px;">$+0.400$</td><td style="padding:8px;">23.33</td><td style="padding:8px;">0.08</td></tr>
+        <tr><td style="padding:8px;">C6</td><td style="padding:8px;">39.81</td><td style="padding:8px;">$+0.600$</td><td style="padding:8px;">22.64</td><td style="padding:8px;">0.10</td></tr>
+    </tbody>
+</table>
+<p>We fit the linear Period–Luminosity (Leavitt) relation $m_I(x) = a + b\\,x$ by weighted least squares using the tabulated $x_i$ values and inverse-variance weights $w_i = 1/\\sigma_i^2$.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the individual weights $w_i$, the total weight $S_w = \\sum w_i$, the weighted means $\\bar{x}_w = \\frac{\\sum w_i x_i}{S_w}$ and $\\bar{m}_w = \\frac{\\sum w_i m_{I,i}}{S_w}$, and the centered weighted sums $S_{xx} = \\sum w_i (x_i - \\bar{x}_w)^2$ and $S_{xm} = \\sum w_i (x_i - \\bar{x}_w)(m_{I,i} - \\bar{m}_w)$. <em>(2.5 points)</em></li>
+    <li>Compute the best-fit slope $b = S_{xm}/S_{xx}$ with its uncertainty $\\sigma_b = S_{xx}^{-1/2}$, the intercept $a = \\bar{m}_w - b\\,\\bar{x}_w$ at $P = 10\\text{ days}$ with its uncertainty $\\sigma_a = \\sqrt{\\frac{1}{S_w} + \\frac{\\bar{x}_w^2}{S_{xx}}}$, and the reduced chi-squared $\\chi_\\nu^2 = \\frac{1}{N - 2}\\sum w_i (m_{I,i} - a - b x_i)^2$. Briefly interpret what the value of $\\chi_\\nu^2$ implies about the linear model and photometric error bars. <em>(3.5 points)</em></li>
+    <li>Given the absolute $I$-band zero point $M_I(10\\text{ d}) = -4.90 \\pm 0.04\\text{ mag}$ for a $10\\text{-day}$ Cepheid, calculate the galaxy's distance modulus $\\mu = a - M_I(10\\text{ d})$ and its combined uncertainty $\\sigma_\\mu$, then determine the luminosity distance $D$ and its propagated uncertainty $\\sigma_D$ (both in $\\text{Mpc}$). <em>(2.5 points)</em></li>
+    <li>Suppose an uncorrected foreground Galactic extinction of $A_I = 0.12\\text{ mag}$ had remained in every $m_{I,i}$. Calculate the resulting fractional systematic error $\\Delta D / D$ (in percent) and state whether the distance would be overestimated or underestimated. <em>(1.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Inverse-variance weighted linear regression, $\\chi_\\nu^2$ goodness-of-fit diagnostics, distance-modulus error propagation, and extinction systematics.</p>
+
+<p><strong>(a) Statistical Weights, Weighted Means &amp; Centered Sums (2.5 points):</strong><br>
+Computing $w_i = 1/\\sigma_i^2$ (in $\\mathrm{mag^{-2}}$) for the six Cepheids gives $w_1 = 156.25$, $w_2 = 400.00$, $w_3 = 625.00$, $w_4 = 400.00$, $w_5 = 156.25$, and $w_6 = 100.00$. Summing across all $N = 6$ stars:</p>
+<p>$$ S_w = \\sum_{i=1}^6 w_i = \\mathbf{1837.50\\ \\mathrm{mag^{-2}}}, \\qquad \\sum w_i x_i = 115.625, \\qquad \\sum w_i m_{I,i} = 44655.5625 $$</p>
+<p>$$ \\bar{x}_w = \\frac{115.625}{1837.50} = \\mathbf{0.06293}, \\qquad \\bar{m}_w = \\frac{44655.5625}{1837.50} = \\mathbf{24.3023\\text{ mag}} $$</p>
+<p>Evaluating the centered weighted sums $S_{xx} = \\sum w_i(x_i - \\bar{x}_w)^2$ and $S_{xm} = \\sum w_i(x_i - \\bar{x}_w)(m_{I,i} - \\bar{m}_w)$:</p>
+<p>$$ S_{xx} = \\mathbf{87.787\\ \\mathrm{mag^{-2}}}, \\qquad S_{xm} = \\mathbf{-267.934\\ \\mathrm{mag^{-1}}} $$</p>
+
+<p><strong>(b) Weighted Linear Fit Parameters &amp; Reduced $\\chi_\\nu^2$ (3.5 points):</strong><br>
+The best-fit Period–Luminosity slope and its $1\\sigma$ formal uncertainty are:</p>
+<p>$$ b = \\frac{S_{xm}}{S_{xx}} = \\frac{-267.934}{87.787} = \\mathbf{-3.052}, \\qquad \\sigma_b = \\frac{1}{\\sqrt{87.787}} = \\mathbf{0.107} \\implies b = \\mathbf{-3.05 \\pm 0.11\\ \\mathrm{mag\\,dex^{-1}}} $$</p>
+<p>The intercept at $P = 10\\text{ days}$ ($x = 0$) and its uncertainty are:</p>
+<p>$$ a = \\bar{m}_w - b\\,\\bar{x}_w = 24.3023 - (-3.0521)(0.06293) = \\mathbf{24.494\\text{ mag}} $$</p>
+<p>$$ \\sigma_a = \\sqrt{\\frac{1}{1837.50} + \\frac{(0.06293)^2}{87.787}} = \\sqrt{5.442 \\times 10^{-4} + 4.511 \\times 10^{-5}} = \\mathbf{0.024\\text{ mag}} \\implies a = \\mathbf{24.494 \\pm 0.024\\text{ mag}} $$</p>
+<p>Evaluating the residuals $r_i = m_{I,i} - (a + b x_i)$ gives $r_1 = +0.030$, $r_2 = -0.050$, $r_3 = +0.036$, $r_4 = -0.034$, $r_5 = +0.056$, $r_6 = -0.023\\text{ mag}$, yielding $\\chi^2 = \\sum w_i r_i^2 = 2.930$ for $\\nu = N - 2 = 4$ degrees of freedom:</p>
+<p>$$ \\chi_\\nu^2 = \\frac{2.930}{4} = \\mathbf{0.733} $$</p>
+<p>Because $\\chi_\\nu^2 \\approx 0.73 \\sim 1$, the linear Leavitt law provides an excellent description of the data and the quoted photometric uncertainties $\\sigma_i$ are realistic (no evidence of underestimated scatter or unaccounted outliers).</p>
+
+<p><strong>(c) Distance Modulus $\\mu$ &amp; Luminosity Distance $D$ (2.5 points):</strong><br>
+Combining the fitted intercept with $M_I(10\\text{ d}) = -4.90 \\pm 0.04\\text{ mag}$ in quadrature:</p>
+<p>$$ \\mu = a - M_I(10\\text{ d}) = 24.494 - (-4.90) = \\mathbf{29.394\\text{ mag}}, \\qquad \\sigma_\\mu = \\sqrt{0.0243^2 + 0.040^2} = \\mathbf{0.047\\text{ mag}} $$</p>
+<p>Converting $\\mu = 5\\log_{10}(D/10\\text{ pc})$ to Megaparsecs and propagating $\\sigma_D = \\frac{\\ln 10}{5} D\\,\\sigma_\\mu$:</p>
+<p>$$ D = 10^{(\\mu + 5)/5}\\text{ pc} = 10^{6.8789}\\text{ pc} = \\mathbf{7.57\\text{ Mpc}} \\quad (7.566\\text{ Mpc}) $$</p>
+<p>$$ \\sigma_D = \\frac{\\ln 10}{5}(7.566\\text{ Mpc})(0.0468) = \\mathbf{0.16\\text{ Mpc}} \\implies D = \\mathbf{7.57 \\pm 0.16\\text{ Mpc}} $$</p>
+
+<p><strong>(d) Systematic Bias from Uncorrected Extinction $A_I = 0.12\\text{ mag}$ (1.5 points):</strong><br>
+Uncorrected extinction makes every Cepheid appear fainter by $\\Delta m_I = +A_I = +0.12\\text{ mag}$, shifting the inferred distance modulus upward by $\\Delta\\mu = +0.12\\text{ mag}$. The inferred distance is therefore <strong>overestimated</strong> by:</p>
+<p>$$ \\frac{\\Delta D}{D} = 10^{A_I / 5} - 1 = 10^{0.12 / 5} - 1 = 10^{0.024} - 1 \\approx \\mathbf{+5.68\\%} \\quad \\left(\\text{linear approx: } \\frac{\\ln 10}{5}A_I \\approx +5.53\\%\\right) $$</p>`
+    },
+
+    // Day 38 — 25.11.2026
+    {
+        uniqueId: "potd_2026_11_25",
+        dayNumber: 38,
+        scheduledDate: "25.11.2026",
+        title: "Zenith Stars, Meridian Transit Timing, and Star-Hopping Across the Summer Triangle",
+        author: "Matei",
+        module: "O1 · Observational: Blind Map & Sky Coordinates",
+        difficultyClass: "easy",
+        difficultyText: "2.8 / 10.0",
+        description: `<p>During an observational blind-map night on <strong>August 15</strong> from a northern observing site at latitude $\\phi = +45^\\circ 00'$ (time zone $\\text{UTC}+3$), a student calibrates the night sky using the three bright vertices of the Summer Triangle (J2000 equatorial coordinates):</p>
+<table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:14px; font-family:var(--font-mono); font-size:0.82rem;">
+    <thead>
+        <tr style="border-bottom:1px solid var(--border-light); color:var(--accent-blue); text-align:left;">
+            <th style="padding:8px;">Star</th>
+            <th style="padding:8px;">Constellation</th>
+            <th style="padding:8px;">Right Ascension ($\\alpha$)</th>
+            <th style="padding:8px;">Declination ($\\delta$)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">Vega ($\\alpha$ Lyr)</td><td style="padding:8px;">Lyra</td><td style="padding:8px;">$18^{\\text{h}}36^{\\text{m}}56^{\\text{s}}$</td><td style="padding:8px;">$+38^\\circ 47'$</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">Deneb ($\\alpha$ Cyg)</td><td style="padding:8px;">Cygnus</td><td style="padding:8px;">$20^{\\text{h}}41^{\\text{m}}26^{\\text{s}}$</td><td style="padding:8px;">$+45^\\circ 17'$</td></tr>
+        <tr><td style="padding:8px;">Altair ($\\alpha$ Aql)</td><td style="padding:8px;">Aquila</td><td style="padding:8px;">$19^{\\text{h}}50^{\\text{m}}47^{\\text{s}}$</td><td style="padding:8px;">$+08^\\circ 52'$</td></tr>
+    </tbody>
+</table>
+<p>At local standard time $t_0 = 22^{\\text{h}}00^{\\text{m}}00^{\\text{s}}$ ($\\text{UTC}+3$), the observer's Local Sidereal Time is calibrated to be $\\mathrm{LST}_0 = 19^{\\text{h}}20^{\\text{m}}00^{\\text{s}}$. Neglect atmospheric refraction, and use $1\\text{ mean solar day} = 1.0027379\\text{ sidereal days}$.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Determine which star passes closest to the observer's zenith at upper culmination, specify its minimum zenith distance $z_{\\min}$ and whether it culminates North or South of the zenith, and calculate the maximum altitude $h_{\\max}$ of all three stars from $\\phi = +45^\\circ 00'$. <em>(2.5 points)</em></li>
+    <li>Calculate the exact local standard time ($\\text{UTC}+3$) at which Deneb reaches upper culmination on this night. <em>(2.5 points)</em></li>
+    <li>Using the spherical law of cosines, calculate all three angular side lengths of the Summer Triangle—$\\theta(\\text{Vega},\\text{Deneb})$, $\\theta(\\text{Vega},\\text{Altair})$, and $\\theta(\\text{Deneb},\\text{Altair})$—to serve as blind-map angular rulers, and identify the longest edge. <em>(3.0 points)</em></li>
+    <li>At $t_0 = 22^{\\text{h}}00^{\\text{m}}00^{\\text{s}}$ ($\\mathrm{LST}_0 = 19^{\\text{h}}20^{\\text{m}}00^{\\text{s}}$), calculate the altitude $h$ and azimuth $A$ (measured from North through East) of Altair on the sky dome, and determine whether Deneb is circumpolar from this latitude. <em>(2.0 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Meridian transit geometry, sidereal-to-solar clock conversion, spherical angular separation, and horizontal-equatorial coordinate transformations.</p>
+
+<p><strong>(a) Zenith Star &amp; Maximum Altitudes at $\\phi = +45^\\circ 00'$ (2.5 points):</strong><br>
+At upper culmination, the zenith distance is $z_{\\min} = |\\phi - \\delta|$ and the maximum altitude is $h_{\\max} = 90^\\circ - |\\phi - \\delta|$:</p>
+<ul>
+    <li><strong>Vega ($\\delta_1 = +38^\\circ 47'$):</strong> $z_{\\min} = 45^\\circ 00' - 38^\\circ 47' = 6^\\circ 13'$ South of zenith $\\implies h_{\\max} = \\mathbf{83^\\circ 47'}$.</li>
+    <li><strong>Deneb ($\\delta_2 = +45^\\circ 17'$):</strong> $z_{\\min} = |45^\\circ 00' - 45^\\circ 17'| = \\mathbf{0^\\circ 17'}$ <strong>North of zenith</strong> $\\implies h_{\\max} = \\mathbf{89^\\circ 43'}$.</li>
+    <li><strong>Altair ($\\delta_3 = +08^\\circ 52'$):</strong> $z_{\\min} = 45^\\circ 00' - 08^\\circ 52' = 36^\\circ 08'$ South of zenith $\\implies h_{\\max} = \\mathbf{53^\\circ 52'}$.</li>
+</ul>
+<p>Therefore, <strong>Deneb</strong> is the zenith star, skimming just $17'$ North of the observer's zenith.</p>
+
+<p><strong>(b) Local Standard Time of Deneb's Upper Culmination (2.5 points):</strong><br>
+Deneb culminates when $\\mathrm{LST} = \\alpha_2 = 20^{\\text{h}}41^{\\text{m}}26^{\\text{s}}$. The sidereal interval after $t_0 = 22^{\\text{h}}00^{\\text{m}}00^{\\text{s}}$ ($\\mathrm{LST}_0 = 19^{\\text{h}}20^{\\text{m}}00^{\\text{s}}$) is:</p>
+<p>$$ \\Delta s = 20^{\\text{h}}41^{\\text{m}}26^{\\text{s}} - 19^{\\text{h}}20^{\\text{m}}00^{\\text{s}} = 1^{\\text{h}}21^{\\text{m}}26^{\\text{s}} = 4886\\text{ sidereal seconds} $$</p>
+<p>Converting from sidereal seconds to mean solar seconds:</p>
+<p>$$ \\Delta t = \\frac{\\Delta s}{1.0027379} = \\frac{4886\\text{ s}}{1.0027379} = 4872.66\\text{ s} = 1^{\\text{h}}21^{\\text{m}}12.7^{\\text{s}} $$</p>
+<p>$$ t_{\\mathrm{culm}} = 22^{\\text{h}}00^{\\text{m}}00^{\\text{s}} + 1^{\\text{h}}21^{\\text{m}}12.7^{\\text{s}} = \\mathbf{23^{\\text{h}}21^{\\text{m}}12.7^{\\text{s}}\\ (\\text{UTC}+3)} $$</p>
+
+<p><strong>(c) Angular Side Lengths of the Summer Triangle (3.0 points):</strong><br>
+Converting right ascensions and declinations to decimal degrees: Vega ($279.2333^\\circ,\\ +38.7833^\\circ$), Deneb ($310.3583^\\circ,\\ +45.2833^\\circ$), Altair ($297.6958^\\circ,\\ +8.8667^\\circ$). Applying $\\cos\\theta = \\sin\\delta_a\\sin\\delta_b + \\cos\\delta_a\\cos\\delta_b\\cos(\\alpha_b - \\alpha_a)$:</p>
+<ul>
+    <li><strong>Vega–Deneb ($\\Delta\\alpha = 31.1250^\\circ$):</strong> $\\cos\\theta_{12} = \\sin(38.7833^\\circ)\\sin(45.2833^\\circ) + \\cos(38.7833^\\circ)\\cos(45.2833^\\circ)\\cos(31.1250^\\circ) = 0.91461 \\implies \\theta_{12} = \\mathbf{23.85^\\circ}$.</li>
+    <li><strong>Vega–Altair ($\\Delta\\alpha = 18.4625^\\circ$):</strong> $\\cos\\theta_{13} = \\sin(38.7833^\\circ)\\sin(8.8667^\\circ) + \\cos(38.7833^\\circ)\\cos(8.8667^\\circ)\\cos(18.4625^\\circ) = 0.82711 \\implies \\theta_{13} = \\mathbf{34.20^\\circ}$.</li>
+    <li><strong>Deneb–Altair ($\\Delta\\alpha = -12.6625^\\circ$):</strong> $\\cos\\theta_{23} = \\sin(45.2833^\\circ)\\sin(8.8667^\\circ) + \\cos(45.2833^\\circ)\\cos(8.8667^\\circ)\\cos(12.6625^\\circ) = 0.78781 \\implies \\theta_{23} = \\mathbf{38.02^\\circ}$.</li>
+</ul>
+<p>The longest edge of the Summer Triangle is <strong>Deneb–Altair ($38.02^\\circ$)</strong>.</p>
+
+<p><strong>(d) Horizontal Coordinates of Altair at $22^{\\text{h}}00^{\\text{m}}00^{\\text{s}}$ &amp; Circumpolarity of Deneb (2.0 points):</strong><br>
+At $\\mathrm{LST}_0 = 19^{\\text{h}}20^{\\text{m}}00^{\\text{s}}$, Altair's hour angle is $H_3 = \\mathrm{LST}_0 - \\alpha_3 = -0^{\\text{h}}30^{\\text{m}}47^{\\text{s}} = -7.6958^\\circ$ (just East of the southern meridian):</p>
+<p>$$ \\sin h_3 = \\sin(45.0^\\circ)\\sin(8.8667^\\circ) + \\cos(45.0^\\circ)\\cos(8.8667^\\circ)\\cos(-7.6958^\\circ) = 0.80135 \\implies h_3 = \\mathbf{53.26^\\circ} $$</p>
+<p>$$ \\sin A_3 = -\\frac{\\cos(8.8667^\\circ)\\sin(-7.6958^\\circ)}{\\cos(53.26^\\circ)} = +0.22119, \\qquad \\cos A_3 = \\frac{\\sin(8.8667^\\circ) - \\sin(45.0^\\circ)\\sin(53.26^\\circ)}{\\cos(45.0^\\circ)\\cos(53.26^\\circ)} = -0.97523 $$</p>
+<p>Since $\\sin A_3 > 0$ and $\\cos A_3 < 0$, Altair lies in the second quadrant (SSE) at azimuth $A_3 = 180^\\circ - 12.78^\\circ = \\mathbf{167.22^\\circ}$.</p>
+<p>A star is circumpolar in the Northern Hemisphere when $\\delta > 90^\\circ - \\phi = +45^\\circ 00'$. Since Deneb has $\\delta_2 = +45^\\circ 17' > +45^\\circ 00'$, its lower-culmination geometric altitude is $h_{\\min} = \\delta_2 + \\phi - 90^\\circ = +0^\\circ 17' > 0^\\circ$, so <strong>yes, Deneb is circumpolar</strong> from $\\phi = +45^\\circ 00'$.</p>`
+    },
+
+    // Day 39 — 26.11.2026
+    {
+        uniqueId: "potd_2026_11_26",
+        dayNumber: 39,
+        scheduledDate: "26.11.2026",
+        title: "Transmission Spectroscopy, Scale Height, and Direct-Imaging Contrast of a Hot Jupiter",
+        author: "Matei",
+        module: "T3 & T9 · Instrumentation & Exoplanet Characterization",
+        difficultyClass: "medium",
+        difficultyText: "4.5 / 10.0",
+        description: `<p>A transiting hot Jupiter with mass $M_p = 0.80\\,M_J$, radius $R_p = 1.30\\,R_J$, Bond albedo $A_B = 0.15$, and geometric albedo $A_g = 0.10$ orbits a solar-type star ($R_\\star = R_\\odot = 6.957 \\times 10^8\\text{ m}$, $T_\\star = 5800\\text{ K}$) on a circular orbit of semimajor axis $a = 0.050\\text{ AU}$ at a distance $d = 40.0\\text{ pc}$ from Earth. Assume full planetary heat redistribution ($f = 1/4$) and an isothermal $\\mathrm{H_2/He}$ upper atmosphere with mean molecular weight $\\mu = 2.30$.</p>
+<p>Use $G = 6.674 \\times 10^{-11}\\ \\mathrm{m^3\\,kg^{-1}\\,s^{-2}}$, $k_B = 1.3806 \\times 10^{-23}\\ \\mathrm{J\\,K^{-1}}$, $m_u = 1.6605 \\times 10^{-27}\\text{ kg}$, $M_J = 1.898 \\times 10^{27}\\text{ kg}$, $R_J = 7.149 \\times 10^7\\text{ m}$, and $1\\text{ AU} = 1.496 \\times 10^{11}\\text{ m}$.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the planet's equilibrium temperature $T_{\\mathrm{eq}} = T_\\star (1 - A_B)^{1/4}\\sqrt{\\frac{R_\\star}{2a}}$ (in $\\text{K}$), surface gravitational acceleration $g_p$ (in $\\mathrm{m\\,s^{-2}}$), and atmospheric pressure scale height $H = \\frac{k_B T_{\\mathrm{eq}}}{\\mu m_u g_p}$ (in $\\text{km}$). <em>(2.5 points)</em></li>
+    <li>During primary transit, the continuum transit depth is $\\delta_0 = (R_p/R_\\star)^2$, whereas inside the core of the resonant sodium doublet the atmospheric annulus becomes opaque up to $\\Delta z = 5H$ above the continuum radius. Calculate $\\delta_0$ (in percent) and the transmission spectroscopy absorption signal $\\Delta\\delta \\simeq \\frac{2 R_p \\Delta z}{R_\\star^2}$ (in parts per million, $\\text{ppm}$). <em>(2.5 points)</em></li>
+    <li>In a single transit, a space spectrograph collects $N_\\star = 2.50 \\times 10^8$ stellar photons inside the narrow sodium wavelength bin during the in-transit window and an equal number out of transit. Neglecting readout and background noise, calculate the photon-limited transit-depth uncertainty $\\sigma_\\delta \\simeq \\sqrt{2 / N_\\star}$ (in $\\text{ppm}$) and the single-transit detection signal-to-noise ratio $\\mathrm{SNR} = \\Delta\\delta / \\sigma_\\delta$. <em>(2.5 points)</em></li>
+    <li>To assess whether this hot Jupiter can instead be directly imaged at quadrature (maximum elongation $\\theta_{\\max} = a / d$), calculate $\\theta_{\\max}$ (in $\\text{mas}$), the reflected-light planet-to-star flux contrast $C_{\\mathrm{ref}} = A_g \\Phi(\\pi/2)\\left(\\frac{R_p}{a}\\right)^2$ assuming a Lambertian phase function $\\Phi(\\pi/2) = 1/\\pi$, and the minimum telescope aperture $D_{\\min}$ (in meters) required for the Rayleigh diffraction limit at $\\lambda = 1.65\\ \\mu\\mathrm{m}$ to equal $\\theta_{\\max}$. <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Exoplanet radiative equilibrium, hydrostatic atmospheric scale height, transmission spectroscopy SNR, and direct-imaging diffraction/contrast limits.</p>
+
+<p><strong>(a) Equilibrium Temperature $T_{\\mathrm{eq}}$, Surface Gravity $g_p$ &amp; Scale Height $H$ (2.5 points):</strong><br>
+With $M_p = 0.80(1.898 \\times 10^{27}) = 1.518 \\times 10^{27}\\text{ kg}$, $R_p = 1.30(7.149 \\times 10^7) = 9.294 \\times 10^7\\text{ m}$, and $a = 0.050(1.496 \\times 10^{11}) = 7.480 \\times 10^9\\text{ m}$:</p>
+<p>$$ T_{\\mathrm{eq}} = 5800\\,(1 - 0.15)^{1/4}\\sqrt{\\frac{6.957 \\times 10^8}{2(7.480 \\times 10^9)}} = 5800(0.96018)(0.21565) \\approx \\mathbf{1201\\text{ K}} $$</p>
+<p>$$ g_p = \\frac{G M_p}{R_p^2} = \\frac{(6.674 \\times 10^{-11})(1.5184 \\times 10^{27})}{(9.2937 \\times 10^7)^2} \\approx \\mathbf{11.73\\ \\mathrm{m\\,s^{-2}}} $$</p>
+<p>$$ H = \\frac{k_B T_{\\mathrm{eq}}}{\\mu m_u g_p} = \\frac{(1.3806 \\times 10^{-23})(1201.0)}{(2.30)(1.6605 \\times 10^{-27})(11.733)} = 3.700 \\times 10^5\\text{ m} = \\mathbf{370\\text{ km}} $$</p>
+
+<p><strong>(b) Continuum Transit Depth $\\delta_0$ &amp; Sodium Transmission Signal $\\Delta\\delta$ (2.5 points):</strong><br>
+The continuum transit depth is:</p>
+<p>$$ \\delta_0 = \\left(\\frac{R_p}{R_\\star}\\right)^2 = \\left(\\frac{9.2937 \\times 10^7\\text{ m}}{6.957 \\times 10^8\\text{ m}}\\right)^2 = 0.017846 = \\mathbf{1.785\\%} $$</p>
+<p>An optically thick annulus of height $\\Delta z = 5H = 1.850 \\times 10^6\\text{ m}$ ($1850\\text{ km}$) adds an extra transit depth of:</p>
+<p>$$ \\Delta\\delta \\simeq \\frac{2 R_p \\Delta z}{R_\\star^2} = \\frac{2(9.2937 \\times 10^7)(1.8501 \\times 10^6)}{(6.957 \\times 10^8)^2} = 7.105 \\times 10^{-4} \\approx \\mathbf{711\\text{ ppm}} $$</p>
+
+<p><strong>(c) Photon-Limited Uncertainty $\\sigma_\\delta$ &amp; Single-Transit SNR (2.5 points):</strong><br>
+With $N_\\star = 2.50 \\times 10^8$ photons collected both in-transit and out-of-transit, Poisson counting statistics give:</p>
+<p>$$ \\sigma_\\delta \\simeq \\sqrt{\\frac{2}{N_\\star}} = \\sqrt{\\frac{2}{2.50 \\times 10^8}} = 8.944 \\times 10^{-5} \\approx \\mathbf{89.4\\text{ ppm}} $$</p>
+<p>$$ \\mathrm{SNR} = \\frac{\\Delta\\delta}{\\sigma_\\delta} = \\frac{710.5\\text{ ppm}}{89.44\\text{ ppm}} \\approx \\mathbf{7.94} $$</p>
+
+<p><strong>(d) Maximum Elongation $\\theta_{\\max}$, Reflected Contrast $C_{\\mathrm{ref}}$ &amp; Aperture $D_{\\min}$ (2.5 points):</strong><br>
+At $d = 40.0\\text{ pc}$, the angular separation at quadrature is:</p>
+<p>$$ \\theta_{\\max} = \\frac{a\\,[\\text{AU}]}{d\\,[\\text{pc}]}\\,'' = \\frac{0.050}{40.0}\\,'' = 0.00125'' = \\mathbf{1.25\\text{ mas}} \\quad (6.060 \\times 10^{-9}\\text{ rad}) $$</p>
+<p>The Lambertian reflected-light contrast at quadrature ($\\Phi(\\pi/2) = 1/\\pi$) is:</p>
+<p>$$ C_{\\mathrm{ref}} = \\frac{A_g}{\\pi}\\left(\\frac{R_p}{a}\\right)^2 = \\frac{0.10}{\\pi}\\left(\\frac{9.2937 \\times 10^7}{7.480 \\times 10^9}\\right)^2 = \\mathbf{4.91 \\times 10^{-6}} $$</p>
+<p>Setting the Rayleigh criterion $1.22\\lambda/D_{\\min} = \\theta_{\\max}$ at $\\lambda = 1.65 \\times 10^{-6}\\text{ m}$:</p>
+<p>$$ D_{\\min} = \\frac{1.22\\lambda}{\\theta_{\\max}} = \\frac{1.22(1.65 \\times 10^{-6}\\text{ m})}{6.060 \\times 10^{-9}\\text{ rad}} \\approx \\mathbf{332\\text{ m}} $$</p>
+<p>Because resolving $1.25\\text{ mas}$ at $1.65\\ \\mu\\mathrm{m}$ requires a $332\\text{ m}$ single-dish aperture (or optical/IR interferometry), hot Jupiters are far more accessible via transmission spectroscopy than direct imaging.</p>`
+    },
+
+    // Day 40 — 27.11.2026
+    {
+        uniqueId: "potd_2026_11_27",
+        dayNumber: 40,
+        scheduledDate: "27.11.2026",
+        title: "Drift Timing, Eyepiece Field of View, and Polar Alignment Calibration",
+        author: "Matei",
+        module: "O2 · Observational: Practical Telescope Operations",
+        difficultyClass: "medium",
+        difficultyText: "3.8 / 10.0",
+        description: `<p>During a practical observational round at latitude $\\phi = +40.0^\\circ$, a student operates an $f/8$ Newtonian reflector with primary mirror aperture $D = 200\\text{ mm}$ mounted on a German Equatorial Mount (GEM). Use Earth's sidereal angular rotation rate $\\omega_\\oplus = 15.0411''\\,\\mathrm{s^{-1}} = 7.2921 \\times 10^{-5}\\ \\mathrm{rad\\,s^{-1}}$.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>The student inserts a Plössl eyepiece of focal length $f_e = 25.0\\text{ mm}$ and apparent field of view $\\mathrm{AFOV} = 52.0^\\circ$. Calculate the telescope focal length $F$ (in $\\text{mm}$), magnification $M_1$, exit pupil diameter $d_{\\mathrm{exit}}$ (confirming it does not exceed a dark-adapted eye pupil of $7.0\\text{ mm}$), and theoretical true field of view $\\mathrm{TFOV} = \\mathrm{AFOV}/M_1$ (in arcminutes). <em>(2.5 points)</em></li>
+    <li>To measure the exact true field of view empirically, the student switches off the RA tracking drive and times the equatorial star Mintaka ($\\delta = -0^\\circ 18'$) drifting centrally across the full diameter of the eyepiece: the mean transit time is $\\Delta t_1 = 192.0\\text{ s}$ (mean solar seconds). Compute the measured $\\mathrm{TFOV}_{\\mathrm{meas}}$ (in arcminutes). How long would Capella ($\\delta = +46^\\circ 00'$) take to drift centrally across the same eyepiece field? <em>(2.5 points)</em></li>
+    <li>With tracking re-enabled on a star near the celestial equator ($\\delta = 0^\\circ$) on the local meridian ($H = 0^\\circ$), the student measures a steady <strong>northward</strong> drift of $\\Delta\\delta = +28.0''$ over $T = 15.0\\text{ min}$. For a small polar-axis azimuth error $\\Delta A$ (positive when pointed East of true North), the star's apparent declination drift relative to the tracking reticle on the meridian obeys $\\Delta\\delta = -\\omega_\\oplus T \\cos\\phi\\,\\Delta A$ (with $\\omega_\\oplus T$ in radians). Calculate the magnitude of the azimuth misalignment $|\\Delta A|$ (in arcminutes) and state whether the north polar axis is pointed East or West of true North. <em>(3.0 points)</em></li>
+    <li>Switching to a $6.0\\text{ mm}$ planetary eyepiece to attempt to split the double star $\\epsilon^1$ Lyrae (angular separation $\\rho = 2.30''$), calculate the new magnification $M_2$, the Dawes resolution limit $\\theta_D = 116'' / D_{\\mathrm{mm}}$, and the Rayleigh diffraction limit $\\theta_R = 1.22\\lambda / D$ at $\\lambda = 550\\text{ nm}$. Determine whether the pair is cleanly resolved and whether $M_2$ stays below the practical maximum magnification $M_{\\max} \\approx 2 D_{\\mathrm{mm}}$. <em>(2.0 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Telescope focal ratio and exit pupil, diurnal drift-timing field calibration, equatorial mount drift alignment, and optical resolving power.</p>
+
+<p><strong>(a) Focal Length, Magnification, Exit Pupil &amp; Theoretical TFOV (2.5 points):</strong><br>
+For an $f/8$ mirror of aperture $D = 200\\text{ mm}$ paired with $f_e = 25.0\\text{ mm}$:</p>
+<p>$$ F = 8 \\times 200\\text{ mm} = \\mathbf{1600\\text{ mm}}, \\qquad M_1 = \\frac{F}{f_e} = \\frac{1600}{25.0} = \\mathbf{64.0\\times} $$</p>
+<p>$$ d_{\\mathrm{exit}} = \\frac{D}{M_1} = \\frac{200\\text{ mm}}{64.0} = \\mathbf{3.125\\text{ mm}} < 7.0\\text{ mm} \\quad (\\text{no light wasted by the eye's iris}) $$</p>
+<p>$$ \\mathrm{TFOV} = \\frac{\\mathrm{AFOV}}{M_1} = \\frac{52.0^\\circ}{64.0} = 0.8125^\\circ = \\mathbf{48.75'} $$</p>
+
+<p><strong>(b) Empirical Drift-Timing TFOV &amp; Capella Transit Time (2.5 points):</strong><br>
+A star at declination $\\delta$ sweeps across the sky at angular rate $\\omega_\\oplus \\cos\\delta$. For Mintaka ($\\delta = -0.30^\\circ$, $\\cos(-0.30^\\circ) = 0.999986$):</p>
+<p>$$ \\mathrm{TFOV}_{\\mathrm{meas}} = \\omega_\\oplus\\,\\Delta t_1 \\cos\\delta = (15.0411''\\,\\mathrm{s^{-1}})(192.0\\text{ s})(0.999986) = 2887.9'' = \\mathbf{48.13'} $$</p>
+<p>For Capella ($\\delta = +46^\\circ 00'$, $\\cos 46.0^\\circ = 0.69466$) drifting across the same $2887.9''$ field:</p>
+<p>$$ \\Delta t_2 = \\frac{\\mathrm{TFOV}_{\\mathrm{meas}}}{\\omega_\\oplus \\cos 46.0^\\circ} = \\frac{2887.9''}{(15.0411''\\,\\mathrm{s^{-1}})(0.69466)} \\approx \\mathbf{276.4\\text{ s}} \\quad (4^{\\text{m}}36.4^{\\text{s}}) $$</p>
+
+<p><strong>(c) Polar-Axis Azimuth Misalignment $|\\Delta A|$ &amp; Direction (3.0 points):</strong><br>
+Over $T = 15.0\\text{ min} = 900\\text{ s}$, the Earth rotates through $\\omega_\\oplus T = (7.2921 \\times 10^{-5}\\ \\mathrm{rad\\,s^{-1}})(900\\text{ s}) = 0.065629\\text{ rad}$. Solving $\\Delta\\delta = -\\omega_\\oplus T \\cos\\phi\\,\\Delta A$ with $\\phi = 40.0^\\circ$ ($\\cos 40.0^\\circ = 0.76604$) and $\\Delta\\delta = +28.0''$:</p>
+<p>$$ \\Delta A = -\\frac{\\Delta\\delta}{\\omega_\\oplus T \\cos\\phi} = -\\frac{+28.0''}{(0.065629)(0.76604)} = -556.9'' = \\mathbf{-9.28'} $$</p>
+<p>The negative sign indicates that the mount's north polar axis is pointed $\\mathbf{9.28'}$ <strong>West of true North</strong> (so the student must nudge the polar axis eastward in azimuth to eliminate the northward meridian drift).</p>
+
+<p><strong>(d) High-Power Eyepiece &amp; Resolving $\\epsilon^1$ Lyrae (2.0 points):</strong><br>
+With the $f_e = 6.0\\text{ mm}$ eyepiece:</p>
+<p>$$ M_2 = \\frac{1600\\text{ mm}}{6.0\\text{ mm}} = \\mathbf{266.7\\times} < M_{\\max} = 2(200) = 400\\times $$</p>
+<p>$$ \\theta_D = \\frac{116''}{200} = \\mathbf{0.58''}, \\qquad \\theta_R = \\frac{1.22(5.50 \\times 10^{-7}\\text{ m})}{0.200\\text{ m}} \\times 206265'' = \\mathbf{0.69''} $$</p>
+<p>Because both the Dawes limit ($0.58''$) and Rayleigh limit ($0.69''$) are more than three times smaller than $\\rho = 2.30''$, and $M_2 = 267\\times$ remains well within the $400\\times$ useful limit, <strong>$\\epsilon^1$ Lyrae is cleanly resolved</strong>.</p>`
+    },
+
+    // Day 41 — 28.11.2026
+    {
+        uniqueId: "potd_2026_11_28",
+        dayNumber: 41,
+        scheduledDate: "28.11.2026",
+        title: "Detached Eclipsing Double-Lined Binary: Extracting Masses, Radii, and Distance",
+        author: "Matei",
+        module: "D2 · Data Analysis: Full Data Sets",
+        difficultyClass: "hard",
+        difficultyText: "6.2 / 10.0",
+        description: `<p>Photometric ($V$-band) and high-resolution spectroscopic monitoring of a detached, edge-on ($i = 90.0^\\circ$) eclipsing double-lined spectroscopic binary (components $A$ and $B$, with $R_A > R_B$) yields the two observational datasets below. Both eclipses show flat-bottomed minima, and interstellar extinction is negligible ($A_V = 0$).</p>
+<table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:14px; font-family:var(--font-mono); font-size:0.82rem;">
+    <thead>
+        <tr style="border-bottom:1px solid var(--border-light); color:var(--accent-blue); text-align:left;">
+            <th style="padding:8px;">Table 1: Light-Curve Event</th>
+            <th style="padding:8px;">HJD $-\\ 2461000.0$ (days)</th>
+            <th style="padding:8px;">Apparent $V$ (mag)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">Out-of-eclipse baseline ($V_0$)</td><td style="padding:8px;">—</td><td style="padding:8px;">8.400</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">Primary Eclipse #1 — 1st contact ($t_1$)</td><td style="padding:8px;">10.3700</td><td style="padding:8px;">8.400</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">Primary Eclipse #1 — 2nd contact ($t_2$)</td><td style="padding:8px;">10.4675</td><td style="padding:8px;">8.806</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">Primary Eclipse #1 — 3rd contact ($t_3$)</td><td style="padding:8px;">10.5325</td><td style="padding:8px;">8.806</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">Primary Eclipse #1 — 4th contact ($t_4$)</td><td style="padding:8px;">10.6300</td><td style="padding:8px;">8.400</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">Secondary Eclipse — Mid-minimum ($V_2$)</td><td style="padding:8px;">12.5000</td><td style="padding:8px;">8.548</td></tr>
+        <tr><td style="padding:8px;">Primary Eclipse #2 — Mid-minimum ($V_1$)</td><td style="padding:8px;">14.5000</td><td style="padding:8px;">8.806</td></tr>
+    </tbody>
+</table>
+<table style="width:100%; border-collapse:collapse; margin-top:10px; margin-bottom:14px; font-family:var(--font-mono); font-size:0.82rem;">
+    <thead>
+        <tr style="border-bottom:1px solid var(--border-light); color:var(--accent-blue); text-align:left;">
+            <th style="padding:8px;">Table 2: Orbital Phase $\\varphi$</th>
+            <th style="padding:8px;">$v_{r,A}$ ($\\mathrm{km\\,s^{-1}}$)</th>
+            <th style="padding:8px;">$v_{r,B}$ ($\\mathrm{km\\,s^{-1}}$)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">$0.00$ (Primary mid-eclipse)</td><td style="padding:8px;">$-24.0$</td><td style="padding:8px;">$-24.0$</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">$0.25$ (First quadrature)</td><td style="padding:8px;">$-96.0$</td><td style="padding:8px;">$+84.0$</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">$0.50$ (Secondary mid-eclipse)</td><td style="padding:8px;">$-24.0$</td><td style="padding:8px;">$-24.0$</td></tr>
+        <tr><td style="padding:8px;">$0.75$ (Second quadrature)</td><td style="padding:8px;">$+48.0$</td><td style="padding:8px;">$-132.0$</td></tr>
+    </tbody>
+</table>
+<p>Use $G = 6.674 \\times 10^{-11}\\ \\mathrm{m^3\\,kg^{-1}\\,s^{-2}}$, $\\sigma_{\\mathrm{SB}} = 5.6704 \\times 10^{-8}\\ \\mathrm{W\\,m^{-2}\\,K^{-4}}$, $M_\\odot = 1.989 \\times 10^{30}\\text{ kg}$, $R_\\odot = 6.957 \\times 10^8\\text{ m}$, $L_\\odot = 3.828 \\times 10^{26}\\text{ W}$, and $M_{\\mathrm{bol},\\odot} = 4.74\\text{ mag}$.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>From Table 1, determine the orbital period $P$ (in days) and verify that the orbit is circular. From Table 2, determine the systemic velocity $\\gamma$ and the radial-velocity semi-amplitudes $K_A$ and $K_B$ (in $\\mathrm{km\\,s^{-1}}$), then calculate the orbital separation $a$ (in $R_\\odot$) and individual stellar masses $M_A$ and $M_B$ (in $M_\\odot$). <em>(3.0 points)</em></li>
+    <li>Using the four contact times of Primary Eclipse #1 (full duration $D = t_4 - t_1$ and flat-bottom duration $d = t_3 - t_2$) together with the exact edge-on circular relations $R_A + R_B = a\\sin\\!\\left(\\frac{\\pi D}{P}\\right)$ and $R_A - R_B = a\\sin\\!\\left(\\frac{\\pi d}{P}\\right)$, calculate the stellar radii $R_A$ and $R_B$ (in $R_\\odot$) and the radius ratio $k = R_B / R_A$. <em>(2.5 points)</em></li>
+    <li>From the eclipse depths ($V_0, V_1, V_2$), calculate the fractional flux drops $\\Delta f_1$ and $\\Delta f_2$. Prove quantitatively—using both the photometric identity and the radial-velocity signs at $\\varphi = 0.25$—whether the primary eclipse is an annular transit of star $B$ across star $A$ or a total occultation of star $B$ behind star $A$. Hence find the luminosity ratio $L_{V,B}/L_{V,A}$, the surface-brightness ratio $J_{V,A}/J_{V,B}$, and the effective temperature $T_B$ given $T_A = 6500\\text{ K}$ (assuming $J_A/J_B \\simeq (T_A/T_B)^4$). <em>(2.5 points)</em></li>
+    <li>Given the bolometric correction $\\mathrm{BC}_A = -0.04\\text{ mag}$ for star $A$, calculate its bolometric luminosity $L_A$ (in $L_\\odot$), its absolute visual magnitude $M_{V,A}$, the combined out-of-eclipse absolute visual magnitude $M_{V,\\mathrm{tot}}$, and the distance $d_{\\mathrm{sys}}$ to the binary system (in $\\text{pc}$). <em>(2.0 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Joint SB2 radial-velocity and eclipsing light-curve inversion for absolute stellar masses, radii, temperatures, and primary distance determination.</p>
+
+<p><strong>(a) Orbital Period, Systemic Velocity, Separation &amp; Masses (3.0 points):</strong><br>
+Primary Eclipse #1 is centered at $t_{\\mathrm{mid},1} = \\frac{1}{2}(t_1 + t_4) = \\frac{1}{2}(10.3700 + 10.6300) = 10.5000\\text{ d}$. Since Primary Eclipse #2 occurs at $14.5000\\text{ d}$:</p>
+<p>$$ P = 14.5000 - 10.5000 = \\mathbf{4.0000\\text{ days}} \\quad (3.4560 \\times 10^5\\text{ s}) $$</p>
+<p>The secondary minimum occurs at $12.5000\\text{ d}$, exactly at phase $\\varphi = (12.5000 - 10.5000)/4.0000 = 0.5000$, and the quadrature velocities are symmetric around conjunction—confirming a circular orbit ($e = 0$).</p>
+<p>From Table 2, both stars share the systemic velocity $\\gamma = \\mathbf{-24.0\\ \\mathrm{km\\,s^{-1}}}$, with semi-amplitudes:</p>
+<p>$$ K_A = \\frac{48.0 - (-96.0)}{2} = \\mathbf{72.0\\ \\mathrm{km\\,s^{-1}}}, \\qquad K_B = \\frac{84.0 - (-132.0)}{2} = \\mathbf{108.0\\ \\mathrm{km\\,s^{-1}}} $$</p>
+<p>For $i = 90.0^\\circ$ and $e = 0$, the orbital separation and total mass are:</p>
+<p>$$ a = \\frac{(K_A + K_B)P}{2\\pi} = \\frac{(1.800 \\times 10^5\\ \\mathrm{m\\,s^{-1}})(3.4560 \\times 10^5\\text{ s})}{2\\pi} = 9.901 \\times 10^9\\text{ m} = \\mathbf{14.23\\,R_\\odot} $$</p>
+<p>$$ M_{\\mathrm{tot}} = M_A + M_B = \\frac{4\\pi^2 a^3}{G P^2} = \\frac{4\\pi^2 (9.9007 \\times 10^9)^3}{(6.674 \\times 10^{-11})(3.4560 \\times 10^5)^2} = 4.806 \\times 10^{30}\\text{ kg} = 2.417\\,M_\\odot $$</p>
+<p>Using $M_A / M_B = K_B / K_A = 108.0 / 72.0 = 1.500$:</p>
+<p>$$ M_A = \\frac{108.0}{180.0}(2.4165\\,M_\\odot) = \\mathbf{1.450\\,M_\\odot}, \\qquad M_B = \\frac{72.0}{180.0}(2.4165\\,M_\\odot) = \\mathbf{0.967\\,M_\\odot} $$</p>
+
+<p><strong>(b) Stellar Radii $R_A$, $R_B$ &amp; Radius Ratio $k$ (2.5 points):</strong><br>
+From Table 1, $D = t_4 - t_1 = 10.6300 - 10.3700 = 0.2600\\text{ d}$ and $d = t_3 - t_2 = 10.5325 - 10.4675 = 0.0650\\text{ d}$:</p>
+<p>$$ R_A + R_B = a\\sin\\!\\left(\\frac{\\pi \\times 0.2600}{4.0000}\\right) = 14.231\\,R_\\odot \\times 0.20279 = 2.886\\,R_\\odot $$</p>
+<p>$$ R_A - R_B = a\\sin\\!\\left(\\frac{\\pi \\times 0.0650}{4.0000}\\right) = 14.231\\,R_\\odot \\times 0.05103 = 0.726\\,R_\\odot $$</p>
+<p>Adding and subtracting these two equations gives:</p>
+<p>$$ R_A = \\mathbf{1.806\\,R_\\odot}, \\qquad R_B = \\mathbf{1.080\\,R_\\odot}, \\qquad k = \\frac{R_B}{R_A} = \\mathbf{0.598} $$</p>
+
+<p><strong>(c) Eclipse Geometry, Luminosity Ratio &amp; Effective Temperature $T_B$ (2.5 points):</strong><br>
+Converting the magnitude drops $\\Delta V_1 = 8.806 - 8.400 = 0.406\\text{ mag}$ and $\\Delta V_2 = 8.548 - 8.400 = 0.148\\text{ mag}$ into fractional flux drops $\\Delta f = 1 - 10^{-0.4\\Delta V}$:</p>
+<p>$$ \\Delta f_1 = 1 - 10^{-0.4(0.406)} = \\mathbf{0.3120}, \\qquad \\Delta f_2 = 1 - 10^{-0.4(0.148)} = \\mathbf{0.1274} $$</p>
+<p>In a total occultation of the smaller star $B$, $\\Delta f_{\\mathrm{occ}} = \\frac{L_B}{L_A + L_B}$, while in an annular transit of $B$ across $A$, $\\Delta f_{\\mathrm{tr}} = \\frac{L_A}{L_A + L_B}k^2 = (1 - \\Delta f_{\\mathrm{occ}})k^2$. Testing $\\Delta f_2 = \\Delta f_{\\mathrm{occ}}$ gives $(1 - 0.1274)(0.5979)^2 = 0.3119 \\approx \\Delta f_1 = 0.3120$ (whereas testing $\\Delta f_1 = \\Delta f_{\\mathrm{occ}}$ would predict $\\Delta f_2 = 0.246 \\neq 0.127$). Independently, at $\\varphi = 0.25$ immediately after primary eclipse, star $B$ is receding ($v_{r,B} = +84.0 > \\gamma$) while star $A$ is approaching ($v_{r,A} = -96.0 < \\gamma$), proving star $B$ was closest to Earth at $\\varphi = 0.00$. Thus, the <strong>primary eclipse is an annular transit of $B$ across $A$</strong> and the <strong>secondary eclipse is a total occultation of $B$ behind $A$</strong>.</p>
+<p>Hence:</p>
+<p>$$ \\frac{L_{V,B}}{L_{V,A}} = \\frac{\\Delta f_2}{1 - \\Delta f_2} = \\frac{0.1274}{0.8726} = \\mathbf{0.1460} $$</p>
+<p>Because the eclipsed projected area is $\\pi R_B^2$ in both eclipses, $\\frac{\\Delta f_1}{\\Delta f_2} = \\frac{J_{V,A}}{J_{V,B}}$:</p>
+<p>$$ \\frac{J_{V,A}}{J_{V,B}} = \\frac{0.3120}{0.1274} = \\mathbf{2.448}, \\qquad T_B = T_A\\left(\\frac{J_{V,A}}{J_{V,B}}\\right)^{-1/4} = 6500\\,(2.448)^{-1/4} \\approx \\mathbf{5200\\text{ K}} \\quad (5196\\text{ K}) $$</p>
+
+<p><strong>(d) Luminosity $L_A$, Absolute Visual Magnitudes &amp; Distance $d_{\\mathrm{sys}}$ (2.0 points):</strong><br>
+By the Stefan–Boltzmann law for star $A$ ($R_A = 1.806\\,R_\\odot = 1.2565 \\times 10^9\\text{ m}$, $T_A = 6500\\text{ K}$):</p>
+<p>$$ L_A = 4\\pi R_A^2 \\sigma_{\\mathrm{SB}} T_A^4 = 2.008 \\times 10^{27}\\text{ W} = \\mathbf{5.246\\,L_\\odot} $$</p>
+<p>$$ M_{\\mathrm{bol},A} = 4.74 - 2.5\\log_{10}(5.246) = 2.940\\text{ mag} \\implies M_{V,A} = M_{\\mathrm{bol},A} - \\mathrm{BC}_A = 2.940 - (-0.04) = \\mathbf{2.980\\text{ mag}} $$</p>
+<p>$$ M_{V,\\mathrm{tot}} = M_{V,A} - 2.5\\log_{10}\\!\\left(1 + \\frac{L_{V,B}}{L_{V,A}}\\right) = 2.980 - 2.5\\log_{10}(1.1460) = \\mathbf{2.832\\text{ mag}} $$</p>
+<p>Because only star $A$ is visible during secondary totality ($V_A = V_2 = 8.548\\text{ mag}$), both $V_2 - M_{V,A}$ and $V_0 - M_{V,\\mathrm{tot}}$ yield the exact same distance modulus $\\mu = 8.548 - 2.980 = 5.568\\text{ mag}$:</p>
+<p>$$ d_{\\mathrm{sys}} = 10^{(\\mu + 5)/5}\\text{ pc} = 10^{2.1136}\\text{ pc} \\approx \\mathbf{130\\text{ pc}} \\quad (129.9\\text{ pc}) $$</p>`
+    },
+
+    // Day 42 — 29.11.2026
+    {
+        uniqueId: "potd_2026_11_29",
+        dayNumber: 42,
+        scheduledDate: "29.11.2026",
+        title: "Flat ΛCDM Cosmology: Acceleration Epoch, Lookback Time, and High-Redshift Supernova Dimming",
+        author: "Matei",
+        module: "T12 & T7 · Cosmology & Type Ia Supernovae",
+        difficultyClass: "hard",
+        difficultyText: "5.8 / 10.0",
+        description: `<p>Consider a spatially flat $\\Lambda$CDM universe with present Hubble constant $H_0 = 70.0\\ \\mathrm{km\\,s^{-1}\\,Mpc^{-1}}$, non-relativistic matter density parameter $\\Omega_{m,0} = 0.300$, cosmological constant density parameter $\\Omega_{\\Lambda,0} = 0.700$, and negligible radiation ($\\Omega_{r,0} \\approx 0$). Use $c = 2.998 \\times 10^8\\ \\mathrm{m\\,s^{-1}}$, $G = 6.674 \\times 10^{-11}\\ \\mathrm{m^3\\,kg^{-1}\\,s^{-2}}$, $1\\text{ Mpc} = 3.086 \\times 10^{22}\\text{ m}$, and $1\\text{ Gyr} = 3.15576 \\times 10^{16}\\text{ s}$.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Starting from the Friedmann equations $H^2(z) = H_0^2\\left[\\Omega_{m,0}(1+z)^3 + \\Omega_{\\Lambda,0}\\right]$ and $\\frac{\\ddot{a}}{a} = -\\frac{4\\pi G}{3}(\\rho + 3P/c^2)$ (with $P_m = 0$ and $P_\\Lambda = -\\rho_\\Lambda c^2$), derive the redshift-dependent deceleration parameter $q(z) = -\\frac{\\ddot{a}a}{\\dot{a}^2}$ in terms of $\\Omega_{m,0}$, $\\Omega_{\\Lambda,0}$, and $z$. Calculate its present value $q_0$ and the transition redshift $z_t$ at which cosmic expansion switched from deceleration to acceleration. <em>(2.5 points)</em></li>
+    <li>At redshift $z = 1.00$, calculate the Hubble parameter $H(z)$ (in $\\mathrm{km\\,s^{-1}\\,Mpc^{-1}}$), the critical density $\\rho_c(z) = \\frac{3 H^2(z)}{8\\pi G}$ (in $\\mathrm{kg\\,m^{-3}}$), and the matter-to-dark-energy density ratio $\\rho_m(z)/\\rho_\\Lambda$. Also determine the redshift $z_{\\mathrm{eq},\\Lambda}$ of matter–dark-energy equality ($\\rho_m = \\rho_\\Lambda$). <em>(2.5 points)</em></li>
+    <li>In a flat $\\Lambda$CDM universe, the cosmic age as a function of scale factor $a = (1+z)^{-1}$ has the closed-form solution:
+    $$ t(a) = \\frac{2}{3 H_0 \\sqrt{\\Omega_{\\Lambda,0}}}\\,\\mathrm{arsinh}\\!\\left(\\sqrt{\\frac{\\Omega_{\\Lambda,0}}{\\Omega_{m,0}}}\\,a^{3/2}\\right) $$
+    Calculate the Hubble time $H_0^{-1}$, the present age of the universe $t_0$, the cosmic age $t(z=1.00)$ when light from a $z = 1.00$ supernova was emitted, and the lookback time $t_L(z=1.00)$ (all in $\\text{Gyr}$). <em>(2.5 points)</em></li>
+    <li>A Type Ia supernova of peak absolute magnitude $M_B = -19.30\\text{ mag}$ explodes at $z = 1.00$ in a host galaxy of physical diameter $L = 20.0\\text{ kpc}$. Given the numerical comoving integral $\\int_0^{1.00} \\frac{dz'}{\\sqrt{0.300(1+z')^3 + 0.700}} = 0.7714$, calculate the comoving distance $d_C$, luminosity distance $d_L$, and angular-diameter distance $d_A$ (all in $\\text{Mpc}$), the apparent magnitude $m_B$ of the supernova (neglecting extinction and $K$-correction), and the observed angular diameter $\\theta$ of the host galaxy (in arcseconds). Finally, compute the apparent magnitude $m_{B,\\mathrm{EdS}}$ the same supernova would have in a flat matter-only Einstein–de Sitter universe ($\\Omega_{m,0} = 1, \\Omega_{\\Lambda,0} = 0$, where $d_C = \\frac{2c}{H_0}\\left[1 - (1+z)^{-1/2}\\right]$) and the resulting supernova dimming $\\Delta m_B = m_B - m_{B,\\mathrm{EdS}}$. <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Flat $\\Lambda$CDM dynamics, deceleration-to-acceleration transition, closed-form cosmic lookback time, cosmological distances, and Type Ia supernova dimming.</p>
+
+<p><strong>(a) Deceleration Parameter $q(z)$, Present Value $q_0$ &amp; Transition Redshift $z_t$ (2.5 points):</strong><br>
+Substituting $\\rho_m(z) = \\rho_{c,0}\\Omega_{m,0}(1+z)^3$, $\\rho_\\Lambda = \\rho_{c,0}\\Omega_{\\Lambda,0}$, $P_m = 0$, $P_\\Lambda = -\\rho_\\Lambda c^2$, and $\\frac{8\\pi G \\rho_{c,0}}{3} = H_0^2$ into the acceleration equation yields:</p>
+<p>$$ \\frac{\\ddot{a}}{a} = -\\frac{4\\pi G}{3}\\left(\\rho_m - 2\\rho_\\Lambda\\right) = H_0^2\\left[\\Omega_{\\Lambda,0} - \\frac{1}{2}\\Omega_{m,0}(1+z)^3\\right] $$</p>
+<p>Dividing $-\\ddot{a}/a$ by $H^2(z) = H_0^2\\left[\\Omega_{m,0}(1+z)^3 + \\Omega_{\\Lambda,0}\\right]$ gives:</p>
+<p>$$ q(z) = \\mathbf{\\frac{\\frac{1}{2}\\Omega_{m,0}(1+z)^3 - \\Omega_{\\Lambda,0}}{\\Omega_{m,0}(1+z)^3 + \\Omega_{\\Lambda,0}}} $$</p>
+<p>At $z = 0$ (where $\\Omega_{m,0} + \\Omega_{\\Lambda,0} = 1$): $q_0 = \\frac{1}{2}(0.300) - 0.700 = \\mathbf{-0.550}$ (accelerating today). Setting $q(z_t) = 0$:</p>
+<p>$$ \\frac{1}{2}\\Omega_{m,0}(1+z_t)^3 = \\Omega_{\\Lambda,0} \\implies z_t = \\left(\\frac{2\\Omega_{\\Lambda,0}}{\\Omega_{m,0}}\\right)^{1/3} - 1 = \\left(\\frac{1.400}{0.300}\\right)^{1/3} - 1 \\approx \\mathbf{0.671} $$</p>
+
+<p><strong>(b) Hubble Parameter, Critical Density &amp; Matter–Dark-Energy Ratio at $z = 1.00$ (2.5 points):</strong><br>
+With $H_0 = \\frac{7.00 \\times 10^4\\ \\mathrm{m\\,s^{-1}}}{3.086 \\times 10^{22}\\text{ m}} = 2.2683 \\times 10^{-18}\\ \\mathrm{s^{-1}}$ and $E(1) = \\sqrt{0.300(2)^3 + 0.700} = \\sqrt{3.100} = 1.76068$:</p>
+<p>$$ H(1.00) = H_0 E(1) = 70.0 \\times 1.76068 = \\mathbf{123.2\\ \\mathrm{km\\,s^{-1}\\,Mpc^{-1}}} \\quad (3.994 \\times 10^{-18}\\ \\mathrm{s^{-1}}) $$</p>
+<p>$$ \\rho_c(1.00) = \\frac{3 H^2(1.00)}{8\\pi G} = \\frac{3(3.9938 \\times 10^{-18})^2}{8\\pi(6.674 \\times 10^{-11})} \\approx \\mathbf{2.85 \\times 10^{-26}\\ \\mathrm{kg\\,m^{-3}}} $$</p>
+<p>$$ \\frac{\\rho_m(1.00)}{\\rho_\\Lambda} = \\frac{\\Omega_{m,0}}{\\Omega_{\\Lambda,0}}(1 + 1.00)^3 = \\frac{0.300}{0.700}(8) = \\mathbf{3.43} $$</p>
+<p>Matter–dark-energy equality ($\\rho_m = \\rho_\\Lambda$) occurred at:</p>
+<p>$$ z_{\\mathrm{eq},\\Lambda} = \\left(\\frac{\\Omega_{\\Lambda,0}}{\\Omega_{m,0}}\\right)^{1/3} - 1 = \\left(\\frac{0.700}{0.300}\\right)^{1/3} - 1 \\approx \\mathbf{0.326} $$</p>
+
+<p><strong>(c) Cosmic Age &amp; Lookback Time at $z = 1.00$ (2.5 points):</strong><br>
+The Hubble time is $H_0^{-1} = (2.2683 \\times 10^{-18}\\ \\mathrm{s^{-1}})^{-1} = 4.4086 \\times 10^{17}\\text{ s} = \\mathbf{13.97\\text{ Gyr}}$, and the prefactor is $\\frac{2 H_0^{-1}}{3\\sqrt{0.700}} = 11.131\\text{ Gyr}$. With $\\sqrt{\\Omega_{\\Lambda,0}/\\Omega_{m,0}} = \\sqrt{7/3} = 1.5275$:</p>
+<p>$$ t_0 = t(a = 1) = (11.131\\text{ Gyr})\\,\\mathrm{arsinh}(1.5275) = (11.131)(1.2099) \\approx \\mathbf{13.47\\text{ Gyr}} $$</p>
+<p>$$ t(z = 1.00) = t(a = 0.5) = (11.131\\text{ Gyr})\\,\\mathrm{arsinh}\\!\\left(1.5275 \\times 0.5^{3/2}\\right) = (11.131)\\,\\mathrm{arsinh}(0.5401) = (11.131)(0.5168) \\approx \\mathbf{5.75\\text{ Gyr}} $$</p>
+<p>$$ t_L(z = 1.00) = t_0 - t(z = 1.00) = 13.468 - 5.752 \\approx \\mathbf{7.72\\text{ Gyr}} $$</p>
+
+<p><strong>(d) Cosmological Distances, Host Galaxy Angular Size &amp; Supernova Dimming (2.5 points):</strong><br>
+The Hubble distance is $d_H = c/H_0 = 2.998 \\times 10^5 / 70.0 = 4282.9\\text{ Mpc}$. For a flat universe ($k = 0$) at $z = 1.00$:</p>
+<p>$$ d_C = d_H \\times 0.7714 = \\mathbf{3304\\text{ Mpc}}, \\qquad d_L = (1+z)d_C = \\mathbf{6608\\text{ Mpc}}, \\qquad d_A = \\frac{d_C}{1+z} = \\mathbf{1652\\text{ Mpc}} $$</p>
+<p>The supernova's apparent $B$-band magnitude and the host galaxy's angular diameter ($L = 0.0200\\text{ Mpc}$) are:</p>
+<p>$$ m_B = M_B + 5\\log_{10}\\!\\left(\\frac{d_L}{10\\text{ pc}}\\right) = -19.30 + 5\\log_{10}(6.6076 \\times 10^8) = -19.30 + 44.100 = \\mathbf{24.80\\text{ mag}} $$</p>
+<p>$$ \\theta = \\frac{L}{d_A} = \\frac{0.0200\\text{ Mpc}}{1651.9\\text{ Mpc}} \\times 206265'' \\approx \\mathbf{2.50''} $$</p>
+<p>In a flat Einstein–de Sitter universe ($\\Omega_{m,0} = 1,\\ \\Omega_{\\Lambda,0} = 0$) at $z = 1.00$:</p>
+<p>$$ d_{C,\\mathrm{EdS}} = 2 d_H\\left(1 - 2^{-1/2}\\right) = 2508.8\\text{ Mpc} \\implies d_{L,\\mathrm{EdS}} = 5017.7\\text{ Mpc} $$</p>
+<p>$$ m_{B,\\mathrm{EdS}} = -19.30 + 5\\log_{10}(5.0177 \\times 10^8) = \\mathbf{24.20\\text{ mag}} $$</p>
+<p>$$ \\Delta m_B = m_B - m_{B,\\mathrm{EdS}} = 24.800 - 24.203 \\approx \\mathbf{+0.60\\text{ mag}} $$</p>
+<p>Thus, dark-energy-driven acceleration makes a $z = 1.00$ Type Ia supernova appear $0.60\\text{ mag}$ fainter (a factor of $1.73$ dimmer, or $42\\%$ lower in observed flux) than in a decelerating matter-only Einstein–de Sitter cosmology.</p>`
+    },
+
+    // Day 43 — 30.11.2026
+    {
+        uniqueId: "potd_2026_11_30",
+        dayNumber: 43,
+        scheduledDate: "30.11.2026",
+        title: "Star Formation and IMF Evolution in a Galaxy",
+        author: "Kerem Karagöl",
+        module: "T6 & T11 · Star Formation, IMF & Galactic Evolution",
+        difficultyClass: "easy",
+        difficultyText: "3.0 / 10.0",
+        description: `<p>Consider a gas-rich galaxy with an initial gas mass of $M_{g,0} = 5 \\times 10^9\\,M_\\odot$. The galaxy follows a linear star formation law:</p>
+<p>$$ \\mathrm{SFR}(t) = \\varepsilon M_g(t), \\qquad \\varepsilon = 0.4\\ \\mathrm{Gyr^{-1}} $$</p>
+<p>A fraction $R = 0.30$ of the stellar mass formed is instantaneously returned to the interstellar medium. The galaxy is assumed to be a closed system, with no external gas accretion or galactic outflows.</p>
+<p>The stellar initial mass function (IMF) follows a Salpeter distribution:</p>
+<p>$$ \\frac{dN}{dm} = C m^{-2.35}, \\qquad 0.1 \\le m \\le 100 $$</p>
+<p>where $m = M/M_\\odot$ is the dimensionless stellar mass and $C$ is the IMF normalization constant. Only stars with $m \\ge 20$ produce significant ionizing radiation, with ionizing photon production rate approximated by $q(m) = 10^{44} m^3\\ \\mathrm{s^{-1}}$. Assume that each star produces ionizing photons at a constant rate throughout its main-sequence lifetime $\\tau(m) = 10\\text{ Gyr}\\,m^{-2.5}$ and produces none after leaving the main sequence.</p>
+<p>At the beginning of a $10\\text{ Myr}$ star formation episode, the galaxy has the initial gas mass specified above. During this short interval, the SFR may be treated as approximately constant, and the resulting stellar population is approximated as a single instantaneous burst of mass $M_{\\mathrm{burst}} \\simeq \\mathrm{SFR}(0) \\times 10\\text{ Myr}$, after which star formation ceases completely.</p>
+<p>Assume the interstellar gas is ionization-bounded (all ionizing photons are absorbed by hydrogen; neglect dust absorption and photon escape). Under Case B recombination conditions, each absorbed ionizing photon produces on average $0.45$ H$\\alpha$ photons at wavelength $\\lambda_{\\mathrm{H}\\alpha} = 656.3\\text{ nm}$. Use $h = 6.62607015 \\times 10^{-34}\\ \\mathrm{J\\,s}$ and $c = 2.99792458 \\times 10^8\\ \\mathrm{m\\,s^{-1}}$.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Starting from the gas consumption equation $\\frac{dM_g}{dt} = -(1 - R)\\,\\mathrm{SFR}(t)$, derive the time-dependent gas mass $M_g(t)$ and star formation rate $\\mathrm{SFR}(t)$, and calculate the gas depletion half-time $t_{1/2}$. Also determine the fractional change in the SFR during the $10\\text{ Myr}$ episode and justify the constant-SFR approximation. <em>(2.0 points)</em></li>
+    <li>Calculate the total stellar mass $M_{\\mathrm{burst}}$ formed during the $10\\text{ Myr}$ episode, and determine the IMF normalization constant $C$ from $M_\\odot C \\int_{0.1}^{100} m^{-1.35}\\,dm = M_{\\mathrm{burst}}$. Then calculate: (i) the total expected number of stars $N_{\\mathrm{tot}}$, (ii) the expected number of stars with $m \\ge 20$, (iii) the fraction of stars with $m \\ge 20$ by number, and (iv) the fraction of total stellar mass contained in stars with $m \\ge 20$. <em>(3.0 points)</em></li>
+    <li>Calculate the initial ionizing photon production rate $Q(0) = C \\int_{20}^{100} q(m) m^{-2.35}\\,dm$. After star formation stops, find the critical stellar mass $m_{\\mathrm{crit}}$ whose main-sequence lifetime is exactly $5\\text{ Myr}$, identify the surviving ionizing mass interval, calculate $Q(5\\text{ Myr})$ and the ratio $Q(5\\text{ Myr})/Q(0)$, and explain why the most massive stars do not necessarily dominate the ionizing radiation at later times. <em>(2.5 points)</em></li>
+    <li>Using the Case B recombination approximation $L_{\\mathrm{H}\\alpha} = 0.45\\,Q\\frac{hc}{\\lambda_{\\mathrm{H}\\alpha}}$, calculate the initial and $5\\text{ Myr}$ H$\\alpha$ luminosities in both $\\text{W}$ and $\\mathrm{erg\\,s^{-1}}$. Finally, explain why H$\\alpha$ is a tracer of recent star formation rather than long-term star formation history, comparing a continuously star-forming galaxy with a suddenly quenched population. <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Closed-box gas depletion, Salpeter IMF integration, massive-star ionizing photon evolution, and Case B H$\\alpha$ star-formation tracing.</p>
+
+<p><strong>(a) Evolution of Gas Mass &amp; Star Formation Rate (2.0 points):</strong><br>
+Substituting $\\mathrm{SFR}(t) = \\varepsilon M_g(t)$ with $R = 0.30$ and $\\varepsilon = 0.4\\ \\mathrm{Gyr^{-1}}$ into $\\frac{dM_g}{dt} = -(1 - R)\\,\\mathrm{SFR}(t)$:</p>
+<p>$$ \\frac{dM_g}{dt} = -(1 - R)\\varepsilon M_g = -(0.70)(0.4) M_g = -0.28 M_g \\implies M_g(t) = \\mathbf{5 \\times 10^9 e^{-0.28 t}\\,M_\\odot} \\quad (t\\text{ in Gyr}) $$</p>
+<p>The star formation rate is $\\mathrm{SFR}(t) = 0.4 M_g(t) = 2.0 \\times 10^9 e^{-0.28 t}\\,M_\\odot\\,\\mathrm{Gyr^{-1}}$, or converting $\\text{Gyr}$ to $\\text{yr}$:</p>
+<p>$$ \\mathrm{SFR}(t) = \\mathbf{2.0\\,e^{-0.28 t}\\,M_\\odot\\,\\mathrm{yr^{-1}}} $$</p>
+<p>Setting $M_g(t_{1/2}) = \\frac{1}{2} M_{g,0}$ yields the gas depletion half-time:</p>
+<p>$$ e^{-0.28 t_{1/2}} = \\frac{1}{2} \\implies t_{1/2} = \\frac{\\ln 2}{0.28} \\approx \\mathbf{2.476\\text{ Gyr}} $$</p>
+<p>Over $10\\text{ Myr} = 0.01\\text{ Gyr}$, $\\frac{\\mathrm{SFR}(0.01)}{\\mathrm{SFR}(0)} = e^{-0.28(0.01)} = e^{-0.0028} = 0.997204$, so the fractional decrease is:</p>
+<p>$$ \\frac{\\Delta\\mathrm{SFR}}{\\mathrm{SFR}(0)} = 1 - 0.997204 = \\mathbf{0.002796} = \\mathbf{0.2796\\%} $$</p>
+<p>Because the SFR decreases by only $\\approx 0.28\\%$ over $10\\text{ Myr}$, treating it as constant during the burst is an excellent approximation.</p>
+
+<p><strong>(b) Burst Stellar Mass &amp; Salpeter IMF Normalization (3.0 points):</strong><br>
+With $\\mathrm{SFR}(0) = 2.0\\,M_\\odot\\,\\mathrm{yr^{-1}}$, the total stellar mass formed in $10\\text{ Myr} = 10^7\\text{ yr}$ is $M_{\\mathrm{burst}} = \\mathbf{2.0 \\times 10^7\\,M_\\odot}$. Evaluating the mass integral:</p>
+<p>$$ I_M = \\int_{0.1}^{100} m^{-1.35}\\,dm = \\frac{0.1^{-0.35} - 100^{-0.35}}{0.35} = 5.82627 \\implies C = \\frac{2.0 \\times 10^7}{5.82627} = \\mathbf{3.4327 \\times 10^6} $$</p>
+<ul>
+    <li><strong>(i) Total number of stars:</strong> $\\int_{0.1}^{100} m^{-2.35}\\,dm = \\frac{0.1^{-1.35} - 100^{-1.35}}{1.35} = 16.58164$, so $N_{\\mathrm{tot}} = C(16.58164) \\approx \\mathbf{5.692 \\times 10^7}$.</li>
+    <li><strong>(ii) Stars with $m \\ge 20$:</strong> $\\int_{20}^{100} m^{-2.35}\\,dm = \\frac{20^{-1.35} - 100^{-1.35}}{1.35} = 0.0115021$, so $N_{m \\ge 20} = C(0.0115021) \\approx \\mathbf{3.948 \\times 10^4}$.</li>
+    <li><strong>(iii) Number fraction ($m \\ge 20$):</strong> $f_N = \\frac{0.0115021}{16.58164} = \\mathbf{6.9366 \\times 10^{-4}} = \\mathbf{0.06937\\%}$.</li>
+    <li><strong>(iv) Mass fraction ($m \\ge 20$):</strong> $\\int_{20}^{100} m^{-1.35}\\,dm = \\frac{20^{-0.35} - 100^{-0.35}}{0.35} = 0.431242$, so $f_M = \\frac{0.431242}{5.82627} = \\mathbf{0.07402} = \\mathbf{7.402\\%}$.</li>
+</ul>
+
+<p><strong>(c) Evolution of the Ionizing Photon Production Rate (2.5 points):</strong><br>
+Substituting $q(m) = 10^{44} m^3\\ \\mathrm{s^{-1}}$ into the initial ionizing photon production rate:</p>
+<p>$$ Q(0) = 10^{44} C \\int_{20}^{100} m^{0.65}\\,dm = \\frac{10^{44} C}{1.65}\\left(100^{1.65} - 20^{1.65}\\right) = \\mathbf{3.8594 \\times 10^{53}\\ \\mathrm{s^{-1}}} $$</p>
+<p>Setting $\\tau(m_{\\mathrm{crit}}) = 10\\,m_{\\mathrm{crit}}^{-2.5}\\text{ Gyr} = 0.005\\text{ Gyr}$ gives $m_{\\mathrm{crit}}^{2.5} = 2000 \\implies m_{\\mathrm{crit}} = 2000^{1/2.5} = \\mathbf{20.9128}$ (in $M_\\odot$). Thus, after $5\\text{ Myr}$, only stars in the narrow mass interval $\\mathbf{20 \\le m \\le 20.9128}$ still produce ionizing photons:</p>
+<p>$$ Q(5\\text{ Myr}) = \\frac{10^{44} C}{1.65}\\left(20.9128^{1.65} - 20^{1.65}\\right) = \\mathbf{2.2286 \\times 10^{51}\\ \\mathrm{s^{-1}}} $$</p>
+<p>$$ \\frac{Q(5\\text{ Myr})}{Q(0)} = \\frac{2.2286 \\times 10^{51}}{3.8594 \\times 10^{53}} = \\mathbf{5.775 \\times 10^{-3}} \\quad (\\mathbf{0.5775\\%}) $$</p>
+<p>Because the most massive stars have the shortest main-sequence lifetimes ($\\tau \\propto m^{-2.5}$), they rapidly evolve off the main sequence and stop emitting ionizing UV photons; after $5\\text{ Myr}$, only the narrow remaining slice near $20\\text{--}20.91\\,M_\\odot$ still contributes.</p>
+
+<p><strong>(d) H$\\alpha$ Luminosity &amp; Physical Interpretation (2.5 points):</strong><br>
+The energy of one H$\\alpha$ photon at $\\lambda_{\\mathrm{H}\\alpha} = 656.3 \\times 10^{-9}\\text{ m}$ is:</p>
+<p>$$ E_{\\mathrm{H}\\alpha} = \\frac{hc}{\\lambda_{\\mathrm{H}\\alpha}} = \\frac{(6.62607015 \\times 10^{-34})(2.99792458 \\times 10^8)}{656.3 \\times 10^{-9}} = 3.02673 \\times 10^{-19}\\text{ J} $$</p>
+<p>Evaluating $L_{\\mathrm{H}\\alpha} = 0.45\\,Q\\,E_{\\mathrm{H}\\alpha}$ (using $1\\text{ W} = 10^7\\ \\mathrm{erg\\,s^{-1}}$):</p>
+<p>$$ L_{\\mathrm{H}\\alpha}(0) = 0.45(3.8594 \\times 10^{53})(3.02673 \\times 10^{-19}) = \\mathbf{5.2566 \\times 10^{34}\\text{ W}} = \\mathbf{5.2566 \\times 10^{41}\\ \\mathrm{erg\\,s^{-1}}} $$</p>
+<p>$$ L_{\\mathrm{H}\\alpha}(5\\text{ Myr}) = 0.45(2.2286 \\times 10^{51})(3.02673 \\times 10^{-19}) = \\mathbf{3.0355 \\times 10^{32}\\text{ W}} = \\mathbf{3.0355 \\times 10^{39}\\ \\mathrm{erg\\,s^{-1}}} $$</p>
+<p><strong>Physical Interpretation:</strong> H$\\alpha$ emission is powered by recombinations following UV photoionization from short-lived massive O/B stars ($\\tau \\lesssim 10\\text{ Myr}$), so it traces only very recent star formation rather than the galaxy's long-term integrated history. In a continuously star-forming galaxy, newly born massive stars continually replenish those leaving the main sequence, maintaining a roughly steady $Q$ and $L_{\\mathrm{H}\\alpha}$; once star formation is quenched, massive stars die off rapidly and H$\\alpha$ emission plummets by over two orders of magnitude within just $5\\text{ Myr}$.</p>`
+    },
+
+    // Day 44 — 01.12.2026
+    {
+        uniqueId: "potd_2026_12_01",
+        dayNumber: 44,
+        scheduledDate: "01.12.2026",
+        title: "Thermal Glow of an Exoplanet and Its Host Star",
+        author: "Matei",
+        module: "T2 · Radiation Physics & Blackbody Spectra",
+        difficultyClass: "easy",
+        difficultyText: "1.8 / 10.0",
+        description: `<p>A K-type main-sequence star has effective temperature $T_\\star = 4500\\text{ K}$ and radius $R_\\star = 0.70\\,R_\\odot$. A rocky exoplanet of radius $R_p = 1.50\\,R_\\oplus$ orbits this star on a circular orbit of radius $a = 0.25\\text{ AU}$ and has Bond albedo $A_B = 0.20$. Treat both the star and the planet's thermal emission as ideal blackbodies.</p>
+<p>Use Wien's displacement constant $b = 2.8978 \\times 10^{-3}\\ \\mathrm{m\\,K}$, $\\sigma_{\\mathrm{SB}} = 5.6704 \\times 10^{-8}\\ \\mathrm{W\\,m^{-2}\\,K^{-4}}$, $R_\\odot = 6.957 \\times 10^8\\text{ m}$, $L_\\odot = 3.828 \\times 10^{26}\\text{ W}$, $R_\\oplus = 6.371 \\times 10^6\\text{ m}$, $1\\text{ AU} = 1.496 \\times 10^{11}\\text{ m}$, and Earth's solar constant $S_\\oplus = 1361\\ \\mathrm{W\\,m^{-2}}$.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the peak emission wavelength $\\lambda_{\\max,\\star}$ of the host star (in $\\text{nm}$) and its bolometric luminosity $L_\\star$ (in Watts and in units of $L_\\odot$). <em>(2.5 points)</em></li>
+    <li>Calculate the incident stellar irradiance (bolometric flux) $F_\\star$ at the planet's orbit (in $\\mathrm{W\\,m^{-2}}$) and express it as a multiple of Earth's solar constant $S_\\oplus$. <em>(2.5 points)</em></li>
+    <li>Assuming rapid planetary rotation and uniform surface temperature ($f = 1/4$), calculate the planet's equilibrium temperature $T_{\\mathrm{eq}}$ (in $\\text{K}$) and its peak thermal emission wavelength $\\lambda_{\\max,p}$ (in $\\mu\\mathrm{m}$). <em>(2.5 points)</em></li>
+    <li>Calculate the planet's total bolometric thermal luminosity $L_p$ (in Watts) and the planet-to-star bolometric luminosity ratio $L_p / L_\\star$. <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Wien's displacement law, Stefan–Boltzmann luminosity, inverse-square flux, and planetary radiative equilibrium.</p>
+
+<p><strong>(a) Stellar Peak Wavelength $\\lambda_{\\max,\\star}$ &amp; Luminosity $L_\\star$ (2.5 points):</strong><br>
+By Wien's displacement law for $T_\\star = 4500\\text{ K}$:</p>
+<p>$$ \\lambda_{\\max,\\star} = \\frac{b}{T_\\star} = \\frac{2.8978 \\times 10^{-3}\\ \\mathrm{m\\,K}}{4500\\text{ K}} = 6.440 \\times 10^{-7}\\text{ m} = \\mathbf{644\\text{ nm}} $$</p>
+<p>With $R_\\star = 0.70(6.957 \\times 10^8\\text{ m}) = 4.870 \\times 10^8\\text{ m}$, the Stefan–Boltzmann law yields:</p>
+<p>$$ L_\\star = 4\\pi R_\\star^2 \\sigma_{\\mathrm{SB}} T_\\star^4 = 4\\pi(4.870 \\times 10^8)^2(5.6704 \\times 10^{-8})(4500)^4 = \\mathbf{6.93 \\times 10^{25}\\text{ W}} = \\mathbf{0.181\\,L_\\odot} $$</p>
+
+<p><strong>(b) Incident Stellar Flux $F_\\star$ at $a = 0.25\\text{ AU}$ (2.5 points):</strong><br>
+With $a = 0.25(1.496 \\times 10^{11}\\text{ m}) = 3.740 \\times 10^{10}\\text{ m}$:</p>
+<p>$$ F_\\star = \\frac{L_\\star}{4\\pi a^2} = \\frac{6.930 \\times 10^{25}\\text{ W}}{4\\pi(3.740 \\times 10^{10}\\text{ m})^2} = \\mathbf{3942\\ \\mathrm{W\\,m^{-2}}} \\approx \\mathbf{2.90\\,S_\\oplus} $$</p>
+
+<p><strong>(c) Equilibrium Temperature $T_{\\mathrm{eq}}$ &amp; Planetary Peak Wavelength $\\lambda_{\\max,p}$ (2.5 points):</strong><br>
+Balancing absorbed power $(1 - A_B)\\pi R_p^2 F_\\star$ against radiated thermal power $4\\pi R_p^2 \\sigma_{\\mathrm{SB}} T_{\\mathrm{eq}}^4$:</p>
+<p>$$ T_{\\mathrm{eq}} = \\left[\\frac{(1 - A_B) F_\\star}{4\\sigma_{\\mathrm{SB}}}\\right]^{1/4} = \\left[\\frac{(0.80)(3942.4)}{4(5.6704 \\times 10^{-8})}\\right]^{1/4} \\approx \\mathbf{343\\text{ K}} \\quad (343.4\\text{ K}) $$</p>
+<p>$$ \\lambda_{\\max,p} = \\frac{b}{T_{\\mathrm{eq}}} = \\frac{2.8978 \\times 10^{-3}\\ \\mathrm{m\\,K}}{343.4\\text{ K}} = 8.44 \\times 10^{-6}\\text{ m} = \\mathbf{8.44\\ \\mu\\mathrm{m}} $$</p>
+
+<p><strong>(d) Planetary Thermal Luminosity $L_p$ &amp; Ratio $L_p / L_\\star$ (2.5 points):</strong><br>
+With $R_p = 1.50(6.371 \\times 10^6\\text{ m}) = 9.557 \\times 10^6\\text{ m}$, in radiative equilibrium $L_p$ equals the absorbed stellar power:</p>
+<p>$$ L_p = (1 - A_B)\\pi R_p^2 F_\\star = 0.80\\,\\pi(9.557 \\times 10^6\\text{ m})^2(3942.4\\ \\mathrm{W\\,m^{-2}}) = \\mathbf{9.05 \\times 10^{17}\\text{ W}} $$</p>
+<p>$$ \\frac{L_p}{L_\\star} = (1 - A_B)\\left(\\frac{R_p}{2a}\\right)^2 = 0.80\\left(\\frac{9.557 \\times 10^6}{2 \\times 3.740 \\times 10^{10}}\\right)^2 = \\mathbf{1.31 \\times 10^{-8}} $$</p>`
+    },
+
+    // Day 45 — 02.12.2026
+    {
+        uniqueId: "potd_2026_12_02",
+        dayNumber: 45,
+        scheduledDate: "02.12.2026",
+        title: "Circumpolar Skies, Midnight Sun, and Seasonal Noon Altitudes",
+        author: "Matei",
+        module: "O1 · Observational: Blind Map & Sky Coordinates",
+        difficultyClass: "easy",
+        difficultyText: "1.9 / 10.0",
+        description: `<p>An observer visits an Arctic astronomy station at latitude $\\phi = +68.0^\\circ\\text{ N}$. Take Earth's axial obliquity as $\\varepsilon = 23.44^\\circ$, and neglect atmospheric refraction and the Sun's finite angular diameter.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the Sun's upper-culmination (local noon) altitude $h_{\\max}$ on the summer solstice ($\\delta_\\odot = +23.44^\\circ$), the equinoxes ($\\delta_\\odot = 0^\\circ$), and the winter solstice ($\\delta_\\odot = -23.44^\\circ$). State whether the Sun rises above the horizon on the winter solstice. <em>(2.5 points)</em></li>
+    <li>On the summer solstice, calculate the Sun's lower-culmination (local midnight) altitude $h_{\\min}$ and verify that the station experiences the Midnight Sun. <em>(2.0 points)</em></li>
+    <li>Determine the exact declination ranges $\\delta$ for stars that are (i) always above the horizon (circumpolar) and (ii) never visible from $\\phi = +68.0^\\circ\\text{ N}$. Classify each of the bright stars Capella ($\\delta = +46^\\circ 00'$), Sirius ($\\delta = -16^\\circ 43'$), and Antares ($\\delta = -26^\\circ 26'$) as circumpolar, rising-and-setting, or never rising. <em>(3.0 points)</em></li>
+    <li>Using the ecliptic relation $\\sin\\delta_\\odot = \\sin\\varepsilon\\sin\\lambda_\\odot$ and assuming the Sun's ecliptic longitude $\\lambda_\\odot$ increases uniformly at $0.9856^\\circ\\,\\mathrm{day^{-1}}$, find the two ecliptic longitudes where the Sun crosses the circumpolar threshold ($\\delta_\\odot = 90^\\circ - \\phi$) and estimate the total duration of the Midnight Sun season (in days). <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Meridian culmination altitudes, circumpolar declination limits, and Arctic Midnight Sun duration from ecliptic geometry.</p>
+
+<p><strong>(a) Seasonal Noon Altitudes at $\\phi = +68.0^\\circ\\text{ N}$ (2.5 points):</strong><br>
+Because $\\delta_\\odot < \\phi$ year-round, the Sun culminates due South at altitude $h_{\\max} = 90^\\circ - (\\phi - \\delta_\\odot)$:</p>
+<ul>
+    <li><strong>Summer solstice ($\\delta_\\odot = +23.44^\\circ$):</strong> $h_{\\max} = 90^\\circ - (68.0^\\circ - 23.44^\\circ) = \\mathbf{45.44^\\circ}$.</li>
+    <li><strong>Equinoxes ($\\delta_\\odot = 0^\\circ$):</strong> $h_{\\max} = 90^\\circ - 68.0^\\circ = \\mathbf{22.00^\\circ}$.</li>
+    <li><strong>Winter solstice ($\\delta_\\odot = -23.44^\\circ$):</strong> $h_{\\max} = 90^\\circ - (68.0^\\circ + 23.44^\\circ) = \\mathbf{-1.44^\\circ}$.</li>
+</ul>
+<p>Because $h_{\\max} < 0^\\circ$ at noon on the winter solstice, the Sun <strong>never rises above the horizon</strong> (polar night).</p>
+
+<p><strong>(b) Summer Solstice Midnight Altitude (2.0 points):</strong><br>
+At lower culmination (due North), the altitude is $h_{\\min} = \\phi + \\delta_\\odot - 90^\\circ$:</p>
+<p>$$ h_{\\min} = 68.0^\\circ + 23.44^\\circ - 90^\\circ = \\mathbf{+1.44^\\circ} > 0^\\circ $$</p>
+<p>Since the Sun remains $1.44^\\circ$ above the northern horizon at local midnight, the station experiences the <strong>Midnight Sun</strong>.</p>
+
+<p><strong>(c) Circumpolar &amp; Never-Visible Declination Limits (3.0 points):</strong><br>
+A star never sets when $h_{\\min} = \\phi + \\delta - 90^\\circ \\ge 0^\\circ$, and never rises when $h_{\\max} = 90^\\circ - \\phi + \\delta \\le 0^\\circ$:</p>
+<ul>
+    <li><strong>Circumpolar:</strong> $\\delta \\ge 90^\\circ - 68.0^\\circ = \\mathbf{+22.0^\\circ}$.</li>
+    <li><strong>Never visible:</strong> $\\delta \\le -(90^\\circ - 68.0^\\circ) = \\mathbf{-22.0^\\circ}$.</li>
+</ul>
+<p>Classifying the three stars: <strong>Capella</strong> ($+46^\\circ 00' \\ge +22.0^\\circ$) is <strong>circumpolar</strong>; <strong>Sirius</strong> ($-22.0^\\circ < -16^\\circ 43' < +22.0^\\circ$) <strong>rises and sets</strong>; and <strong>Antares</strong> ($-26^\\circ 26' \\le -22.0^\\circ$) <strong>never rises</strong>.</p>
+
+<p><strong>(d) Duration of the Midnight Sun Season (2.5 points):</strong><br>
+The Sun is continuously above the horizon whenever $\\delta_\\odot \\ge +22.0^\\circ$. Solving $\\sin\\lambda_\\odot = \\frac{\\sin 22.0^\\circ}{\\sin 23.44^\\circ}$:</p>
+<p>$$ \\sin\\lambda_\\odot = \\frac{0.37461}{0.39779} = 0.94172 \\implies \\lambda_1 = \\mathbf{70.34^\\circ}, \\qquad \\lambda_2 = 180^\\circ - 70.34^\\circ = \\mathbf{109.66^\\circ} $$</p>
+<p>The ecliptic longitude span is $\\Delta\\lambda = 109.66^\\circ - 70.34^\\circ = 39.31^\\circ$, corresponding to:</p>
+<p>$$ \\Delta t = \\frac{39.31^\\circ}{0.9856^\\circ\\,\\mathrm{day^{-1}}} \\approx \\mathbf{39.9\\text{ days}} \\quad (\\approx 40\\text{ days}) $$</p>`
+    },
+
+    // Day 46 — 03.12.2026
+    {
+        uniqueId: "potd_2026_12_03",
+        dayNumber: 46,
+        scheduledDate: "03.12.2026",
+        title: "Measuring Hubble's Constant from Galaxy Redshifts and Supernova Distances",
+        author: "Matei",
+        module: "D1 · Data Analysis: Methods & Plotting",
+        difficultyClass: "easy",
+        difficultyText: "2.4 / 10.0",
+        description: `<p>Optical spectroscopy and Type Ia supernova distance measurements are obtained for $N = 5$ galaxies in the nearby Hubble flow. For each galaxy, the observed wavelength $\\lambda_{\\mathrm{obs}}$ of the H$\\alpha$ emission line (rest wavelength $\\lambda_0 = 656.28\\text{ nm}$) and the distance $d$ are listed below:</p>
+<table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:14px; font-family:var(--font-mono); font-size:0.82rem;">
+    <thead>
+        <tr style="border-bottom:1px solid var(--border-light); color:var(--accent-blue); text-align:left;">
+            <th style="padding:8px;">Galaxy</th>
+            <th style="padding:8px;">Distance $d_i$ (Mpc)</th>
+            <th style="padding:8px;">Observed $\\lambda_{\\mathrm{obs},i}$ (nm)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">G1</td><td style="padding:8px;">25.0</td><td style="padding:8px;">660.15</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">G2</td><td style="padding:8px;">40.0</td><td style="padding:8px;">662.25</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">G3</td><td style="padding:8px;">60.0</td><td style="padding:8px;">665.65</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">G4</td><td style="padding:8px;">85.0</td><td style="padding:8px;">669.25</td></tr>
+        <tr><td style="padding:8px;">G5</td><td style="padding:8px;">110.0</td><td style="padding:8px;">673.20</td></tr>
+    </tbody>
+</table>
+<p>Use $c = 2.998 \\times 10^5\\ \\mathrm{km\\,s^{-1}}$, $1\\text{ Mpc} = 3.086 \\times 10^{19}\\text{ km}$, and $1\\text{ Gyr} = 3.15576 \\times 10^{16}\\text{ s}$.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>For each galaxy, compute the redshift $z_i = \\frac{\\lambda_{\\mathrm{obs},i} - \\lambda_0}{\\lambda_0}$ and non-relativistic recession velocity $v_i = c z_i$ (in $\\mathrm{km\\,s^{-1}}$). <em>(2.5 points)</em></li>
+    <li>Fit Hubble's law $v = H_0 d$ through the origin using the ordinary least-squares estimator $H_0 = \\frac{\\sum d_i v_i}{\\sum d_i^2}$ to determine the Hubble constant $H_0$ (in $\\mathrm{km\\,s^{-1}\\,Mpc^{-1}}$). <em>(3.0 points)</em></li>
+    <li>Calculate the velocity residuals $r_i = v_i - H_0 d_i$ for each galaxy, the root-mean-square velocity scatter $\\sigma_v = \\sqrt{\\frac{1}{N - 1}\\sum r_i^2}$ (in $\\mathrm{km\\,s^{-1}}$), and the formal uncertainty in the slope $\\sigma_{H_0} = \\frac{\\sigma_v}{\\sqrt{\\sum d_i^2}}$. <em>(2.5 points)</em></li>
+    <li>Convert your best-fit $H_0$ into the Hubble time $t_H = 1/H_0$ (in $\\text{Gyr}$) and calculate its propagated uncertainty $\\sigma_{t_H}$. <em>(2.0 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Spectroscopic redshift conversion, zero-intercept least-squares regression, residual scatter analysis, and Hubble-time error propagation.</p>
+
+<p><strong>(a) Redshifts $z_i$ &amp; Recession Velocities $v_i$ (2.5 points):</strong><br>
+Computing $z_i = (\\lambda_{\\mathrm{obs},i} - 656.28)/656.28$ and $v_i = (2.998 \\times 10^5\\ \\mathrm{km\\,s^{-1}}) z_i$:</p>
+<ul>
+    <li><strong>G1 ($d_1 = 25.0\\text{ Mpc}$):</strong> $\\Delta\\lambda = 3.87\\text{ nm}$, $z_1 = 0.00590$, $v_1 = \\mathbf{1768\\ \\mathrm{km\\,s^{-1}}}$.</li>
+    <li><strong>G2 ($d_2 = 40.0\\text{ Mpc}$):</strong> $\\Delta\\lambda = 5.97\\text{ nm}$, $z_2 = 0.00910$, $v_2 = \\mathbf{2727\\ \\mathrm{km\\,s^{-1}}}$.</li>
+    <li><strong>G3 ($d_3 = 60.0\\text{ Mpc}$):</strong> $\\Delta\\lambda = 9.37\\text{ nm}$, $z_3 = 0.01428$, $v_3 = \\mathbf{4280\\ \\mathrm{km\\,s^{-1}}}$.</li>
+    <li><strong>G4 ($d_4 = 85.0\\text{ Mpc}$):</strong> $\\Delta\\lambda = 12.97\\text{ nm}$, $z_4 = 0.01976$, $v_4 = \\mathbf{5925\\ \\mathrm{km\\,s^{-1}}}$.</li>
+    <li><strong>G5 ($d_5 = 110.0\\text{ Mpc}$):</strong> $\\Delta\\lambda = 16.92\\text{ nm}$, $z_5 = 0.02578$, $v_5 = \\mathbf{7729\\ \\mathrm{km\\,s^{-1}}}$.</li>
+</ul>
+
+<p><strong>(b) Least-Squares Hubble Constant $H_0$ (3.0 points):</strong><br>
+Evaluating the two sums over all $N = 5$ galaxies:</p>
+<p>$$ \\sum d_i^2 = 25^2 + 40^2 + 60^2 + 85^2 + 110^2 = 625 + 1600 + 3600 + 7225 + 12100 = 25150\\ \\mathrm{Mpc^2} $$</p>
+<p>$$ \\sum d_i v_i = 44197 + 109088 + 256822 + 503618 + 850228 = 1.7640 \\times 10^6\\ \\mathrm{Mpc\\,km\\,s^{-1}} $$</p>
+<p>$$ H_0 = \\frac{\\sum d_i v_i}{\\sum d_i^2} = \\frac{1.7640 \\times 10^6}{25150} = \\mathbf{70.14\\ \\mathrm{km\\,s^{-1}\\,Mpc^{-1}}} $$</p>
+
+<p><strong>(c) Velocity Residuals, Scatter $\\sigma_v$ &amp; Slope Uncertainty $\\sigma_{H_0}$ (2.5 points):</strong><br>
+Evaluating $r_i = v_i - 70.14\\,d_i$ gives $r_1 = +14.4$, $r_2 = -78.3$, $r_3 = +72.1$, $r_4 = -36.8$, and $r_5 = +14.2\\ \\mathrm{km\\,s^{-1}}$, with $\\sum r_i^2 = 13096\\ \\mathrm{km^2\\,s^{-2}}$:</p>
+<p>$$ \\sigma_v = \\sqrt{\\frac{13096}{5 - 1}} = \\mathbf{57.2\\ \\mathrm{km\\,s^{-1}}}, \\qquad \\sigma_{H_0} = \\frac{57.2\\ \\mathrm{km\\,s^{-1}}}{\\sqrt{25150}\\text{ Mpc}} = \\mathbf{0.36\\ \\mathrm{km\\,s^{-1}\\,Mpc^{-1}}} $$</p>
+<p>$$ H_0 = \\mathbf{70.14 \\pm 0.36\\ \\mathrm{km\\,s^{-1}\\,Mpc^{-1}}} $$</p>
+
+<p><strong>(d) Hubble Time $t_H$ &amp; Uncertainty $\\sigma_{t_H}$ (2.0 points):</strong><br>
+Converting $H_0^{-1}$ into gigayears and propagating $\\sigma_{t_H} = t_H (\\sigma_{H_0} / H_0)$:</p>
+<p>$$ t_H = \\frac{3.086 \\times 10^{19}\\text{ km}}{(70.14\\ \\mathrm{km\\,s^{-1}})(3.15576 \\times 10^{16}\\ \\mathrm{s\\,Gyr^{-1}})} = \\mathbf{13.94\\text{ Gyr}} $$</p>
+<p>$$ \\sigma_{t_H} = 13.94\\text{ Gyr} \\times \\frac{0.36}{70.14} = \\mathbf{0.07\\text{ Gyr}} \\implies t_H = \\mathbf{13.94 \\pm 0.07\\text{ Gyr}} $$</p>`
+    },
+
+    // Day 47 — 04.12.2026
+    {
+        uniqueId: "potd_2026_12_04",
+        dayNumber: 47,
+        scheduledDate: "04.12.2026",
+        title: "Galilean Moons: Kepler's Third Law, Orbital Resonance, and Jupiter's Mass",
+        author: "Matei",
+        module: "T1 & T9 · Celestial Mechanics & Planetary Moons",
+        difficultyClass: "easy",
+        difficultyText: "2.1 / 10.0",
+        description: `<p>Jupiter's three innermost Galilean moons—Io, Europa, and Ganymede—move on nearly circular, coplanar orbits locked in the Laplace $1:2:4$ orbital resonance. Their measured orbital periods and Io's semimajor axis are:</p>
+<p>$$ a_1 = 4.217 \\times 10^5\\text{ km}, \\qquad P_1 = 1.769\\text{ days}, \\qquad P_2 = 3.551\\text{ days}, \\qquad P_3 = 7.155\\text{ days} $$</p>
+<p>Neglect the moons' masses relative to Jupiter. Use $G = 6.674 \\times 10^{-11}\\ \\mathrm{m^3\\,kg^{-1}\\,s^{-2}}$, $M_\\oplus = 5.972 \\times 10^{24}\\text{ kg}$, Jupiter's equatorial radius $R_J = 7.149 \\times 10^4\\text{ km}$, and $1\\text{ AU} = 1.496 \\times 10^8\\text{ km}$.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Using Io's orbital parameters $(a_1, P_1)$ and Kepler's Third Law, calculate the mass of Jupiter $M_J$ (in $\\text{kg}$ and in Earth masses $M_\\oplus$). <em>(2.5 points)</em></li>
+    <li>Calculate the orbital semimajor axes $a_2$ of Europa and $a_3$ of Ganymede (both in $\\text{km}$ and in Jupiter radii $R_J$). <em>(2.5 points)</em></li>
+    <li>Calculate the circular orbital speed $v_1$ of Io (in $\\mathrm{km\\,s^{-1}}$) and the synodic period $S_{12}$ between consecutive conjunctions of Io and Europa (in days). <em>(2.5 points)</em></li>
+    <li>When Jupiter is at opposition at geocentric distance $d = 4.20\\text{ AU}$, calculate the maximum angular separation $\\theta_{\\max}$ of Ganymede from Jupiter's center (in arcminutes). <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Kepler's Third Law, circular orbital speed, synodic conjunction periods, and planetary-system angular scales.</p>
+
+<p><strong>(a) Mass of Jupiter $M_J$ from Io's Orbit (2.5 points):</strong><br>
+Converting $a_1 = 4.217 \\times 10^8\\text{ m}$ and $P_1 = 1.769 \\times 86400 = 1.5284 \\times 10^5\\text{ s}$:</p>
+<p>$$ M_J = \\frac{4\\pi^2 a_1^3}{G P_1^2} = \\frac{4\\pi^2 (4.217 \\times 10^8\\text{ m})^3}{(6.674 \\times 10^{-11})(1.5284 \\times 10^5\\text{ s})^2} = \\mathbf{1.899 \\times 10^{27}\\text{ kg}} \\approx \\mathbf{318\\,M_\\oplus} $$</p>
+
+<p><strong>(b) Semimajor Axes of Europa &amp; Ganymede (2.5 points):</strong><br>
+By Kepler's Third Law, $a_i = a_1 (P_i / P_1)^{2/3}$:</p>
+<p>$$ a_2 = (4.217 \\times 10^5\\text{ km})\\left(\\frac{3.551}{1.769}\\right)^{2/3} = \\mathbf{6.710 \\times 10^5\\text{ km}} = \\mathbf{9.39\\,R_J} $$</p>
+<p>$$ a_3 = (4.217 \\times 10^5\\text{ km})\\left(\\frac{7.155}{1.769}\\right)^{2/3} = \\mathbf{1.071 \\times 10^6\\text{ km}} = \\mathbf{14.97\\,R_J} $$</p>
+
+<p><strong>(c) Io's Orbital Speed $v_1$ &amp; Io–Europa Synodic Period $S_{12}$ (2.5 points):</strong><br>
+For Io's circular orbit:</p>
+<p>$$ v_1 = \\frac{2\\pi a_1}{P_1} = \\frac{2\\pi (4.217 \\times 10^5\\text{ km})}{1.5284 \\times 10^5\\text{ s}} = \\mathbf{17.34\\ \\mathrm{km\\,s^{-1}}} $$</p>
+<p>Since both moons orbit prograde, consecutive Io–Europa conjunctions are separated by:</p>
+<p>$$ \\frac{1}{S_{12}} = \\frac{1}{P_1} - \\frac{1}{P_2} = \\frac{1}{1.769} - \\frac{1}{3.551} = 0.28368\\ \\mathrm{d^{-1}} \\implies S_{12} = \\mathbf{3.525\\text{ days}} $$</p>
+
+<p><strong>(d) Maximum Angular Separation of Ganymede at Opposition (2.5 points):</strong><br>
+At geocentric distance $d = 4.20(1.496 \\times 10^8\\text{ km}) = 6.283 \\times 10^8\\text{ km}$:</p>
+<p>$$ \\theta_{\\max} = \\frac{a_3}{d} = \\frac{1.071 \\times 10^6\\text{ km}}{6.283 \\times 10^8\\text{ km}} = 1.704 \\times 10^{-3}\\text{ rad} = 1.704 \\times 10^{-3} \\times \\frac{180 \\times 60}{\\pi}' = \\mathbf{5.86'} $$</p>`
+    },
+
+    // Day 48 — 05.12.2026
+    {
+        uniqueId: "potd_2026_12_05",
+        dayNumber: 48,
+        scheduledDate: "05.12.2026",
+        title: "CCD Imaging Basics: Plate Scale, Limiting Magnitude, and Exposure Planning",
+        author: "Matei",
+        module: "O2 · Observational: Practical Telescope Operations",
+        difficultyClass: "easy",
+        difficultyText: "2.5 / 10.0",
+        description: `<p>A teaching observatory operates an apochromatic refractor of aperture $D = 120\\text{ mm}$ and focal ratio $f/7.5$. Mounted at prime focus is a monochrome CCD detector with $2048 \\times 1536$ square pixels of pixel pitch $p = 5.40\\ \\mu\\mathrm{m}$.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Calculate the telescope focal length $F$ (in $\\text{mm}$), the focal-plane plate scale $s = 206265'' / F_{\\mathrm{mm}}$ (in $\\mathrm{arcsec\\,mm^{-1}}$), the angular pixel scale $\\theta_{\\mathrm{pix}}$ (in $\\mathrm{arcsec\\,pixel^{-1}}$), and the camera's total field of view (width $\\times$ height, in arcminutes). <em>(3.0 points)</em></li>
+    <li>Under typical site seeing of $\\mathrm{FWHM} = 2.50''$, calculate how many pixels span one seeing FWHM and state whether the optical point-spread function satisfies the Nyquist sampling criterion ($\\ge 2.0\\text{ pixels per FWHM}$). <em>(2.0 points)</em></li>
+    <li>When used visually at the same dark site where an unaided eye (pupil diameter $d_{\\mathrm{eye}} = 6.0\\text{ mm}$) reaches $m_{\\mathrm{eye}} = 6.0\\text{ mag}$, calculate the aperture magnitude gain $\\Delta m = 5\\log_{10}(D / d_{\\mathrm{eye}})$ and the refractor's theoretical visual limiting magnitude $m_{\\lim}$. <em>(2.5 points)</em></li>
+    <li>For faint stars in the sky-background-limited CCD regime, signal-to-noise scales as $\\mathrm{SNR} \\propto \\sqrt{t_{\\mathrm{exp}}}$. If a $60\\text{ s}$ exposure yields $\\mathrm{SNR} = 10$ on a $16.0\\text{ mag}$ cluster star, calculate the exposure time $t_{\\mathrm{exp}}$ (in seconds and minutes) needed to reach $\\mathrm{SNR} = 25$ on the same star. <em>(2.5 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Telescope focal ratio, CCD plate scale and Nyquist sampling, visual limiting magnitude, and background-limited exposure scaling.</p>
+
+<p><strong>(a) Focal Length, Plate Scale, Pixel Scale &amp; Field of View (3.0 points):</strong><br>
+For $D = 120\\text{ mm}$ at $f/7.5$:</p>
+<p>$$ F = 7.5 \\times 120\\text{ mm} = \\mathbf{900\\text{ mm}}, \\qquad s = \\frac{206265''}{900\\text{ mm}} = \\mathbf{229.2''\\,\\mathrm{mm^{-1}}} $$</p>
+<p>With pixel size $p = 5.40\\ \\mu\\mathrm{m} = 5.40 \\times 10^{-3}\\text{ mm}$:</p>
+<p>$$ \\theta_{\\mathrm{pix}} = s \\times p = (229.18''\\,\\mathrm{mm^{-1}})(5.40 \\times 10^{-3}\\text{ mm}) = \\mathbf{1.238''\\,\\mathrm{pixel^{-1}}} $$</p>
+<p>Multiplying by the sensor dimensions ($2048 \\times 1536$ pixels) and dividing by $60''/\\text{arcmin}$:</p>
+<p>$$ \\mathrm{FOV} = \\frac{2048 \\times 1.238''}{60} \\times \\frac{1536 \\times 1.238''}{60} = \\mathbf{42.2' \\times 31.7'} $$</p>
+
+<p><strong>(b) Seeing Sampling &amp; Nyquist Criterion (2.0 points):</strong><br>
+Dividing the seeing FWHM by the pixel scale:</p>
+<p>$$ N_{\\mathrm{pix}} = \\frac{\\mathrm{FWHM}}{\\theta_{\\mathrm{pix}}} = \\frac{2.50''}{1.238''\\,\\mathrm{pixel^{-1}}} = \\mathbf{2.02\\text{ pixels per FWHM}} $$</p>
+<p>Because $2.02 \\ge 2.0$, the stellar PSF <strong>satisfies the Nyquist sampling criterion</strong> (critically/properly sampled).</p>
+
+<p><strong>(c) Visual Limiting Magnitude $m_{\\lim}$ (2.5 points):</strong><br>
+Since light-gathering area scales as $D^2$, the magnitude gain over the $6.0\\text{ mm}$ dark-adapted eye pupil is:</p>
+<p>$$ \\Delta m = 5\\log_{10}\\!\\left(\\frac{120\\text{ mm}}{6.0\\text{ mm}}\\right) = 5\\log_{10}(20) = 5(1.3010) = \\mathbf{6.51\\text{ mag}} $$</p>
+<p>$$ m_{\\lim} = m_{\\mathrm{eye}} + \\Delta m = 6.0 + 6.51 = \\mathbf{12.51\\text{ mag}} $$</p>
+
+<p><strong>(d) Exposure Time for $\\mathrm{SNR} = 25$ (2.5 points):</strong><br>
+Because $\\mathrm{SNR} \\propto \\sqrt{t_{\\mathrm{exp}}}$, we have $t_{\\mathrm{exp}} \\propto \\mathrm{SNR}^2$:</p>
+<p>$$ t_{\\mathrm{exp}} = (60\\text{ s})\\left(\\frac{25}{10}\\right)^2 = 60 \\times 6.25 = \\mathbf{375\\text{ s}} = \\mathbf{6.25\\text{ min}} $$</p>`
+    },
+
+    // Day 49 — 06.12.2026
+    {
+        uniqueId: "potd_2026_12_06",
+        dayNumber: 49,
+        scheduledDate: "06.12.2026",
+        title: "Analyzing an Open Cluster Color–Magnitude Table: Turnoff Age and Distance",
+        author: "Matei",
+        module: "D2 · Data Analysis: Full Data Sets",
+        difficultyClass: "easy",
+        difficultyText: "2.8 / 10.0",
+        description: `<p>Photometric ($B, V$) and spectroscopic observations of six member stars in a Galactic open cluster are summarized below. Stars S1–S4 lie on the unevolved zero-age main sequence (ZAMS), star S5 sits at the main-sequence turnoff (MSTO), and star S6 is a red giant:</p>
+<table style="width:100%; border-collapse:collapse; margin-top:14px; margin-bottom:14px; font-family:var(--font-mono); font-size:0.82rem;">
+    <thead>
+        <tr style="border-bottom:1px solid var(--border-light); color:var(--accent-blue); text-align:left;">
+            <th style="padding:8px;">Star</th>
+            <th style="padding:8px;">Stage</th>
+            <th style="padding:8px;">$V$ (mag)</th>
+            <th style="padding:8px;">$(B-V)$</th>
+            <th style="padding:8px;">$(B-V)_0$</th>
+            <th style="padding:8px;">$M_{V,\\mathrm{ZAMS}}$</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">S1</td><td style="padding:8px;">MS</td><td style="padding:8px;">14.94</td><td style="padding:8px;">0.81</td><td style="padding:8px;">0.60</td><td style="padding:8px;">4.80</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">S2</td><td style="padding:8px;">MS</td><td style="padding:8px;">14.22</td><td style="padding:8px;">0.67</td><td style="padding:8px;">0.48</td><td style="padding:8px;">4.10</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">S3</td><td style="padding:8px;">MS</td><td style="padding:8px;">13.60</td><td style="padding:8px;">0.56</td><td style="padding:8px;">0.36</td><td style="padding:8px;">3.50</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">S4</td><td style="padding:8px;">MS</td><td style="padding:8px;">13.06</td><td style="padding:8px;">0.47</td><td style="padding:8px;">0.25</td><td style="padding:8px;">2.90</td></tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);"><td style="padding:8px;">S5</td><td style="padding:8px;">MSTO</td><td style="padding:8px;">12.12</td><td style="padding:8px;">0.37</td><td style="padding:8px;">0.18</td><td style="padding:8px;">—</td></tr>
+        <tr><td style="padding:8px;">S6</td><td style="padding:8px;">Red Giant</td><td style="padding:8px;">10.85</td><td style="padding:8px;">1.23</td><td style="padding:8px;">1.04</td><td style="padding:8px;">—</td></tr>
+    </tbody>
+</table>
+<p>Assume a standard Galactic extinction law $A_V = 3.1\\,E(B-V)$ and $M_{\\mathrm{bol},\\odot} = 4.74\\text{ mag}$.</p>
+<ol type="a" style="padding-left: 20px; line-height: 1.8;">
+    <li>Compute the color excess $E(B-V)_i = (B-V)_i - (B-V)_{0,i}$ for all six stars, determine the cluster's mean color excess $\\overline{E(B-V)}$, and calculate the visual extinction $A_V$ (in mag). <em>(2.5 points)</em></li>
+    <li>For each of the four unevolved main-sequence stars (S1–S4), compute the extinction-corrected distance modulus $\\mu_i = V_i - M_{V,i} - A_V$. Find the mean distance modulus $\\bar{\\mu}$, its standard error of the mean $\\sigma_{\\bar{\\mu}} = s_\\mu / \\sqrt{4}$, and the cluster distance $d$ (in parsecs). <em>(3.0 points)</em></li>
+    <li>Using $\\bar{\\mu}$ and $A_V$, determine the absolute visual magnitude $M_{V,\\mathrm{TO}}$ of the turnoff star S5 and its approximate bolometric luminosity $L_{\\mathrm{TO}}/L_\\odot$ (neglecting its small bolometric correction, $\\mathrm{BC} \\approx 0$). <em>(2.5 points)</em></li>
+    <li>Using the main-sequence scaling relations $L / L_\\odot = (M / M_\\odot)^{3.5}$ and $\\tau_{\\mathrm{MS}} = 10\\text{ Gyr}\\,(M / M_\\odot)(L / L_\\odot)^{-1}$, estimate the turnoff stellar mass $M_{\\mathrm{TO}}$ (in $M_\\odot$) and the age of the open cluster (in $\\text{Gyr}$). <em>(2.0 points)</em></li>
+</ol>`,
+        solutionHtml: `<p style="color: var(--text-muted); font-style: italic; margin-bottom: 16px;">Concept: Interstellar reddening and extinction, main-sequence fitting distance modulus, and open-cluster turnoff age estimation.</p>
+
+<p><strong>(a) Color Excess &amp; Visual Extinction $A_V$ (2.5 points):</strong><br>
+Computing $E(B-V)_i = (B-V)_i - (B-V)_{0,i}$ across S1–S6 gives $0.21,\\ 0.19,\\ 0.20,\\ 0.22,\\ 0.19,\\ 0.19\\text{ mag}$:</p>
+<p>$$ \\overline{E(B-V)} = \\frac{0.21 + 0.19 + 0.20 + 0.22 + 0.19 + 0.19}{6} = \\frac{1.20}{6} = \\mathbf{0.200\\text{ mag}} $$</p>
+<p>$$ A_V = 3.1\\,\\overline{E(B-V)} = 3.1(0.200) = \\mathbf{0.620\\text{ mag}} $$</p>
+
+<p><strong>(b) Main-Sequence Fitting Distance Modulus &amp; Distance $d$ (3.0 points):</strong><br>
+Evaluating $\\mu_i = V_i - M_{V,i} - 0.620$ for the four ZAMS stars:</p>
+<ul>
+    <li><strong>S1:</strong> $14.94 - 4.80 - 0.62 = 9.52\\text{ mag}$</li>
+    <li><strong>S2:</strong> $14.22 - 4.10 - 0.62 = 9.50\\text{ mag}$</li>
+    <li><strong>S3:</strong> $13.60 - 3.50 - 0.62 = 9.48\\text{ mag}$</li>
+    <li><strong>S4:</strong> $13.06 - 2.90 - 0.62 = 9.54\\text{ mag}$</li>
+</ul>
+<p>The sample mean and standard deviation are $\\bar{\\mu} = \\mathbf{9.510\\text{ mag}}$ and $s_\\mu = \\sqrt{\\frac{(+0.01)^2 + (-0.01)^2 + (-0.03)^2 + (+0.03)^2}{3}} = 0.0258\\text{ mag}$, giving:</p>
+<p>$$ \\sigma_{\\bar{\\mu}} = \\frac{0.0258}{\\sqrt{4}} = \\mathbf{0.013\\text{ mag}} \\implies \\bar{\\mu} = \\mathbf{9.510 \\pm 0.013\\text{ mag}} $$</p>
+<p>$$ d = 10^{(\\bar{\\mu} + 5)/5}\\text{ pc} = 10^{2.9020}\\text{ pc} = \\mathbf{798\\text{ pc}} $$</p>
+
+<p><strong>(c) Turnoff Absolute Magnitude &amp; Luminosity (2.5 points):</strong><br>
+For turnoff star S5 ($V_5 = 12.12\\text{ mag}$):</p>
+<p>$$ M_{V,\\mathrm{TO}} = V_5 - \\bar{\\mu} - A_V = 12.12 - 9.510 - 0.620 = \\mathbf{1.99\\text{ mag}} $$</p>
+<p>$$ \\frac{L_{\\mathrm{TO}}}{L_\\odot} = 10^{-0.4(M_{V,\\mathrm{TO}} - M_{\\mathrm{bol},\\odot})} = 10^{-0.4(1.990 - 4.74)} = 10^{+1.100} = \\mathbf{12.6\\,L_\\odot} \\quad (12.59\\,L_\\odot) $$</p>
+
+<p><strong>(d) Turnoff Mass $M_{\\mathrm{TO}}$ &amp; Cluster Age (2.0 points):</strong><br>
+Inverting $L_{\\mathrm{TO}}/L_\\odot = (M_{\\mathrm{TO}}/M_\\odot)^{3.5}$:</p>
+<p>$$ M_{\\mathrm{TO}} = (12.59)^{1/3.5}\\,M_\\odot = \\mathbf{2.06\\,M_\\odot} $$</p>
+<p>The cluster age equals the main-sequence lifetime of stars currently leaving the main sequence at the turnoff:</p>
+<p>$$ t_{\\mathrm{cluster}} = \\tau_{\\mathrm{MS}}(M_{\\mathrm{TO}}) = 10\\text{ Gyr} \\times \\frac{2.06}{12.59} \\approx \\mathbf{1.64\\text{ Gyr}} $$</p>`
     }
 ];
 

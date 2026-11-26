@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAC 2026 Grand Final &amp; Competitor Command Center | Supernova Guide</title>
+    <title>SAC 2026 Official Results &amp; Archive | Supernova Guide</title>
     <link rel="icon" type="image/png" href="assets/img/supernova_logo.png">
 
     <!-- FontAwesome -->
@@ -17,7 +17,11 @@
     <!-- MathJax -->
     <script>
         window.MathJax = {
-            tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            }
         };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -128,12 +132,13 @@
         .header-title h1 { font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; margin-bottom: 4px; color: var(--text-pure); }
         .header-title p { color: var(--text-muted); font-size: 0.9rem; max-width: 650px; }
 
-        .header-actions { display: flex; align-items: center; gap: 16px; }
+        .header-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 16px; }
         .utc-pill {
-            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            background: var(--bg-card); border: 1px solid rgba(43, 227, 138, 0.3);
             padding: 8px 16px; border-radius: 99px;
             display: inline-flex; align-items: center; gap: 10px;
-            font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-main);
+            font-family: var(--font-mono); font-size: 0.76rem; color: var(--accent-green);
+            font-weight: 700; letter-spacing: 0.03em; white-space: nowrap;
         }
         .utc-dot {
             width: 8px; height: 8px; border-radius: 50%;
@@ -145,32 +150,41 @@
         .user-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-pure); }
         .user-info p { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
 
-        /* --- ADMIN ORGANIZER BAR (Matei, Albert, Mihai) --- */
-        .admin-command-bar {
-            display: none;
-            background: linear-gradient(135deg, rgba(255, 207, 92, 0.12) 0%, rgba(21, 22, 26, 0.98) 65%);
-            border: 1px solid rgba(255, 207, 92, 0.45);
-            border-left: 4px solid var(--accent-gold);
+        /* --- NEXT SEASON 2027 TEASER BANNER --- */
+        .next-season-banner {
+            background: linear-gradient(135deg, rgba(53, 230, 255, 0.09) 0%, rgba(179, 156, 208, 0.09) 55%, rgba(21, 22, 26, 0.98) 100%);
+            border: 1px solid rgba(53, 230, 255, 0.32);
+            border-left: 4px solid var(--accent-blue);
             border-radius: var(--radius-lg);
-            padding: 18px 24px;
+            padding: 20px 28px;
+            display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 18px;
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4);
         }
-        .admin-command-bar.visible { display: flex; }
-        .admin-select {
-            background: var(--bg-sidebar);
-            border: 1px solid var(--border-light);
-            color: var(--text-pure);
-            padding: 8px 12px;
-            border-radius: var(--radius-sm);
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            min-width: 260px;
+        .next-season-left { display: flex; align-items: flex-start; gap: 16px; max-width: 780px; }
+        .next-season-icon {
+            width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+            background: rgba(53, 230, 255, 0.14);
+            border: 1px solid rgba(53, 230, 255, 0.35);
+            color: var(--accent-blue);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
         }
+        .next-season-eyebrow {
+            font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--accent-blue); margin-bottom: 4px;
+        }
+        .next-season-title {
+            font-family: var(--font-display); font-size: 1.18rem; font-weight: 700;
+            color: var(--text-pure); line-height: 1.3; margin-bottom: 4px;
+        }
+        .next-season-sub { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
 
-        /* --- COMPLETE COMPETITOR COMMAND CENTER --- */
+        /* --- COMPETITOR RESULT CARD & OFFICIAL STANDINGS HUB --- */
         .participant-dashboard {
             background: var(--bg-card);
             border: 1px solid var(--border-light);
@@ -186,6 +200,10 @@
             border-left-color: var(--accent-green);
             background: linear-gradient(135deg, rgba(43, 227, 138, 0.05) 0%, rgba(21, 22, 26, 0.98) 40%);
         }
+        .participant-dashboard.is-medalist {
+            border-left-color: var(--accent-gold);
+            background: linear-gradient(135deg, rgba(255, 207, 92, 0.07) 0%, rgba(21, 22, 26, 0.98) 45%);
+        }
         .pd-header {
             display: flex; justify-content: space-between; align-items: flex-start;
             flex-wrap: wrap; gap: 16px;
@@ -196,7 +214,7 @@
             font-family: var(--font-display); font-size: 1.45rem; color: var(--text-pure); margin-bottom: 4px;
         }
         .pd-header p {
-            font-size: 0.88rem; color: var(--text-muted); max-width: 720px; line-height: 1.5;
+            font-size: 0.88rem; color: var(--text-muted); max-width: 740px; line-height: 1.5;
         }
         .pd-status-badge {
             font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;
@@ -211,6 +229,14 @@
             background: rgba(43, 227, 138, 0.14); color: var(--accent-green);
             border: 1px solid rgba(43, 227, 138, 0.35);
         }
+        .pd-status-badge.gold {
+            background: rgba(255, 207, 92, 0.18); color: var(--accent-gold);
+            border: 1px solid rgba(255, 207, 92, 0.5);
+        }
+        .pd-status-badge.blue {
+            background: rgba(53, 230, 255, 0.13); color: var(--accent-blue);
+            border: 1px solid rgba(53, 230, 255, 0.38);
+        }
 
         .pd-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
         .pd-stat-card {
@@ -223,7 +249,7 @@
         .pd-stat-label {
             font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted);
             text-transform: uppercase; margin-bottom: 6px;
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
         }
         .pd-stat-value {
             font-family: var(--font-display); font-size: 1.08rem; font-weight: 700; color: var(--text-pure);
@@ -244,6 +270,32 @@
             transition: 0.2s;
         }
         .copy-bib-btn:hover { background: var(--accent-blue); color: var(--bg-base); }
+
+        /* Personal Outcome Highlight Banner */
+        .pd-outcome-banner {
+            display: none;
+            background: rgba(43, 227, 138, 0.08);
+            border: 1px solid rgba(43, 227, 138, 0.35);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .pd-outcome-banner.visible { display: flex; }
+        .pd-outcome-banner.finalist {
+            background: linear-gradient(135deg, rgba(255, 207, 92, 0.12) 0%, rgba(21, 22, 26, 0.85) 100%);
+            border-color: rgba(255, 207, 92, 0.45);
+        }
+        .pd-outcome-main {
+            display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+            font-size: 0.88rem; color: var(--text-main);
+        }
+        .pd-outcome-metrics {
+            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            font-family: var(--font-mono); font-size: 0.76rem;
+        }
 
         .pd-nav-tabs {
             display: flex; gap: 8px; flex-wrap: wrap;
@@ -271,6 +323,80 @@
 
         .pd-tab-pane { display: none; flex-direction: column; gap: 18px; }
         .pd-tab-pane.active { display: flex; }
+
+        /* --- OFFICIAL GRAND FINAL STANDINGS TABLE --- */
+        .standings-table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            background: var(--bg-sidebar);
+        }
+        .standings-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 780px; }
+        .standings-table th, .standings-table td {
+            padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); text-align: left; vertical-align: middle;
+        }
+        .standings-table td:nth-child(2),
+        .standings-table td:nth-child(5),
+        .standings-table td:nth-child(6) { white-space: nowrap; }
+        .standings-table tbody tr:last-child td { border-bottom: none; }
+        .standings-table th {
+            background: rgba(255, 255, 255, 0.03);
+            font-family: var(--font-mono); font-size: 0.69rem; color: var(--accent-gold);
+            text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .standings-table tbody tr { transition: background-color 0.15s ease; }
+        .standings-table tbody tr:hover { background: var(--bg-card-hover); }
+        .standings-table tbody tr.rank-top1 { background: rgba(255, 207, 92, 0.06); }
+        .standings-table tbody tr.me-row {
+            background: rgba(43, 227, 138, 0.14) !important;
+            box-shadow: inset 3px 0 0 var(--accent-green);
+        }
+
+        .rank-pill {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 36px; padding: 4px 8px; border-radius: 6px;
+            font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700;
+            background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-subtle);
+        }
+        .rank-pill.r1 { background: rgba(255, 207, 92, 0.2); color: var(--accent-gold); border-color: rgba(255, 207, 92, 0.5); }
+        .rank-pill.r2 { background: rgba(226, 232, 240, 0.16); color: #E2E8F0; border-color: rgba(226, 232, 240, 0.4); }
+        .rank-pill.r3 { background: rgba(224, 159, 103, 0.16); color: #E09F67; border-color: rgba(224, 159, 103, 0.42); }
+
+        .score-pill {
+            font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700;
+            color: var(--text-pure);
+        }
+        .tb-pill {
+            font-family: var(--font-mono); font-size: 0.76rem;
+            color: var(--accent-blue);
+            background: rgba(53, 230, 255, 0.08);
+            border: 1px solid rgba(53, 230, 255, 0.22);
+            padding: 3px 8px; border-radius: 6px; display: inline-block;
+        }
+
+        .tier-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-family: var(--font-mono); font-size: 0.71rem; font-weight: 700;
+            padding: 4px 10px; border-radius: 99px; white-space: nowrap;
+        }
+        .tier-gold { background: rgba(255, 207, 92, 0.18); color: var(--accent-gold); border: 1px solid rgba(255, 207, 92, 0.48); }
+        .tier-silver { background: rgba(226, 232, 240, 0.14); color: #E2E8F0; border: 1px solid rgba(226, 232, 240, 0.38); }
+        .tier-bronze { background: rgba(224, 159, 103, 0.16); color: #E09F67; border: 1px solid rgba(224, 159, 103, 0.42); }
+        .tier-laureate { background: rgba(53, 230, 255, 0.12); color: var(--accent-blue); border: 1px solid rgba(53, 230, 255, 0.35); }
+        .tier-honors { background: rgba(179, 156, 208, 0.14); color: var(--accent-purple); border: 1px solid rgba(179, 156, 208, 0.38); }
+        .tier-phase1 { background: rgba(43, 227, 138, 0.1); color: var(--accent-green); border: 1px solid rgba(43, 227, 138, 0.3); }
+
+        .private-gate-box {
+            background: var(--bg-sidebar);
+            border: 1px dashed var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 28px 24px;
+            text-align: center;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+        }
+        .private-gate-box i { font-size: 1.65rem; color: var(--accent-purple); }
+        .private-gate-box h4 { font-family: var(--font-display); font-size: 1.08rem; color: var(--text-pure); }
+        .private-gate-box p { font-size: 0.85rem; color: var(--text-muted); max-width: 520px; line-height: 1.55; }
 
         .dossier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .dossier-cell {
@@ -307,43 +433,23 @@
             display: flex; flex-direction: column; gap: 12px;
         }
 
-        .phase-progress-table {
-            width: 100%; border-collapse: collapse; font-size: 0.84rem;
-            background: var(--bg-sidebar);
+        .phase-progress-wrap {
+            overflow-x: auto;
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-sm);
-            overflow: hidden;
+            background: var(--bg-sidebar);
+        }
+        .phase-progress-table {
+            width: 100%; border-collapse: collapse; font-size: 0.83rem; min-width: 680px;
         }
         .phase-progress-table th, .phase-progress-table td {
-            padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); text-align: left;
+            padding: 11px 14px; border-bottom: 1px solid var(--border-subtle); text-align: left;
         }
+        .phase-progress-table tbody tr:last-child td { border-bottom: none; }
         .phase-progress-table th {
             background: rgba(255, 255, 255, 0.03);
-            font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; color: var(--accent-blue);
+            font-family: var(--font-mono); font-size: 0.69rem; text-transform: uppercase; color: var(--accent-blue);
         }
-
-        .diag-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 18px; }
-        .diag-steps { display: flex; flex-direction: column; gap: 10px; }
-        .diag-row {
-            background: var(--bg-sidebar);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            padding: 12px 16px;
-            display: flex; align-items: center; justify-content: space-between; gap: 12px;
-        }
-        .diag-row.pass {
-            border-color: rgba(43, 227, 138, 0.45);
-            background: rgba(43, 227, 138, 0.06);
-        }
-        .diag-cam-box {
-            background: #050507;
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md);
-            height: 210px;
-            display: flex; align-items: center; justify-content: center;
-            position: relative; overflow: hidden;
-        }
-        .diag-cam-box video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 
         .cohort-stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
         .cohort-box {
@@ -365,12 +471,12 @@
         .stat-chip strong { color: var(--accent-green); }
 
         .roster-table-wrap {
-            max-height: 380px; overflow-y: auto;
+            max-height: 400px; overflow-y: auto; overflow-x: auto;
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-sm);
             background: var(--bg-sidebar);
         }
-        .roster-table { width: 100%; border-collapse: collapse; font-size: 0.81rem; }
+        .roster-table { width: 100%; border-collapse: collapse; font-size: 0.81rem; min-width: 640px; }
         .roster-table th, .roster-table td {
             padding: 10px 12px; border-bottom: 1px solid var(--border-subtle); text-align: left;
         }
@@ -381,17 +487,7 @@
         }
         .roster-table tr.me-row { background: rgba(43, 227, 138, 0.12); }
 
-        .pd-receipt-banner {
-            display: none;
-            background: rgba(43, 227, 138, 0.1);
-            border: 1px solid rgba(43, 227, 138, 0.35);
-            border-radius: var(--radius-sm);
-            padding: 12px 16px;
-            font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-green);
-            align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
-        }
-
-        /* --- FEATURED COMPETITION CARD --- */
+        /* --- FEATURED COMPETITION ARCHIVE CARD --- */
         .comp-mega-card {
             background: linear-gradient(160deg, rgba(21, 22, 26, 0.98) 0%, rgba(16, 17, 21, 0.98) 100%);
             border: 1px solid var(--border-light);
@@ -407,36 +503,44 @@
             flex-wrap: wrap; gap: 20px; border-bottom: 1px solid var(--border-subtle);
             padding-bottom: 24px;
         }
+        .comp-top-bar > div:first-child { flex: 1 1 420px; min-width: 0; }
 
         .comp-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
         .c-badge {
             font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
             text-transform: uppercase; padding: 4px 10px; border-radius: 6px; letter-spacing: 0.05em;
+            display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
         }
         .badge-green { background: rgba(43, 227, 138, 0.14); color: var(--accent-green); border: 1px solid rgba(43, 227, 138, 0.3); }
         .badge-blue { background: rgba(53, 230, 255, 0.12); color: var(--accent-blue); border: 1px solid rgba(53, 230, 255, 0.3); }
         .badge-gold { background: rgba(255, 207, 92, 0.14); color: var(--accent-gold); border: 1px solid rgba(255, 207, 92, 0.3); }
+        .badge-purple { background: rgba(179, 156, 208, 0.14); color: var(--accent-purple); border: 1px solid rgba(179, 156, 208, 0.35); }
 
         .comp-title {
             font-family: var(--font-display); font-size: 2.1rem; font-weight: 800;
             color: var(--text-pure); margin-bottom: 8px; line-height: 1.15;
         }
-        .comp-subtitle { color: var(--text-muted); font-size: 0.95rem; max-width: 680px; line-height: 1.65; }
+        .comp-subtitle { color: var(--text-muted); font-size: 0.95rem; max-width: 640px; line-height: 1.65; }
 
-        .countdown-box {
-            background: var(--bg-sidebar); border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md); padding: 16px 22px; text-align: right; min-width: 290px;
+        .status-official-box {
+            background: linear-gradient(135deg, rgba(43, 227, 138, 0.1) 0%, rgba(16, 17, 21, 0.98) 100%);
+            border: 1px solid rgba(43, 227, 138, 0.38);
+            border-radius: var(--radius-md);
+            padding: 16px 22px;
+            text-align: right;
+            flex-shrink: 0;
         }
-        .countdown-label {
-            font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase;
+        .status-official-eyebrow {
+            font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase;
             color: var(--accent-gold); letter-spacing: 0.08em; display: block; margin-bottom: 8px;
         }
-        .countdown-digits {
-            font-family: var(--font-mono); font-size: 1.45rem; font-weight: 700;
-            color: var(--text-pure); letter-spacing: 1px;
+        .status-official-badge {
+            font-family: var(--font-mono); font-size: 0.86rem; font-weight: 700;
+            color: var(--accent-green); letter-spacing: 0.04em;
+            display: inline-flex; align-items: center; gap: 8px;
         }
-        .countdown-dates {
-            font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-top: 6px;
+        .status-official-dates {
+            font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-top: 7px;
         }
 
         /* --- SPONSORS SHOWCASE --- */
@@ -470,16 +574,19 @@
             display: flex; flex-direction: column; gap: 10px; transition: border-color 0.2s;
         }
         .phase-card:hover { border-color: var(--border-light); }
+        .phase-card-top {
+            display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;
+        }
         .phase-num {
             font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
             color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.06em;
         }
-        .phase-card h3 { font-family: var(--font-display); font-size: 1.2rem; color: var(--text-pure); }
+        .phase-card h3 { font-family: var(--font-display); font-size: 1.18rem; color: var(--text-pure); }
         .phase-card p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; flex-grow: 1; }
         .phase-meta {
             font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-main);
             padding-top: 10px; border-top: 1px solid var(--border-subtle);
-            display: flex; justify-content: space-between;
+            display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap;
         }
 
         /* --- PRIZES & GIVEAWAY GRID --- */
@@ -554,13 +661,178 @@
         .mock-option.wrong { border-color: var(--accent-rose); background: rgba(255, 193, 204, 0.1); color: var(--accent-rose); }
 
         @media (max-width: 1150px) {
-            .pd-stats-grid, .dossier-grid, .consent-strip, .diag-grid, .cohort-stats-row, .phases-grid, .prizes-grid, .comp-details-grid {
+            .pd-stats-grid, .dossier-grid, .consent-strip, .cohort-stats-row, .phases-grid, .prizes-grid, .comp-details-grid {
                 grid-template-columns: 1fr;
             }
+            .status-official-box { text-align: left; width: 100%; min-width: 0; }
         }
         @media (max-width: 800px) {
-            .sidebar { display: none; }
-            .dashboard-main { padding: 24px 20px; }
+            .dashboard-main { padding: 24px 16px; }
+            .participant-dashboard, .comp-mega-card, .next-season-banner { padding: 20px 16px; }
+            .user-profile { padding-left: 0; border-left: none; }
+            .c-badge { white-space: normal; }
+            #roster-search-input { min-width: 0 !important; width: 100%; }
+        }
+
+        /* --- RESPONSIVE MOBILE HEADER & SLIDE-OUT DRAWER (<= 800px) --- */
+        .mobile-topbar {
+            display: none;
+        }
+        .sidebar-backdrop {
+            display: none;
+        }
+        .sidebar-close-btn {
+            display: none;
+        }
+
+        @media (max-width: 800px) {
+            body {
+                flex-direction: column;
+                height: 100vh;
+                height: 100dvh;
+                overflow-x: hidden;
+            }
+
+            .mobile-topbar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: sticky;
+                top: 0;
+                z-index: 900;
+                width: 100%;
+                height: 60px;
+                padding: 0 16px;
+                background-color: var(--bg-sidebar);
+                border-bottom: 1px solid var(--border-subtle);
+                flex-shrink: 0;
+            }
+
+            .mobile-brand {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                text-decoration: none;
+                color: var(--text-pure);
+                font-family: var(--font-display);
+                font-size: 1.02rem;
+                font-weight: 700;
+                letter-spacing: 0.02em;
+                min-width: 0;
+            }
+
+            .mobile-brand img {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                object-fit: cover;
+                flex-shrink: 0;
+            }
+
+            .mobile-menu-toggle {
+                width: 40px;
+                height: 40px;
+                border-radius: var(--radius-sm);
+                background: var(--bg-card);
+                border: 1px solid var(--border-light);
+                color: var(--text-pure);
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.08rem;
+                cursor: pointer;
+                flex-shrink: 0;
+                transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+            }
+
+            .mobile-menu-toggle:hover,
+            .mobile-menu-toggle:focus-visible {
+                border-color: var(--accent-blue);
+                color: var(--accent-blue);
+                background: var(--bg-card-hover);
+                outline: none;
+            }
+
+            .sidebar-backdrop {
+                display: block;
+                position: fixed;
+                inset: 0;
+                z-index: 990;
+                background: rgba(10, 10, 12, 0.72);
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transition: opacity 0.25s ease, visibility 0.25s ease;
+            }
+
+            .sidebar-backdrop.active {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+            }
+
+            .sidebar {
+                display: flex !important;
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                height: 100vh;
+                height: 100dvh;
+                width: min(280px, 84vw);
+                max-width: 84vw;
+                z-index: 1000;
+                transform: translateX(-105%);
+                transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+                box-shadow: 16px 0 48px rgba(0, 0, 0, 0.75);
+                overflow-y: auto;
+            }
+
+            .sidebar.drawer-open {
+                transform: translateX(0);
+            }
+
+            .sidebar-close-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                top: 18px;
+                right: 14px;
+                width: 34px;
+                height: 34px;
+                border-radius: var(--radius-sm);
+                background: var(--bg-card);
+                border: 1px solid var(--border-light);
+                color: var(--text-muted);
+                font-size: 1rem;
+                cursor: pointer;
+                transition: color 0.2s ease, border-color 0.2s ease;
+            }
+
+            .sidebar-close-btn:hover {
+                color: var(--text-pure);
+                border-color: var(--accent-blue);
+            }
+
+            .sidebar .brand {
+                padding-right: 40px;
+            }
+
+            .dashboard-main {
+                width: 100%;
+                max-width: 100vw;
+                min-width: 0;
+                overflow-x: hidden;
+            }
+
+            mjx-container {
+                max-width: 100%;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
         }
     </style>
 </head>
@@ -570,8 +842,20 @@
         <div class="comet" style="top: 10%; left: 85%; animation: shooting 9s infinite linear 1s;"></div>
     </div>
 
+    <!-- MOBILE HEADER BAR (<= 800px) -->
+    <header class="mobile-topbar">
+        <a href="dashboard.html" class="mobile-brand">
+            <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
+            <span>SUPERNOVA GUIDE</span>
+        </a>
+        <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Open navigation menu" aria-expanded="false">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </header>
+
     <!-- SIDEBAR NAVIGATION -->
     <aside class="sidebar">
+        <button type="button" class="sidebar-close-btn" aria-label="Close navigation menu"><i class="fa-solid fa-xmark"></i></button>
         <a href="dashboard.html" class="brand">
             <img src="assets/img/supernova_logo.png" alt="Supernova Logo">
             <span>SUPERNOVA<br>GUIDE</span>
@@ -581,7 +865,7 @@
         <ul class="nav-menu">
             <li><a href="dashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
             <li><a href="challenges.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> POTD · POTW · POTM</a></li>
-            <li><a href="planetariu.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
+            <li><a href="planetarium.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> Planetarium</a></li>
             <li><a href="problems.html" class="nav-item"><i class="fa-solid fa-rocket"></i> Study &amp; Practice</a></li>
             <li><a href="courses.html" class="nav-item"><i class="fa-solid fa-circle-play"></i> Supernova Courses</a></li>
             <li><a href="competitions.html" class="nav-item active"><i class="fa-solid fa-trophy"></i> Competitions</a></li>
@@ -602,6 +886,7 @@
             <li><a href="#" class="nav-item" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
         </ul>
     </aside>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
     <!-- MAIN CONTENT -->
     <main class="dashboard-main">
@@ -609,12 +894,12 @@
         <header class="top-header">
             <div class="header-title">
                 <h1>Seasonal Competitions</h1>
-                <p>Most astronomy competitions only happen once a year. We organize seasonal cups with varied formats so you can test yourself regularly.</p>
+                <p>Official post-competition archive &amp; validated standings for the Supernova Astrophysics Cup — Autumn 2026 (SAC 2026).</p>
             </div>
             <div class="header-actions">
                 <div class="utc-pill">
                     <span class="utc-dot"></span>
-                    <span id="live-utc-clock">UTC: Loading...</span>
+                    <span>SAC 2026 · OFFICIAL ARCHIVE</span>
                 </div>
                 <a href="profile.html" class="user-profile">
                     <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest&background=1C1D22&color=FFFFFF" alt="User" class="avatar">
@@ -626,42 +911,19 @@
             </div>
         </header>
 
-        <!-- ORGANIZER / ADMIN BAR (Unlocks automatically for Matei, Albert & Mihai) -->
-        <section class="admin-command-bar" id="admin-command-bar">
-            <div style="display:flex; align-items:center; gap:14px;">
-                <i class="fa-solid fa-user-shield" style="font-size:1.5rem; color:var(--accent-gold);"></i>
-                <div>
-                    <div style="font-family:var(--font-mono); font-size:0.7rem; text-transform:uppercase; color:var(--accent-gold); font-weight:700;">
-                        Scientific Committee &amp; Chief Proctor Mode (Matei · Albert · Mihai)
-                    </div>
-                    <div style="font-size:0.9rem; color:var(--text-pure); font-weight:600;">
-                        Select any competitor below to inspect their dossier &amp; Grand Final status, or open the Admin Proctor Console.
-                    </div>
-                </div>
-            </div>
-            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-                <select id="admin-preview-select" class="admin-select" title="Preview Dashboard As Competitor">
-                    <option value="">👁️ Preview Dashboard As Competitor...</option>
-                </select>
-                <a href="admin_proctor.html" class="btn-comp" style="background:var(--accent-gold); color:#050507; font-family:var(--font-mono); font-size:0.78rem; padding:9px 16px;">
-                    <i class="fa-solid fa-tower-broadcast"></i> Open Admin &amp; Proctor Console →
-                </a>
-            </div>
-        </section>
-
         <!-- =========================================================================
-             COMPLETE COMPETITOR COMMAND CENTER (5 INTERACTIVE TABS)
+             MY SAC 2026 RESULT CARD & OFFICIAL STANDINGS HUB
              ========================================================================= -->
         <section class="participant-dashboard" id="participant-dashboard-card">
             <div class="pd-header">
                 <div>
-                    <h2>Competitor Command Center · SAC 2026 Grand Final</h2>
-                    <p id="pd-subtitle">Sign in with your registered Supernova Guide email to verify your Grand Final qualification, copy your Bib ID, test your dual-camera setup, and launch the live Grand Final terminal.</p>
+                    <h2>My SAC 2026 Result Card &amp; Official Standings</h2>
+                    <p id="pd-subtitle">Browse the official validated SAC 2026 Grand Final standings below, or sign in with your registered Supernova Guide email to view your personal result, medal tier, and private 12-field registration dossier.</p>
                 </div>
                 <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-                    <span class="c-badge badge-gold" id="pd-roster-count-pill">Top 16 Grand Finalists (20 Bibs)</span>
+                    <span class="c-badge badge-gold">15 Competing Finalist Entries (18 Bibs)</span>
                     <span class="pd-status-badge pending" id="pd-status-badge">
-                        <i class="fa-solid fa-clock"></i> Not Signed In
+                        <i class="fa-solid fa-user-lock"></i> Sign In for Personal Result
                     </span>
                 </div>
             </div>
@@ -678,158 +940,249 @@
                         </div>
                         <div class="pd-stat-value" id="pd-user-bib" style="color:var(--accent-green); font-family:var(--font-mono);">—</div>
                     </div>
-                    <div class="pd-sub-meta" id="pd-user-email" style="word-break:break-all;">Sign in to view account</div>
+                    <div class="pd-sub-meta" id="pd-user-email" style="word-break:break-all;">Sign in with your registered email</div>
                 </div>
 
                 <div class="pd-stat-card">
                     <div>
-                        <div class="pd-stat-label">Entry Callsign</div>
+                        <div class="pd-stat-label">Entry Callsign &amp; Country</div>
                         <div class="pd-stat-value" id="pd-user-mode">—</div>
                     </div>
-                    <div class="pd-sub-meta" id="pd-user-partner">Teammate &amp; division info</div>
+                    <div class="pd-sub-meta" id="pd-user-partner">Team / Country info</div>
                 </div>
 
                 <div class="pd-stat-card">
                     <div>
-                        <div class="pd-stat-label">Active Stage &amp; Format</div>
-                        <div class="pd-stat-value" id="pd-next-round-name" style="color:var(--accent-gold);">Phase 3: Grand Final (21 Nov)</div>
+                        <div class="pd-stat-label">Official SAC 2026 Outcome</div>
+                        <div class="pd-stat-value" id="pd-outcome-primary" style="color:var(--accent-gold);">Results Official</div>
                     </div>
-                    <div class="pd-sub-meta" id="pd-round-window-note">45 MCQs · 90-Min Timer · Dual-Cam + Screen Proctor</div>
+                    <div class="pd-sub-meta" id="pd-outcome-meta">45.0 pt Scale · Difficulty Tie-Breaker</div>
                 </div>
 
                 <div class="pd-stat-card">
                     <div>
-                        <div class="pd-stat-label" id="pd-timer-card-label">Countdown to Grand Final</div>
-                        <div class="pd-stat-value" id="pd-next-round-timer" style="font-family:var(--font-mono); font-size:0.98rem;">--d : --h : --m : --s</div>
+                        <div class="pd-stat-label">Medal / Certificate Tier</div>
+                        <div class="pd-stat-value" id="pd-medal-tier" style="color:var(--accent-blue);">—</div>
                     </div>
-                    <div class="pd-sub-meta" id="pd-password-note">Sat 21 Nov · 10:00–11:00 UT &amp; 18:00–19:00 UT</div>
+                    <div class="pd-sub-meta" id="pd-medal-note">Sign in to inspect your personal award</div>
                 </div>
             </div>
 
-            <!-- Live Submission Receipt Banner -->
-            <div class="pd-receipt-banner" id="pd-receipt-banner">
-                <div>
-                    <i class="fa-solid fa-circle-check"></i>
-                    <strong id="pd-receipt-heading">Grand Final Cloud Submission Verified:</strong>
-                    <span id="pd-receipt-details">Receipt ID: —</span>
-                </div>
-                <span id="pd-receipt-time" style="color:var(--text-muted);">—</span>
+            <!-- PERSONAL OUTCOME HIGHLIGHT BANNER (Visible when signed in as a registered competitor) -->
+            <div class="pd-outcome-banner" id="pd-outcome-banner">
+                <div class="pd-outcome-main" id="pd-outcome-banner-main"></div>
+                <div class="pd-outcome-metrics" id="pd-outcome-banner-metrics"></div>
             </div>
 
-            <!-- 5-TAB NAVIGATION BAR -->
+            <!-- 4-TAB NAVIGATION BAR -->
             <div class="pd-nav-tabs">
-                <button type="button" class="pd-tab-btn active" onclick="window.switchDashTab('dossier', this)">
-                    <i class="fa-solid fa-id-card"></i> 1. My Official Dossier (12 Fields)
+                <button type="button" class="pd-tab-btn active" onclick="window.switchDashTab('standings', this)">
+                    <i class="fa-solid fa-trophy"></i> 1. Official Grand Final Standings (15)
+                </button>
+                <button type="button" class="pd-tab-btn" onclick="window.switchDashTab('dossier', this)">
+                    <i class="fa-solid fa-id-card"></i> 2. My Official Dossier (12 Fields)
                 </button>
                 <button type="button" class="pd-tab-btn" onclick="window.switchDashTab('team', this)">
-                    <i class="fa-solid fa-user-group"></i> 2. My Entry &amp; Partner Info
-                </button>
-                <button type="button" class="pd-tab-btn" onclick="window.switchDashTab('phases', this)">
-                    <i class="fa-solid fa-list-check"></i> 3. Grand Final Status &amp; Receipts
-                </button>
-                <button type="button" class="pd-tab-btn" onclick="window.switchDashTab('preflight', this)">
-                    <i class="fa-solid fa-camera"></i> 4. System &amp; Dual-Cam Pre-Flight
+                    <i class="fa-solid fa-user-group"></i> 3. My Entry &amp; Partner Info
                 </button>
                 <button type="button" class="pd-tab-btn" onclick="window.switchDashTab('cohort', this)">
-                    <i class="fa-solid fa-earth-europe"></i> 5. Official Candidate Code Roster (43)
+                    <i class="fa-solid fa-earth-europe"></i> 4. Official Candidate Code Roster (43)
                 </button>
             </div>
 
-            <!-- TAB 1: MY OFFICIAL DOSSIER -->
-            <div class="pd-tab-pane active" id="dash-pane-dossier">
-                <div class="dossier-grid">
-                    <div class="dossier-cell">
-                        <span class="d-lbl">1. Full Legal Name (Private · Certificate Only)</span>
-                        <div class="d-val" id="dos-name">—</div>
+            <!-- TAB 1: OFFICIAL GRAND FINAL STANDINGS (DEFAULT ACTIVE) -->
+            <div class="pd-tab-pane active" id="dash-pane-standings">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <div>
+                        <h3 style="font-family:var(--font-display); font-size:1.12rem; color:var(--text-pure); display:flex; align-items:center; gap:9px;">
+                            <i class="fa-solid fa-medal" style="color:var(--accent-gold);"></i>
+                            Official Grand Final Leaderboard (45.0 pt Scale · 15 Competing Entries)
+                        </h3>
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:3px;">
+                            Validated by the Supernova Scientific Committee · Identified publicly by Candidate Bib Code &amp; Callsign only (ties broken by average difficulty weight TB).
+                        </p>
                     </div>
-                    <div class="dossier-cell">
-                        <span class="d-lbl">2. Official Candidate Bib Code</span>
-                        <div class="d-val" id="dos-bib" style="font-family:var(--font-mono); color:var(--accent-green);">—</div>
-                    </div>
-                    <div class="dossier-cell">
-                        <span class="d-lbl">3. Supernova Guide Username &amp; Email</span>
-                        <div class="d-val" id="dos-account">—</div>
-                    </div>
-                    <div class="dossier-cell">
-                        <span class="d-lbl">4. Discord Username (@SAC 2026 Role)</span>
-                        <div class="d-val" id="dos-discord" style="font-family:var(--font-mono); color:var(--accent-blue);">—</div>
-                    </div>
-                    <div class="dossier-cell">
-                        <span class="d-lbl">5. Date of Birth &amp; Age Eligibility</span>
-                        <div class="d-val" id="dos-dob">—</div>
-                    </div>
-                    <div class="dossier-cell">
-                        <span class="d-lbl">6. Country of Residence</span>
-                        <div class="d-val" id="dos-country">—</div>
-                    </div>
-                    <div class="dossier-cell">
-                        <span class="d-lbl">7. Current Educational Institution</span>
-                        <div class="d-val" id="dos-school">—</div>
-                    </div>
-                    <div class="dossier-cell">
-                        <span class="d-lbl">8. School City &amp; Location</span>
-                        <div class="d-val" id="dos-city">—</div>
-                    </div>
-                    <div class="dossier-cell">
-                        <span class="d-lbl">9. Academic Grade / Division (2026–2027)</span>
-                        <div class="d-val" id="dos-grade">—</div>
-                    </div>
-                    <div class="dossier-cell">
-                        <span class="d-lbl">10. Prior Olympiad &amp; Contest Experience</span>
-                        <div class="d-val" id="dos-exp">—</div>
-                    </div>
-                    <div class="dossier-cell">
-                        <span class="d-lbl">11. Registration Timestamp (UT)</span>
-                        <div class="d-val" id="dos-timestamp" style="font-family:var(--font-mono); font-size:0.8rem;">—</div>
-                    </div>
-                    <div class="dossier-cell">
-                        <span class="d-lbl">12. Ambassador Referral Attribution</span>
-                        <div class="d-val" id="dos-ref" style="font-family:var(--font-mono);">—</div>
-                    </div>
+                    <span class="c-badge badge-green"><i class="fa-solid fa-circle-check"></i> Validated &amp; Final</span>
                 </div>
 
-                <div class="consent-strip">
-                    <div class="consent-pill">
-                        <i class="fa-solid fa-video"></i>
-                        <div>
-                            <strong style="display:block; font-size:0.72rem; font-family:var(--font-mono);">DUAL-CAM PROCTORING</strong>
-                            <span id="dos-consent-cam">Webcam + Screen + Phone Side-Cam</span>
+                <div class="standings-table-wrap">
+                    <table class="standings-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Candidate Bib Code(s)</th>
+                                <th>Callsign / Entry</th>
+                                <th>Country</th>
+                                <th>Official Score</th>
+                                <th>Tie-Breaker</th>
+                                <th>Award / Medal Tier</th>
+                            </tr>
+                        </thead>
+                        <tbody id="official-standings-tbody"></tbody>
+                    </table>
+                </div>
+
+                <!-- 3-STAGE ARCHIVE SUMMARY TABLE -->
+                <div style="margin-top:4px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+                        <span style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-blue); text-transform:uppercase; font-weight:700;">
+                            <i class="fa-solid fa-list-check"></i> SAC 2026 Tournament Progression Record
+                        </span>
+                        <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted);" id="scorecard-viewing-label">
+                            All 3 Stages Completed · Official Archive
+                        </span>
+                    </div>
+                    <div class="phase-progress-wrap">
+                        <table class="phase-progress-table">
+                            <thead>
+                                <tr>
+                                    <th>Tournament Stage</th>
+                                    <th>Date (UT)</th>
+                                    <th>Structure &amp; Scale</th>
+                                    <th>Stage Status</th>
+                                    <th>Official Outcome / Personal Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight:700; color:var(--text-pure);">Phase 1: Open Qualifier</td>
+                                    <td style="font-family:var(--font-mono); font-size:0.78rem;">Sat, 14 Nov 2026</td>
+                                    <td>30 MCQs · 60 min (15E, 10M, 5H)</td>
+                                    <td><span class="c-badge badge-green">Completed ✓</span></td>
+                                    <td id="p1-archive-outcome" style="font-family:var(--font-mono); font-size:0.78rem; color:var(--accent-green);">Top 15 Qualified · Participation Certificates Issued</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:700; color:var(--text-pure);">Phase 2: Proctored Mock &amp; Calibration</td>
+                                    <td style="font-family:var(--font-mono); font-size:0.78rem;">Thu, 19 Nov 2026</td>
+                                    <td>40 MCQs · Supervised Calibration</td>
+                                    <td><span class="c-badge badge-green">Completed ✓</span></td>
+                                    <td style="font-family:var(--font-mono); font-size:0.78rem; color:var(--accent-blue);">+1 Supervised Qualifier · Finalist Roster Confirmed</td>
+                                </tr>
+                                <tr style="background:rgba(255, 207, 92, 0.05);">
+                                    <td style="font-weight:700; color:var(--accent-gold);">Phase 3: Grand Final (The POTD War)</td>
+                                    <td style="font-family:var(--font-mono); font-size:0.78rem;">Sat, 21 Nov 2026</td>
+                                    <td>45 MCQs · 90 min (45.0 pt Scale)</td>
+                                    <td><span class="c-badge badge-green">Completed ✓</span></td>
+                                    <td id="p3-archive-outcome" style="font-family:var(--font-mono); font-size:0.78rem; color:var(--accent-gold); font-weight:700;">15 Competing Entries · Official Results Published</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: MY OFFICIAL DOSSIER (PRIVATE — VISIBLE ONLY TO LOGGED-IN COMPETITOR) -->
+            <div class="pd-tab-pane" id="dash-pane-dossier">
+                <div class="private-gate-box" id="dossier-locked-notice">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h4>Private 12-Field Registration Dossier</h4>
+                    <p id="dossier-locked-msg">Your private 12-field SAC 2026 registration dossier is visible strictly to you. Sign in via your Supernova Guide profile using your registered SAC 2026 email to unlock your personal record.</p>
+                    <a href="profile.html" class="btn-comp btn-mock" style="margin-top:6px; padding:8px 16px; font-size:0.8rem;">
+                        <i class="fa-solid fa-right-to-bracket"></i> Sign In / Account Settings
+                    </a>
+                </div>
+
+                <div id="dossier-content-wrap" style="display:none; flex-direction:column; gap:18px;">
+                    <div class="dossier-grid">
+                        <div class="dossier-cell">
+                            <span class="d-lbl">1. Full Legal Name (Private · Certificate Only)</span>
+                            <div class="d-val" id="dos-name">—</div>
+                        </div>
+                        <div class="dossier-cell">
+                            <span class="d-lbl">2. Official Candidate Bib Code</span>
+                            <div class="d-val" id="dos-bib" style="font-family:var(--font-mono); color:var(--accent-green);">—</div>
+                        </div>
+                        <div class="dossier-cell">
+                            <span class="d-lbl">3. Supernova Guide Username &amp; Email</span>
+                            <div class="d-val" id="dos-account">—</div>
+                        </div>
+                        <div class="dossier-cell">
+                            <span class="d-lbl">4. Discord Username (@SAC 2026 Role)</span>
+                            <div class="d-val" id="dos-discord" style="font-family:var(--font-mono); color:var(--accent-blue);">—</div>
+                        </div>
+                        <div class="dossier-cell">
+                            <span class="d-lbl">5. Date of Birth &amp; Age Eligibility</span>
+                            <div class="d-val" id="dos-dob">—</div>
+                        </div>
+                        <div class="dossier-cell">
+                            <span class="d-lbl">6. Country of Residence</span>
+                            <div class="d-val" id="dos-country">—</div>
+                        </div>
+                        <div class="dossier-cell">
+                            <span class="d-lbl">7. Current Educational Institution</span>
+                            <div class="d-val" id="dos-school">—</div>
+                        </div>
+                        <div class="dossier-cell">
+                            <span class="d-lbl">8. School City &amp; Location</span>
+                            <div class="d-val" id="dos-city">—</div>
+                        </div>
+                        <div class="dossier-cell">
+                            <span class="d-lbl">9. Academic Grade / Division (2026–2027)</span>
+                            <div class="d-val" id="dos-grade">—</div>
+                        </div>
+                        <div class="dossier-cell">
+                            <span class="d-lbl">10. Prior Olympiad &amp; Contest Experience</span>
+                            <div class="d-val" id="dos-exp">—</div>
+                        </div>
+                        <div class="dossier-cell">
+                            <span class="d-lbl">11. Registration Timestamp (UT)</span>
+                            <div class="d-val" id="dos-timestamp" style="font-family:var(--font-mono); font-size:0.8rem;">—</div>
+                        </div>
+                        <div class="dossier-cell">
+                            <span class="d-lbl">12. Ambassador Referral Attribution</span>
+                            <div class="d-val" id="dos-ref" style="font-family:var(--font-mono);">—</div>
                         </div>
                     </div>
-                    <div class="consent-pill">
-                        <i class="fa-solid fa-shield-check"></i>
-                        <div>
-                            <strong style="display:block; font-size:0.72rem; font-family:var(--font-mono);">INTEGRITY PLEDGE</strong>
-                            <span>Constants Sheet + Non-Prog. Calc Only</span>
+
+                    <div class="consent-strip">
+                        <div class="consent-pill">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <div>
+                                <strong style="display:block; font-size:0.72rem; font-family:var(--font-mono);">PROCTORING AUDIT</strong>
+                                <span id="dos-consent-cam">SAC 2026 Record Verified</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="consent-pill">
-                        <i class="fa-solid fa-user-secret"></i>
-                        <div>
-                            <strong style="display:block; font-size:0.72rem; font-family:var(--font-mono);">PUBLIC IDENTITY</strong>
-                            <span id="dos-consent-privacy">Candidate Bib Code Only</span>
+                        <div class="consent-pill">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <div>
+                                <strong style="display:block; font-size:0.72rem; font-family:var(--font-mono);">INTEGRITY PLEDGE</strong>
+                                <span>Verified · Academic Honor Code</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="consent-pill">
-                        <i class="fa-solid fa-gift"></i>
-                        <div>
-                            <strong style="display:block; font-size:0.72rem; font-family:var(--font-mono);">GDPR &amp; SPONSOR PRIZES</strong>
-                            <span id="dos-consent-sponsor">—</span>
+                        <div class="consent-pill">
+                            <i class="fa-solid fa-user-secret"></i>
+                            <div>
+                                <strong style="display:block; font-size:0.72rem; font-family:var(--font-mono);">PUBLIC IDENTITY</strong>
+                                <span id="dos-consent-privacy">Candidate Bib Code Only</span>
+                            </div>
+                        </div>
+                        <div class="consent-pill">
+                            <i class="fa-solid fa-gift"></i>
+                            <div>
+                                <strong style="display:block; font-size:0.72rem; font-family:var(--font-mono);">GDPR &amp; SPONSOR PRIZES</strong>
+                                <span id="dos-consent-sponsor">—</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 2: PERSONAL ENTRY & PARTNER CONFIGURATION -->
+            <!-- TAB 3: PERSONAL ENTRY & PARTNER CONFIGURATION -->
             <div class="pd-tab-pane" id="dash-pane-team">
-                <div class="teammate-box">
+                <div class="private-gate-box" id="team-locked-notice">
+                    <i class="fa-solid fa-user-group"></i>
+                    <h4>Personal Entry &amp; Partner Record</h4>
+                    <p id="team-locked-msg">Sign in with your registered SAC 2026 email to view your entry division, callsign, and teammate details.</p>
+                </div>
+
+                <div class="teammate-box" id="team-content-wrap" style="display:none;">
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                        <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-blue); text-transform:uppercase;">Your Personal Entry Configuration</span>
+                        <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-blue); text-transform:uppercase;">Your SAC 2026 Entry Record</span>
                         <span class="c-badge badge-green" id="team-type-badge">Unified Competition Field</span>
                     </div>
                     <h3 style="font-family:var(--font-display); font-size:1.25rem; color:var(--text-pure);" id="team-callsign-title">—</h3>
                     <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.55;" id="team-status-desc">
-                        Sign in to view your entry configuration and partner details. All competitors compete in one unified ranking identified publicly only by their Candidate Bib Code (`SNG-2026-10XX`).
+                        All competitors competed in one unified international field identified publicly only by Candidate Bib Code.
                     </p>
                     <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:14px 16px; font-size:0.84rem; line-height:1.65;" id="team-partner-details-box">
                         No partner assigned (Solo entry).
@@ -837,147 +1190,7 @@
                 </div>
             </div>
 
-            <!-- TAB 3: TOURNAMENT PROGRESSION & GRAND FINAL LIVE RECEIPTS -->
-            <div class="pd-tab-pane" id="dash-pane-phases">
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                    <span style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-green);" id="scorecard-viewing-label">
-                        Viewing Personal Status: Sign in to check your Grand Final eligibility &amp; receipt
-                    </span>
-                    <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-gold);">
-                        Grand Final: <strong>Sat 21 Nov · 10:00–11:00 UT &amp; 18:00–19:00 UT (45 MCQs · 90 Min)</strong>
-                    </span>
-                </div>
-
-                <table class="phase-progress-table">
-                    <thead>
-                        <tr>
-                            <th>Tournament Stage</th>
-                            <th>Date &amp; Entry Windows (UT)</th>
-                            <th>Structure &amp; Difficulty</th>
-                            <th>Advancement / Outcome</th>
-                            <th>Status</th>
-                            <th>Answered / Strikes</th>
-                            <th>Cloud Receipt / Note</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="font-weight:700; color:var(--text-muted);">Phase 1: Open Qualifier</td>
-                            <td style="font-family:var(--font-mono); font-size:0.78rem;">Sat, 14 Nov · 10:00 UT &amp; 18:00 UT</td>
-                            <td>30 MCQs · 60 min (15E, 10M, 5H)</td>
-                            <td style="color:var(--accent-green); font-family:var(--font-mono);">Top 15 Qualified</td>
-                            <td><span class="c-badge badge-green">Completed ✓</span></td>
-                            <td style="font-family:var(--font-mono); color:var(--text-muted);">Archived</td>
-                            <td style="font-family:var(--font-mono); color:var(--text-muted);">Qualifier Closed</td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight:700; color:var(--text-muted);">Proctored Mock Exam</td>
-                            <td style="font-family:var(--font-mono); font-size:0.78rem;">Thu, 19 Nov · 14:00–20:00 UT</td>
-                            <td>40 MCQs · System &amp; Dual-Cam Calibration</td>
-                            <td style="color:var(--accent-blue); font-family:var(--font-mono);">+1 Supervised Qualifier</td>
-                            <td><span class="c-badge badge-blue">Completed ✓</span></td>
-                            <td style="font-family:var(--font-mono); color:var(--text-muted);">Archived</td>
-                            <td style="font-family:var(--font-mono); color:var(--text-muted);">16 Finalists Finalized</td>
-                        </tr>
-                        <tr style="background:rgba(255, 207, 92, 0.06);">
-                            <td style="font-weight:700; color:var(--accent-gold);">Phase 3: Grand Final (LIVE TODAY)</td>
-                            <td style="font-family:var(--font-mono); font-size:0.78rem;">Sat, 21 Nov · Win A: 10:00 UT | Win B: 18:00 UT</td>
-                            <td>45 MCQs · 90 min (10E, 20M, 15H)</td>
-                            <td style="color:var(--accent-gold); font-family:var(--font-mono); font-weight:700;">Global Medals &amp; $2,300+ Prizes</td>
-                            <td id="p3-live-status"><span class="c-badge badge-gold">Sign In to Verify</span></td>
-                            <td id="p3-live-telemetry" style="font-family:var(--font-mono);">0 / 45 · 0 Strikes</td>
-                            <td id="p3-live-receipt" style="font-family:var(--font-mono); color:var(--accent-gold);">Win A: 10:00 UT / Win B: 18:00 UT</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <!-- Live Grand Finalists Receipts Board -->
-                <div style="margin-top:6px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:10px;">
-                        <h4 style="font-family:var(--font-mono); font-size:0.76rem; color:var(--accent-gold); text-transform:uppercase;">
-                            <i class="fa-solid fa-trophy"></i> Grand Final Live Submission Receipts (Top 16 Qualified Entries)
-                        </h4>
-                        <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted);" id="cohort-scorecards-summary">
-                            Syncing live Grand Final submissions from Firebase...
-                        </span>
-                    </div>
-                    <div class="roster-table-wrap" style="max-height:360px;">
-                        <table class="roster-table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Finalist Bib Code</th>
-                                    <th>Country</th>
-                                    <th>Callsign / Team</th>
-                                    <th>Grand Final Status</th>
-                                    <th>Session Window</th>
-                                    <th>Answered</th>
-                                    <th>Cloud Receipt ID</th>
-                                </tr>
-                            </thead>
-                            <tbody id="cohort-scorecards-tbody"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 4: SYSTEM & DUAL-CAM PRE-FLIGHT DIAGNOSTICS -->
-            <div class="pd-tab-pane" id="dash-pane-preflight">
-                <div class="diag-grid">
-                    <div class="diag-steps">
-                        <div class="diag-row" id="diag-row-cam">
-                            <div>
-                                <strong style="color:var(--text-pure); display:block; font-size:0.88rem;">1. Primary Webcam (Face &amp; Desk Visible)</strong>
-                                <span style="font-size:0.78rem; color:var(--text-muted);" id="diag-cam-status">Angle slightly downward so you are clearly visible throughout the exam.</span>
-                            </div>
-                            <button type="button" class="btn-comp btn-mock" style="padding:7px 14px; font-size:0.76rem;" id="btn-test-cam">
-                                <i class="fa-solid fa-camera"></i> Test Webcam
-                            </button>
-                        </div>
-
-                        <div class="diag-row" id="diag-row-screen">
-                            <div>
-                                <strong style="color:var(--text-pure); display:block; font-size:0.88rem;">2. Entire Screen Share API (`getDisplayMedia`)</strong>
-                                <span style="font-size:0.78rem; color:var(--text-muted);" id="diag-screen-status">Share your Entire Screen and click "Hide" on the floating bar before starting.</span>
-                            </div>
-                            <button type="button" class="btn-comp btn-mock" style="padding:7px 14px; font-size:0.76rem;" id="btn-test-screen">
-                                <i class="fa-solid fa-desktop"></i> Test Screen Share
-                            </button>
-                        </div>
-
-                        <div class="diag-row" id="diag-row-phone">
-                            <div>
-                                <strong style="color:var(--text-pure); display:block; font-size:0.88rem;">3. Secondary Phone Side-Cam (`mobile_proctor.html`)</strong>
-                                <span style="font-size:0.78rem; color:var(--text-muted);" id="diag-phone-status">Place your phone camera so proctors can see <strong>both you working and your screen</strong> (15s heartbeat check).</span>
-                            </div>
-                            <a href="mobile_proctor.html" target="_blank" rel="noopener" class="btn-comp btn-mock" style="padding:7px 14px; font-size:0.76rem;">
-                                <i class="fa-solid fa-mobile-screen-button"></i> Preview Mobile Cam
-                            </a>
-                        </div>
-
-                        <div class="diag-row" id="diag-row-fs">
-                            <div>
-                                <strong style="color:var(--text-pure); display:block; font-size:0.88rem;">4. Fullscreen Lockdown API (`requestFullscreen`)</strong>
-                                <span style="font-size:0.78rem; color:var(--text-muted);" id="diag-fs-status">Required to prevent focus strike warnings during the 90-minute Grand Final.</span>
-                            </div>
-                            <button type="button" class="btn-comp btn-mock" style="padding:7px 14px; font-size:0.76rem;" id="btn-test-fs">
-                                <i class="fa-solid fa-expand"></i> Test Fullscreen
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="diag-cam-box">
-                        <video id="diag-webcam-preview" autoplay playsinline muted style="display:none;"></video>
-                        <div id="diag-cam-placeholder" style="text-align:center; color:var(--text-muted); font-family:var(--font-mono); font-size:0.78rem; padding:20px;">
-                            <i class="fa-solid fa-video" style="font-size:1.8rem; color:var(--accent-blue); margin-bottom:8px; display:block;"></i>
-                            Webcam Diagnostic Preview<br>
-                            <span style="font-size:0.7rem;">(Ensure face + work area are framed clearly)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 5: COHORT ANALYTICS & UNIFIED ANONYMIZED CANDIDATE BIB DIRECTORY -->
+            <!-- TAB 4: COHORT ANALYTICS & UNIFIED ANONYMIZED CANDIDATE BIB DIRECTORY -->
             <div class="pd-tab-pane" id="dash-pane-cohort">
                 <div class="cohort-stats-row">
                     <div class="cohort-box">
@@ -1014,9 +1227,9 @@
                     <div class="cohort-box">
                         <h4><i class="fa-solid fa-medal"></i> Grand Finalists &amp; Olympiad Field</h4>
                         <div class="tag-cloud">
-                            <span class="stat-chip" style="border-color:var(--accent-gold); color:var(--accent-gold);">Grand Finalists: <strong>16 Entries (20 Bibs)</strong></span>
+                            <span class="stat-chip" style="border-color:var(--accent-gold); color:var(--accent-gold);">Grand Finalists: <strong>15 Entries (18 Bibs)</strong></span>
                             <span class="stat-chip">Solo Finalists: <strong>12</strong></span>
-                            <span class="stat-chip">Duo Finalist Teams: <strong>4</strong></span>
+                            <span class="stat-chip">Duo Finalist Teams: <strong>3</strong></span>
                             <span class="stat-chip">USAAAO / National Astro: <strong>14</strong></span>
                             <span class="stat-chip">IPhO / National Physics: <strong>9</strong></span>
                             <span class="stat-chip">IOAA / IOAA-Jr: <strong>5</strong></span>
@@ -1026,9 +1239,9 @@
 
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
                     <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">
-                        <i class="fa-solid fa-user-shield" style="color:var(--accent-green);"></i> Unified Candidate Roster (Identified publicly by Candidate Bib Code)
+                        <i class="fa-solid fa-user-shield" style="color:var(--accent-green);"></i> Unified Candidate Roster (Identified publicly by Candidate Bib Code — no legal names exposed)
                     </span>
-                    <input type="text" id="roster-search-input" placeholder="Search by Candidate Bib Code (SNG-2026-10XX), Country, or Callsign..." style="padding:8px 14px; border-radius:6px; background:var(--bg-sidebar); border:1px solid var(--border-light); color:var(--text-pure); font-family:var(--font-mono); font-size:0.75rem; min-width:320px;">
+                    <input type="text" id="roster-search-input" placeholder="Search by Bib Code (SNG-2026-10XX), Country, or Callsign..." style="padding:8px 14px; border-radius:6px; background:var(--bg-sidebar); border:1px solid var(--border-light); color:var(--text-pure); font-family:var(--font-mono); font-size:0.75rem; min-width:300px;">
                 </div>
 
                 <div class="roster-table-wrap">
@@ -1039,7 +1252,7 @@
                                 <th>Country</th>
                                 <th>Academic Division</th>
                                 <th>Callsign</th>
-                                <th>Tournament Status</th>
+                                <th>Official SAC 2026 Outcome</th>
                             </tr>
                         </thead>
                         <tbody id="roster-tbody"></tbody>
@@ -1047,51 +1260,69 @@
                 </div>
             </div>
 
-            <!-- BOTTOM ACTION BAR -->
+            <!-- BOTTOM ARCHIVE BAR -->
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding-top:12px; border-top:1px solid var(--border-subtle);">
-                <span style="font-size:0.82rem; color:var(--text-muted);" id="pd-helper-note">
-                    Grand Final Windows: <strong>Sat, 21 Nov 2026 · 10:00–11:00 UT &amp; 18:00–19:00 UT</strong> · 90-minute timer (45 MCQs) · Strictly <strong>1 attempt</strong> across both windows. Clicking <strong>Launch Grand Final Terminal</strong> pre-fills your Bib ID and Email.
+                <span style="font-size:0.82rem; color:var(--text-muted);">
+                    <strong>SAC 2026 Official Archive:</strong> All scores verified on the 45.0 pt scale with difficulty-weighted tie-breakers. Certificates and sponsor prizes are distributed via registered email &amp; Discord.
                 </span>
                 <div style="display:flex; gap:10px; flex-wrap:wrap;">
                     <a href="tools.html" class="btn-comp btn-mock" style="padding:9px 15px; font-size:0.8rem;">
                         <i class="fa-solid fa-square-root-variable"></i> Official IAU Constants Sheet
                     </a>
-                    <a href="admin_proctor.html" class="btn-comp btn-mock" id="pd-admin-btn" style="display:none; padding:9px 15px; font-size:0.8rem; border-color:var(--accent-gold); color:var(--accent-gold);">
-                        <i class="fa-solid fa-shield-halved"></i> Admin Proctor Console
+                    <a href="https://drive.google.com/file/d/1B6t4DWtaloF9IRWQ652CjbE6PAN1vg8d/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="btn-comp btn-mock" style="padding:9px 15px; font-size:0.8rem;">
+                        <i class="fa-solid fa-file-pdf" style="color: var(--accent-rose);"></i> Rules &amp; Syllabus (PDF)
                     </a>
-                    <button type="button" class="btn-comp btn-register" id="pd-enter-round-btn" style="padding:9px 18px; font-size:0.82rem;" onclick="window.enterCompetitionRound()">
-                        <i class="fa-solid fa-terminal"></i> Launch Grand Final Terminal (exam.html)
-                    </button>
                 </div>
             </div>
         </section>
 
-        <!-- FEATURED COMPETITION MEGA-CARD -->
+        <!-- NEXT SEASON 2027 TEASER BANNER -->
+        <section class="next-season-banner" aria-label="Next Season Announcement">
+            <div class="next-season-left">
+                <div class="next-season-icon">
+                    <i class="fa-solid fa-meteor"></i>
+                </div>
+                <div>
+                    <div class="next-season-eyebrow"><i class="fa-solid fa-sparkles"></i> Upcoming Season · 2027</div>
+                    <div class="next-season-title">Next Season: Supernova Winter / Spring Cup 2027 — Dates &amp; Registration Coming Soon</div>
+                    <div class="next-season-sub">Our next international astrophysics cup is in preparation. Join the Supernova Discord and practice with our warm-up problem sets to be ready when registration opens.</div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a href="https://discord.gg/KJATXYfan4" target="_blank" rel="noopener noreferrer" class="btn-comp btn-mock" style="border-color: rgba(53, 230, 255, 0.45); color: var(--accent-blue);">
+                    <i class="fa-brands fa-discord"></i> Get 2027 Alerts on Discord
+                </a>
+            </div>
+        </section>
+
+        <!-- FEATURED COMPETITION ARCHIVE MEGA-CARD -->
         <section class="comp-mega-card">
             <div class="comp-top-bar">
                 <div>
                     <div class="comp-badges">
-                        <span class="c-badge badge-gold"><i class="fa-solid fa-trophy"></i> GRAND FINAL TODAY · SAT 21 NOV</span>
-                        <span class="c-badge badge-blue">45 MCQs · 90 Min · Top 16 Finalists</span>
-                        <span class="c-badge badge-green">Over $2,300 in Prizes</span>
+                        <span class="c-badge badge-green"><i class="fa-solid fa-box-archive"></i> COMPLETED · AUTUMN 2026 ARCHIVE</span>
+                        <span class="c-badge badge-gold"><i class="fa-solid fa-award"></i> OFFICIAL RESULTS PUBLISHED</span>
+                        <span class="c-badge badge-blue">Over \$2,300 in Prizes</span>
                     </div>
                     <h2 class="comp-title">Supernova Autumn Cup 2026</h2>
                     <p class="comp-subtitle">
-                        Our first seasonal competition: a multi-stage Multiple Choice Question (MCQ) astrophysics championship open internationally to students up to age 20, culminating in today's 45-question Grand Final (The POTD War).
+                        Our inaugural seasonal competition: an international multi-stage Multiple Choice Question (MCQ) astrophysics championship for students up to age 20, uniting 43 competitors from 12 countries and culminating in the 45-question Grand Final (The POTD War).
                     </p>
                 </div>
 
-                <div class="countdown-box">
-                    <span class="countdown-label" id="countdown-phase-label">Grand Final Entry Window</span>
-                    <div class="countdown-digits" id="countdown-timer">--d : --h : --m : --s</div>
-                    <div class="countdown-dates">Sat 21 Nov · 10:00–11:00 UT &amp; 18:00–19:00 UT</div>
+                <div class="status-official-box">
+                    <span class="status-official-eyebrow">SAC 2026 Final Archive</span>
+                    <div class="status-official-badge">
+                        <i class="fa-solid fa-circle-check"></i> STATUS: COMPLETED · RESULTS OFFICIAL
+                    </div>
+                    <div class="status-official-dates">14–21 Nov 2026 · 15 Competing Finalists · 45.0 pt Scale</div>
                 </div>
             </div>
 
             <!-- SPONSORS BAR -->
             <div class="sponsors-panel">
                 <div class="sponsors-header">
-                    <h3>Sponsored By (Over $2,300 in Prizes)</h3>
+                    <h3>Sponsored By (Over \$2,300 in Prizes)</h3>
                     <span style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-gold);">
                         Software Bisque · Aries Productions · Axilone &amp; Siril · Pavonis Interactive · Giant Army · Jundroo · KSP · AoPS
                     </span>
@@ -1100,12 +1331,12 @@
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/software_bisque.png" alt="Software Bisque" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none;">SOFTWARE BISQUE</div>
-                        <span class="sponsor-sub">TheSky™ Imaging Bundle ($695)</span>
+                        <span class="sponsor-sub">TheSky™ Imaging Bundle (\$695)</span>
                     </div>
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/aries_productions.png" alt="Aries Productions" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none; color:var(--accent-purple);">ARIES PRODUCTIONS</div>
-                        <span class="sponsor-sub">3× Astro Pixel Processor ($600)</span>
+                        <span class="sponsor-sub">3× Astro Pixel Processor (\$600)</span>
                     </div>
                     <div class="sponsor-item">
                         <div style="display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;">
@@ -1118,12 +1349,12 @@
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/pavonis.png" alt="Pavonis Interactive" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none; color:var(--accent-green);">PAVONIS INTERACTIVE</div>
-                        <span class="sponsor-sub">5× Terra Invicta Keys ($200)</span>
+                        <span class="sponsor-sub">5× Terra Invicta Keys (\$200)</span>
                     </div>
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/universe_sandbox.png" alt="Universe Sandbox" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none; color:var(--accent-blue);">UNIVERSE SANDBOX</div>
-                        <span class="sponsor-sub">6× Universe Sandbox Keys ($180)</span>
+                        <span class="sponsor-sub">6× Universe Sandbox Keys (\$180)</span>
                     </div>
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/ksp.png" alt="Kerbal Space Program" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -1133,7 +1364,7 @@
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/jundroo.png" alt="Jundroo Games" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="sponsor-fallback" style="display:none;">jundroo</div>
-                        <span class="sponsor-sub">6× Juno: New Origins Keys ($120)</span>
+                        <span class="sponsor-sub">6× Juno: New Origins Keys (\$120)</span>
                     </div>
                     <div class="sponsor-item">
                         <img src="assets/img/sponsors/aops.png" alt="Art of Problem Solving" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -1143,11 +1374,14 @@
                 </div>
             </div>
 
-            <!-- 3 PHASES BREAKDOWN -->
+            <!-- 3 PHASES SUMMARY (ALL COMPLETED) -->
             <div class="phases-grid">
                 <div class="phase-card">
-                    <span class="phase-num">Stage 01 · Saturday, 14 Nov 2026</span>
-                    <h3>Open Qualifier (Completed)</h3>
+                    <div class="phase-card-top">
+                        <span class="phase-num">Stage 01 · Saturday, 14 Nov 2026</span>
+                        <span class="c-badge badge-green">Completed ✓</span>
+                    </div>
+                    <h3>Open Qualifier</h3>
                     <p>Registered competitors took a 30 MCQ astronomy &amp; astrophysics exam in 1 hour covering spherical coordinates, Keplerian orbits, radiation laws, and cosmology.</p>
                     <div class="phase-meta">
                         <span>Format: 30 MCQs (1 hr)</span>
@@ -1156,52 +1390,58 @@
                 </div>
 
                 <div class="phase-card">
-                    <span class="phase-num" style="color: var(--accent-blue);">Stage 02 · Thursday, 19 Nov 2026</span>
+                    <div class="phase-card-top">
+                        <span class="phase-num" style="color: var(--accent-blue);">Stage 02 · Thursday, 19 Nov 2026</span>
+                        <span class="c-badge badge-green">Completed ✓</span>
+                    </div>
                     <h3>Proctored Mock &amp; Calibration</h3>
-                    <p>Full dual-camera + screen-share system check (40 MCQs) verifying live phone side-cam pairing, plus supervised qualification for technical-issue recovery.</p>
+                    <p>Full proctoring &amp; exam-environment calibration round (40 MCQs) verifying system readiness and providing supervised technical-issue qualification.</p>
                     <div class="phase-meta">
                         <span>Format: 40 MCQs</span>
-                        <span style="color:var(--accent-blue); font-weight:700;">16 Finalists Set</span>
+                        <span style="color:var(--accent-blue); font-weight:700;">+1 Supervised Qualifier</span>
                     </div>
                 </div>
 
-                <div class="phase-card" style="border-color: rgba(255, 207, 92, 0.5); background: rgba(255, 207, 92, 0.04);">
-                    <span class="phase-num" style="color: var(--accent-gold);">Stage 03 · Saturday, 21 Nov 2026 (TODAY)</span>
-                    <h3>Grand Final — The POTD War (90 Min)</h3>
-                    <p>Our Top 16 Qualified Finalists compete in the 45 MCQ Grand Final (Window A: 10:00–11:00 UT | Window B: 18:00–19:00 UT) to decide final global standings, medals, and our $2,300+ sponsor prize pool.</p>
+                <div class="phase-card" style="border-color: rgba(255, 207, 92, 0.45); background: rgba(255, 207, 92, 0.04);">
+                    <div class="phase-card-top">
+                        <span class="phase-num" style="color: var(--accent-gold);">Stage 03 · Saturday, 21 Nov 2026</span>
+                        <span class="c-badge badge-green">Completed ✓</span>
+                    </div>
+                    <h3>Grand Final — The POTD War</h3>
+                    <p>15 competing finalist entries tackled the 45 MCQ, 90-minute proctored Grand Final across Windows A &amp; B to decide global standings, medals, and the \$2,300+ sponsor prize pool.</p>
                     <div class="phase-meta">
-                        <span>Format: 45 MCQs (1.5 hr)</span>
-                        <span style="color:var(--accent-gold); font-weight:700;">Medals &amp; Prizes</span>
+                        <span>Format: 45 MCQs (90 min)</span>
+                        <span style="color:var(--accent-gold); font-weight:700;">Results Official</span>
                     </div>
                 </div>
             </div>
 
-            <!-- PRIZES & AMBASSADOR CHALLENGE -->
+            <!-- PRIZES & AMBASSADOR CHALLENGE FINAL STANDINGS -->
             <div class="prizes-grid">
                 <div class="prizes-panel">
-                    <div class="panel-heading" style="margin-bottom:4px;"><i class="fa-solid fa-trophy" style="color: var(--accent-gold);"></i> What Do You Win?</div>
+                    <div class="panel-heading" style="margin-bottom:4px;"><i class="fa-solid fa-trophy" style="color: var(--accent-gold);"></i> SAC 2026 Prize Tiers</div>
                     <div class="prize-tier" style="border-left-color: #FFD700;">
-                        <strong>1st Place (Gold Medal):</strong> Gold Certificate + <strong>TheSky™ Imaging Bundle</strong> ($695) + <strong>Astro Pixel Processor</strong> Lifetime License ($200) + Physical copy of <strong>Mastering image processing with Siril</strong> (€59) + <strong>Kerbal Space Program</strong> Steam key + <strong>Juno: New Origins</strong> Steam key.
+                        <strong>1st Place (Gold Medal):</strong> Gold Certificate + <strong>TheSky™ Imaging Bundle</strong> (\$695) + <strong>Astro Pixel Processor</strong> Lifetime License (\$200) + Physical copy of <strong>Mastering image processing with Siril</strong> (€59) + <strong>Kerbal Space Program</strong> Steam key + <strong>Juno: New Origins</strong> Steam key.
                     </div>
                     <div class="prize-tier" style="border-left-color: #C0C0C0;">
-                        <strong>2nd – 5th Place (Silver Medal):</strong> Silver Certificate + <strong>$25 Voucher on AoPS</strong> + <strong>Kerbal Space Program</strong> Steam key.<br>
+                        <strong>2nd – 5th Place (Silver Medal):</strong> Silver Certificate + <strong>\$25 Voucher on AoPS</strong> + <strong>Kerbal Space Program</strong> Steam key.<br>
                         <span style="font-size:0.82rem; color:var(--text-muted);">
-                            • <strong>2nd &amp; 3rd Place:</strong> Astro Pixel Processor Lifetime License ($200)<br>
+                            • <strong>2nd &amp; 3rd Place:</strong> Astro Pixel Processor Lifetime License (\$200)<br>
                             • <strong>4th &amp; 5th Place:</strong> Physical copy of <em>Mastering image processing with Siril</em> (€59, shipped worldwide)
                         </span>
                     </div>
                     <div class="prize-tier" style="border-left-color: #CD7F32;">
-                        <strong>6th – 10th Place (Bronze Medal):</strong> Bronze Certificate + <strong>Terra Invicta</strong> Steam key ($40 value by Pavonis Interactive).
+                        <strong>6th – 10th Place (Bronze Medal):</strong> Bronze Certificate + <strong>Terra Invicta</strong> Steam key (\$40 value by Pavonis Interactive).
                     </div>
                     <div class="prize-tier" style="border-left-color: var(--accent-blue);">
                         <strong>11th – 20th Place (Honorable Mention):</strong> Honorable Mention Certificate + Sponsor Steam Key:<br>
                         <span style="font-size:0.82rem; color:var(--text-muted);">
-                            • <strong>11th – 15th Place:</strong> <em>Juno: New Origins</em> Steam key ($20 value by Jundroo Games)<br>
-                            • <strong>16th – 20th Place:</strong> <em>Universe Sandbox</em> Steam key ($30 value by Giant Army)
+                            • <strong>11th – 15th Place:</strong> <em>Juno: New Origins</em> Steam key (\$20 value by Jundroo Games)<br>
+                            • <strong>16th – 20th Place:</strong> <em>Universe Sandbox</em> Steam key (\$30 value by Giant Army)
                         </span>
                     </div>
                     <div class="prize-tier" style="border-left-color: var(--accent-green);">
-                        <strong>All Participants:</strong> Everyone receives a <strong>Participation Certificate</strong> for every round in which they qualify and participate.
+                        <strong>All Participants:</strong> Everyone receives a <strong>Participation Certificate</strong> for every round in which they qualified and participated.
                     </div>
                 </div>
 
@@ -1209,45 +1449,45 @@
                     <div style="display:flex; flex-direction:column; gap:12px;">
                         <div class="panel-heading" style="margin-bottom:0;">
                             <i class="fa-solid fa-users-line" style="color: var(--accent-blue);"></i>
-                            Ambassador Challenge Standings
+                            Ambassador Challenge Final Standings
                         </div>
                         <p style="font-size:0.86rem; color:var(--text-main); line-height:1.6;">
-                            Verified referrals from the official registration dataset (identified by Discord / Bib Code):
+                            Final verified referral standings from the official SAC 2026 registration dataset (identified by Discord / Bib Code):
                         </p>
                         <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:12px 15px; font-family:var(--font-mono); font-size:0.76rem; color:var(--accent-gold); line-height:1.8;">
-                            🥇 1st Ambassador: <strong>@user_41612 (SNG-2026-1011)</strong> — 5 Verified Referrals (Universe Sandbox Key)<br>
-                            🥈 2nd Ambassador: <strong>kerem_45.sjk_37712 (SNG-2026-1025)</strong> — Verified Referrer ($25 AoPS Voucher)<br>
-                            🥉 3rd Ambassador: <strong>selmama.h (SNG-2026-1032)</strong> — Verified Referrer ($25 AoPS Voucher)
+                            🥇 #1 Ambassador: <strong>@user_41612 (SNG-2026-1011)</strong> — 5 Verified Referrals (Universe Sandbox Key)<br>
+                            🥈 #2 Ambassador: <strong>kerem_45.sjk_37712 (SNG-2026-1025)</strong> — Verified Referrer (\$25 AoPS Voucher)<br>
+                            🥉 #3 Ambassador: <strong>selmama.h (SNG-2026-1032)</strong> — Verified Referrer (\$25 AoPS Voucher)
                         </div>
                     </div>
 
                     <div style="padding-top:12px; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
                         <span style="font-size:0.8rem; color:var(--text-muted);">
-                            <strong>Status:</strong> 16 Finalist Entries Verified (20 Bibs)
+                            <strong>Status:</strong> Final Standings Verified · Prizes Confirmed
                         </span>
-                        <a href="https://discord.gg/KJATXYfan4" target="_blank" rel="noopener" class="btn-comp btn-mock" style="padding:8px 14px; font-size:0.8rem;">
+                        <a href="https://discord.gg/KJATXYfan4" target="_blank" rel="noopener noreferrer" class="btn-comp btn-mock" style="padding:8px 14px; font-size:0.8rem;">
                             <i class="fa-brands fa-discord"></i> Official Discord
                         </a>
                     </div>
                 </div>
             </div>
 
-            <!-- RULES & WARM-UP SPLIT -->
+            <!-- ARCHIVE RULES & WARM-UP SPLIT -->
             <div class="comp-details-grid">
                 <div class="rules-panel">
-                    <div class="panel-heading"><i class="fa-solid fa-scale-balanced" style="color: var(--accent-green);"></i> Grand Final Format &amp; Rules</div>
+                    <div class="panel-heading"><i class="fa-solid fa-scale-balanced" style="color: var(--accent-green);"></i> SAC 2026 Format &amp; Scoring Archive</div>
                     <ul class="rules-list">
-                        <li><i class="fa-solid fa-check"></i> <div><strong>Grand Final Schedule:</strong> Today, <strong>Saturday, 21 Nov 2026</strong> — Window A (<strong>10:00–11:00 UT</strong>) and Window B (<strong>18:00–19:00 UT</strong>). Launch anytime inside your chosen 1-hour window to receive your full <strong>90 minutes</strong>.</div></li>
-                        <li><i class="fa-solid fa-check"></i> <div><strong>Scoring &amp; Tie-Breakers:</strong> \(+1.0\text{ pt}\) per correct answer across 45 MCQs (10 Easy, 20 Medium, 15 Hard), \(0.0\text{ pts}\) for blank or wrong choices (no negative marking). Ties are broken by average difficulty weight of solved problems.</div></li>
-                        <li><i class="fa-solid fa-check"></i> <div><strong>Dual-Camera Proctoring:</strong> Angle your laptop webcam downward so you are visible, share your Entire Screen (click "Hide" on the floating bar before starting), and position your <strong>phone side-camera</strong> so proctors can see both you working and your screen.</div></li>
-                        <li><i class="fa-solid fa-check"></i> <div><strong>Teams of 2:</strong> Both teammates log in with their own Bib ID—answers and timer sync live. Communicate via a second device (kept visible on webcam) or Discord voice call without leaving fullscreen.</div></li>
+                        <li><i class="fa-solid fa-check"></i> <div><strong>Grand Final Schedule (Completed):</strong> Held on <strong>Saturday, 21 Nov 2026</strong> across two international time zones — Window A (<strong>10:00–11:00 UT</strong>) and Window B (<strong>18:00–19:00 UT</strong>) with a 90-minute exam timer.</div></li>
+                        <li><i class="fa-solid fa-check"></i> <div><strong>Scoring &amp; Tie-Breakers:</strong> \(+1.0\text{ pt}\) per correct answer across 45 MCQs (10 Easy, 20 Medium, 15 Hard), \(0.0\text{ pts}\) for blank or wrong choices (no negative marking). Ties were resolved by the average difficulty weight (\(\text{TB}\)) of solved problems.</div></li>
+                        <li><i class="fa-solid fa-check"></i> <div><strong>Integrity &amp; Validation:</strong> All Grand Final scripts were independently audited by the Scientific Committee prior to publishing the official 15-entry standings.</div></li>
+                        <li><i class="fa-solid fa-check"></i> <div><strong>Unified Ranking Field:</strong> Solo contestants and 2-person teams competed together on a unified global leaderboard identified publicly by Candidate Bib Code &amp; Callsign.</div></li>
                     </ul>
                 </div>
 
                 <div class="mock-panel">
                     <div class="panel-heading"><i class="fa-solid fa-vial" style="color: var(--accent-blue);"></i> 20-Question Warm-Up Practice</div>
                     <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 18px;">
-                        Warm up before your Grand Final window opens with 20 calibrated practice MCQs across celestial mechanics, radiation, stars, galaxies, cosmology, and observation.
+                        Keep sharpening your Olympiad astrophysics skills anytime with 20 calibrated SAC 2026 practice MCQs across celestial mechanics, radiation, stars, galaxies, cosmology, and observation.
                     </p>
                     <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 18px; font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-main);">
                         <div>• 20 Calibrated Practice MCQs</div>
@@ -1262,15 +1502,15 @@
             <!-- FOOTER CTA -->
             <div class="comp-footer">
                 <div class="reg-status-info">
-                    Grand Final Today: <strong>Saturday, 21 Nov 2026 · 10:00–11:00 UT &amp; 18:00–19:00 UT (45 MCQs · 90 Min)</strong>
+                    SAC 2026 Archive: <strong>Completed 21 Nov 2026 · Official Results Published (45.0 pt Scale)</strong>
                 </div>
                 <div class="btn-group">
                     <a href="https://drive.google.com/file/d/1B6t4DWtaloF9IRWQ652CjbE6PAN1vg8d/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="btn-comp btn-mock">
                         <i class="fa-solid fa-file-pdf" style="color: var(--accent-rose);"></i> View Rules &amp; Syllabus (PDF)
                     </a>
-                    <button type="button" class="btn-comp btn-register" id="footer-enter-round-btn" onclick="window.enterCompetitionRound()">
-                        <i class="fa-solid fa-terminal"></i> Launch Grand Final Terminal
-                    </button>
+                    <a href="#participant-dashboard-card" class="btn-comp btn-register">
+                        <i class="fa-solid fa-trophy"></i> View Official Standings
+                    </a>
                 </div>
             </div>
         </section>
@@ -1298,28 +1538,38 @@
 
     <script type="module" src="js/auth.js"></script>
     <script type="module">
-        import { getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        // Session identifier matching exam.html & admin_proctor.html (isolated from Round 1 & Mock Exam)
-        const CURRENT_SESSION_ID = "sac2026_phase3_final";
-        const TOTAL_FINAL_QUESTIONS = 45;
-
-        // 16 Qualified Grand Finalist Entries (20 individual Bibs) + 3 Organizers
-        const QUALIFIED_FINAL_BIBS = new Set([
-            "SNG-2026-1046", "SNG-2026-1044", "SNG-2026-1045",
-            "SNG-2026-1001", "SNG-2026-1019",
-            "SNG-2026-1003", "SNG-2026-1031",
-            "SNG-2026-1025", "SNG-2026-1030",
-            "SNG-2026-1038", "SNG-2026-1041",
-            "SNG-2026-1006", "SNG-2026-1008", "SNG-2026-1010", "SNG-2026-1011",
-            "SNG-2026-1012", "SNG-2026-1013", "SNG-2026-1015", "SNG-2026-1023",
-            "SNG-2026-1029", "SNG-2026-1033", "SNG-2026-1039", "SNG-2026-1040"
-        ]);
+        import { auth } from "./js/auth.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         // ============================================================================
-        // COMPLETE 43-COMPETITOR + 3 ADMIN DATASET (100% SYNCED WITH ADMIN & EXAM DATA)
+        // OFFICIAL VALIDATED SAC 2026 GRAND FINAL STANDINGS (45.0 PT SCALE · 15 ENTRIES)
+        // Publicly identified strictly by Candidate Bib Code & Callsign (No legal names)
+        // ============================================================================
+        const OFFICIAL_FINAL_STANDINGS = [
+            { rank: 1,  bibs: ["SNG-2026-1039"],                   bibDisplay: "SNG-2026-1039",                   callsign: "Monoatomic Molecule",        country: "Romania",            score: 37.0, scoreDisplay: "37.0 / 45", tb: "4.43", medal: "Gold Medal",      tierClass: "tier-gold",     icon: "fa-trophy" },
+            { rank: 2,  bibs: ["SNG-2026-1025", "SNG-2026-1030"],  bibDisplay: "SNG-2026-1025 & SNG-2026-1030",   callsign: "Team Tefla",                 country: "Türkiye",            score: 37.0, scoreDisplay: "37.0 / 45", tb: "4.31", medal: "Silver Medal",    tierClass: "tier-silver",   icon: "fa-medal" },
+            { rank: 3,  bibs: ["SNG-2026-1001", "SNG-2026-1019"],  bibDisplay: "SNG-2026-1001 & SNG-2026-1019",   callsign: "Team Pair #3 · Eurasia",     country: "Romania / Mongolia", score: 35.0, scoreDisplay: "35.0 / 45", tb: "4.50", medal: "Silver Medal",    tierClass: "tier-silver",   icon: "fa-medal" },
+            { rank: 4,  bibs: ["SNG-2026-1010"],                   bibDisplay: "SNG-2026-1010",                   callsign: "Solo",                       country: "Romania",            score: 34.0, scoreDisplay: "34.0 / 45", tb: "4.28", medal: "Bronze Finalist", tierClass: "tier-bronze",   icon: "fa-award" },
+            { rank: 5,  bibs: ["SNG-2026-1013"],                   bibDisplay: "SNG-2026-1013",                   callsign: "Patei",                      country: "Romania",            score: 33.0, scoreDisplay: "33.0 / 45", tb: "4.55", medal: "Bronze Finalist", tierClass: "tier-bronze",   icon: "fa-award" },
+            { rank: 6,  bibs: ["SNG-2026-1008"],                   bibDisplay: "SNG-2026-1008",                   callsign: "Solo",                       country: "Romania",            score: 33.0, scoreDisplay: "33.0 / 45", tb: "4.08", medal: "Top 10 Laureate", tierClass: "tier-laureate", icon: "fa-star" },
+            { rank: 7,  bibs: ["SNG-2026-1003"],                   bibDisplay: "SNG-2026-1003",                   callsign: "Astrobros",                  country: "Romania",            score: 31.0, scoreDisplay: "31.0 / 45", tb: "3.84", medal: "Top 10 Laureate", tierClass: "tier-laureate", icon: "fa-star" },
+            { rank: 8,  bibs: ["SNG-2026-1023"],                   bibDisplay: "SNG-2026-1023",                   callsign: "Solo",                       country: "Türkiye",            score: 28.0, scoreDisplay: "28.0 / 45", tb: "3.23", medal: "Top 10 Laureate", tierClass: "tier-laureate", icon: "fa-star" },
+            { rank: 9,  bibs: ["SNG-2026-1006"],                   bibDisplay: "SNG-2026-1006",                   callsign: "Solo",                       country: "India",              score: 27.0, scoreDisplay: "27.0 / 45", tb: "3.59", medal: "Top 10 Laureate", tierClass: "tier-laureate", icon: "fa-star" },
+            { rank: 10, bibs: ["SNG-2026-1011"],                   bibDisplay: "SNG-2026-1011",                   callsign: "Solo",                       country: "Indonesia",          score: 26.0, scoreDisplay: "26.0 / 45", tb: "3.62", medal: "Top 10 Laureate", tierClass: "tier-laureate", icon: "fa-star" },
+            { rank: 11, bibs: ["SNG-2026-1033"],                   bibDisplay: "SNG-2026-1033",                   callsign: "Astronomical levels of larp",country: "Indonesia",          score: 25.0, scoreDisplay: "25.0 / 45", tb: "4.80", medal: "Finalist Honors", tierClass: "tier-honors",   icon: "fa-certificate" },
+            { rank: 12, bibs: ["SNG-2026-1038", "SNG-2026-1041"],  bibDisplay: "SNG-2026-1038 & SNG-2026-1041",   callsign: "Team Alternosteaua",         country: "Romania",            score: 25.0, scoreDisplay: "25.0 / 45", tb: "4.58", medal: "Finalist Honors", tierClass: "tier-honors",   icon: "fa-certificate" },
+            { rank: 13, bibs: ["SNG-2026-1029"],                   bibDisplay: "SNG-2026-1029",                   callsign: "Geltner",                    country: "USA",                score: 25.0, scoreDisplay: "25.0 / 45", tb: "4.02", medal: "Finalist Honors", tierClass: "tier-honors",   icon: "fa-certificate" },
+            { rank: 14, bibs: ["SNG-2026-1012"],                   bibDisplay: "SNG-2026-1012",                   callsign: "Amine",                      country: "Algeria",            score: 21.0, scoreDisplay: "21.0 / 45", tb: "3.67", medal: "Finalist Honors", tierClass: "tier-honors",   icon: "fa-certificate" },
+            { rank: 15, bibs: ["SNG-2026-1015"],                   bibDisplay: "SNG-2026-1015",                   callsign: "Solo",                       country: "USA",                score: 20.0, scoreDisplay: "20.0 / 45", tb: "4.20", medal: "Finalist Honors", tierClass: "tier-honors",   icon: "fa-certificate" }
+        ];
+
+        const FINAL_RESULT_BY_BIB = new Map();
+        OFFICIAL_FINAL_STANDINGS.forEach(entry => {
+            entry.bibs.forEach(bib => FINAL_RESULT_BY_BIB.set(bib, entry));
+        });
+
+        // ============================================================================
+        // COMPLETE 43-COMPETITOR + 3 ORGANIZER ARCHIVE DATASET
         // ============================================================================
         const REGISTERED_PARTICIPANTS = [
             {"bib": "SNG-2026-1046", "email": "matei.butnaru@yahoo.com", "aliasEmails": ["contact.supernovaguide@gmail.com", "contact@supernovaguide.com", "matei.butnaru@yahoo.ro", "mateibutnaru5@gmail.com"], "sngUser": "Matei", "name": "Matei Butnaru", "discord": "matei_admin", "dob": "2008-01-01", "country": "Romania", "school": "Supernova Guide Scientific Committee", "city": "Botoșani, Romania", "grade": "Lead Organizer & Scientific Committee", "experience": "IOAA / National Astronomy & Physics Olympiad", "mode": "Solo (Matei)", "teamType": "solo", "callsign": "Matei", "partner": null, "partnerBib": null, "partnerDiscord": "Albert / Mihai", "partnerCountry": "Romania", "partnerSchool": "Supernova Guide Scientific Committee", "publicPrivacy": "full", "ageConsent": "Organizer", "sponsorConsent": true, "referredBy": "Founder", "regTimestamp": "2026-10-19 00:00:00", "isAdmin": true, "aliasBibs": ["SNG-ADMIN-01"], "canStartAnytime": true, "isParticipant": true, "teamId": null},
@@ -1327,13 +1577,13 @@
             {"bib": "SNG-2026-1045", "email": "mihai.tesileanu2@gmail.com", "aliasEmails": [], "sngUser": "Mihai", "name": "Mihai Teșileanu", "discord": "mihai_admin", "dob": "2008-01-01", "country": "Romania", "school": "Supernova Guide Scientific Committee", "city": "Romania", "grade": "Co-Founder & Scientific Committee", "experience": "IOAA / National Astronomy & Physics Olympiad", "mode": "Solo (Mihai)", "teamType": "solo", "callsign": "Mihai", "partner": null, "partnerBib": null, "partnerDiscord": "Matei / Albert", "partnerCountry": "Romania", "partnerSchool": "Supernova Guide Scientific Committee", "publicPrivacy": "full", "ageConsent": "Organizer", "sponsorConsent": true, "referredBy": "Co-Founder", "regTimestamp": "2026-10-19 00:00:00", "isAdmin": true, "aliasBibs": ["SNG-ADMIN-03"], "canStartAnytime": true, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1001", "email": "alex.mihai.barbu11@gmail.com", "aliasEmails": [], "sngUser": "Regele", "name": "Barbu Mihai Alexandru", "discord": "alex3r8101", "dob": "2011-09-02", "country": "Romania", "school": "Colegiul National \"Ion C. Bratianu\"", "city": "Pitesti, Arges, Romania", "grade": "High School — Grade 9 (or equivalent)", "experience": "USAAAO / National Astronomy Olympiad", "mode": "Team of 2 (Pair #3 · Eurasia)", "teamType": "duo_random", "callsign": "Pair #3 · Eurasia", "partner": "Bayar Enkhbold", "partnerBib": "SNG-2026-1019", "partnerDiscord": "bay.mp8", "partnerCountry": "Mongolia", "partnerSchool": "English School of Mongolia", "teamNote": null, "publicPrivacy": "full", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-10-19 14:23:14", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": "TEAM-PAIR3"},
             {"bib": "SNG-2026-1002", "email": "lucadariusflorin2012@gmail.com", "aliasEmails": [], "sngUser": "Darius S.", "name": "Solcan-Luca Darius-Florin", "discord": "cgl6", "dob": "2012-07-24", "country": "Romania", "school": "Școala gimnazială numărul 7 Botoșani", "city": "Botoșani România", "grade": "Middle School / Junior High (Grades 5–8)", "experience": "IOAA / IOAA-Jr", "mode": "Solo (Dar!u$)", "teamType": "solo", "callsign": "Dar!u$", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-10-19 17:12:26", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
-            {"bib": "SNG-2026-1003", "email": "robyan2044@gmail.com", "aliasEmails": [], "sngUser": "Badea Robert", "name": "Badea Robert Yannis", "discord": "robert_24735", "dob": "2010-10-22", "country": "Romania", "school": "Colegiul National \"Ion C. Bratianu\"", "city": "Pitesti, Romania", "grade": "High School — Grade 10 (or equivalent)", "experience": "First Astronomy / Astrophysics Competition", "mode": "Team of 2 (Astrobros · Pair #1)", "teamType": "duo_random", "callsign": "Astrobros", "partner": "Dumitrescu Sebastian Gabriel", "partnerBib": "SNG-2026-1031", "partnerDiscord": "Pruna", "partnerCountry": "Romania", "partnerSchool": "Colegiul Național \"Ion C. Brătianu\"", "teamNote": null, "publicPrivacy": "full", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-10-21 22:11:05", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": "TEAM-PAIR1"},
+            {"bib": "SNG-2026-1003", "email": "robyan2044@gmail.com", "aliasEmails": [], "sngUser": "Badea Robert", "name": "Badea Robert Yannis", "discord": "robert_24735", "dob": "2010-10-22", "country": "Romania", "school": "Colegiul National \"Ion C. Bratianu\"", "city": "Pitesti, Romania", "grade": "High School — Grade 10 (or equivalent)", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo (Astrobros)", "teamType": "solo", "callsign": "Astrobros", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": "Competed solo in the SAC 2026 Grand Final under callsign Astrobros.", "publicPrivacy": "full", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-10-21 22:11:05", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1004", "email": "alexaionescu32@gmail.com", "aliasEmails": [], "sngUser": "ioana25", "name": "Ionescu Alexa Ioana", "discord": "al11exxa_12883", "dob": "2008-01-25", "country": "Romania", "school": "Colegiul National \"Ion C. Bratianu\"", "city": "Pitesti, Romania", "grade": "High School — Grade 12 / Final Secondary Year", "experience": "USAAAO / National Astronomy Olympiad", "mode": "Solo", "teamType": "solo", "callsign": "Solo", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "full", "ageConsent": "Adult (18+ / Self-Consented)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-10-23 10:47:53", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1005", "email": "divyaispresenthere@gmail.com", "aliasEmails": [], "sngUser": "Divya", "name": "Divya Yadav", "discord": "divyayadav777999___", "dob": "2012-06-22", "country": "India", "school": "Central public school jafarpur", "city": "Azamgarh india", "grade": "High School — Grade 10 (or equivalent)", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo (Divya)", "teamType": "solo", "callsign": "Divya", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-10-26 11:23:48", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1006", "email": "riteshkumarmohapatra11902@gmail.com", "aliasEmails": [], "sngUser": "Ritesh Kumar Mohapatra", "name": "Ritesh Kumar Mohapatra", "discord": "Ritesh31", "dob": "2009-04-14", "country": "India", "school": "DAV Public School", "city": "Bhubaneswar India", "grade": "High School — Grade 12 / Final Secondary Year", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo (Mock Qualifier · 34/40)", "teamType": "solo", "callsign": "Solo", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": "Qualified for the Grand Final via supervised Mock Exam (34/40).", "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-10-26 11:35:50", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1007", "email": "bogus.daria@orizont.md", "aliasEmails": ["darincabogus@gmail.com"], "sngUser": "Bogus Daria", "name": "Boguș Daria", "discord": "bogusdaria_50528", "dob": "2009-11-05", "country": "Moldova", "school": "Orizont", "city": "Durlesti", "grade": "High School — Grade 11 (or equivalent)", "experience": "IOAA / IOAA-Jr, USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad)", "mode": "Solo (ABDIELFANCLUB67)", "teamType": "solo", "callsign": "ABDIELFANCLUB67", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "full", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": false, "referredBy": "None", "regTimestamp": "2026-11-08 12:40:17", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1008", "email": "mirunateodora0204@gmail.com", "aliasEmails": [], "sngUser": "81miruna", "name": "Păduraru Miruna-Teodora", "discord": "miruna0452", "dob": "2009-02-04", "country": "Romania", "school": "Colegiul Național 'Emil Racoviţă', Iaşi", "city": "IASI", "grade": "High School — Grade 11 (or equivalent)", "experience": "USAAAO / National Astronomy Olympiad, First Astronomy / Astrophysics Competition", "mode": "Solo", "teamType": "solo", "callsign": "Solo", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "full", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": false, "referredBy": "None", "regTimestamp": "2026-10-26 14:05:43", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
-            {"bib": "SNG-2026-1009", "email": "mohdfaisalabdulcarim@gmail.com", "aliasEmails": [], "sngUser": "Mohammad Faisal T. Abdulcarim", "name": "Mohammad Faisal T. Abdulcarim", "discord": "Mosalman", "dob": "2009-01-18", "country": "Philippines", "school": "Mindanao State University - Marawi Senior High School", "city": "Marawi City, Lanao Del Sur, Mindanao, Philippines", "grade": "High School — Grade 11 (or equivalent)", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo (INSAN)", "teamType": "solo_unmatched", "callsign": "INSAN", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": "Selected Team of 2 (INSAN), but partner did not register prior to deadline; competing as Solo.", "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": false, "referredBy": "None", "regTimestamp": "2026-10-26 14:25:09", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
+            {"bib": "SNG-2026-1009", "email": "mohdfaisalabdulcarim@gmail.com", "aliasEmails": [], "sngUser": "Mohammad Faisal T. Abdulcarim", "name": "Mohammad Faisal T. Abdulcarim", "discord": "Mosalman", "dob": "2009-01-18", "country": "Philippines", "school": "Mindanao State University - Marawi Senior High School", "city": "Marawi City, Lanao Del Sur, Mindanao, Philippines", "grade": "High School — Grade 11 (or equivalent)", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo (INSAN)", "teamType": "solo_unmatched", "callsign": "INSAN", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": "Selected Team of 2 (INSAN), but partner did not register prior to deadline; competed as Solo.", "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": false, "referredBy": "None", "regTimestamp": "2026-10-26 14:25:09", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1010", "email": "paunescuadrian713@gmail.com", "aliasEmails": [], "sngUser": "Livansky", "name": "Păunescu Liviu-Nicolae", "discord": "Livansky", "dob": "2009-02-19", "country": "Romania", "school": "Colegiul Național Pedagogic ,, Ștefan Velovan”", "city": "Craiova, Romania", "grade": "High School — Grade 11 (or equivalent)", "experience": "IOAA / IOAA-Jr, USAAAO / National Astronomy Olympiad", "mode": "Solo", "teamType": "solo", "callsign": "Solo", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-10-26 20:24:06", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1011", "email": "faeeboii@gmail.com", "aliasEmails": [], "sngUser": "Khalfani Xavier Kamil Susanto", "name": "Khalfani Xavier Kamil Susanto", "discord": "user_41612", "dob": "2010-03-24", "country": "Indonesia", "school": "SMAN 1 Tanjungpinang", "city": "Tanjungpinang, Indonesia", "grade": "High School — Grade 11 (or equivalent)", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo", "teamType": "solo", "callsign": "Solo", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "full", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-10-27 05:55:54", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1012", "email": "aminedjformsg@gmail.com", "aliasEmails": [], "sngUser": "Amine", "name": "Amine Djerrare", "discord": "amine_92382", "dob": "2009-08-02", "country": "Algeria", "school": "Lycée M'Hamed Bougherra", "city": "Khemis Miliana", "grade": "High School — Grade 12 / Final Secondary Year", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo (Amine)", "teamType": "solo", "callsign": "Amine", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "full", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-10-27 08:11:23", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
@@ -1348,14 +1598,14 @@
             {"bib": "SNG-2026-1021", "email": "rymbie99@gmail.com", "aliasEmails": [], "sngUser": "Rymbie", "name": "Arimbi", "discord": "shadowuwu8440", "dob": "2010-02-02", "country": "Indonesia", "school": "SMAN 1 Tanjungpinang", "city": "Tanjungpinang, Indonesia", "grade": "High School — Grade 10 (or equivalent)", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo", "teamType": "solo", "callsign": "Solo", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "@user_41612", "regTimestamp": "2026-10-29 14:56:54", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1022", "email": "michaelngg@gmail.com", "aliasEmails": [], "sngUser": "michaelngg", "name": "Michael Ng", "discord": "michaelnggg", "dob": "2008-06-13", "country": "Indonesia", "school": "SMAK 2 Penabur", "city": "Jakarta, Indonesia", "grade": "High School — Grade 12 / Final Secondary Year", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo", "teamType": "solo", "callsign": "Solo", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "@user_41612", "regTimestamp": "2026-10-29 15:04:33", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1023", "email": "dolanbaytuna1@gmail.com", "aliasEmails": [], "sngUser": "Tuna Dolanbay", "name": "Mehmet Tuna Dolanbay", "discord": "tunadolanbay1", "dob": "2009-03-23", "country": "Türkiye", "school": "TÜBİTAK Science High School", "city": "Gebze, Turkey", "grade": "High School — Grade 11 (or equivalent)", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo", "teamType": "solo", "callsign": "Solo", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "kerem_45.sjk_37712", "regTimestamp": "2026-10-30 17:48:49", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
-            {"bib": "SNG-2026-1024", "email": "shaaravayachit4@gmail.com", "aliasEmails": [], "sngUser": "Schrodinger's cat", "name": "Shaarav Ayachit", "discord": "Schrodinger's cat", "dob": "2008-12-04", "country": "India", "school": "DAIS", "city": "Mumbai", "grade": "High School — Grade 12 / Final Secondary Year", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo (Barça Boys)", "teamType": "solo_unmatched", "callsign": "Barça Boys", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": "Selected Team of 2 (Barça Boys), but partner did not register prior to deadline; competing as Solo.", "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-10-30 18:19:49", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
+            {"bib": "SNG-2026-1024", "email": "shaaravayachit4@gmail.com", "aliasEmails": [], "sngUser": "Schrodinger's cat", "name": "Shaarav Ayachit", "discord": "Schrodinger's cat", "dob": "2008-12-04", "country": "India", "school": "DAIS", "city": "Mumbai", "grade": "High School — Grade 12 / Final Secondary Year", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo (Barça Boys)", "teamType": "solo_unmatched", "callsign": "Barça Boys", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": "Selected Team of 2 (Barça Boys), but partner did not register prior to deadline; competed as Solo.", "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-10-30 18:19:49", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1025", "email": "keremkaragol1299@gmail.com", "aliasEmails": [], "sngUser": "Kerem K", "name": "Kerem Karagöl", "discord": "kerem_45.sjk_37712", "dob": "2011-01-08", "country": "Türkiye", "school": "TÜBİTAK Science High School", "city": "Kocaeli İstanbul", "grade": "High School — Grade 10 (or equivalent)", "experience": "USAAAO / National Astronomy Olympiad", "mode": "Team of 2 (Tefla)", "teamType": "duo_set", "callsign": "Tefla", "partner": "Yusuf Kerem Kuru", "partnerBib": "SNG-2026-1030", "partnerDiscord": "ysf55 (SNG)", "partnerCountry": "Türkiye", "partnerSchool": "TÜBİTAK Science High School", "teamNote": null, "publicPrivacy": "full", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "Discord", "regTimestamp": "2026-10-31 22:32:52", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": "TEAM-TEFLA"},
             {"bib": "SNG-2026-1026", "email": "alexanderyu780@gmail.com", "aliasEmails": [], "sngUser": "Alexander Y", "name": "Alexander Yu", "discord": "alexa_is_", "dob": "2010-05-18", "country": "USA", "school": "Camas High School", "city": "Camas, Washington, USA", "grade": "High School — Grade 11 (or equivalent)", "experience": "USAAAO / National Astronomy Olympiad", "mode": "Team of 2 (iono bro · Pair #2)", "teamType": "duo_random", "callsign": "iono bro · Pair #2", "partner": "Bernardo Miguel de Souza", "partnerBib": "SNG-2026-1028", "partnerDiscord": "aspmega", "partnerCountry": "Brazil", "partnerSchool": "Gap Year (Curitiba)", "teamNote": null, "publicPrivacy": "full", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-10-31 06:12:06", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": "TEAM-PAIR2"},
             {"bib": "SNG-2026-1027", "email": "mohoreadavidcristian@gmail.com", "aliasEmails": [], "sngUser": "CrisDav007", "name": "Mohorea David-Cristian", "discord": "crisdav007", "dob": "2012-10-04", "country": "Romania", "school": "Colegiul National \"Gh. M. Murgoci\"", "city": "Braila", "grade": "Middle School / Junior High (Grades 5–8)", "experience": "USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad)", "mode": "Solo (¯\\_(ツ)_/¯)", "teamType": "solo", "callsign": "¯\\_(ツ)_/¯", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "full", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-11-01 22:26:46", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1028", "email": "souzaestudosevida@outlook.com", "aliasEmails": [], "sngUser": "Benhard", "name": "Bernardo Miguel de Souza", "discord": "aspmega", "dob": "2007-11-15", "country": "Brazil", "school": "Gap Year", "city": "Curitiba, Paraná", "grade": "Gap Year Student (Age < 21)", "experience": "Physics Olympiad (IPhO / National Physics Olympiad)", "mode": "Team of 2 (Stellaris · Pair #2)", "teamType": "duo_random", "callsign": "Stellaris · Pair #2", "partner": "Alexander Yu", "partnerBib": "SNG-2026-1026", "partnerDiscord": "alexa_is_", "partnerCountry": "USA", "partnerSchool": "Camas High School", "teamNote": null, "publicPrivacy": "abbreviated", "ageConsent": "Adult (18+ / Self-Consented)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-11-02 22:59:13", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": "TEAM-PAIR2"},
             {"bib": "SNG-2026-1029", "email": "lukegeltner@ufl.edu", "aliasEmails": [], "sngUser": "Luke Geltner", "name": "Luke Patrick Geltner", "discord": "lukegeltner", "dob": "2008-05-23", "country": "USA", "school": "University of Florida", "city": "Gainesville, Florida, USA", "grade": "University Undergraduate (Age < 21)", "experience": "USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad)", "mode": "Solo (Geltner)", "teamType": "solo", "callsign": "Geltner", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "full", "ageConsent": "Adult (18+ / Self-Consented)", "sponsorConsent": true, "referredBy": "Physics Olympiad discord server", "regTimestamp": "2026-11-03 02:14:10", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1030", "email": "yusufkeremkuru@gmail.com", "aliasEmails": [], "sngUser": "ysf55", "name": "Yusuf Kerem Kuru", "discord": "—", "dob": "2010-12-23", "country": "Türkiye", "school": "TÜBİTAK Science High School", "city": "Kocaeli, Türkiye", "grade": "High School — Grade 10 (or equivalent)", "experience": "USAAAO / National Astronomy Olympiad", "mode": "Team of 2 (Tefla)", "teamType": "duo_set", "callsign": "Tefla", "partner": "Kerem Karagöl", "partnerBib": "SNG-2026-1025", "partnerDiscord": "kerem_45.sjk_37712", "partnerCountry": "Türkiye", "partnerSchool": "TÜBİTAK Science High School", "teamNote": null, "publicPrivacy": "full", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": false, "referredBy": "Me", "regTimestamp": "2026-11-03 09:54:04", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": "TEAM-TEFLA"},
-            {"bib": "SNG-2026-1031", "email": "sebydumitrescu10@gmail.com", "aliasEmails": [], "sngUser": "Dumitrescu Sebastian", "name": "Dumitrescu Sebastian Gabriel", "discord": "Pruna", "dob": "2010-07-09", "country": "Romania", "school": "Colegiul National Ion C Bratianu", "city": "Pitesti Romania", "grade": "High School — Grade 10 (or equivalent)", "experience": "First Astronomy / Astrophysics Competition", "mode": "Team of 2 (Astrobros · Pair #1)", "teamType": "duo_random", "callsign": "Astrobros", "partner": "Badea Robert Yannis", "partnerBib": "SNG-2026-1003", "partnerDiscord": "robert_24735", "partnerCountry": "Romania", "partnerSchool": "Colegiul Național \"Ion C. Brătianu\"", "teamNote": null, "publicPrivacy": "full", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-11-06 15:55:02", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": "TEAM-PAIR1"},
+            {"bib": "SNG-2026-1031", "email": "sebydumitrescu10@gmail.com", "aliasEmails": [], "sngUser": "Dumitrescu Sebastian", "name": "Dumitrescu Sebastian Gabriel", "discord": "Pruna", "dob": "2010-07-09", "country": "Romania", "school": "Colegiul National Ion C Bratianu", "city": "Pitesti Romania", "grade": "High School — Grade 10 (or equivalent)", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo", "teamType": "solo", "callsign": "Solo", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": "Phase 1 participant (Astrobros competed solely as SNG-2026-1003 in the Grand Final).", "publicPrivacy": "full", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-11-06 15:55:02", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1032", "email": "whodisval@gmail.com", "aliasEmails": [], "sngUser": "Val", "name": "Selma Hanifah", "discord": "selmama.h", "dob": "2010-10-19", "country": "Indonesia", "school": "MAN 2 Pekanbaru", "city": "Pekanbaru, Indonesia", "grade": "High School — Grade 11 (or equivalent)", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo", "teamType": "solo", "callsign": "Solo", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-11-07 15:22:03", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1033", "email": "seanangelo0980@gmail.com", "aliasEmails": [], "sngUser": "D'angelo Sean Antoni", "name": "D'angelo Sean Antoni", "discord": "thebigbrainfish", "dob": "2010-05-29", "country": "Indonesia", "school": "SMA Negeri 1 Tanjungpinang", "city": "Tanjungpinang Kota, Indonesia", "grade": "High School — Grade 11 (or equivalent)", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo (Astronomical levels of larp)", "teamType": "solo", "callsign": "Astronomical levels of larp", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "full", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "@user_41612", "regTimestamp": "2026-11-07 20:15:37", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1034", "email": "galvanizingpolymath@gmail.com", "aliasEmails": [], "sngUser": "galvanizingpolymath", "name": "Ambrose Lim", "discord": "big brose", "dob": "2012-05-29", "country": "Australia", "school": "north sydney boy high school", "city": "sydney australia", "grade": "High School — Grade 9 (or equivalent)", "experience": "IOAA / IOAA-Jr, USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad), First Astronomy / Astrophysics Competition", "mode": "Solo (a)", "teamType": "solo", "callsign": "a", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": false, "referredBy": "discord", "regTimestamp": "2026-11-08 02:04:52", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
@@ -1368,50 +1618,17 @@
             {"bib": "SNG-2026-1041", "email": "tui914021@gmail.com", "aliasEmails": [], "sngUser": "Tuftgty5", "name": "Alexandrescu Emilia-Maria", "discord": "Emi", "dob": "2010-08-17", "country": "Romania", "school": "Liceul teoretic \"Grigore Antipa\"", "city": "Botoșani România", "grade": "High School — Grade 10 (or equivalent)", "experience": "USAAAO / National Astronomy Olympiad, Physics Olympiad (IPhO / National Physics Olympiad)", "mode": "Team of 2 (Alternosteaua)", "teamType": "duo_set", "callsign": "Alternosteaua", "partner": "Venedict Sasha-Cristian", "partnerBib": "SNG-2026-1038", "partnerDiscord": "sashasushy", "partnerCountry": "Romania", "partnerSchool": "Colegiul Național \"Mihai Eminescu\" Botoșani", "teamNote": null, "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-11-08 22:15:33", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": "TEAM-ALTERNOSTEAUA"},
             {"bib": "SNG-2026-1042", "email": "ashiffaruq2@gmail.com", "aliasEmails": [], "sngUser": "Ashif", "name": "Ashif Ahmad Faruq", "discord": "asf04195", "dob": "2011-03-30", "country": "Indonesia", "school": "MAN Insan Cendekia Gowa", "city": "Indonesia", "grade": "High School — Grade 10 (or equivalent)", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo (4sf)", "teamType": "solo", "callsign": "4sf", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "@user_41612", "regTimestamp": "2026-11-09 06:38:42", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null},
             {"bib": "SNG-2026-1043", "email": "nevergiveup11902@gmail.com", "aliasEmails": [], "sngUser": "Rahul", "name": "Rahul Mohanty", "discord": "—", "dob": "2009-04-15", "country": "India", "school": "DAV Public School", "city": "Bhubaneswar India", "grade": "High School — Grade 12 / Final Secondary Year", "experience": "First Astronomy / Astrophysics Competition", "mode": "Solo", "teamType": "solo", "callsign": "Solo", "partner": null, "partnerBib": null, "partnerDiscord": null, "partnerCountry": null, "partnerSchool": null, "teamNote": null, "publicPrivacy": "abbreviated", "ageConsent": "Minor (<18 · Parental Consent Verified)", "sponsorConsent": true, "referredBy": "None", "regTimestamp": "2026-11-09 17:45:26", "isAdmin": false, "canStartAnytime": false, "isParticipant": true, "teamId": null}
-        ].map(p => ({
-            ...p,
-            qualifiedFinal: QUALIFIED_FINAL_BIBS.has(p.bib),
-            stage: QUALIFIED_FINAL_BIBS.has(p.bib) ? "final" : "eliminated"
-        }));
-
-        const ADMIN_EMAILS = [
-            "matei.butnaru@yahoo.com",
-            "matei.butnaru@yahoo.ro",
-            "contact.supernovaguide@gmail.com",
-            "contact@supernovaguide.com",
-            "mateibutnaru5@gmail.com",
-            "albert_voicu_olteanu@yahoo.com",
-            "mihai.tesileanu2@gmail.com"
-        ];
-
-        // Official SAC 2026 Grand Final Windows (Saturday, 21 Nov 2026)
-        const COMPETITION_WINDOWS = [
-            { phase: "Grand Final · Window A (10:00–11:00 UT)", start: Date.parse("2026-11-21T10:00:00Z"), end: Date.parse("2026-11-21T11:00:00Z") },
-            { phase: "Grand Final · Window B (18:00–19:00 UT)", start: Date.parse("2026-11-21T18:00:00Z"), end: Date.parse("2026-11-21T19:00:00Z") }
-        ];
+        ].map(p => {
+            const finalResult = p.isAdmin ? null : (FINAL_RESULT_BY_BIB.get(p.bib) || null);
+            return {
+                ...p,
+                qualifiedFinal: Boolean(finalResult),
+                stage: p.isAdmin ? "organizer" : (finalResult ? "finalist" : "phase1"),
+                finalResult
+            };
+        });
 
         let currentParticipant = null;
-        let isOrganizerAdmin = false;
-        let liveSubmissionsMap = {};
-        let finalSubmissionsMap = {};
-        let submittedEmailsMap = {};
-        let firebaseBindingsStarted = false;
-
-        function normalizeEmail(e) {
-            return (e || "").trim().toLowerCase();
-        }
-
-        function isFinalSessionRecord(rec) {
-            if (!rec || typeof rec !== 'object') return false;
-            if (rec.sessionId) {
-                return String(rec.sessionId).toLowerCase() === CURRENT_SESSION_ID;
-            }
-            const rid = String(rec.receiptId || "").toUpperCase();
-            const wz = String(rec.windowZone || "").toLowerCase();
-            if (rid.startsWith("SAC26-FINAL-") || rid.startsWith("SAC26-P3-")) return true;
-            if (wz.includes("grand final") || wz.includes("phase 3")) return true;
-            return false;
-        }
 
         window.switchDashTab = function(tabId, btnEl) {
             document.querySelectorAll('.pd-tab-pane').forEach(p => p.classList.remove('active'));
@@ -1420,35 +1637,172 @@
             if (btnEl) btnEl.classList.add('active');
         };
 
-        // Lock launch button ONLY if this finalist/team already submitted THIS Grand Final
-        function hasCandidateAlreadyParticipated(p) {
-            if (!p || p.canStartAnytime) return false;
-
-            if (isFinalSessionRecord(finalSubmissionsMap[p.bib])) return true;
-            if (p.partnerBib && isFinalSessionRecord(finalSubmissionsMap[p.partnerBib])) return true;
-
-            const primaryEmail = normalizeEmail(p.email);
-            if (primaryEmail && isFinalSessionRecord(submittedEmailsMap[primaryEmail])) return true;
-            if (Array.isArray(p.aliasEmails)) {
-                for (const alias of p.aliasEmails) {
-                    if (isFinalSessionRecord(submittedEmailsMap[normalizeEmail(alias)])) return true;
-                }
-            }
-            return false;
+        function escapeHtml(str) {
+            return String(str ?? '').replace(/[&<>"']/g, ch => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[ch]));
         }
 
-        window.selectCandidateForScorecard = function(bib) {
-            const chosen = REGISTERED_PARTICIPANTS.find(x => x.bib === bib);
-            if (chosen) {
-                populateHydratedDossier(chosen);
-                const previewSelect = document.getElementById('admin-preview-select');
-                if (previewSelect) previewSelect.value = bib;
-            }
-        };
+        function renderOfficialStandingsTable() {
+            const tbody = document.getElementById('official-standings-tbody');
+            if (!tbody) return;
 
-        function populateHydratedDossier(p) {
+            const activeBib = currentParticipant && !currentParticipant.isAdmin ? currentParticipant.bib : null;
+
+            tbody.innerHTML = OFFICIAL_FINAL_STANDINGS.map(entry => {
+                const isMe = activeBib && entry.bibs.includes(activeBib);
+                const rankCls = entry.rank === 1 ? 'r1' : (entry.rank === 2 || entry.rank === 3 ? 'r2' : (entry.rank === 4 || entry.rank === 5 ? 'r3' : ''));
+                const rowClasses = [
+                    entry.rank === 1 ? 'rank-top1' : '',
+                    isMe ? 'me-row' : ''
+                ].filter(Boolean).join(' ');
+
+                const bibCellHtml = isMe
+                    ? `${escapeHtml(entry.bibDisplay)} <span style="color:var(--accent-green); font-weight:700;">(You)</span>`
+                    : escapeHtml(entry.bibDisplay);
+
+                return `
+                    <tr class="${rowClasses}">
+                        <td><span class="rank-pill ${rankCls}">#${entry.rank}</span></td>
+                        <td style="font-family:var(--font-mono); font-weight:700; color:var(--accent-blue);">${bibCellHtml}</td>
+                        <td style="font-weight:600; color:var(--text-pure);">${escapeHtml(entry.callsign)}</td>
+                        <td style="color:var(--text-main);">${escapeHtml(entry.country)}</td>
+                        <td><span class="score-pill">${escapeHtml(entry.scoreDisplay)}</span></td>
+                        <td><span class="tb-pill">TB ${escapeHtml(entry.tb)}</span></td>
+                        <td><span class="tier-badge ${entry.tierClass}"><i class="fa-solid ${entry.icon}"></i> ${escapeHtml(entry.medal)}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Unified Candidate Bib Roster (Tab 4 — Strictly Candidate Bib Code, No Legal Names Exposed)
+        function renderRosterTable(filterText = "") {
+            const tbody = document.getElementById('roster-tbody');
+            if (!tbody) return;
+            const q = filterText.trim().toLowerCase();
+            const students = REGISTERED_PARTICIPANTS.filter(p => !p.isAdmin);
+
+            const filtered = students.filter(p => {
+                if (!q) return true;
+                const medalText = p.finalResult ? p.finalResult.medal.toLowerCase() : 'phase 1 participant';
+                return (
+                    p.bib.toLowerCase().includes(q) ||
+                    p.country.toLowerCase().includes(q) ||
+                    p.grade.toLowerCase().includes(q) ||
+                    (p.callsign || '').toLowerCase().includes(q) ||
+                    medalText.includes(q)
+                );
+            });
+
+            filtered.sort((a, b) => {
+                const aRank = a.finalResult ? a.finalResult.rank : 999;
+                const bRank = b.finalResult ? b.finalResult.rank : 999;
+                if (aRank !== bRank) return aRank - bRank;
+                return a.bib.localeCompare(b.bib);
+            });
+
+            const activeBib = currentParticipant && !currentParticipant.isAdmin ? currentParticipant.bib : null;
+
+            tbody.innerHTML = filtered.map(p => {
+                const isMe = activeBib === p.bib;
+                const bibDisplay = isMe
+                    ? `${escapeHtml(p.bib)} <span style="color:var(--accent-green);">(You)</span>`
+                    : escapeHtml(p.bib);
+                const statusCell = p.finalResult
+                    ? `<span class="tier-badge ${p.finalResult.tierClass}"><i class="fa-solid ${p.finalResult.icon}"></i> #${p.finalResult.rank} · ${escapeHtml(p.finalResult.scoreDisplay)} · ${escapeHtml(p.finalResult.medal)}</span>`
+                    : `<span style="color:var(--text-muted);">Phase 1 Participant · Verified Certificate</span>`;
+                return `
+                    <tr class="${isMe ? 'me-row' : ''}">
+                        <td style="font-family:var(--font-mono); font-weight:700; color:${p.finalResult ? 'var(--accent-green)' : 'var(--text-muted)'};">${bibDisplay}</td>
+                        <td>${escapeHtml(p.country)}</td>
+                        <td style="font-size:0.76rem; color:var(--text-muted);">${escapeHtml(p.grade.replace(' (or equivalent)', ''))}</td>
+                        <td style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-blue);">${escapeHtml(p.callsign || 'Solo')}</td>
+                        <td style="font-family:var(--font-mono); font-size:0.73rem;">${statusCell}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetPersonalUI(signedInEmail = null) {
+            currentParticipant = null;
+            const cardEl = document.getElementById('participant-dashboard-card');
+            const badgeEl = document.getElementById('pd-status-badge');
+            const subEl = document.getElementById('pd-subtitle');
+            const bibEl = document.getElementById('pd-user-bib');
+            const copyBibBtn = document.getElementById('btn-copy-bib');
+            const emailEl = document.getElementById('pd-user-email');
+            const modeEl = document.getElementById('pd-user-mode');
+            const partnerEl = document.getElementById('pd-user-partner');
+            const outcomePrimaryEl = document.getElementById('pd-outcome-primary');
+            const outcomeMetaEl = document.getElementById('pd-outcome-meta');
+            const medalTierEl = document.getElementById('pd-medal-tier');
+            const medalNoteEl = document.getElementById('pd-medal-note');
+            const outcomeBanner = document.getElementById('pd-outcome-banner');
+            const p1Outcome = document.getElementById('p1-archive-outcome');
+            const p3Outcome = document.getElementById('p3-archive-outcome');
+            const viewLbl = document.getElementById('scorecard-viewing-label');
+
+            cardEl.classList.remove('is-registered', 'is-medalist');
+            if (copyBibBtn) copyBibBtn.style.display = 'none';
+            if (outcomeBanner) {
+                outcomeBanner.classList.remove('visible', 'finalist');
+            }
+
+            const dossierLocked = document.getElementById('dossier-locked-notice');
+            const dossierWrap = document.getElementById('dossier-content-wrap');
+            const teamLocked = document.getElementById('team-locked-notice');
+            const teamWrap = document.getElementById('team-content-wrap');
+            if (dossierLocked) dossierLocked.style.display = 'flex';
+            if (dossierWrap) dossierWrap.style.display = 'none';
+            if (teamLocked) teamLocked.style.display = 'flex';
+            if (teamWrap) teamWrap.style.display = 'none';
+
+            if (signedInEmail) {
+                badgeEl.className = 'pd-status-badge blue';
+                badgeEl.innerHTML = `<i class="fa-solid fa-circle-info"></i> Archive Viewer`;
+                subEl.innerHTML = `Signed in as <strong style="color:var(--text-pure);">${escapeHtml(signedInEmail)}</strong>. No SAC 2026 registration record matches this email — explore the official validated standings below and watch for Winter / Spring Cup 2027!`;
+                bibEl.textContent = "Not Registered";
+                bibEl.style.color = "var(--text-muted)";
+                emailEl.textContent = signedInEmail;
+                modeEl.textContent = "Archive Visitor";
+                partnerEl.textContent = "No SAC 2026 entry on file";
+                outcomePrimaryEl.textContent = "Results Official";
+                outcomePrimaryEl.style.color = "var(--accent-gold)";
+                outcomeMetaEl.textContent = "45.0 pt Scale · 15 Finalist Entries";
+                medalTierEl.textContent = "—";
+                medalTierEl.style.color = "var(--text-muted)";
+                medalNoteEl.textContent = "Next Season: Winter / Spring Cup 2027";
+                document.getElementById('dossier-locked-msg').textContent = `Signed in as ${signedInEmail}, which is not linked to a registered SAC 2026 competitor record. If you competed using a different email, sign in with that address to view your private dossier.`;
+                document.getElementById('team-locked-msg').textContent = `No SAC 2026 entry record found for ${signedInEmail}.`;
+            } else {
+                badgeEl.className = 'pd-status-badge pending';
+                badgeEl.innerHTML = `<i class="fa-solid fa-user-lock"></i> Sign In for Personal Result`;
+                subEl.textContent = "Browse the official validated SAC 2026 Grand Final standings below, or sign in with your registered Supernova Guide email to view your personal result, medal tier, and private 12-field registration dossier.";
+                bibEl.textContent = "—";
+                bibEl.style.color = "var(--accent-green)";
+                emailEl.textContent = "Sign in with your registered email";
+                modeEl.textContent = "—";
+                partnerEl.textContent = "Team / Country info";
+                outcomePrimaryEl.textContent = "Results Official";
+                outcomePrimaryEl.style.color = "var(--accent-gold)";
+                outcomeMetaEl.textContent = "45.0 pt Scale · Difficulty Tie-Breaker";
+                medalTierEl.textContent = "—";
+                medalTierEl.style.color = "var(--accent-blue)";
+                medalNoteEl.textContent = "Sign in to inspect your personal award";
+                document.getElementById('dossier-locked-msg').textContent = "Your private 12-field SAC 2026 registration dossier is visible strictly to you. Sign in via your Supernova Guide profile using your registered SAC 2026 email to unlock your personal record.";
+                document.getElementById('team-locked-msg').textContent = "Sign in with your registered SAC 2026 email to view your entry division, callsign, and teammate details.";
+            }
+
+            if (p1Outcome) p1Outcome.textContent = "Top 15 Qualified · Participation Certificates Issued";
+            if (p3Outcome) p3Outcome.textContent = "15 Competing Entries · Official Results Published";
+            if (viewLbl) viewLbl.textContent = "All 3 Stages Completed · Official Archive";
+
+            renderOfficialStandingsTable();
+            renderRosterTable(document.getElementById('roster-search-input')?.value || "");
+        }
+
+        function populatePersonalResult(p) {
             currentParticipant = p;
-            localStorage.setItem('supernova_comp_autumn2026_bib', p.bib);
 
             const cardEl = document.getElementById('participant-dashboard-card');
             const badgeEl = document.getElementById('pd-status-badge');
@@ -1458,29 +1812,98 @@
             const emailEl = document.getElementById('pd-user-email');
             const modeEl = document.getElementById('pd-user-mode');
             const partnerEl = document.getElementById('pd-user-partner');
-            const roundNameEl = document.getElementById('pd-next-round-name');
+            const outcomePrimaryEl = document.getElementById('pd-outcome-primary');
+            const outcomeMetaEl = document.getElementById('pd-outcome-meta');
+            const medalTierEl = document.getElementById('pd-medal-tier');
+            const medalNoteEl = document.getElementById('pd-medal-note');
+            const outcomeBanner = document.getElementById('pd-outcome-banner');
+            const bannerMain = document.getElementById('pd-outcome-banner-main');
+            const bannerMetrics = document.getElementById('pd-outcome-banner-metrics');
+            const p1Outcome = document.getElementById('p1-archive-outcome');
+            const p3Outcome = document.getElementById('p3-archive-outcome');
             const viewLbl = document.getElementById('scorecard-viewing-label');
 
+            const res = p.finalResult;
             cardEl.classList.add('is-registered');
+            cardEl.classList.toggle('is-medalist', Boolean(res));
+
+            // Top badge, subtitle, KPI 3 & KPI 4, and outcome highlight banner
             if (p.isAdmin) {
-                badgeEl.className = 'pd-status-badge confirmed';
-                badgeEl.innerHTML = `<i class="fa-solid fa-user-shield"></i> Organizer (${p.bib})`;
-                subEl.innerHTML = `Organizer Test Account: <strong style="color:var(--accent-gold); font-family:var(--font-mono);">${p.bib}</strong>. Use the bar above to preview any competitor or launch the Chief Proctor Console.`;
-            } else if (p.qualifiedFinal) {
-                badgeEl.className = 'pd-status-badge confirmed';
-                badgeEl.innerHTML = `<i class="fa-solid fa-trophy"></i> Grand Finalist (${p.bib})`;
-                subEl.innerHTML = `Congratulations! Candidate Bib <strong style="color:var(--accent-green); font-family:var(--font-mono);">${p.bib}</strong> (${p.country}) is verified for today's <strong>SAC 2026 Grand Final</strong> (45 MCQs · 90 Min).`;
+                badgeEl.className = 'pd-status-badge gold';
+                badgeEl.innerHTML = `<i class="fa-solid fa-user-shield"></i> Scientific Committee (${escapeHtml(p.bib)})`;
+                subEl.innerHTML = `Welcome, <strong style="color:var(--accent-gold);">${escapeHtml(p.sngUser)}</strong> (${escapeHtml(p.bib)}). SAC 2026 is now archived with official validated results published below.`;
+                outcomePrimaryEl.textContent = "Organizer · Archived";
+                outcomePrimaryEl.style.color = "var(--accent-gold)";
+                outcomeMetaEl.textContent = "15 Finalist Entries Validated";
+                medalTierEl.textContent = "Scientific Committee";
+                medalTierEl.style.color = "var(--accent-gold)";
+                medalNoteEl.textContent = "SAC 2026 Organizing Team";
+
+                if (outcomeBanner) {
+                    outcomeBanner.className = "pd-outcome-banner visible finalist";
+                    bannerMain.innerHTML = `<i class="fa-solid fa-shield-halved" style="color:var(--accent-gold); font-size:1.1rem;"></i> <div><strong style="color:var(--text-pure);">SAC 2026 Archive Active:</strong> Official standings published for all 15 competing Grand Final entries (45.0 pt scale).</div>`;
+                    bannerMetrics.innerHTML = `<span class="c-badge badge-green">STATUS: COMPLETED · RESULTS OFFICIAL</span>`;
+                }
+                if (p1Outcome) p1Outcome.textContent = "Stage Completed · Audited";
+                if (p3Outcome) p3Outcome.textContent = "15 Competing Entries · Validated";
+            } else if (res) {
+                badgeEl.className = 'pd-status-badge gold';
+                badgeEl.innerHTML = `<i class="fa-solid ${res.icon}"></i> Rank #${res.rank} · ${escapeHtml(res.medal)}`;
+                subEl.innerHTML = `Congratulations! Candidate Bib <strong style="color:var(--accent-green); font-family:var(--font-mono);">${escapeHtml(p.bib)}</strong> (${escapeHtml(res.callsign)} · ${escapeHtml(p.country)}) finished <strong style="color:var(--accent-gold);">#${res.rank}</strong> in the SAC 2026 Grand Final.`;
+
+                outcomePrimaryEl.textContent = `#${res.rank} · ${res.score.toFixed(1)} / 45.0 pt`;
+                outcomePrimaryEl.style.color = "var(--accent-gold)";
+                outcomeMetaEl.textContent = `Tie-Breaker: TB ${res.tb} · Validated Grand Final Score`;
+
+                medalTierEl.textContent = res.medal;
+                medalTierEl.style.color = res.rank === 1 ? "var(--accent-gold)" : (res.rank <= 3 ? "#E2E8F0" : (res.rank <= 5 ? "#E09F67" : (res.rank <= 10 ? "var(--accent-blue)" : "var(--accent-purple)")));
+                medalNoteEl.textContent = `Grand Final · 21 Nov 2026 · Top 15 Official`;
+
+                if (outcomeBanner) {
+                    outcomeBanner.className = "pd-outcome-banner visible finalist";
+                    bannerMain.innerHTML = `
+                        <span class="tier-badge ${res.tierClass}"><i class="fa-solid ${res.icon}"></i> #${res.rank} · ${escapeHtml(res.medal)}</span>
+                        <div><strong style="color:var(--text-pure);">${escapeHtml(p.bib)}</strong> · ${escapeHtml(res.callsign)} (${escapeHtml(res.country)})</div>
+                    `;
+                    bannerMetrics.innerHTML = `
+                        <span class="stat-chip" style="border-color:rgba(255,207,92,0.45); color:var(--accent-gold);">Score: <strong>${res.score.toFixed(1)} / 45.0 pt</strong></span>
+                        <span class="stat-chip" style="border-color:rgba(53,230,255,0.35); color:var(--accent-blue);">TB: <strong>${escapeHtml(res.tb)}</strong></span>
+                    `;
+                }
+                if (p1Outcome) p1Outcome.textContent = `Qualified for Grand Final (${p.bib})`;
+                if (p3Outcome) p3Outcome.innerHTML = `#${res.rank} · ${res.score.toFixed(1)} / 45.0 pt · TB ${escapeHtml(res.tb)} · ${escapeHtml(res.medal)}`;
             } else {
-                badgeEl.className = 'pd-status-badge pending';
-                badgeEl.innerHTML = `<i class="fa-solid fa-certificate"></i> Phase 1 Participant (${p.bib})`;
-                subEl.innerHTML = `Candidate Bib <strong style="color:var(--accent-blue); font-family:var(--font-mono);">${p.bib}</strong> (${p.country}). Thank you for competing in SAC 2026! The Grand Final terminal is restricted to our Top 16 qualified entries.`;
+                badgeEl.className = 'pd-status-badge confirmed';
+                badgeEl.innerHTML = `<i class="fa-solid fa-certificate"></i> Phase 1 Participant (${escapeHtml(p.bib)})`;
+                subEl.innerHTML = `Thank you for competing in SAC 2026! Candidate Bib <strong style="color:var(--accent-blue); font-family:var(--font-mono);">${escapeHtml(p.bib)}</strong> (${escapeHtml(p.country)}) is verified for an official <strong>Phase 1 Participation Certificate</strong>.`;
+
+                outcomePrimaryEl.textContent = "Phase 1 Participant";
+                outcomePrimaryEl.style.color = "var(--accent-green)";
+                outcomeMetaEl.textContent = "Verified Participation Certificate";
+
+                medalTierEl.textContent = "Participation Certificate";
+                medalTierEl.style.color = "var(--accent-green)";
+                medalNoteEl.textContent = "Phase 1 Open Qualifier · 14 Nov 2026";
+
+                if (outcomeBanner) {
+                    outcomeBanner.className = "pd-outcome-banner visible";
+                    bannerMain.innerHTML = `
+                        <span class="tier-badge tier-phase1"><i class="fa-solid fa-certificate"></i> Phase 1 Participant</span>
+                        <div><strong style="color:var(--text-pure);">${escapeHtml(p.bib)}</strong> · ${escapeHtml(p.callsign || 'Solo')} (${escapeHtml(p.country)}) — Verified Participation Certificate</div>
+                    `;
+                    bannerMetrics.innerHTML = `<span class="stat-chip">Status: <strong>Verified Participant ✓</strong></span>`;
+                }
+                if (p1Outcome) p1Outcome.textContent = "Completed · Verified Participation Certificate";
+                if (p3Outcome) p3Outcome.innerHTML = `<span style="color:var(--text-muted); font-weight:400;">Phase 1 Participant · Verified Participation Certificate</span>`;
             }
 
             if (viewLbl) {
-                viewLbl.innerHTML = `Viewing Status for Candidate Bib: <strong style="color:var(--text-pure);">${p.bib}</strong>${isOrganizerAdmin ? ` (${p.name})` : ''}`;
+                viewLbl.innerHTML = `Personal Record Loaded for Candidate Bib: <strong style="color:var(--text-pure);">${escapeHtml(p.bib)}</strong>`;
             }
 
+            // KPI 1: Bib & Account
             bibEl.textContent = p.bib;
+            bibEl.style.color = "var(--accent-green)";
             emailEl.textContent = `${p.sngUser} · ${p.email}`;
 
             if (copyBibBtn) {
@@ -1494,14 +1917,18 @@
                 };
             }
 
-            modeEl.textContent = p.callsign || "Solo";
+            // KPI 2: Callsign / Team & Country
+            modeEl.textContent = res ? res.callsign : (p.callsign || "Solo");
             if (p.partnerBib) {
-                partnerEl.innerHTML = `Partner Bib: <strong style="color:var(--accent-blue); font-family:var(--font-mono);">${p.partnerBib}</strong>`;
+                partnerEl.innerHTML = `Partner: <strong style="color:var(--accent-blue); font-family:var(--font-mono);">${escapeHtml(p.partnerBib)}</strong> · ${escapeHtml(p.country)}`;
             } else {
-                partnerEl.textContent = `${p.grade.replace(' (or equivalent)', '')} · ${p.country}`;
+                partnerEl.textContent = `${p.country} · ${p.grade.replace(' (or equivalent)', '')}`;
             }
 
-            // Populate Tab 1: Personal 12-Field Dossier
+            // Unlock & Populate Tab 2: Private 12-Field Registration Dossier
+            document.getElementById('dossier-locked-notice').style.display = 'none';
+            document.getElementById('dossier-content-wrap').style.display = 'flex';
+
             document.getElementById('dos-name').textContent = p.name;
             document.getElementById('dos-bib').textContent = p.bib;
             document.getElementById('dos-account').textContent = `${p.sngUser} (${p.email})`;
@@ -1515,282 +1942,58 @@
             document.getElementById('dos-timestamp').textContent = `${p.regTimestamp} UT`;
             document.getElementById('dos-ref').textContent = p.referredBy || "None";
 
+            document.getElementById('dos-consent-cam').textContent = res ? "Grand Final Audited ✓" : "Phase 1 Participation Verified ✓";
             document.getElementById('dos-consent-privacy').textContent = `Candidate Bib Code (${p.bib})`;
             document.getElementById('dos-consent-sponsor').textContent =
                 `${p.ageConsent} · Sponsor Share: ${p.sponsorConsent ? 'Yes ✓' : 'Opted Out'}`;
 
-            // Populate Tab 2: Personal Entry & Partner Info
+            // Unlock & Populate Tab 3: Personal Entry & Partner Info
+            document.getElementById('team-locked-notice').style.display = 'none';
+            document.getElementById('team-content-wrap').style.display = 'flex';
+
             const teamBadge = document.getElementById('team-type-badge');
             const teamTitle = document.getElementById('team-callsign-title');
             const teamDesc = document.getElementById('team-status-desc');
             const partnerBox = document.getElementById('team-partner-details-box');
 
-            teamTitle.textContent = `Bib Code: ${p.bib} · Callsign: ${p.callsign || 'Solo'}`;
+            teamTitle.textContent = `Bib Code: ${p.bib} · Entry: ${res ? res.callsign : (p.callsign || 'Solo')}`;
             if (p.partner) {
-                teamBadge.textContent = p.qualifiedFinal ? 'Duo Grand Finalist Team' : 'Duo Entry · Unified Standings';
-                teamBadge.className = 'c-badge badge-green';
-                teamDesc.textContent = 'You are competing as a 2-person team. Both teammates log into exam.html with their own Bib ID — answers and your 90-minute timer sync automatically in real time.';
+                teamBadge.textContent = res ? `Duo Grand Finalist · #${res.rank}` : 'Duo Entry · Phase 1';
+                teamBadge.className = res ? 'c-badge badge-gold' : 'c-badge badge-green';
+                teamDesc.textContent = res
+                    ? `You competed as a 2-person team in the SAC 2026 Grand Final, achieving Rank #${res.rank} with ${res.score.toFixed(1)} / 45.0 pt (TB ${res.tb} · ${res.medal}).`
+                    : 'You registered as a 2-person team in the unified SAC 2026 field.';
                 partnerBox.innerHTML = `
-                    <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-blue); text-transform:uppercase; margin-bottom:6px;">Your Assigned Partner Details</div>
-                    <div><strong>Partner Bib Code:</strong> <span style="font-family:var(--font-mono); color:var(--accent-green);">${p.partnerBib || '—'}</span></div>
-                    <div><strong>Partner Name:</strong> ${p.partner}</div>
-                    <div><strong>Partner Discord:</strong> <span style="font-family:var(--font-mono); color:var(--accent-gold);">${p.partnerDiscord || '—'}</span></div>
-                    <div><strong>Country:</strong> ${p.partnerCountry || '—'}</div>
+                    <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-blue); text-transform:uppercase; margin-bottom:6px;">Assigned Partner Details</div>
+                    <div><strong>Partner Bib Code:</strong> <span style="font-family:var(--font-mono); color:var(--accent-green);">${escapeHtml(p.partnerBib || '—')}</span></div>
+                    <div><strong>Partner Name:</strong> ${escapeHtml(p.partner)}</div>
+                    <div><strong>Partner Discord:</strong> <span style="font-family:var(--font-mono); color:var(--accent-gold);">${escapeHtml(p.partnerDiscord || '—')}</span></div>
+                    <div><strong>Country:</strong> ${escapeHtml(p.partnerCountry || '—')}</div>
                 `;
             } else {
-                teamBadge.textContent = p.qualifiedFinal ? 'Solo Grand Finalist' : 'Individual Entry';
-                teamBadge.className = 'c-badge badge-blue';
-                teamDesc.textContent = p.teamNote || 'You are competing independently under your Candidate Bib Code in the unified SAC 2026 standings (+1.0 pt per correct answer, no negative marking).';
+                teamBadge.textContent = res ? `Solo Grand Finalist · #${res.rank}` : (p.isAdmin ? 'Scientific Committee' : 'Solo · Phase 1 Participant');
+                teamBadge.className = res ? 'c-badge badge-gold' : 'c-badge badge-blue';
+                teamDesc.textContent = p.teamNote || (res
+                    ? `You competed independently in the SAC 2026 Grand Final, earning Rank #${res.rank} with ${res.score.toFixed(1)} / 45.0 pt (TB ${res.tb} · ${res.medal}).`
+                    : 'You competed independently under your Candidate Bib Code in the unified SAC 2026 standings.');
                 partnerBox.innerHTML = `
                     <div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px;">Entry Confirmation</div>
-                    <div>Competing under Candidate Bib Code <strong style="color:var(--accent-green); font-family:var(--font-mono);">${p.bib}</strong> (${p.country}).</div>
+                    <div>Mode: <strong style="color:var(--text-pure);">${escapeHtml(p.mode)}</strong> · Candidate Bib Code <strong style="color:var(--accent-green); font-family:var(--font-mono);">${escapeHtml(p.bib)}</strong> (${escapeHtml(p.country)}).</div>
                 `;
             }
 
-            if (p.qualifiedFinal) {
-                roundNameEl.textContent = "Phase 3: Grand Final (21 Nov)";
-                roundNameEl.style.color = "var(--accent-gold)";
-            } else {
-                roundNameEl.textContent = "Phase 1 Completed";
-                roundNameEl.style.color = "var(--text-muted)";
-            }
-
-            renderAllScorecardsAndReceipts();
+            renderOfficialStandingsTable();
             renderRosterTable(document.getElementById('roster-search-input')?.value || "");
         }
 
-        function startLiveScorecardListeners() {
-            if (getApps().length === 0) return;
-            const db = getDatabase(getApp());
-
-            onValue(ref(db, 'sac2026/submissions'), (snap) => {
-                liveSubmissionsMap = snap.val() || {};
-                renderAllScorecardsAndReceipts();
-            });
-
-            onValue(ref(db, 'sac2026/final_submissions'), (snap) => {
-                finalSubmissionsMap = snap.val() || {};
-                renderAllScorecardsAndReceipts();
-            });
-
-            onValue(ref(db, 'sac2026/submitted_emails'), (snap) => {
-                const raw = snap.val() || {};
-                submittedEmailsMap = {};
-                Object.entries(raw).forEach(([encodedEmail, sub]) => {
-                    const decoded = encodedEmail.replace(/,/g, '.').toLowerCase();
-                    if (sub) submittedEmailsMap[decoded] = sub;
-                });
-                renderAllScorecardsAndReceipts();
-            });
-        }
-
-        function renderAllScorecardsAndReceipts() {
-            const banner = document.getElementById('pd-receipt-banner');
-            const bannerHeading = document.getElementById('pd-receipt-heading');
-            const p3Status = document.getElementById('p3-live-status');
-            const p3Tel = document.getElementById('p3-live-telemetry');
-            const p3Rec = document.getElementById('p3-live-receipt');
-            const enterBtn = document.getElementById('pd-enter-round-btn');
-            const footerBtn = document.getElementById('footer-enter-round-btn');
-
-            if (currentParticipant) {
-                const bib = currentParticipant.bib;
-                const rawFinalRec = finalSubmissionsMap[bib] || (currentParticipant.partnerBib ? finalSubmissionsMap[currentParticipant.partnerBib] : null);
-                const rawLiveRec = liveSubmissionsMap[bib] || (currentParticipant.partnerBib ? liveSubmissionsMap[currentParticipant.partnerBib] : null);
-
-                // Strictly isolate Grand Final records so Round 1 / Mock records NEVER lock or spoof Grand Final status
-                const gfFinalRec = isFinalSessionRecord(rawFinalRec) ? rawFinalRec : null;
-                const gfLiveRec = isFinalSessionRecord(rawLiveRec) ? rawLiveRec : null;
-
-                const isLockedOut = hasCandidateAlreadyParticipated(currentParticipant);
-                const notQualified = !currentParticipant.qualifiedFinal;
-
-                [enterBtn, footerBtn].forEach(btn => {
-                    if (!btn) return;
-                    if (notQualified) {
-                        btn.disabled = true;
-                        btn.style.opacity = "0.45";
-                        btn.style.cursor = "not-allowed";
-                        btn.innerHTML = `<i class="fa-solid fa-lock"></i> Restricted to Top 16 Grand Finalists`;
-                    } else if (isLockedOut) {
-                        btn.disabled = true;
-                        btn.style.opacity = "0.45";
-                        btn.style.cursor = "not-allowed";
-                        btn.innerHTML = `<i class="fa-solid fa-check-double"></i> Grand Final Submitted (1 Attempt Limit)`;
-                    } else {
-                        btn.disabled = false;
-                        btn.style.opacity = "1";
-                        btn.style.cursor = "pointer";
-                        btn.innerHTML = `<i class="fa-solid fa-terminal"></i> Launch Grand Final Terminal (exam.html)`;
-                    }
-                });
-
-                // Top Receipt Banner
-                if (gfFinalRec && banner) {
-                    const ansCount = gfFinalRec.answers ? Object.keys(gfFinalRec.answers).length : 0;
-                    if (bannerHeading) bannerHeading.textContent = "Grand Final Cloud Submission Verified:";
-                    document.getElementById('pd-receipt-details').textContent =
-                        `Bib: ${bib} · Receipt ID: ${gfFinalRec.receiptId} · Answered: ${ansCount}/${TOTAL_FINAL_QUESTIONS} · Official scores & medals will be announced after Window B closes.`;
-                    document.getElementById('pd-receipt-time').textContent = `Submitted: ${gfFinalRec.submittedAtUTC || ''}`;
-                    banner.style.display = 'flex';
-                } else if (banner) {
-                    banner.style.display = 'none';
-                }
-
-                // Phase 3: Grand Final Row
-                if (!currentParticipant.qualifiedFinal) {
-                    if (p3Status) p3Status.innerHTML = `<span class="c-badge" style="background:rgba(255,255,255,0.06); color:var(--text-muted);">Did Not Advance</span>`;
-                    if (p3Tel) p3Tel.textContent = `— / ${TOTAL_FINAL_QUESTIONS}`;
-                    if (p3Rec) p3Rec.textContent = `Certificate Issued`;
-                } else if (gfFinalRec) {
-                    const ansCount = gfFinalRec.answers ? Object.keys(gfFinalRec.answers).length : 0;
-                    if (p3Status) p3Status.innerHTML = `<span class="c-badge badge-green">Submitted ✓</span>`;
-                    if (p3Tel) p3Tel.textContent = `${ansCount} / ${TOTAL_FINAL_QUESTIONS} · ${gfFinalRec.strikes || 0} Strikes`;
-                    if (p3Rec) p3Rec.textContent = `${gfFinalRec.receiptId || 'Verified'}`;
-                } else if (gfLiveRec) {
-                    const ansCount = gfLiveRec.answers ? Object.keys(gfLiveRec.answers).length : 0;
-                    if (p3Status) p3Status.innerHTML = `<span class="c-badge badge-blue">Live In Exam</span>`;
-                    if (p3Tel) p3Tel.textContent = `${ansCount} / ${TOTAL_FINAL_QUESTIONS} · ${gfLiveRec.strikes || 0} Strikes`;
-                    if (p3Rec) p3Rec.textContent = `Syncing Live`;
-                } else {
-                    if (p3Status) p3Status.innerHTML = `<span class="c-badge badge-gold">Qualified · Ready</span>`;
-                    if (p3Tel) p3Tel.textContent = `0 / ${TOTAL_FINAL_QUESTIONS} · 0 Strikes`;
-                    if (p3Rec) p3Rec.textContent = `Win A: 10:00 UT / Win B: 18:00 UT`;
-                }
-            }
-
-            // Render Live Grand Finalists Receipts Board (20 Qualified Bibs)
-            const tbody = document.getElementById('cohort-scorecards-tbody');
-            const sumEl = document.getElementById('cohort-scorecards-summary');
-            if (!tbody) return;
-
-            const finalists = REGISTERED_PARTICIPANTS.filter(p => p.qualifiedFinal && !p.isAdmin).map(p => {
-                const rawFinal = finalSubmissionsMap[p.bib];
-                const rawLive = liveSubmissionsMap[p.bib];
-                const finalRec = isFinalSessionRecord(rawFinal) ? rawFinal : null;
-                const liveRec = isFinalSessionRecord(rawLive) ? rawLive : null;
-                const rec = finalRec || liveRec || null;
-                const ansCount = rec?.answers ? Object.keys(rec.answers).length : 0;
-                return { ...p, finalRec, liveRec, rec, ansCount };
-            });
-
-            finalists.sort((a, b) => {
-                const aSub = a.finalRec ? 2 : (a.liveRec ? 1 : 0);
-                const bSub = b.finalRec ? 2 : (b.liveRec ? 1 : 0);
-                if (bSub !== aSub) return bSub - aSub;
-                return a.bib.localeCompare(b.bib);
-            });
-
-            const submittedCount = finalists.filter(c => c.finalRec).length;
-            const liveCount = finalists.filter(c => c.liveRec && !c.finalRec).length;
-            if (sumEl) {
-                sumEl.textContent = `${submittedCount} Submitted · ${liveCount} Live In Exam · 20 Qualified Finalist Bibs (16 Entries)`;
-            }
-
-            tbody.innerHTML = finalists.map((c, idx) => {
-                const isSelected = currentParticipant && currentParticipant.bib === c.bib;
-                const bibCellHtml = isOrganizerAdmin
-                    ? `${c.bib} <span style="color:var(--text-muted); font-weight:400;">(${c.name})</span>`
-                    : (isSelected ? `${c.bib} <span style="color:var(--accent-green);">(You)</span>` : c.bib);
-
-                let statusHtml = `<span style="color:var(--accent-gold);">Qualified · Ready</span>`;
-                if (c.finalRec) statusHtml = `<span style="color:var(--accent-green); font-weight:700;">Submitted ✓</span>`;
-                else if (c.liveRec) statusHtml = `<span style="color:var(--accent-blue); font-weight:700;">Live In Exam</span>`;
-
-                const winShort = c.rec?.windowZone
-                    ? (c.rec.windowZone.includes("Window B") ? "Win B (18:00 UT)" : "Win A (10:00 UT)")
-                    : "—";
-
-                return `
-                    <tr class="${isSelected ? 'me-row' : ''}" style="${isOrganizerAdmin ? 'cursor:pointer;' : ''}" onclick="${isOrganizerAdmin ? `window.selectCandidateForScorecard('${c.bib}')` : ''}">
-                        <td style="font-family:var(--font-mono); color:var(--text-muted);">${idx + 1}</td>
-                        <td style="font-family:var(--font-mono); font-weight:700; color:var(--accent-blue);">${bibCellHtml}</td>
-                        <td>${c.country}</td>
-                        <td style="font-family:var(--font-mono); font-size:0.75rem;">${c.callsign || 'Solo'}${c.partnerBib ? ` (${c.partnerBib})` : ''}</td>
-                        <td>${statusHtml}</td>
-                        <td style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-purple);">${winShort}</td>
-                        <td style="font-family:var(--font-mono);">${c.rec ? `${c.ansCount} / ${TOTAL_FINAL_QUESTIONS}` : '—'}</td>
-                        <td style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-blue);">${c.finalRec?.receiptId || (c.liveRec ? 'In Progress' : '—')}</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        // Unified Candidate Bib Roster (Tab 5 — Strictly Candidate Bib Code, No Names Exposed)
-        function renderRosterTable(filterText = "") {
-            const tbody = document.getElementById('roster-tbody');
-            if (!tbody) return;
-            const q = filterText.trim().toLowerCase();
-            const students = REGISTERED_PARTICIPANTS.filter(p => !p.isAdmin);
-
-            const filtered = students.filter(p => {
-                if (!q) return true;
-                return (
-                    p.bib.toLowerCase().includes(q) ||
-                    p.country.toLowerCase().includes(q) ||
-                    p.grade.toLowerCase().includes(q) ||
-                    (p.callsign || '').toLowerCase().includes(q) ||
-                    (isOrganizerAdmin && p.name.toLowerCase().includes(q))
-                );
-            });
-
-            filtered.sort((a, b) => (b.qualifiedFinal ? 1 : 0) - (a.qualifiedFinal ? 1 : 0));
-
-            tbody.innerHTML = filtered.map(p => {
-                const isMe = currentParticipant && currentParticipant.bib === p.bib;
-                const bibDisplay = isOrganizerAdmin
-                    ? `${p.bib} <span style="color:var(--text-muted); font-weight:400;">(${p.name})</span>`
-                    : (isMe ? `${p.bib} (You)` : p.bib);
-                const statusCell = p.qualifiedFinal
-                    ? `<span style="color:var(--accent-gold); font-weight:700;">★ Grand Finalist (21 Nov)</span>`
-                    : `<span style="color:var(--text-muted);">Phase 1 Participant</span>`;
-                return `
-                    <tr class="${isMe ? 'me-row' : ''}">
-                        <td style="font-family:var(--font-mono); font-weight:700; color:${p.qualifiedFinal ? 'var(--accent-green)' : 'var(--text-muted)'};">${bibDisplay}</td>
-                        <td>${p.country}</td>
-                        <td style="font-size:0.76rem; color:var(--text-muted);">${p.grade.replace(' (or equivalent)', '')}</td>
-                        <td style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-blue);">${p.callsign || 'Solo'}</td>
-                        <td style="font-family:var(--font-mono); font-size:0.73rem;">${statusCell}</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
         function applyParticipantUI(user) {
-            const emailEl = document.getElementById('pd-user-email');
-            const adminBar = document.getElementById('admin-command-bar');
-            const adminBtn = document.getElementById('pd-admin-btn');
-            const previewSelect = document.getElementById('admin-preview-select');
-
             if (!user) {
-                emailEl.textContent = "Sign in to view";
-                renderRosterTable();
-                renderAllScorecardsAndReceipts();
+                resetPersonalUI(null);
                 return;
             }
 
             const userEmail = (user.email || "").trim().toLowerCase();
             const userDisplay = (user.displayName || "").trim().toLowerCase();
-            emailEl.textContent = user.email || user.displayName || "Signed In";
-
-            isOrganizerAdmin = ADMIN_EMAILS.includes(userEmail);
-
-            if (isOrganizerAdmin) {
-                if (adminBar) adminBar.classList.add('visible');
-                if (adminBtn) adminBtn.style.display = 'inline-flex';
-                if (previewSelect && previewSelect.options.length <= 1) {
-                    REGISTERED_PARTICIPANTS.forEach(p => {
-                        const opt = document.createElement('option');
-                        opt.value = p.bib;
-                        opt.textContent = `${p.qualifiedFinal ? '★ ' : ''}${p.bib} — ${p.name} (${p.country} · ${p.callsign || 'Solo'})`;
-                        previewSelect.appendChild(opt);
-                    });
-                    previewSelect.addEventListener('change', (e) => {
-                        const chosen = REGISTERED_PARTICIPANTS.find(x => x.bib === e.target.value);
-                        if (chosen) populateHydratedDossier(chosen);
-                    });
-                }
-            }
 
             const found = REGISTERED_PARTICIPANTS.find(p =>
                 p.email.trim().toLowerCase() === userEmail ||
@@ -1799,149 +2002,24 @@
             );
 
             if (found) {
-                populateHydratedDossier(found);
+                populatePersonalResult(found);
             } else {
-                renderRosterTable();
-                renderAllScorecardsAndReceipts();
+                resetPersonalUI(user.email || user.displayName || "Signed In");
             }
         }
 
-        // Bind Firebase Auth & RTDB with retry in case js/auth.js initializes asynchronously
-        function initFirebaseBindings(attempt = 0) {
-            if (firebaseBindingsStarted) return;
-            if (getApps().length > 0) {
-                firebaseBindingsStarted = true;
-                const authInstance = getAuth(getApp());
-                onAuthStateChanged(authInstance, (user) => {
-                    applyParticipantUI(user);
-                });
-                startLiveScorecardListeners();
-            } else if (attempt < 15) {
-                setTimeout(() => initFirebaseBindings(attempt + 1), 300);
-            }
-        }
-
+        // Initial static render of official standings & anonymized 43-candidate roster
+        renderOfficialStandingsTable();
         renderRosterTable();
-        renderAllScorecardsAndReceipts();
-        initFirebaseBindings();
+
+        // Listen to Firebase Auth state via js/auth.js (no RTDB listeners)
+        onAuthStateChanged(auth, (user) => {
+            applyParticipantUI(user);
+        });
 
         document.getElementById('roster-search-input')?.addEventListener('input', (e) => {
             renderRosterTable(e.target.value);
         });
-
-        // Pre-Flight Hardware Diagnostic Controls (Tab 4)
-        let diagStream = null;
-        document.getElementById('btn-test-cam')?.addEventListener('click', async () => {
-            const statusEl = document.getElementById('diag-cam-status');
-            const rowEl = document.getElementById('diag-row-cam');
-            const videoEl = document.getElementById('diag-webcam-preview');
-            const placeEl = document.getElementById('diag-cam-placeholder');
-            try {
-                if (diagStream) {
-                    diagStream.getTracks().forEach(t => t.stop());
-                    diagStream = null;
-                    videoEl.style.display = 'none';
-                    placeEl.style.display = 'block';
-                    document.getElementById('btn-test-cam').innerHTML = `<i class="fa-solid fa-camera"></i> Test Webcam`;
-                    return;
-                }
-                diagStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-                videoEl.srcObject = diagStream;
-                videoEl.style.display = 'block';
-                placeEl.style.display = 'none';
-                rowEl.classList.add('pass');
-                statusEl.innerHTML = `<strong style="color:var(--accent-green);">PASS ✓</strong> Camera stream active and verified for SAC 2026 proctoring.`;
-                document.getElementById('btn-test-cam').innerHTML = `<i class="fa-solid fa-stop"></i> Stop Preview`;
-            } catch (err) {
-                statusEl.innerHTML = `<strong style="color:var(--accent-red);">BLOCKED:</strong> Please allow camera access in your browser URL bar.`;
-            }
-        });
-
-        document.getElementById('btn-test-screen')?.addEventListener('click', async () => {
-            const statusEl = document.getElementById('diag-screen-status');
-            const rowEl = document.getElementById('diag-row-screen');
-            try {
-                const s = await navigator.mediaDevices.getDisplayMedia({ video: true });
-                s.getTracks().forEach(t => t.stop());
-                rowEl.classList.add('pass');
-                statusEl.innerHTML = `<strong style="color:var(--accent-green);">PASS ✓</strong> Screen capture API verified and supported.`;
-            } catch (err) {
-                statusEl.innerHTML = `<strong style="color:var(--accent-gold);">CANCELLED:</strong> Select "Entire Screen" when prompted on exam day.`;
-            }
-        });
-
-        document.getElementById('btn-test-fs')?.addEventListener('click', async () => {
-            const statusEl = document.getElementById('diag-fs-status');
-            const rowEl = document.getElementById('diag-row-fs');
-            try {
-                if (!document.fullscreenElement) {
-                    await document.documentElement.requestFullscreen();
-                    rowEl.classList.add('pass');
-                    statusEl.innerHTML = `<strong style="color:var(--accent-green);">PASS ✓</strong> Fullscreen lockdown supported (press Esc or click again to exit).`;
-                } else {
-                    await document.exitFullscreen();
-                }
-            } catch (e) {}
-        });
-
-        window.enterCompetitionRound = function() {
-            if (currentParticipant && !currentParticipant.qualifiedFinal) {
-                alert("The Grand Final terminal is restricted strictly to the Top 16 qualified finalist entries.");
-                return;
-            }
-            if (currentParticipant && hasCandidateAlreadyParticipated(currentParticipant)) {
-                alert(`Bib ${currentParticipant.bib} has already completed the Grand Final. Only 1 attempt is permitted across both windows.`);
-                return;
-            }
-            if (currentParticipant) {
-                window.location.href = `exam.html?bib=${encodeURIComponent(currentParticipant.bib)}&email=${encodeURIComponent(currentParticipant.email)}`;
-            } else {
-                window.location.href = 'exam.html';
-            }
-        };
-
-        // Unified Live Countdown Engine
-        function updateAllCountdowns() {
-            const now = Date.now();
-            const utcStr = new Date(now).toISOString().replace('T', ' ').substring(0, 19) + ' UT';
-            const clockEl = document.getElementById('live-utc-clock');
-            if (clockEl) clockEl.textContent = utcStr;
-
-            const activeWin = COMPETITION_WINDOWS.find(w => now >= w.start && now <= w.end);
-            const nextWin = COMPETITION_WINDOWS.find(w => w.start > now);
-
-            const labelEl = document.getElementById('countdown-phase-label');
-            const timerEl = document.getElementById('countdown-timer');
-            const pTimerEl = document.getElementById('pd-next-round-timer');
-            const pLabelEl = document.getElementById('pd-timer-card-label');
-
-            let diff = 0;
-            if (activeWin) {
-                if (labelEl) labelEl.textContent = `${activeWin.phase} LIVE — Closes In`;
-                if (pLabelEl) pLabelEl.textContent = `${activeWin.phase} LIVE NOW`;
-                diff = activeWin.end - now;
-            } else if (nextWin) {
-                if (labelEl) labelEl.textContent = `${nextWin.phase} Opens In`;
-                if (pLabelEl) pLabelEl.textContent = `Next: ${nextWin.phase}`;
-                diff = nextWin.start - now;
-            } else {
-                if (labelEl) labelEl.textContent = 'SAC 2026 Grand Final Completed';
-                if (timerEl) timerEl.textContent = '00d : 00h : 00m : 00s';
-                if (pTimerEl) pTimerEl.textContent = '00d : 00h : 00m : 00s';
-                return;
-            }
-
-            const d = Math.floor(diff / 86400000);
-            const h = Math.floor((diff / 3600000) % 24);
-            const m = Math.floor((diff / 60000) % 60);
-            const s = Math.floor((diff / 1000) % 60);
-            const formatted = `${String(d).padStart(2,'0')}d : ${String(h).padStart(2,'0')}h : ${String(m).padStart(2,'0')}m : ${String(s).padStart(2,'0')}s`;
-
-            if (timerEl) timerEl.textContent = formatted;
-            if (pTimerEl) pTimerEl.textContent = formatted;
-        }
-        setInterval(updateAllCountdowns, 1000);
-        updateAllCountdowns();
     </script>
     <script>
         const MOCK_QUESTIONS = [
@@ -2143,5 +2221,6 @@
             if (curMock < MOCK_QUESTIONS.length - 1) { curMock++; renderMockQ(); }
         });
     </script>
+    <script type="module" src="js/quick_search.js"></script>
 </body>
 </html>

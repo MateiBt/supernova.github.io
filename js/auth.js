@@ -1,4 +1,5 @@
 // js/auth.js
+import "./mobile_nav.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
@@ -24,7 +25,7 @@ let progressChart = null;
 const COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000;
 
 export const difficultyMap = {
-    // --- POTD Rotations (19.10.2026 - 01.11.2026) ---
+    // --- POTD Rotations (19.10.2026 - 06.12.2026) ---
     'potd_2026_10_19': 'medium',
     'potd_2026_10_20': 'medium',
     'potd_2026_10_21': 'easy',
@@ -39,10 +40,48 @@ export const difficultyMap = {
     'potd_2026_10_30': 'easy',
     'potd_2026_10_31': 'easy',
     'potd_2026_11_01': 'easy',
+    'potd_2026_11_02': 'easy',
+    'potd_2026_11_03': 'easy',
+    'potd_2026_11_04': 'medium',
+    'potd_2026_11_05': 'easy',
+    'potd_2026_11_06': 'medium',
+    'potd_2026_11_07': 'easy',
+    'potd_2026_11_08': 'easy',
+    'potd_2026_11_09': 'medium',
+    'potd_2026_11_10': 'medium',
+    'potd_2026_11_11': 'medium',
+    'potd_2026_11_12': 'medium',
+    'potd_2026_11_13': 'medium',
+    'potd_2026_11_14': 'medium',
+    'potd_2026_11_15': 'medium',
+    'potd_2026_11_16': 'medium',
+    'potd_2026_11_17': 'medium',
+    'potd_2026_11_18': 'medium',
+    'potd_2026_11_19': 'medium',
+    'potd_2026_11_20': 'easy',
+    'potd_2026_11_21': 'medium',
+    'potd_2026_11_22': 'medium',
+    'potd_2026_11_23': 'easy',
+    'potd_2026_11_24': 'medium',
+    'potd_2026_11_25': 'easy',
+    'potd_2026_11_26': 'medium',
+    'potd_2026_11_27': 'medium',
+    'potd_2026_11_28': 'hard',
+    'potd_2026_11_29': 'hard',
+    'potd_2026_11_30': 'easy',
+    'potd_2026_12_01': 'easy',
+    'potd_2026_12_02': 'easy',
+    'potd_2026_12_03': 'easy',
+    'potd_2026_12_04': 'easy',
+    'potd_2026_12_05': 'easy',
+    'potd_2026_12_06': 'easy',
 
     // --- POTW & POTM Rotations ---
     'potw_2026_w1': 'medium',
     'potw_2026_w2': 'hard',
+    'potw_2026_w3': 'hard',
+    'potw_2026_w4': 'hard',
+    'potw_2026_w5': 'hard',
     'potm_2026_m1': 'hard',
 
     // --- USAAAO 2026 (Q1 - Q30) ---
@@ -173,7 +212,7 @@ export const difficultyMap = {
     'q29-30_usaaao_2023': 'easy',
 
     // --- USAAAO 2022 ---
-    'q1_usaaao_2022': 'easy',
+    'q1_usaaao_2022': 'theory',
     'q2_usaaao_2022': 'easy',
     'q3_usaaao_2022': 'easy',
     'q4_usaaao_2022': 'easy',
@@ -203,6 +242,12 @@ export const difficultyMap = {
     'q28_usaaao_2022': 'easy',
     'q29_usaaao_2022': 'easy',
     'q30_usaaao_2022': 'easy',
+    'q17_18_usaaao_2022': 'easy',
+    'q17-18_usaaao_2022': 'easy',
+    'q21_22_usaaao_2022': 'medium',
+    'q21-22_usaaao_2022': 'medium',
+    'q24_25_usaaao_2022': 'easy',
+    'q24-25_usaaao_2022': 'easy',
 
     // --- Earlier Archives ---
     'q1_usaaao_2018': 'easy',
@@ -283,7 +328,8 @@ onAuthStateChanged(auth, (user) => {
         if (sidebarLogout) {
             sidebarLogout.onclick = (e) => {
                 e.preventDefault();
-                signOut(auth).then(() => window.location.href = 'landing.html');
+                const inSubfolder = /\/(practice|handouts)\//i.test(window.location.pathname);
+                signOut(auth).then(() => window.location.href = inSubfolder ? '../index.html' : 'index.html');
             };
         }
     } else {
@@ -702,8 +748,8 @@ if (authForm) {
             signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
                     window.closeModal();
-                    if (window.location.pathname.endsWith('landing.html')) {
-                        window.location.href = 'index.html';
+                    if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+                        window.location.href = 'dashboard.html';
                     }
                 })
                 .catch(err => { if (authError) authError.innerText = err.message.replace('Firebase: ', ''); });
@@ -711,8 +757,8 @@ if (authForm) {
             createUserWithEmailAndPassword(auth, email, password)
                 .then((cred) => updateProfile(cred.user, { displayName: username }))
                 .then(() => {
-                    if (window.location.pathname.endsWith('landing.html')) {
-                        window.location.href = 'index.html';
+                    if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+                        window.location.href = 'dashboard.html';
                     } else {
                         window.location.reload();
                     }
@@ -724,7 +770,10 @@ if (authForm) {
 
 const logoutBtnEl = document.getElementById('logoutBtn');
 if (logoutBtnEl) {
-    logoutBtnEl.addEventListener('click', () => signOut(auth).then(() => window.location.href = 'landing.html'));
+    logoutBtnEl.addEventListener('click', () => {
+        const inSubfolder = /\/(practice|handouts)\//i.test(window.location.pathname);
+        signOut(auth).then(() => window.location.href = inSubfolder ? '../index.html' : 'index.html');
+    });
 }
 
 window.openAuthModal = () => { if (authModal) authModal.style.display = 'flex'; };
