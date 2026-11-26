@@ -1,0 +1,9 @@
+# Generated SAC 2026 diplomas & local standalone certificate inspector
+output_diplomas/
+diplomas.html
+
+# Python & OS artifacts
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
